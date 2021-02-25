@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+die() {
+	echo "$@"
+	exit 1
+}
+
+base="http://git.2f30.org"
+
+command -v hq >/dev/null || die "hq not installed!"
+[ -z "$1" ] && die "No URL given!"
+grep -E "^$base/[^/]+/files.html" <<< "$1" || die "URL is not valid!"
+name="$(sed -E "s|^$base/([^/]+)/files.html$|\1|g" <<< "$1")"
+mkdir "$name" || die "File or folder $name already exists!"
+cd "$name" || die "Could not change to folder $name"
+files="$(curl -L "$1" | hq "#files tbody tr a" attr href)"
+for f in $files; do
+	b="${f%.html}"
+	b="${b#file/}"
+	mkdir -p "$(dirname "$b")"
+	curl "$base/$name/$f" | hq "#content" text \
+	| sed -E "1d; s|^[0-9]+ ?||g" > "$b"
+done

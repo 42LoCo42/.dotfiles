@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+   ANSI_RED="\[[38;5;1m\]"
+ ANSI_GREEN="\[[38;5;2m\]"
+ANSI_YELLOW="\[[38;5;3m\]"
+  ANSI_BLUE="\[[38;5;4m\]"
+ANSI_PURPLE="\[[38;5;5m\]"
+  ANSI_CYAN="\[[38;5;6m\]"
+ ANSI_WHITE="\[[38;5;7m\]"
+  ANSI_BOLD="\[[1m\]"
+ ANSI_RESET="\[[m\]"
+
+iface() {
+	ip route show default \
+	| grep -om 1 "dev \S*" | cut -d " " -f 2
+}
+
+local_ip() {
+	data="$(
+	ip addr show "$(iface)" 2>/dev/null \
+		| grep -Eom 1 "inet6? [^/]+" | cut -d " " -f 2
+	)"
+	: "${data:=offline}"
+	echo "$data "
+}
+
+git_repo() {
+	git rev-parse --show-toplevel 2>/dev/null \
+	| sed 's|.*/||g' | sed -E 's|^(.)| \1|g'
+}
+
+git_branch() {
+	git branch 2>/dev/null | grep -E "^\*" | sed -E 's|^\* |:|g'
+}
+
+export PS1="\
+${ANSI_BOLD}\
+${ANSI_RED}[\$? ${ANSI_YELLOW}\u${ANSI_GREEN}@${ANSI_BLUE}\h \
+${ANSI_GREEN}\$(local_ip)\
+${ANSI_PURPLE}\w\
+${ANSI_CYAN}\$(git_repo)\
+\$(git_branch)\
+${ANSI_RED}]\n${ANSI_WHITE}λ \
+${ANSI_RESET}\
+"

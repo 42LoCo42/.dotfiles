@@ -1,0 +1,15 @@
+# i3 config file (v4)
+# vim: set ft=i3:
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod1
+floating_modifier $mod
+new_window pixel 1
+new_float pixel 1
+gaps inner 5
+gaps outer 0
+smart_gaps on
+smart_borders on
+hide_edge_borders both
+focus_follows_mouse yes
+

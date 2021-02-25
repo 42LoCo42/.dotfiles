@@ -1,0 +1,65 @@
+# vim: set ft=sxhkd:
+# Programs
+super + shift + a
+	$TERMINAL -e pulsemixer
+super + d
+	dmenu_run
+super + i
+	$TERMINAL -e htop
+super + r
+	$TERMINAL -e $FILE
+super + w
+	$TERMINAL -e w3m duckduckgo.com/lite
+super + shift + w
+	$BROWSER
+
+super + Return
+	ucc
+super + F9
+	dmenumount
+super + F10
+	dmenuumount
+
+# Take screenshot
+Print
+	maim pic-full-$(date '+%y%m%d-%H%M-%S').png
+# Pick screenshot type
+shift + Print
+	maimpick
+
+# Pause audio
+super + {_,shift +} p
+	lmc {toggle,pause}
+# Changes to next/previous tracks
+super + {comma,period}
+	lmc {prev,next}
+# Restart track
+super + shift + less
+	lmc replay
+# Increase mpd volume
+super + control + {plus, asterisk}
+	lmc mpdup {5,15}
+# Decrease mpd volume
+super + control + {minus, underscore}
+	lmc mpddown {5,15}
+# Increase volume
+super + {plus,asterisk}
+	lmc up {5,15}
+# Decrease volume
+super + {minus, underscore}
+	lmc down {5,15}
+# Seek foward in song
+super + {_,shift +} udiaeresis
+	lmc forward {10,120}
+# Seek backward in song
+super + {_,shift +} adiaeresis
+	lmc back {10,120}
+
+# System control commands
+super + BackSpace
+	prompt "Shutdown computer?" "sudo -A shutdown -h now"
+super + shift + BackSpace
+	prompt "Reboot computer?" "sudo -A shutdown -r now"
+super + x
+	lockscreen
+

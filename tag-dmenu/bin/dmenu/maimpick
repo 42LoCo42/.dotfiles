@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+folder="$HOME/screenshots"
+mkdir -p "$folder"
+name_base="$(date '+%y%m%d-%H%M-%S').png"
+name_selected="$folder/pic-selected-$name_base"
+name_window="$folder/pic-window-$name_base"
+name_screen="$folder/pic-scren-$name_base"
+options="\
+a selected area
+current window
+full screen
+a selected area (copy)
+current window (copy)
+full screen (copy)
+"
+choice="$(printf "$options" | dmenu -l 6 -i -p "Screenshot which area?")"
+case "$choice" in
+	"a selected area")        maim -s "$name_selected" ;;
+	"current window")         maim -i "$(xdotool getactivewindow)" "$name_window" ;;
+	"full screen")            maim "$name_screen" ;;
+	"a selected area (copy)") maim -s | xclip -selection clipboard -t image/png ;;
+	"current window (copy)")  maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png ;;
+	"full screen (copy)")     maim | xclip -selection clipboard -t image/png ;;
+esac

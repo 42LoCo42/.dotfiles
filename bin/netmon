@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -e
+
+interval=1.5
+[ -n "$1" ] && mif="$1"
+[ -z "$mif" ] && mif="$(ip route show default | grep -o "dev \S*" | cut -d " " -f 2)"
+
+ip link | cut -d " " -f 2 | grep -q "$mif" 2>/dev/null || {
+	echo "Interface $mif not found!"
+	exit 1
+}
+
+prefixes=(" " "K" "M" "G")
+
+conf_pre() {
+	prefix_index="0"
+	speed="$1"
+	while echo "scale=2; $speed >= 1000" | bc | grep -q 1; do
+		speed="$(echo "scale=2; $speed/1000.0" | bc)"
+		((prefix_index = prefix_index + 1))
+	done
+	prefix="${prefixes[prefix_index]}"
+}
+
+clear
+while true; do
+	raw1="$(<"/proc/net/dev")"
+	rx1="$(awk "/\s*$mif:/ {print \$2}" <<< "$raw1")"
+	tx1="$(awk "/\s*$mif:/ {print \$10}" <<< "$raw1")"
+	sleep "$interval"
+	raw2="$(<"/proc/net/dev")"
+	rx2="$(awk "/\s*$mif:/ {print \$2}" <<< "$raw2")"
+	tx2="$(awk "/\s*$mif:/ {print \$10}" <<< "$raw2")"
+	
+	rx="$(echo "scale=2; ($rx2 - $rx1) * 8 / $interval" | bc)"
+	tx="$(echo "scale=2; ($tx2 - $tx1) * 8 / $interval" | bc)"
+
+	printf "[H"
+	date
+	printf "Traffic RX: "
+	conf_pre "$rx"
+	printf "%7s %sbit/s\n" "$speed" "$prefix"
+	printf "Traffic TX: "
+	conf_pre "$tx"
+	printf "%7s %sbit/s\n" "$speed" "$prefix"
+done

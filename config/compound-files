@@ -1,0 +1,3 @@
+$HOME/.config/i3/config.d
+$HOME/.config/sxhkd/sxhkdrc.d
+$HOME/.config/gitconfig.d $HOME/.gitconfig

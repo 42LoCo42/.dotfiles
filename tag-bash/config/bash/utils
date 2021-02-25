@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+stty -ixon # Disable ctrl-s and ctrl-q.
+shopt -s autocd #Allows you to cd into directory merely by typing the directory name.
+HISTSIZE="" HISTFILESIZE="" # Infinite history.
+
+# better colors in ls
+# shellcheck disable=SC2046
+eval $(dircolors)
+
+# Safe copypaste
+bind 'set enable-bracketed-paste on'
+# Case insensitive tab completion
+bind 'set completion-ignore-case on'
+
+# Connect to ssh-agent
+if [ -f "/tmp/ssh-agent-$USER" ]; then
+	. "/tmp/ssh-agent-$USER"
+else
+	ssh-agent | grep -v "echo" > "/tmp/ssh-agent-$USER"
+fi

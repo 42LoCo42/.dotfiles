@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+undot() {
+	[ -L "$1" ] || return "Not a symlink!"
+	target="$(readlink "$1")"
+	[ -e "$target" ] || return "Target $target does not exist!"
+	mv "$target" "$1" || return "Could not restore $1 from $target"
+	rmdir -p "$(dirname "$target")"
+}

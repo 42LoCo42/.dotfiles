@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# utils
+alias ccat="highlight --out-format=ansi"
+alias diff="diff --color=auto"
+alias grep="grep --color=auto"
+alias ls="ls -hA --color=auto --group-directories-first"
+alias mkdir="mkdir -pv"
+
+# helpers
+alias fuck='sudo $(history -p !!)'
+alias rl="exec \$SHELL -l"
+
+# larger tools
+alias calcurse="calcurse -D ~/.config/calcurse"
+alias e="\$EDITOR"
+alias f="\$FILE"
+alias ffmpeg="ffmpeg -hide_banner"
+alias mpv='mpv --input-ipc-server=/tmp/mpvsoc$(date +%s)'
+alias tmux="tmux -f \$HOME/.config/tmux.conf"
+alias web="w3m duckduckgo.com/lite"
+alias wine="PULSE_LATENCY_MSEC=60 wine"
+
+# youtube
+alias YT="youtube-viewer -C"
+alias yt="youtube-dl -i -o '%(upload_date)s-%(title)s.%(ext)s'"
+alias yta="yt -x -f bestaudio/best"
+
+# git
+alias d="git --git-dir=\$HOME/.gitdot --work-tree=\$HOME"
+alias g="git"
+
+# xbps
+alias xa="sudo xbps-alternatives"
+alias xb="sudo xbps-rindex"
+alias xc="sudo xbps-reconfigure"
+alias xi="sudo xbps-install"
+alias xp="sudo xbps-pkgdb"
+alias xq="sudo xbps-query"
+alias xr="sudo xbps-remove"
+
+# program changes
+# alias cp="advcp -g"
+# alias mv="advmc -g"
+# alias sv="rsv"

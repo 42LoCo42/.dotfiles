@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+[ -r "$1" ] && cp "$1" "$HOME/.config/wall.png"
+feh --bg-fill "$HOME/.config/wall.png"
+rm "$HOME/.fehbg"
