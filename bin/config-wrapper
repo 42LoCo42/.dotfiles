@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -e
+
+die() {
+	echo "$@"
+	exit 1
+}
+
+while grep -q "^-" <<< "$1"; do
+	case "$1" in
+		--use-file) use_file=1 ;;
+		*)          echo "Unknown flag $1" ;;
+	esac
+	shift
+done
+
+(($# < 2)) && die "Specify at least the config directory and command to run!"
+dir="$1"
+cmd="$2"
+[ -d "$dir" ] || die "Not a directory: $dir"
+type "$cmd" >/dev/null 2>&1 || die "Not found: $cmd"
+shift 2
+
+cleanup() {
+	pkill -P "$$"
+}
+
+cleanup_with_file() {
+	rm "$file"
+	cleanup
+}
+
+echo -n "$cmd-wrapper" > /proc/$$/comm
+
+trap cleanup EXIT
+((use_file == 1)) && {
+	file="$(mktemp)"
+	trap cleanup_with_file EXIT
+}
+
+while true; do
+	if ((use_file == 1)); then
+		cat "$dir"/* > "$file"
+		"$cmd" "$@" "$file" &
+	else
+		cat "$dir"/* | "$cmd" "$@" &
+	fi
+	wait
+done

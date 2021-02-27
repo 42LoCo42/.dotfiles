@@ -1,4 +1,3 @@
-# vim: set ft=sxhkd:
 # i3 messages
 super + b
 	i3-msg "bar mode toggle"
@@ -18,8 +17,6 @@ super + shift + q
 	kill -9 `xdotool getwindowfocus getwindowpid`
 super + space
 	i3-msg "focus mode_toggle"
-super + Escape
-	prompt "Logout?" "i3-msg exit"
 super + F2
 	i3-msg "restart"
 

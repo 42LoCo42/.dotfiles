@@ -14,6 +14,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'godlygeek/tabular'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-syntastic/syntastic'
+Plug 'lambdalisue/suda.vim'
 " Languages
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
@@ -144,7 +145,7 @@ autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
 autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 " Update binds when sxhkdrc is updated.
-autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
+autocmd BufWritePost *sxhkd/* !pkill -x sxhkd
 
 " Run xrdb whenever Xdefaults or Xresources are updated.
 autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
@@ -176,6 +177,9 @@ let g:syntastic_sh_shellcheck_args = "-x"
 " vimwiki: default wiki uses markdown
 let g:vimwiki_list = [{'path': '~/HOST/', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
+
+" Open files with sudo when needed
+let g:suda_smart_edit = 1
 
 " Load other vim files =========================================================
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+case "$1" in
+	lower)   pulsemixer --change-volume "-$2" ;;
+	higher)  pulsemixer --change-volume "+$2" ;;
+	mute)    pulsemixer --toggle-mute         ;;
+	micmute)
+		mic="$(
+			pulsemixer --list-sources \
+			| awk '/Default/ {gsub(",", "", $3); print $3}'
+		)"
+		pulsemixer --toggle-mute --id "$mic"
+	;;
+	*) echo "Unknown operation!" ;;
+esac

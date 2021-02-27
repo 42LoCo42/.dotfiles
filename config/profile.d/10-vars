@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2155
 
-# Adds `~/bin/` and all subdirectories to $PATH
-export PATH="$PATH:$(du "$HOME/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+# Adds `~/.bin/` and all subdirectories to $PATH
+export PATH="$PATH:$(du "$HOME/.bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
 export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"

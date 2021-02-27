@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+if [ -t 0 ]; then
+	sudo_arg=""
+	msg=(printf "%s: %s\n")
+else
+	sudo_arg="-A"
+	msg=(dunstify -r 603197484)
+fi
+
+if lsmod | grep -q "^uvcvideo"; then
+	if sudo $sudo_arg rmmod uvcvideo; then
+		"${msg[@]}" "Disable webcam" "Success!"
+	else
+		"${msg[@]}" "Disable webcam" "Failed!"
+	fi
+else
+	if sudo $sudo_arg modprobe uvcvideo; then
+		"${msg[@]}" "Enable webcam" "Success!"
+	else
+		"${msg[@]}" "Enable webcam" "Failed!"
+	fi
+fi

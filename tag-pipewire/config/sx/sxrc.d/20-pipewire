@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-pgrep pipewire >/dev/null || exec pipewire &
+exec pipewire &

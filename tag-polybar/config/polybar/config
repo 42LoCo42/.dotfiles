@@ -55,9 +55,9 @@ font-0 = monospace:pixelsize=10;1
 font-1 = siji:pixelsize=10;1
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
-modules-left = i3
-modules-center = xwindow
-modules-right = filesystem eth memory cpu date
+modules-left = i3 xwindow
+modules-center = 
+modules-right = filesystem backlight-acpi memory cpu cpu-temp wlan battery date
 
 tray-position = right
 tray-padding = 2
@@ -76,6 +76,7 @@ type = internal/fs
 interval = 25
 
 mount-0 = /
+mount-1 = /boot
 
 label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
 label-unmounted = %mountpoint% not mounted
@@ -299,6 +300,11 @@ ramp-0 = 
 ramp-1 = 
 ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
+
+[module/cpu-temp]
+type = custom/script
+exec = ~/.config/polybar/scripts/cpu-temp.sh
+format-underline = ${colors.primary}
 
 [settings]
 screenchange-reload = true

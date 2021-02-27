@@ -1,0 +1,12 @@
+XF86AudioMute
+	audioctl mute
+XF86AudioLowerVolume
+	audioctl lower 5
+XF86AudioRaiseVolume
+	audioctl higher 5
+XF86AudioMicMute
+	audioctl micmute
+XF86MonBrightnessDown
+	xbacklight -dec 10
+XF86MonBrightnessUp
+	xbacklight -inc 10
