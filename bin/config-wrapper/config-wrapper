@@ -6,6 +6,8 @@ die() {
 	exit 1
 }
 
+type pause >/dev/null || die "pause not found!"
+
 while grep -q "^-" <<< "$1"; do
 	case "$1" in
 		--use-file) use_file=1 ;;
@@ -36,14 +38,15 @@ trap cleanup EXIT
 ((use_file == 1)) && {
 	file="$(mktemp)"
 	trap cleanup_with_file EXIT
+	trap 'cat "$dir"/* > "$file"' USR1
 }
 
 while true; do
 	if ((use_file == 1)); then
-		cat "$dir"/* > "$file"
+		kill -USR1 "$$"
 		"$cmd" "$@" "$file" &
+		pause
 	else
-		cat "$dir"/* | "$cmd" "$@" &
+		cat "$dir"/* | "$cmd" "$@"
 	fi
-	wait
 done

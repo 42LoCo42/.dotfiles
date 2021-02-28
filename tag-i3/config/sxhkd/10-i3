@@ -18,7 +18,9 @@ super + shift + q
 super + space
 	i3-msg "focus mode_toggle"
 super + F2
-	i3-msg "restart"
+	i3-reload
+super + Escape
+	prompt "Logout?" "pkill i3-wrapper"
 
 # Workspace control
 super + control + {1,2,3,4,5,6,7,8,9,0}

@@ -61,8 +61,6 @@ super + BackSpace
 	prompt "Shutdown computer?" "sudo -A shutdown -h now"
 super + shift + BackSpace
 	prompt "Reboot computer?" "sudo -A shutdown -r now"
-super + Escape
-	prompt "Logout?" "pkill i3-wrapper"
 super + x
 	lockscreen
 

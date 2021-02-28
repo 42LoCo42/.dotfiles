@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+config-wrapper-refresh-file "i3"
+sleep 0.25
+i3-msg "restart"
+[ -f "$HOME/.config/i3/polybar" ] && {
+	pkill polybar
+	polybar default
+}
