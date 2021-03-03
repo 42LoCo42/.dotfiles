@@ -27,4 +27,3 @@ else
 	TERM="st-256color"
 fi
 export TERM
-export GPG_TTY="$(tty)"
