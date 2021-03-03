@@ -23,7 +23,7 @@ super + F10
 
 # Take screenshot
 Print
-	maim pic-full-$(date '+%y%m%d-%H%M-%S').png
+	maim "$HOME/screenshots/pic-full-$(date '+%y%m%d-%H%M-%S').png"
 # Pick screenshot type
 shift + Print
 	maimpick

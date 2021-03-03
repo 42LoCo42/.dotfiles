@@ -21,3 +21,10 @@ else
 fi
 
 export GPG_TTY="$(tty)"
+
+if tty | grep -q "tty"; then
+	TERM="linux"
+else
+	TERM="st-256color"
+fi
+export TERM
