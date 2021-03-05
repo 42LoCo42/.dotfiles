@@ -1,2 +1,2 @@
 XF86WebCam
-	webcam
+	webcam && polybar-msg hook webcam 1

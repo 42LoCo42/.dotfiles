@@ -1,2 +1,2 @@
 exec --no-startup-id pkill i3bar &
-exec --no-startup-id polybar default &
+exec --no-startup-id polybar -r default &
