@@ -8,15 +8,17 @@ else
 fi
 
 if lsmod | grep -q "^uvcvideo"; then
-	if sudo $sudo_arg rmmod uvcvideo; then
+	if output="$(sudo $sudo_arg rmmod uvcvideo 2>&1)"; then
 		"${msg[@]}" "Disable webcam" "Success!"
 	else
-		"${msg[@]}" "Disable webcam" "Failed!"
+		"${msg[@]}" "Disable webcam" "Failed: $output"
 	fi
 else
 	if sudo $sudo_arg modprobe uvcvideo; then
 		"${msg[@]}" "Enable webcam" "Success!"
 	else
-		"${msg[@]}" "Enable webcam" "Failed!"
+		"${msg[@]}" "Enable webcam" "Failed: $output"
 	fi
 fi
+
+command -v polybar-msg >/dev/null && polybar-msg hook webcam 1
