@@ -32,13 +32,51 @@ git_branch() {
 	git branch 2>/dev/null | grep -E "^\*" | sed -E 's|^\* |:|g'
 }
 
-export PS1="\
+format_time() {
+	local _time="$1"
+
+	# Don't show anything if time is less than 5 seconds
+	(( _time < 5 )) && return
+
+	local _out=""
+	local days="$((_time / 60 / 60 / 24 ))"
+	local hours="$((_time / 60 / 60 % 24 ))"
+	local minutes="$((_time / 60 % 60 ))"
+	local seconds="$((_time % 60 ))"
+	((days > 0 )) && _out="${days}d "
+	((hours > 0 )) && _out="${_out}${hours}h "
+	((minutes > 0 )) && _out="${_out}${minutes}m "
+	_out="${_out}${seconds}s "
+	printf "%s" "$_out"
+}
+
+_pre_command() {
+	[ "$BASH_COMMAND" == "$PROMPT_COMMAND" ] && return
+	start_time="$(date "+%s")"
+}
+
+_after_command() {
+	exit_status="$?"
+	stop_time="$(date "+%s")"
+	if [ -z "$start_time" ] || ((exit_status == 130)); then
+		elapsed=""
+	else
+		elapsed="$(format_time "$((stop_time - start_time))")"
+		start_time=""
+	fi
+PS1="\
 ${ANSI_BOLD}\
-${ANSI_RED}[\$? ${ANSI_YELLOW}\u${ANSI_GREEN}@${ANSI_BLUE}\h \
-${ANSI_GREEN}\$(local_ip)\
+${ANSI_RED}[${exit_status} \
+${ANSI_CYAN}${elapsed}\
+${ANSI_YELLOW}\u${ANSI_GREEN}@${ANSI_BLUE}\h \
+${ANSI_GREEN}$(local_ip)\
 ${ANSI_PURPLE}\w\
-${ANSI_CYAN}\$(git_repo)\
-\$(git_branch)\
+${ANSI_CYAN}$(git_repo)\
+$(git_branch)\
 ${ANSI_RED}]\n${ANSI_WHITE}λ \
 ${ANSI_RESET}\
 "
+}
+
+trap "_pre_command" DEBUG
+PROMPT_COMMAND=_after_command
