@@ -56,7 +56,7 @@ font-1 = siji:pixelsize=10;1
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
 modules-left = i3 xwindow
-modules-center =
+modules-center = mpd
 modules-right = webcam filesystem backlight-acpi pulseaudio memory cpu cpu-temp wlan battery date
 
 tray-position = right

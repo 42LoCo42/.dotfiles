@@ -1,2 +1,34 @@
+# open mpd client
 super + m
 	$TERMINAL -e ncmpcpp
+
+# Pause audio
+super + {_,shift +} p
+	mpc {toggle,pause}
+# Changes to next/previous tracks
+super + {comma,period}
+	mpc {prev,next}
+# Restart track
+super + shift + less
+	mpc seek 0%
+# Increase mpd volume
+super + control + {plus, asterisk}
+	mpc volume +{5,15} && mpd-volume-message
+# Decrease mpd volume
+super + control + {minus, underscore}
+	mpc volume -{5,15} && mpd-volume-message
+# Seek foward in song
+super + {_,shift +} udiaeresis
+	mpc seek +{10,120}
+# Seek backward in song
+super + {_,shift +} adiaeresis
+	mpc seek -{10,120}
+
+# media keys
+
+XF86AudioPlay
+	mpc toggle
+XF86AudioPrev
+	mpc prev
+XF86AudioNext
+	mpc next
