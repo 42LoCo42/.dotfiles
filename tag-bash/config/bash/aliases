@@ -6,6 +6,7 @@ alias diff="diff --color=auto"
 alias grep="grep --color=auto"
 alias ls="ls -hA --color=auto --group-directories-first"
 alias mkdir="mkdir -pv"
+alias man="man -a"
 
 # helpers
 alias fuck='sudo $(history -p !!)'
@@ -27,7 +28,7 @@ alias yt="youtube-dl -i -o '%(upload_date)s-%(title)s.%(ext)s'"
 alias yta="yt -x -f bestaudio/best"
 
 # git
-alias d="git --git-dir=\$HOME/.gitdot --work-tree=\$HOME"
+alias d="git --git-dir=\$HOME/.dotfiles/.git --work-tree=\$HOME/.dotfiles"
 alias g="git"
 
 # xbps
