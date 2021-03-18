@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+vol="$(mpc volume | cut -d " " -f 2)"
+params=(
+	"-i" "/usr/share/icons/hicolor/scalable/apps/mpd.svg"
+	"mpd volume"
+	"mpd volume is now at $vol"
+)
+if command -v dunstify >/dev/null; then
+	dunstify -r 509532247 "${params[@]}"
+else
+	notify-send "${params[@]}"
+fi
