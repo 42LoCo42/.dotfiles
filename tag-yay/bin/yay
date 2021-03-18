@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+die() {
+	echo "$@"
+	exit 1
+}
+
+if (($# < 1)); then
+	# system upgrade
+	shift
+	sudo xbps-install -Su "$@"
+elif [ "$1" == "-Yc" ]; then
+	# remove orphans
+	shift
+	sudo xbps-remove -Ro "$@"
+elif [ "$1" == "-Sc" ]; then
+	# clean cache
+	shift
+	sudo xbps-remove -O "$@"
+else
+	# search for package
+	command -v fzf >/dev/null || die "fzf not found!"
+	IFS=$'\n' read -r -d '' -a packages <<< "$(
+		xbps-query -Rs "" \
+		| fzf -m -e -q "$*" \
+		| awk '{gsub("-[^-]+_[^_]+$", "", $2); print $2}'
+	)"
+	((${#packages[@]} < 1)) && die "Nothing selected"
+	echo "Installing ${packages[*]}"
+	sudo xbps-install "${packages[@]}"
+fi
