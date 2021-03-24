@@ -1,2 +1,5 @@
 #!/usr/bin/env sh
-exec pipewire &
+pipewire &
+pipewire-pulse &
+sleep 1
+pgrep pipewire-media >/dev/null || pipewire-media-session &
