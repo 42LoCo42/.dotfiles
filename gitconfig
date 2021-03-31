@@ -4,6 +4,8 @@
 	rebase = false
 [commit]
 	gpgSign = true
+[gpg]
+	program = gpg2
 [alias]
 	a = add
 	c = commit

@@ -7,8 +7,11 @@ die() {
 
 if (($# < 1)); then
 	# system upgrade
-	shift
-	sudo xbps-install -Su "$@"
+	sudo xbps-install -S
+	sudo xbps-install -u xbps
+	sudo xbps-install -u linux
+	sudo xbps-remove -o
+	sudo xbps-install -u
 elif [ "$1" == "-Yc" ]; then
 	# remove orphans
 	shift
@@ -17,6 +20,8 @@ elif [ "$1" == "-Sc" ]; then
 	# clean cache
 	shift
 	sudo xbps-remove -O "$@"
+elif [ "$1" == "-S" ]; then
+	sudo xbps-install "$2"
 else
 	# search for package
 	command -v fzf >/dev/null || die "fzf not found!"

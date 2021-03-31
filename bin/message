@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+id="$(echo -n "$1" | hexdump -e '/1 "%03d"' -v)"
+shift
+if command -v dunstify >/dev/null; then
+	dunstify -r "1$id" "$@"
+else
+	notify-send "$@"
+fi

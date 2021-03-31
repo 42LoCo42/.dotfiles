@@ -54,22 +54,28 @@ let mapleader = " "
 
 " Default bindings =============================================================
 
-" Moving around
-cnoremap <C-h> <Left>
-cnoremap <C-j> <Down>
-cnoremap <C-k> <Up>
-cnoremap <C-l> <Right>
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
+" Emacs moves
+inoremap <C-a> <Esc>I
+inoremap <C-b> <Left>
+inoremap <C-e> <Esc>A
+inoremap <C-f> <Right>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
+nnoremap <C-b> <Left>
+nnoremap <C-f> <Right>
+vnoremap <C-b> <Left>
+vnoremap <C-f> <Right>
 
-" Some nice things
+" Exit with C-d
 cnoremap <C-d> <Esc>
 inoremap <C-d> <Esc>
-inoremap <C-s> <Esc>:w<CR>i
-inoremap <C-y> <Esc><C-r>i
-inoremap <C-z> <Esc>ui
+nnoremap <C-d> <Esc>
+vnoremap <C-d> <Esc>
+
+" Some nice things
+inoremap <C-s> <Esc>:w<CR>a
+inoremap <C-y> <Esc><C-r>a
+inoremap <C-z> <Esc>ua
 nnoremap <C-d> :q<CR>
 nnoremap <C-e> :Explore<CR>
 nnoremap <C-s> :w<CR>

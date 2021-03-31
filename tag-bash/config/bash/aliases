@@ -39,6 +39,7 @@ alias xi="sudo xbps-install"
 alias xp="sudo xbps-pkgdb"
 alias xq="sudo xbps-query"
 alias xr="sudo xbps-remove"
+alias vosoma="sudo su - vosoma -s /bin/bash"
 
 # program changes
 # alias cp="advcp -g"

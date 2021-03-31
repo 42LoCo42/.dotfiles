@@ -3,8 +3,12 @@ super + shift + a
 	$TERMINAL -e pulsemixer
 super + c
 	Discord
+super + shift + c
+	pkill Discord
 super + d
-	dmenu_run
+	dmenu_run -i
+super + shift + d
+	desktop-launch
 super + i
 	$TERMINAL -e htop
 super + r
@@ -41,4 +45,4 @@ super + BackSpace
 super + shift + BackSpace
 	prompt "Reboot computer?" "sudo -A shutdown -r now"
 super + x
-	lockscreen
+	xset dpms 0 0 3 && slock && xset -dpms
