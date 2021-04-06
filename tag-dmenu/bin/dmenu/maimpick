@@ -4,7 +4,7 @@ mkdir -p "$folder"
 name_base="$(date '+%y%m%d-%H%M-%S').png"
 name_selected="$folder/pic-selected-$name_base"
 name_window="$folder/pic-window-$name_base"
-name_screen="$folder/pic-scren-$name_base"
+name_screen="$folder/pic-screen-$name_base"
 options="\
 a selected area
 current window
