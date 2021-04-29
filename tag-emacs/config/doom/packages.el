@@ -50,4 +50,4 @@
 ;(unpin! t)
 
 (package! switch-window)
-(package! zig-mode)
+(package! elcord)

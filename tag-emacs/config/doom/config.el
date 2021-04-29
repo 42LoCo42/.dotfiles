@@ -102,6 +102,13 @@
       :major-modes '(zig-mode)
       :server-id 'zls))))
 
-(setq company-minimum-prefix-length 0)
+(setq company-minimum-prefix-length 1)
 (setq company-dabbrev-downcase 0)
 (setq company-idle-delay 0)
+
+(elcord-mode)
+(setq elcord-use-major-mode-as-main-icon t)
+(setq elcord--editor-icon "emacs_icon")
+
+(map! "M-+" #'doom/increase-font-size)
+(map! "M-=" #'doom/reset-font-size)
