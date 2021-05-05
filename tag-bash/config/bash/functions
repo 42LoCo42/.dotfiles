@@ -7,3 +7,15 @@ undot() {
 	mv "$target" "$1" || return "Could not restore $1 from $target"
 	rmdir -p "$(dirname "$target")"
 }
+
+npup() {
+	(($# < 1)) && {
+		echo "Syntax: npup <file>"
+		return 1
+	}
+	[ ! -r "$1" ] && {
+		echo "File $1 not readable!"
+		return 1
+	}
+	curl -F "file=@$1" "https://0x0.st"
+}
