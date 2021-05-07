@@ -45,4 +45,4 @@ super + BackSpace
 super + shift + BackSpace
 	prompt "Reboot computer?" "sudo -A shutdown -r now"
 super + x
-	xset dpms 0 0 3 && slock && xset -dpms
+	xset dpms 0 0 3 && xset dpms force off && slock && xset dpms 0 0 600

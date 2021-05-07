@@ -1,2 +1,2 @@
 #!/bin/bash
-lsmod | grep -q uvcvideo && printf '\uE1F5'
+lsmod | grep -q uvcvideo && printf '\ue04b'
