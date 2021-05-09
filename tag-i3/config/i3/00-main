@@ -1,7 +1,7 @@
 # i3 config file (v4)
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
+set $mod Mod4
 floating_modifier $mod
 new_window pixel 1
 new_float pixel 1

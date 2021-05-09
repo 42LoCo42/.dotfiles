@@ -56,7 +56,7 @@ font-3 = Symbola
 
 modules-left = i3 xwindow
 modules-center = mpd
-modules-right = webcam filesystem backlight-acpi pulseaudio memory cpu cpu-temp wlan battery date
+modules-right = webcam filesystem backlight-acpi pulseaudio memory cpu temperature wlan battery date
 
 tray-position = right
 tray-padding = 2
@@ -279,10 +279,21 @@ animation-discharging-2 = ▂
 animation-discharging-foreground = ${colors.foreground-alt}
 animation-discharging-framerate = 750
 
-[module/cpu-temp]
-type = custom/script
-exec = ~/.config/polybar/scripts/cpu-temp.sh
+[module/temperature]
+type = internal/temperature
+hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input
+warn-temperature = 60
+
+format = <ramp> <label>
 format-underline = ${colors.primary}
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label =  %temperature-c%
+label-warn = !%temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 =
 
 [module/webcam]
 type = custom/ipc
