@@ -284,16 +284,14 @@ type = internal/temperature
 hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input
 warn-temperature = 60
 
-format = <ramp> <label>
+format = <label>
 format-underline = ${colors.primary}
-format-warn = <ramp> <label-warn>
+format-warn = <label-warn>
 format-warn-underline = ${self.format-underline}
 
 label =  %temperature-c%
 label-warn = !%temperature-c%
 label-warn-foreground = ${colors.secondary}
-
-ramp-0 =
 
 [module/webcam]
 type = custom/ipc
