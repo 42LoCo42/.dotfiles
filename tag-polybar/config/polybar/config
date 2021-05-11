@@ -87,6 +87,8 @@ label-unmounted-foreground = ${colors.foreground-alt}
 type = internal/i3
 format = <label-state> <label-mode>
 index-sort = true
+enable-click = false
+enable-scoll = false
 wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
