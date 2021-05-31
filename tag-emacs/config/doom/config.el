@@ -98,7 +98,7 @@
     (add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
     (lsp-register-client
      (make-lsp-client
-      :new-connection (lsp-stdio-connection "/home/leonsch/zls/zls")
+      :new-connection (lsp-stdio-connection "zls")
       :major-modes '(zig-mode)
       :server-id 'zls))))
 
@@ -108,21 +108,26 @@
 
 (elcord-mode)
 (setq elcord-use-major-mode-as-main-icon t)
-(setq elcord--editor-icon "emacs_icon")
+(setq elcord-editor-icon "emacs_icon")
 
 (map! "M-+" #'doom/increase-font-size)
 (map! "M-=" #'doom/reset-font-size)
 
-(setq custom-tab-width 4)
 (defun disable-tabs () (setq indent-tabs-mode nil))
 (defun enable-tabs ()
   (local-set-key (kbd "TAB") #'tab-to-tab-stop)
   (setq indent-tabs-mode t)
-  (setq tab-width custom-tab-width))
+  (setq tab-width 4))
 
 (add-hook 'prog-mode-hook 'enable-tabs)
+(add-hook 'sh-mode-hook 'enable-tabs)
+
+(add-hook 'haskell-mode-hook (lambda ()
+                               (disable-tabs)
+                               (setq-local tab-width 2)))
 (add-hook 'lisp-mode-hook 'disable-tabs)
 (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
+(add-hook 'python-mode-hook 'disable-tabs)
 (add-hook 'zig-mode-hook 'disable-tabs)
 
 (setq-default electric-indent-inhibit t)
@@ -131,4 +136,13 @@
       '((tab-mark 9 [124 9])))
 (global-whitespace-mode)
 
-;; foo
+(defun switch-to-scratch-buffer ()
+  "Switch to the scratch buffer"
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+(map! "C-c x" #'switch-to-scratch-buffer)
+
+(setq flycheck-clang-include-path
+      (list "/usr/msp430-elf/include/"))
+(setq flycheck-clang-args
+      (list "-I" "/usr/msp430-elf/include/"))
