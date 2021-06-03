@@ -80,3 +80,6 @@ ${ANSI_RESET}\
 
 trap "_pre_command" DEBUG
 PROMPT_COMMAND=_after_command
+[[ $- == *i* ]] \
+	&& [ -f "/usr/share/blesh/ble.sh" ] \
+	&& . "/usr/share/blesh/ble.sh"
