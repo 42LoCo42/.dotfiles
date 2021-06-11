@@ -125,6 +125,9 @@
 (add-hook 'haskell-mode-hook (lambda ()
                                (disable-tabs)
                                (setq-local tab-width 2)))
+(add-hook 'sh-mode-hook (lambda ()
+                          (enable-tabs)
+                          (setq-local tab-width 2)))
 (add-hook 'lisp-mode-hook 'disable-tabs)
 (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
 (add-hook 'python-mode-hook 'disable-tabs)
@@ -144,5 +147,11 @@
 
 (setq flycheck-clang-include-path
       (list "/usr/msp430-elf/include/"))
-(setq flycheck-clang-args
-      (list "-I" "/usr/msp430-elf/include/"))
+
+(setq backward-delete-char-untabify-method nil)
+
+(map! "<C-tab>" (lambda ()
+                  (interactive)
+                  (delete-trailing-whitespace)
+                  (save-excursion
+                    (indent-region (point-min) (point-max) nil))))
