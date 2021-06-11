@@ -110,6 +110,11 @@
 (setq elcord-use-major-mode-as-main-icon t)
 (setq elcord-editor-icon "emacs_icon")
 
+(defun my/elcord-buffer-details-format ()
+  "Buffer and project name"
+  (format "%s - %s" (doom-project-name) (buffer-name)))
+(setq elcord-buffer-details-format-function #'my/elcord-buffer-details-format)
+
 (map! "M-+" #'doom/increase-font-size)
 (map! "M-=" #'doom/reset-font-size)
 
@@ -145,8 +150,7 @@
   (switch-to-buffer "*scratch*"))
 (map! "C-c x" #'switch-to-scratch-buffer)
 
-(setq flycheck-clang-include-path
-      (list "/usr/msp430-elf/include/"))
+(add-hook 'c-mode-hook (lambda () (setq flycheck-clang-include-path (list "/usr/msp430-elf/include/"))))
 
 (setq backward-delete-char-untabify-method nil)
 
@@ -155,3 +159,5 @@
                   (delete-trailing-whitespace)
                   (save-excursion
                     (indent-region (point-min) (point-max) nil))))
+
+(map! "C-z" #'undo-fu-only-undo)
