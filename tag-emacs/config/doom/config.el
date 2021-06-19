@@ -33,7 +33,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -103,7 +103,8 @@
       :server-id 'zls))))
 
 (setq company-minimum-prefix-length 1)
-(setq company-dabbrev-downcase 0)
+(setq company-dabbrev-ignore-case t)
+(setq company-dabbrev-downcase nil)
 (setq company-idle-delay 0)
 
 (elcord-mode)
@@ -111,28 +112,35 @@
 (setq elcord-editor-icon "emacs_icon")
 
 (defun my/elcord-buffer-details-format ()
-  "Buffer and project name"
-  (format "%s - %s" (doom-project-name) (buffer-name)))
+  (let ((pname (doom-project-name)))
+    (pcase pname
+      ("-" (buffer-name))
+      (_ (format "%s - %s" pname (buffer-name))))))
 (setq elcord-buffer-details-format-function #'my/elcord-buffer-details-format)
 
 (map! "M-+" #'doom/increase-font-size)
 (map! "M-=" #'doom/reset-font-size)
 
-(defun disable-tabs () (setq indent-tabs-mode nil))
-(defun enable-tabs ()
+(defun disable-tabs (&optional width)
+  "Disable tabs, optionally specify indent width"
+  (unless width (setq width 4))
+  (setq indent-tabs-mode nil)
+  (setq tab-width width))
+
+(defun enable-tabs (&optional width)
+  "Enable tabs, optionally specify tab width"
+  (unless width (setq width 4))
   (local-set-key (kbd "TAB") #'tab-to-tab-stop)
   (setq indent-tabs-mode t)
-  (setq tab-width 4))
+  (setq tab-width width))
 
 (add-hook 'prog-mode-hook 'enable-tabs)
 (add-hook 'sh-mode-hook 'enable-tabs)
 
-(add-hook 'haskell-mode-hook (lambda ()
-                               (disable-tabs)
-                               (setq-local tab-width 2)))
-(add-hook 'sh-mode-hook (lambda ()
-                          (enable-tabs)
-                          (setq-local tab-width 2)))
+(add-hook 'sh-mode-hook (lambda () (enable-tabs 2)))
+
+(add-hook 'haskell-mode-hook (lambda () (disable-tabs 2)))
+
 (add-hook 'lisp-mode-hook 'disable-tabs)
 (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
 (add-hook 'python-mode-hook 'disable-tabs)
@@ -157,7 +165,13 @@
 (map! "<C-tab>" (lambda ()
                   (interactive)
                   (delete-trailing-whitespace)
-                  (save-excursion
-                    (indent-region (point-min) (point-max) nil))))
+                  (indent-region (point-min) (point-max) nil)))
 
+(map! "C-v" #'yank)
+(map! "M-v" #'counsel-yank-pop)
 (map! "C-z" #'undo-fu-only-undo)
+(map! "C-y" #'undo-fu-only-redo)
+(map! "M-n" #'scroll-up)
+(map! "M-p" #'scroll-down)
+(map! "C-w" #'kill-ring-save)
+(map! "M-w" #'kill-region)
