@@ -158,8 +158,6 @@
   (switch-to-buffer "*scratch*"))
 (map! "C-c x" #'switch-to-scratch-buffer)
 
-(add-hook 'c-mode-hook (lambda () (setq flycheck-clang-include-path (list "/usr/msp430-elf/include/"))))
-
 (setq backward-delete-char-untabify-method nil)
 
 (map! "<C-tab>" (lambda ()
