@@ -1,4 +1,6 @@
 # Programs
+super + a
+	rofi -show calc -modi calc -no-show-match -no-sort
 super + shift + a
 	$TERMINAL -e pulsemixer
 super + c
@@ -8,7 +10,7 @@ super + shift + c
 super + d
 	dmenu_run -i
 super + shift + d
-	desktop-launch
+	rofi -show drun -modi drun -show-icons
 super + i
 	$TERMINAL -e htop
 super + r
