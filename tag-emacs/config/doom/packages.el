@@ -51,3 +51,4 @@
 
 (package! switch-window)
 (package! elcord)
+(package! hl-line :disable t)
