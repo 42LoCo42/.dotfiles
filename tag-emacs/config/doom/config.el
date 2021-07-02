@@ -158,7 +158,19 @@
 
 (add-hook 'sh-mode-hook (lambda () (enable-tabs 2)))
 
-(add-hook 'haskell-mode-hook (lambda () (disable-tabs 2)))
+(add-hook 'haskell-mode-hook (lambda ()
+                               (disable-tabs 2)
+                               ;; (lsp-make-interactive-code-action wingman-split-func-args "refactor.wingman.spltFuncArgs")
+                               ;; (lsp-make-interactive-code-action wingman-use-constructor "refactor.wingman.useConstructor")
+                               ;; (lsp-make-interactive-code-action wingman-fill-hole "refactor.wingman.fillHole")
+                               ;; (lsp-make-interactive-code-action wingman-refine "refactor.wingman.refine")
+                               ;; (lsp-make-interactive-code-action wingman-case-split "refactor.wingman.caseSplit")
+                               ;; (map! "C-c h a" #'lsp-wingman-split-func-args)
+                               ;; (map! "C-c h c" #'lsp-wingman-use-constructor)
+                               ;; (map! "C-c h f" #'lsp-wingman-fill-hole)
+                               ;; (map! "C-c h r" #'lsp-wingman-refine)
+                               ;; (map! "C-c h s" #'lsp-wingman-case-split)
+                               ))
 
 (add-hook 'lisp-mode-hook 'disable-tabs)
 (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
