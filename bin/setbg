@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 [ -r "$1" ] && cp "$1" "$HOME/.config/wall.png"
 feh --no-fehbg --bg-fill "$HOME/.config/wall.png"
-i3-msg "workspace background"
-i3-msg "workspace back_and_forth"
+[ -z "$(xtitle)" ] && {
+	i3-msg "workspace background"
+	i3-msg "workspace back_and_forth"
+}
