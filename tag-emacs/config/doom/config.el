@@ -133,6 +133,7 @@
                                (org-mode . "org-mode_icon")
                                (pdf-view-mode . "pdf-view-mode_icon")
                                (python-mode . "python-mode_icon")
+                               (sh-mode . "vterm-mode_icon")
                                (vterm-mode . "vterm-mode_icon")
                                (zig-mode . "zig-mode_icon")))
 (elcord-mode)
