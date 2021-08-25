@@ -10,11 +10,11 @@ ANSI_PURPLE="\[[38;5;5m\]"
  ANSI_RESET="\[[m\]"
 
 iface() {
-	ip r get 1.1 | sed -En 's|.*dev ([^ ])|\1|p' | sed 's| .*||'
+	ip r get 1.1 | sed -En 's|.*dev ([^ ]*).*|\1|p'
 }
 
 local_ip() {
-	ip r get 1.1 | sed -En 's|.*via ([^ ])|\1|p' | sed 's| .*||'
+	ip r get 1.1 | sed -En 's|.*via ([^ ]*).*|\1|p'
 }
 
 git_repo() {
