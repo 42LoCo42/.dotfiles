@@ -10,17 +10,11 @@ ANSI_PURPLE="\[[38;5;5m\]"
  ANSI_RESET="\[[m\]"
 
 iface() {
-	ip route show default \
-	| grep -om 1 "dev \S*" | cut -d " " -f 2
+	ip r get 1.1 | awk '/^1.1/ {print $5}'
 }
 
 local_ip() {
-	data="$(
-	ip addr show "$(iface)" 2>/dev/null \
-		| grep -Eom 1 "inet6? [^/]+" | cut -d " " -f 2
-	)"
-	: "${data:=offline}"
-	echo "$data "
+	ip r get 1.1 | awk '/^1.1/ {print $7}'
 }
 
 git_repo() {
