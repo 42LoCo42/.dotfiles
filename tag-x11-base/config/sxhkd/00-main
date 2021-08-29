@@ -11,6 +11,8 @@ super + d
 	dmenu_run -i
 super + shift + d
 	rofi -show drun -modi drun -show-icons
+super + e
+	emacs
 super + i
 	$TERMINAL -e htop
 super + r
