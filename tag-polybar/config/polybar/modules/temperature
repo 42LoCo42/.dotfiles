@@ -1,0 +1,13 @@
+[module/temperature]
+type = internal/temperature
+hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp2_input
+warn-temperature = 60
+
+format = <label>
+format-underline = ${colors.primary}
+format-warn = <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label =  %temperature-c%
+label-warn = !%temperature-c%
+label-warn-foreground = ${colors.secondary}

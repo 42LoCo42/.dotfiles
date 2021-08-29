@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+while read -r i; do
+	. "$i"
+done <<< "$(
+	find "$(dirname "${BASH_SOURCE[0]}")" \
+		-not -name "sxrc" \
+		-not -type d \
+	| sort -V
+)"

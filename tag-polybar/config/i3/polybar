@@ -1,2 +1,3 @@
-exec --no-startup-id pkill i3bar &
-exec --no-startup-id polybar -r default &
+bar {
+	i3bar_command "$HOME/.config/polybar/start"
+}

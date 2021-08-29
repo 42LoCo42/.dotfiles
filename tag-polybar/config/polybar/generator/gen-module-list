@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+cd "$(dirname "${BASH_SOURCE[0]}")/../enabled" || exit 1
+gen-for() {
+	echo -n "modules-$1 = "
+	find . -name "$1-*" | sort -t- -k2 -n | xargs readlink | xargs basename -a | tr '\n' ' '
+	echo
+}
+
+gen-for left
+gen-for center
+gen-for right

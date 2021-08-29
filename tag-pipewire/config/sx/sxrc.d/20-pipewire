@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-pipewire &
-pipewire-pulse &
-sleep 1
-pgrep pipewire-media >/dev/null || pipewire-media-session &

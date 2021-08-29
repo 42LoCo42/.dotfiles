@@ -1,6 +1,6 @@
 # Programs
 super + a
-	rofi -show calc -modi calc -no-show-match -no-sort
+	tdrop -w 800 -h 300 -x 560 -y 390 st -c floating -e qalc
 super + shift + a
 	$TERMINAL -e pulsemixer
 super + c

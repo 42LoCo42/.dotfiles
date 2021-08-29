@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+echo -n "polybar-start" > "/proc/$$/comm"
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+file="$(mktemp)"
+trap 'rm "$file"' EXIT
+{
+	cat "generator/main"
+	./generator/gen-module-list
+	cat "modules/"*
+} > "$file"
+polybar -c "$file" default

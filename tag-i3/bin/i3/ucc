@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Toggles the Universal Control Center
 # It is a permanent tmux session running in workspace 0
@@ -20,25 +20,21 @@ ucc_on() {
 }
 
 # Create session if it does not exist
-tmux has-session -t "$SESSION" >/dev/null 2>&1
-if [ $? != 0 ]; then
-	tmux -f "$HOME/.config/tmux.conf" new-session -s "$SESSION" -d
-fi
+tmux has-session -t "$SESSION" >/dev/null 2>&1 \
+	|| tmux -f "$HOME/.config/tmux.conf" new-session -s "$SESSION" -d
 
-# Create client if none is attached
-tmux list-clients -t "$SESSION" | grep "$SESSION" >/dev/null
-if [ $? != 0 ]; then
+if tmux list-clients -t "$SESSION" | grep -q "$SESSION" >/dev/null; then
+	# A client already exists, toggle between workspaces
+	if ((current_ws != 0)); then
+		ucc_on
+	else
+		ucc_off
+	fi
+else
 	# Switch to workspace 0 if not already there
 	if [ "$current_ws" != 0 ]; then
 		ucc_on
 	fi
 	# Create client
-	$TERMINAL -e tmux attach-session -t "$SESSION"
-else
-	# Toggle between workspaces
-	if [ "$current_ws" != 0 ]; then
-		ucc_on
-	else
-		ucc_off
-	fi
+	exec $TERMINAL -e tmux attach-session -t "$SESSION"
 fi

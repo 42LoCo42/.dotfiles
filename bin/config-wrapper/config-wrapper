@@ -32,13 +32,17 @@ cleanup_with_file() {
 	cleanup
 }
 
+generate() {
+	find "$dir" -maxdepth 1 -not -type d -print0 | xargs --null cat
+}
+
 echo -n "$cmd-wrapper" > /proc/$$/comm
 
 trap cleanup EXIT
 ((use_file == 1)) && {
 	file="$(mktemp)"
 	trap cleanup_with_file EXIT
-	trap 'cat "$dir"/* > "$file"' USR1
+	trap 'generate > "$file"' USR1
 }
 
 while true; do
@@ -47,6 +51,6 @@ while true; do
 		"$cmd" "$@" "$file" &
 		pause
 	else
-		cat "$dir"/* | "$cmd" "$@"
+		generate | "$cmd" "$@"
 	fi
 done

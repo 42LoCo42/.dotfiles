@@ -1,0 +1,4 @@
+[module/webcam]
+type = custom/ipc
+hook-0 = ~/.config/polybar/scripts/webcam.sh
+initial = 1

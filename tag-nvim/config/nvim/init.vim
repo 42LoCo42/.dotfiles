@@ -18,6 +18,7 @@ Plug 'lambdalisue/suda.vim'
 " Languages
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
+Plug 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 call plug#end()
 
 " Settings =====================================================================
@@ -145,7 +146,6 @@ nm <leader>i :call ToggleIPA()<CR>
 " Other settings and autocmds ==================================================
 
 " Ensure files are read as what I want:
-let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
 autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
 autocmd BufRead,BufNewFile *.tex set filetype=tex
@@ -179,10 +179,6 @@ let g:clang_library_path='/usr/lib/libclang.so'
 
 " Syntastic -> shellcheck -> follow sources
 let g:syntastic_sh_shellcheck_args = "-x"
-
-" vimwiki: default wiki uses markdown
-let g:vimwiki_list = [{'path': '~/HOST/', 'syntax': 'markdown', 'ext': '.md'}]
-let g:vimwiki_global_ext = 0
 
 " Open files with sudo when needed
 let g:suda_smart_edit = 1
