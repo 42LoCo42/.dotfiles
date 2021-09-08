@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-gruvbox)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -53,7 +53,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-font "PragmataPro-10")
+(setq doom-font "Iosevka-10")
 
 (defun my/split-and-switch-below ()
   "Split window below and switch to it."
@@ -80,6 +80,9 @@
 (setq switch-window-qwerty-shortcuts
       '("a" "s" "d" "f" "j" "k" "l"))
 (map! "C-x o" #'switch-window)
+
+(map! "C-#" #'next-window-any-frame)
+(map! "C-M-#" #'previous-window-any-frame)
 
 (map! "M-s" #'avy-goto-char)
 (map! "M-l" #'avy-goto-line)
@@ -130,6 +133,7 @@
                                (haskell-mode . "haskell-mode_icon")
                                (lisp-mode . "lisp-mode_icon")
                                (magit-mode . "git-mode_icon")
+                               (Man-mode . "man-mode_icon")
                                (org-mode . "org-mode_icon")
                                (pdf-view-mode . "pdf-view-mode_icon")
                                (python-mode . "python-mode_icon")
@@ -159,24 +163,42 @@
 
 (add-hook 'sh-mode-hook (lambda () (enable-tabs 2)))
 
-(add-hook 'haskell-mode-hook (lambda ()
-                               (disable-tabs 2)
-                               ;; (lsp-make-interactive-code-action wingman-split-func-args "refactor.wingman.spltFuncArgs")
-                               ;; (lsp-make-interactive-code-action wingman-use-constructor "refactor.wingman.useConstructor")
-                               ;; (lsp-make-interactive-code-action wingman-fill-hole "refactor.wingman.fillHole")
-                               ;; (lsp-make-interactive-code-action wingman-refine "refactor.wingman.refine")
-                               ;; (lsp-make-interactive-code-action wingman-case-split "refactor.wingman.caseSplit")
-                               ;; (map! "C-c h a" #'lsp-wingman-split-func-args)
-                               ;; (map! "C-c h c" #'lsp-wingman-use-constructor)
-                               ;; (map! "C-c h f" #'lsp-wingman-fill-hole)
-                               ;; (map! "C-c h r" #'lsp-wingman-refine)
-                               ;; (map! "C-c h s" #'lsp-wingman-case-split)
-                               ))
+(add-hook 'haskell-mode-hook (disable-tabs 2))
 
 (add-hook 'lisp-mode-hook 'disable-tabs)
 (add-hook 'emacs-lisp-mode-hook 'disable-tabs)
 (add-hook 'python-mode-hook 'disable-tabs)
 (add-hook 'zig-mode-hook 'disable-tabs)
+
+(defun run-special-compiler ()
+  "Runs the special compiler on this file"
+  (interactive)
+    (shell-command (concat "compiler " buffer-file-name)))
+
+(defun open-zathura ()
+  "Opens zathura on the generated output file"
+  (interactive)
+  (call-process-shell-command
+   (concat
+    "zathura "
+    (file-name-sans-extension buffer-file-name)
+    ".ps") nil 0))
+
+(defun ps2pdf ()
+  "Run the ps2pdf shell command"
+  (interactive)
+  (call-process-shell-command
+   (concat
+    "ps2pdf "
+    (file-name-sans-extension buffer-file-name)
+    ".ps") nil 0))
+
+(add-hook
+ 'nroff-mode-hook
+ (lambda ()
+   (add-hook 'after-save-hook 'run-special-compiler)
+   (map! "C-c C-o" 'open-zathura)
+   (map! "C-c C-p" 'ps2pdf)))
 
 (setq-default electric-indent-inhibit t)
 (setq whitespace-style '(face tabs tab-mark trailing))
@@ -205,8 +227,14 @@
 (map! "M-p" #'scroll-down-command)
 (map! "C-w" #'kill-ring-save)
 (map! "M-w" #'kill-region)
+(map! "C-." #'mc/mark-next-like-this)
+(map! "C-," #'mc/mark-previous-like-this)
 
 (setq show-paren-style 'expression)
 (setq show-paren-delay 0)
 (custom-set-faces!
   '(show-paren-match :bold nil :foreground nil))
+
+(map! "M-+" 'text-scale-increase)
+(map! "M--" 'text-scale-decrease)
+(map! "M-=" (lambda () (interactive) (text-scale-set 0)))

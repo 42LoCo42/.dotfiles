@@ -49,6 +49,5 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! switch-window)
 (package! elcord)
 (package! hl-line :disable t)
