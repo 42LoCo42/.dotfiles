@@ -1,6 +1,4 @@
 # i3 messages
-super + b
-	i3-msg "bar mode toggle"
 super + f
 	i3-msg "fullscreen toggle"
 super + shift + f
