@@ -19,6 +19,7 @@ Plug 'lambdalisue/suda.vim'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
+Plug 'ziglang/zig.vim'
 call plug#end()
 
 " Settings =====================================================================
