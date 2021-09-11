@@ -55,6 +55,8 @@
 
 (setq doom-font "Iosevka-10")
 
+(setq fancy-splash-image "~/.config/doom/splash.png")
+
 (defun my/split-and-switch-below ()
   "Split window below and switch to it."
   (interactive)
