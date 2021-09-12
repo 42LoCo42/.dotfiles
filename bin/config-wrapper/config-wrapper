@@ -8,10 +8,10 @@ die() {
 
 type pause >/dev/null || die "pause not found!"
 
-while grep -q "^-" <<< "$1"; do
-	case "$1" in
-		--use-file) use_file=1 ;;
-		*)          echo "Unknown flag $1" ;;
+while getopts :f arg; do
+	case "$arg" in
+		f) use_file=1 ;;
+		*) die "Invalid option $OPTARG" ;;
 	esac
 	shift
 done
