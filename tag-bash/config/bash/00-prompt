@@ -10,7 +10,7 @@ ANSI_PURPLE="\[[38;5;5m\]"
  ANSI_RESET="\[[m\]"
 
 local_ip() {
-	ip r get 1.1 | sed -En 's|.*src ([^ ]*).*|\1|p'
+	ip r get 1.1 2>/dev/null | sed -En 's|.*src ([^ ]*).*|\1 |p'
 }
 
 git_repo() {
@@ -59,7 +59,7 @@ ${ANSI_BOLD}\
 ${ANSI_RED}[${exit_status} \
 ${ANSI_CYAN}${elapsed}\
 ${ANSI_YELLOW}\u${ANSI_GREEN}@${ANSI_BLUE}\h \
-${ANSI_GREEN}$(local_ip) \
+${ANSI_GREEN}$(local_ip)\
 ${ANSI_PURPLE}\w\
 ${ANSI_CYAN}$(git_repo)\
 $(git_branch)\
