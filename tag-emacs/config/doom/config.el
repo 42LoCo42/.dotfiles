@@ -163,8 +163,6 @@
 (add-hook 'prog-mode-hook 'enable-tabs)
 (add-hook 'sh-mode-hook 'enable-tabs)
 
-(add-hook 'sh-mode-hook (lambda () (enable-tabs 2)))
-
 (add-hook 'haskell-mode-hook (disable-tabs 2))
 
 (add-hook 'lisp-mode-hook 'disable-tabs)
