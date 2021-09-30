@@ -34,10 +34,10 @@ javaver () {
 }
 
 merge_packages() {
-	comm -23 <(pacman -Qeq) <(pacman -Qttq) | xargs sudo pacman -D --asdeps
+	comm -23 <(pacman -Qeq | sort) <(pacman -Qttq | sort) | xargs sudo pacman -D --asdeps
 }
 
 optional_packages() {
-	comm -13 <(pacman -Qeq) <(pacman -Qttq)
+	comm -13 <(pacman -Qeq | sort) <(pacman -Qttq | sort)
 }
 
