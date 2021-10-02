@@ -33,7 +33,7 @@ super + F10
 Print
 	maim "$HOME/screenshots/pic-full-$(date '+%y%m%d-%H%M-%S').png"
 # Pick screenshot type
-shift + Print
+super + Print
 	maimpick
 
 # Increase volume
