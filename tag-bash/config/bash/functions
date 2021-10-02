@@ -24,3 +24,20 @@ mycd() {
 	cd "$@" && ls
 }
 alias cd="mycd"
+
+javaver () {
+	if [ -z "$1" ]; then
+		java -version || java --version
+	else
+		sudo archlinux-java set "java-$1-openjdk";
+	fi
+}
+
+merge_packages() {
+	comm -23 <(pacman -Qeq | sort) <(pacman -Qttq | sort) | xargs sudo pacman -D --asdeps
+}
+
+optional_packages() {
+	comm -13 <(pacman -Qeq | sort) <(pacman -Qttq | sort)
+}
+
