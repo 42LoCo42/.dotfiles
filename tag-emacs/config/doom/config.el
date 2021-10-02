@@ -1,9 +1,11 @@
+;;; config.el --- Configuration for Doom
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; Commentary:
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
+;;; Code:
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Leon Schumacher"
@@ -240,3 +242,6 @@
 (map! "M-+" 'text-scale-increase)
 (map! "M--" 'text-scale-decrease)
 (map! "M-=" (lambda () (interactive) (text-scale-set 0)))
+
+(provide 'config)
+;;; config.el ends here
