@@ -12,7 +12,7 @@ super + d
 super + shift + d
 	rofi -show drun -modi drun -show-icons
 super + e
-	emacs
+	emacs -r
 super + i
 	$TERMINAL -e htop
 super + r
