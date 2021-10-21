@@ -5,7 +5,7 @@ set $mod Mod4
 floating_modifier $mod
 new_window pixel 1
 new_float pixel 1
-gaps inner 1
+gaps inner 2
 gaps outer 0
 smart_gaps on
 smart_borders on

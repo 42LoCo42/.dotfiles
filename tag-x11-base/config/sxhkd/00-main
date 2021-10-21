@@ -12,7 +12,7 @@ super + d
 super + shift + d
 	rofi -show drun -modi drun -show-icons
 super + e
-	emacs
+	emacs -r
 super + i
 	$TERMINAL -e htop
 super + r
@@ -33,7 +33,7 @@ super + F10
 Print
 	maim "$HOME/screenshots/pic-full-$(date '+%y%m%d-%H%M-%S').png"
 # Pick screenshot type
-shift + Print
+super + Print
 	maimpick
 
 # Increase volume

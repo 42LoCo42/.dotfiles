@@ -62,7 +62,7 @@
                                (sh-mode . "vterm-mode_icon")
                                (vterm-mode . "vterm-mode_icon")
                                (zig-mode . "zig-mode_icon")))
-(elcord-mode)
+(when (eq (shell-command "pgrep -i discord") 0) (elcord-mode))
 
 ;; centaur-tabs
 (setq centaur-tabs-gray-out-icons nil)
