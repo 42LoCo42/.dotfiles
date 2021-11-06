@@ -20,6 +20,7 @@ Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 Plug 'ziglang/zig.vim'
+Plug 'petRUShka/vim-opencl'
 call plug#end()
 
 " Settings =====================================================================
@@ -155,7 +156,7 @@ autocmd BufRead,BufNewFile *.tex set filetype=tex
 autocmd BufWritePost *sxhkd/* !pkill -x sxhkd
 
 " Run xrdb whenever Xdefaults or Xresources are updated.
-autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
+autocmd BufWritePost *xresources,*xdefaults !xrdb %
 
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
