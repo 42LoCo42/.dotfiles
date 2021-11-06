@@ -1,56 +1,43 @@
 #!/usr/bin/env bash
-set -e
 
 die() {
 	echo "$@"
 	exit 1
 }
 
-type pause >/dev/null || die "pause not found!"
+check() {
+	type "$1" >/dev/null 2>&1 || die "$cmd not found"
+}
 
-while getopts :f arg; do
-	case "$arg" in
-		f) use_file=1 ;;
-		*) die "Invalid option $OPTARG" ;;
-	esac
-	shift
-done
+check pause
 
-(($# < 2)) && die "Specify at least the config directory and command to run!"
+(($# < 2)) && die "Usage: $0 <config dir> <cmd> [args...]"
 dir="$1"
 cmd="$2"
 [ -d "$dir" ] || die "Not a directory: $dir"
-type "$cmd" >/dev/null 2>&1 || die "Not found: $cmd"
+check "$cmd"
 shift 2
+args=("$@")
 
 cleanup() {
+	rm "$file"
 	pkill -P "$$"
 }
-
-cleanup_with_file() {
-	rm "$file"
-	cleanup
-}
+trap cleanup EXIT
 
 generate() {
-	find "$dir" -maxdepth 1 -not -type d -print0 | xargs --null cat
+	find "$dir" -maxdepth 1 -not -type d -print0 | xargs --null cat > "$file"
 }
+trap generate USR1
+
+restart_child() {
+	kill "$child"
+	"$cmd" "${args[@]}" "$file" & child="$!"
+}
+trap restart_child USR2
 
 echo -n "$cmd-wrapper" > /proc/$$/comm
-
-trap cleanup EXIT
-((use_file == 1)) && {
-	file="$(mktemp)"
-	trap cleanup_with_file EXIT
-	trap 'generate > "$file"' USR1
-}
-
-while true; do
-	if ((use_file == 1)); then
-		kill -USR1 "$$"
-		"$cmd" "$@" "$file" &
-		pause
-	else
-		generate | "$cmd" "$@"
-	fi
-done
+file="$(mktemp -t "config-wrapper-$cmd.XXXXXXXX")"
+generate
+restart_child
+while true; do pause; done

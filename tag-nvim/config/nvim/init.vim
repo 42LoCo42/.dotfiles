@@ -153,7 +153,7 @@ autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
 autocmd BufRead,BufNewFile *.tex set filetype=tex
 
 " Update binds when sxhkdrc is updated.
-autocmd BufWritePost *sxhkd/* !pkill -x sxhkd
+autocmd BufWritePost *sxhkd/* !config-wrapper-interact sxhkd USR1 USR2
 
 " Run xrdb whenever Xdefaults or Xresources are updated.
 autocmd BufWritePost *xresources,*xdefaults !xrdb %

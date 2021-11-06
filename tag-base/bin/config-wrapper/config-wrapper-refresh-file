@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-wrapper_pid="$(pgrep "$1-wrapper")"
-[ -z "$wrapper_pid" ] && echo "No $1-wrapper found!" && exit 1
-kill -USR1 "$wrapper_pid"
-pkill -P "$wrapper_pid" pause
