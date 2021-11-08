@@ -56,6 +56,7 @@
                                (lisp-mode . "lisp-mode_icon")
                                (magit-mode . "git-mode_icon")
                                (Man-mode . "man-mode_icon")
+                               (opencl-mode . "opencl-mode_icon")
                                (org-mode . "org-mode_icon")
                                (pdf-view-mode . "pdf-view-mode_icon")
                                (python-mode . "python-mode_icon")
@@ -67,6 +68,9 @@
 ;; centaur-tabs
 (setq centaur-tabs-gray-out-icons nil)
 (setq centaur-tabs-set-close-button nil)
+
+;; filetypes
+(add-to-list 'auto-mode-alist '("\\.cl\\'" . opencl-mode))
 
 ;;; FUNCTIONS
 
@@ -152,7 +156,7 @@
 (add-hook 'sh-mode-hook   #'my/enable-tabs)
 
 ;; disable tabs in some modes
-(add-hook 'haskell-mode-hook    (my/disable-tabs 2))
+(add-hook 'haskell-mode-hook    (lambda () (interactive) (my/disable-tabs 2)))
 (add-hook 'lisp-mode-hook       #'my/disable-tabs)
 (add-hook 'emacs-lisp-mode-hook #'my/disable-tabs)
 (add-hook 'python-mode-hook     #'my/disable-tabs)
@@ -199,16 +203,20 @@
     (map! "M-p" #'scroll-down-command)
 
     ;; Window controls
-    (map! "C-#"       #'next-window-any-frame)
-    (map! "C-M-#"     #'previous-window-any-frame)
-    (map! "C-<next>"  #'centaur-tabs-forward)
-    (map! "C-<prior>" #'centaur-tabs-backward)
-    (map! "C-x 2"     #'my/split-and-switch-below)
-    (map! "C-x 3"     #'my/split-and-switch-right)
-    (map! "C-x o"     #'switch-window)
+    (map! "C-#"         #'next-window-any-frame)
+    (map! "C-M-#"       #'previous-window-any-frame)
+    (map! "C-<next>"    #'centaur-tabs-forward)
+    (map! "C-<prior>"   #'centaur-tabs-backward)
+    (map! "C-M-<next>"  #'tab-bar-switch-to-next-tab)
+    (map! "C-M-<prior>" #'tab-bar-switch-to-prev-tab)
+    (map! "C-M-<home>"  #'tab-bar-new-tab)
+    (map! "C-M-<end>"   #'tab-bar-close-tab)
+    (map! "C-x 2"       #'my/split-and-switch-below)
+    (map! "C-x 3"       #'my/split-and-switch-right)
+    (map! "C-x o"       #'switch-window)
 
     ;; Tools
-    (map! "<F5>"  #'my/compile)
+    (map! "<f5>"  #'my/compile)
     (map! "C-c x" #'my/switch-to-scratch-buffer)
     (map! "M-+"   #'text-scale-increase)
     (map! "M--"   #'text-scale-decrease)
@@ -221,4 +229,5 @@
   "A minor mode for my keybindings"
   :init-value t)
 
+(tab-bar-mode)
 (my-keys-minor-mode)
