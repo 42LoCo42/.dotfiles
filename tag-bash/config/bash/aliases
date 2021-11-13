@@ -30,18 +30,3 @@ alias yta="yt -x -f bestaudio/best"
 # git
 alias d="git --git-dir=\$HOME/.dotfiles/.git --work-tree=\$HOME/.dotfiles"
 alias g="git"
-
-# xbps
-alias xa="sudo xbps-alternatives"
-alias xb="sudo xbps-rindex"
-alias xc="sudo xbps-reconfigure"
-alias xi="sudo xbps-install"
-alias xp="sudo xbps-pkgdb"
-alias xq="sudo xbps-query"
-alias xr="sudo xbps-remove"
-alias vosoma="sudo su - vosoma -s /bin/bash"
-
-# program changes
-# alias cp="advcp -g"
-# alias mv="advmc -g"
-# alias sv="rsv"
