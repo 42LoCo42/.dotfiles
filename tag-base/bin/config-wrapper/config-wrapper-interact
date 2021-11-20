@@ -7,4 +7,5 @@ shift
 for i in "$@"; do
 	kill -"$i" "$wrapper_pid"
 	pkill -P "$wrapper_pid" pause
+	sleep 0.25
 done
