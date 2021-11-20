@@ -4,7 +4,7 @@ super + a
 super + shift + a
 	$TERMINAL -e pulsemixer
 super + c
-	Discord
+	discord
 super + shift + c
 	pkill Discord && sleep 1 && pkill Discord
 super + d
