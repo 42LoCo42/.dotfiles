@@ -23,7 +23,7 @@ super + shift + w
 	$BROWSER
 
 super + Return
-	ucc
+	terminal
 super + F9
 	dmenumount
 super + F10
