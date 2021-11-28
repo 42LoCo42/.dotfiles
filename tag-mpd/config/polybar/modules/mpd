@@ -2,12 +2,6 @@
 type = internal/mpd
 format-online = <label-song> <label-time> <bar-progress>
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
-
 label-song-maxlen = 50
 label-song-ellipsis = true
 

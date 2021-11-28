@@ -1,11 +1,17 @@
 [module/pulseaudio]
 type = internal/pulseaudio
 
-format-volume = <label-volume> <bar-volume>
-label-volume =  %percentage%%
+format-volume = <ramp-volume> <label-volume> <bar-volume>
+format-volume-underline = #112233
+label-volume = %percentage%%
 label-volume-foreground = ${root.foreground}
 
-label-muted =  muted
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+
+label-muted =  muted
 label-muted-foreground = #666
 
 bar-volume-width = 8
