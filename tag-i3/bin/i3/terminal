@@ -2,10 +2,6 @@
 if (($(getcurrentws) == 0)); then
 	i3-msg "workspace back_and_forth"
 else
-	pause
-	xdotool getwindowfocus getwindowpid
-	pause
 	i3-msg "workspace 0"
-	xdotool getwindowfocus getwindowpid
 	xdotool getwindowfocus getwindowpid || "$TERMINAL"
 fi
