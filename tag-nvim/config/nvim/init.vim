@@ -18,9 +18,9 @@ Plug 'lambdalisue/suda.vim'
 " Languages
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
-Plug 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 Plug 'ziglang/zig.vim'
 Plug 'petRUShka/vim-opencl'
+Plug 'ollykel/v-vim'
 call plug#end()
 
 " Settings =====================================================================
@@ -184,6 +184,10 @@ let g:syntastic_sh_shellcheck_args = "-x"
 
 " Open files with sudo when needed
 let g:suda_smart_edit = 1
+
+" v-vim
+let g:v_autofmt_bufwritepre = 1
+let g:v_highlight_array_whitespace_error = 0
 
 " Load other vim files =========================================================
 
