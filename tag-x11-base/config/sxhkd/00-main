@@ -24,6 +24,8 @@ super + shift + w
 
 super + Return
 	terminal
+super + shift + Return
+	"$TERMINAL"
 super + F9
 	dmenumount
 super + F10

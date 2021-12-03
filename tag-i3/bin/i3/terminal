@@ -3,9 +3,9 @@ if (($(getcurrentws) == 0)); then
 	if xdotool getwindowfocus getwindowpid; then
 		i3-msg "workspace back_and_forth"
 	else
-		"$TERMINAL"
+		exec "$TERMINAL"
 	fi
 else
 	i3-msg "workspace 0"
-	xdotool getwindowfocus getwindowpid || "$TERMINAL"
+	xdotool getwindowfocus getwindowpid || exec "$TERMINAL"
 fi
