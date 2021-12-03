@@ -43,7 +43,8 @@
 (setq elcord-editor-icon "emacs_icon")
 (setq elcord-buffer-details-format-function #'my/elcord-buffer-details-format)
 (setq elcord-client-id "856822158574878751")
-(setq elcord-mode-icon-alist '((c++-mode . "cpp-mode_icon")
+(setq elcord-mode-icon-alist '((Man-mode . "man-mode_icon")
+                               (c++-mode . "cpp-mode_icon")
                                (c-mode . "c-mode_icon")
                                (comint-mode . "comint-mode_icon")
                                (compilation-mode . "compilation-mode_icon")
@@ -55,12 +56,13 @@
                                (haskell-mode . "haskell-mode_icon")
                                (lisp-mode . "lisp-mode_icon")
                                (magit-mode . "git-mode_icon")
-                               (Man-mode . "man-mode_icon")
+                               (makefile-mode . "compilation-mode_icon")
                                (opencl-mode . "opencl-mode_icon")
                                (org-mode . "org-mode_icon")
                                (pdf-view-mode . "pdf-view-mode_icon")
                                (python-mode . "python-mode_icon")
                                (sh-mode . "vterm-mode_icon")
+                               (v-mode . "v-mode_icon")
                                (vterm-mode . "vterm-mode_icon")
                                (zig-mode . "zig-mode_icon")))
 (when (eq (shell-command "pgrep -i discord") 0) (elcord-mode))
@@ -149,6 +151,11 @@
       ("-" (buffer-name))
       (_ (format "%s - %s" pname (buffer-name))))))
 
+(defun my/text-scale-reset ()
+  "Set text scale to 0"
+  (interactive)
+  (text-scale-set 0))
+
 ;;; HOOKS
 
 ;; enable tabs everywhere
@@ -163,12 +170,12 @@
 (add-hook 'zig-mode-hook        #'my/disable-tabs)
 
 ;; nroff uses some functions
-(add-hook 'nroff-mode-hook (lambda ()
-                             (add-hook 'after-save-hook #'my/run-special-compiler)
-                             (map! "C-c C-o" #'my/open-zathura)
-                             (map! "C-c C-p" #'my/ps2pdf)))
+(add-hook
+ 'nroff-mode-hook
+ (lambda ()
+   (add-hook 'after-save-hook #'my/run-special-compiler)))
 
-;; zig config
+;; zig-mode
 (use-package! zig-mode
   :hook ((zig-mode . lsp-deferred))
   :custom (zig-format-on-save nil)
@@ -181,47 +188,84 @@
       :major-modes '(zig-mode)
       :server-id 'zls))))
 
+;; v-mode
+(add-to-list 'auto-mode-alist '("\\.v\\'" . v-mode))
+(add-to-list 'auto-mode-alist '("\\.vsh\\'" . v-mode))
+
+(advice-add #'v-project-root :around (lambda (&optional _) (file-name-directory buffer-file-name)))
+(advice-add #'v-load-tags    :around (lambda (&optional _) ()))
+(advice-add #'v-build-tags   :around (lambda (&optional _) ()))
+
+;; (use-package! v-mode
+;;   :hook ((v-mode . lsp-deferred))
+;;   :config
+;;   (after! lsp-mode
+;;     (add-to-list 'lsp-language-id-configuration '(v-mode . "v"))
+;;     (lsp-register-client
+;;      (make-lsp-client
+;;       :new-connection (lsp-stdio-connection "vls")
+;;       :major-modes '(v-mode)
+;;       :server-id 'v))))
+
+(use-package! v-mode
+  :config
+  (flycheck-define-checker v-checker
+    "A v syntax checker using the v fmt."
+    :command ("v" "-check" (eval (buffer-file-name)))
+    :error-patterns
+    ((error line-start (file-name) ":" line ":" column ": error: " (message) line-end)
+     (error line-start (file-name) ":" line ":" column ": warning: " (message) line-end))
+    :modes v-mode)
+  (add-to-list 'flycheck-checkers 'v-checker))
+
 ;;; BINDINGS
 
 (defvar my-keys-minor-mode-map
   (let ((map (make-sparse-keymap)))
-    ;; Editing
-    (map! "<C-tab>" #'my/indentall)
-    (map! "C-v"     #'yank)
-    (map! "M-v"     #'counsel-yank-pop)
-    (map! "C-w"     #'kill-ring-save)
-    (map! "M-w"     #'kill-region)
-    (map! "C-y"     #'undo-fu-only-redo)
-    (map! "C-z"     #'undo-fu-only-undo)
+    (map! :map my-keys-minor-mode-map
+          ;; Editing
+          "<C-tab>"     #'my/indentall
+          "C-/"         #'isearch-forward
+          "C-s"         #'save-buffer
+          "C-v"         #'yank
+          "C-w"         #'kill-ring-save
+          "C-y"         #'undo-fu-only-redo
+          "C-z"         #'undo-fu-only-undo
+          "M-v"         #'counsel-yank-pop
+          "M-w"         #'kill-region
 
-    ;; Movement
-    (map! "C-," #'mc/mark-previous-like-this)
-    (map! "C-." #'mc/mark-next-like-this)
-    (map! "M-l" #'avy-goto-line)
-    (map! "M-s" #'avy-goto-char)
-    (map! "M-n" #'scroll-up-command)
-    (map! "M-p" #'scroll-down-command)
+          ;; Movement
+          "C-,"         #'mc/mark-previous-like-this
+          "C-."         #'mc/mark-next-like-this
+          "M-l"         #'avy-goto-line
+          "M-n"         #'scroll-up-command
+          "M-p"         #'scroll-down-command
+          "M-s"         #'avy-goto-char
 
-    ;; Window controls
-    (map! "C-#"         #'next-window-any-frame)
-    (map! "C-M-#"       #'previous-window-any-frame)
-    (map! "C-<next>"    #'centaur-tabs-forward)
-    (map! "C-<prior>"   #'centaur-tabs-backward)
-    (map! "C-M-<next>"  #'tab-bar-switch-to-next-tab)
-    (map! "C-M-<prior>" #'tab-bar-switch-to-prev-tab)
-    (map! "C-M-<home>"  #'tab-bar-new-tab)
-    (map! "C-M-<end>"   #'tab-bar-close-tab)
-    (map! "C-x 2"       #'my/split-and-switch-below)
-    (map! "C-x 3"       #'my/split-and-switch-right)
-    (map! "C-x o"       #'switch-window)
+          ;; Window controls
+          "C-#"         #'next-window-any-frame
+          "C-<next>"    #'centaur-tabs-forward
+          "C-<prior>"   #'centaur-tabs-backward
+          "C-M-#"       #'previous-window-any-frame
+          "C-M-<end>"   #'tab-bar-close-tab
+          "C-M-<home>"  #'tab-bar-new-tab
+          "C-M-<next>"  #'tab-bar-switch-to-next-tab
+          "C-M-<prior>" #'tab-bar-switch-to-prev-tab
+          "C-x 2"       #'my/split-and-switch-below
+          "C-x 3"       #'my/split-and-switch-right
+          "C-x o"       #'switch-window
 
-    ;; Tools
-    (map! "<f5>"  #'my/compile)
-    (map! "C-c x" #'my/switch-to-scratch-buffer)
-    (map! "M-+"   #'text-scale-increase)
-    (map! "M--"   #'text-scale-decrease)
-    (map! "M-="   (lambda (interactive) (text-scale-set 0)))
-
+          ;; Tools
+          "<f5>"        #'my/compile
+          "C-,"         #'mc/mark-previous-like-this
+          "C-."         #'mc/mark-next-like-this
+          "C-c C-o"     #'my/open-zathura
+          "C-c C-p"     #'my/ps2pdf
+          "C-c x"       #'my/switch-to-scratch-buffer
+          "M-+"         #'text-scale-increase
+          "M--"         #'text-scale-decrease
+          "M-="         #'my/text-scale-reset
+          )
     map)
   "my-keys-minor-mode keymap.")
 
@@ -229,5 +273,5 @@
   "A minor mode for my keybindings"
   :init-value t)
 
-(tab-bar-mode)
+;; (tab-bar-mode)
 (my-keys-minor-mode)
