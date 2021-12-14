@@ -10,8 +10,11 @@
 (setq doom-theme 'doom-gruvbox)
 (setq fancy-splash-image "~/.config/doom/splash.png")
 
+;; kill whole line
+(setq kill-whole-line t)
+
 ;; whitespace and tabs
-(setq-default electric-indent-inhibit t)
+(setq electric-indent-inhibit t)
 (setq whitespace-style '(face tabs tab-mark trailing))
 (setq whitespace-display-mappings
       '((tab-mark 9 [124 9])))
@@ -22,7 +25,7 @@
 (setq show-paren-style 'expression)
 (setq show-paren-delay 0)
 (custom-set-faces!
-  '(show-paren-match :bold nil :foreground nil))
+  '(show-paren-match :bold t :background "#303030"))
 
 ;; switch-window
 (setq switch-window-input-style 'minibuffer)
@@ -72,7 +75,9 @@
 (setq centaur-tabs-set-close-button nil)
 
 ;; filetypes
-(add-to-list 'auto-mode-alist '("\\.cl\\'" . opencl-mode))
+(add-to-list 'auto-mode-alist '("\\.cl\\'"  . opencl-mode))
+(add-to-list 'auto-mode-alist '("\\.v\\'"   . v-mode))
+(add-to-list 'auto-mode-alist '("\\.vsh\\'" . v-mode))
 
 ;;; FUNCTIONS
 
@@ -189,9 +194,6 @@
       :server-id 'zls))))
 
 ;; v-mode
-(add-to-list 'auto-mode-alist '("\\.v\\'" . v-mode))
-(add-to-list 'auto-mode-alist '("\\.vsh\\'" . v-mode))
-
 (advice-add #'v-project-root :around (lambda (&optional _) (file-name-directory buffer-file-name)))
 (advice-add #'v-load-tags    :around (lambda (&optional _) ()))
 (advice-add #'v-build-tags   :around (lambda (&optional _) ()))
@@ -210,7 +212,7 @@
 (use-package! v-mode
   :config
   (flycheck-define-checker v-checker
-    "A v syntax checker using the v fmt."
+    "A v syntax checker using v -check"
     :command ("v" "-check" (eval (buffer-file-name)))
     :error-patterns
     ((error line-start (file-name) ":" line ":" column ": error: " (message) line-end)
@@ -219,59 +221,55 @@
   (add-to-list 'flycheck-checkers 'v-checker))
 
 ;;; BINDINGS
+(defmacro my/bind-keys* (&rest body)
+  `(progn
+     ,@(cl-loop
+        while body collecting
+        `(bind-key* ,(pop body) ,(pop body)))))
 
-(defvar my-keys-minor-mode-map
-  (let ((map (make-sparse-keymap)))
-    (map! :map my-keys-minor-mode-map
-          ;; Editing
-          "<C-tab>"     #'my/indentall
-          "C-/"         #'isearch-forward
-          "C-s"         #'save-buffer
-          "C-v"         #'yank
-          "C-w"         #'kill-ring-save
-          "C-y"         #'undo-fu-only-redo
-          "C-z"         #'undo-fu-only-undo
-          "M-v"         #'counsel-yank-pop
-          "M-w"         #'kill-region
+(my/bind-keys*
+ ;; Editing
+ "<C-tab>"     #'my/indentall
+ "C-y"         #'undo-fu-only-redo
+ "C-z"         #'undo-fu-only-undo
+ "M-v"         #'counsel-yank-pop
 
-          ;; Movement
-          "C-,"         #'mc/mark-previous-like-this
-          "C-."         #'mc/mark-next-like-this
-          "M-l"         #'avy-goto-line
-          "M-n"         #'scroll-up-command
-          "M-p"         #'scroll-down-command
-          "M-s"         #'avy-goto-char
+ ;; Movement
+ "C-,"         #'mc/mark-previous-like-this
+ "C-."         #'mc/mark-next-like-this
+ "M-l"         #'avy-goto-line
+ "M-n"         #'scroll-up-command
+ "M-p"         #'scroll-down-command
+ "M-s"         #'avy-goto-char
 
-          ;; Window controls
-          "C-#"         #'next-window-any-frame
-          "C-<next>"    #'centaur-tabs-forward
-          "C-<prior>"   #'centaur-tabs-backward
-          "C-M-#"       #'previous-window-any-frame
-          "C-M-<end>"   #'tab-bar-close-tab
-          "C-M-<home>"  #'tab-bar-new-tab
-          "C-M-<next>"  #'tab-bar-switch-to-next-tab
-          "C-M-<prior>" #'tab-bar-switch-to-prev-tab
-          "C-x 2"       #'my/split-and-switch-below
-          "C-x 3"       #'my/split-and-switch-right
-          "C-x o"       #'switch-window
+ ;; Window controls
+ "C-#"         #'next-window-any-frame
+ "C-<next>"    #'centaur-tabs-forward
+ "C-<prior>"   #'centaur-tabs-backward
+ "C-M-#"       #'previous-window-any-frame
+ "C-M-<end>"   #'tab-bar-close-tab
+ "C-M-<home>"  (lambda () (interactive) (tab-bar-new-tab) (switch-to-buffer "*doom*"))
+ "C-M-<next>"  #'tab-bar-switch-to-next-tab
+ "C-M-<prior>" #'tab-bar-switch-to-prev-tab
+ "C-x 2"       #'my/split-and-switch-below
+ "C-x 3"       #'my/split-and-switch-right
+ "C-x b"       #'counsel-switch-buffer
 
-          ;; Tools
-          "<f5>"        #'my/compile
-          "C-,"         #'mc/mark-previous-like-this
-          "C-."         #'mc/mark-next-like-this
-          "C-c C-o"     #'my/open-zathura
-          "C-c C-p"     #'my/ps2pdf
-          "C-c x"       #'my/switch-to-scratch-buffer
-          "M-+"         #'text-scale-increase
-          "M--"         #'text-scale-decrease
-          "M-="         #'my/text-scale-reset
-          )
-    map)
-  "my-keys-minor-mode keymap.")
+ ;; Tools
+ "<f5>"        #'my/compile
+ "C-,"         #'mc/mark-previous-like-this
+ "C-."         #'mc/mark-next-like-this
+ "C-c C-o"     #'my/open-zathura
+ "C-c C-p"     #'my/ps2pdf
+ "C-c x"       #'my/switch-to-scratch-buffer
+ "M-+"         #'text-scale-increase
+ "M--"         #'text-scale-decrease
+ "M-="         #'my/text-scale-reset
+ "C-x C-z"     #'nav-flash/blink-cursor)
 
-(define-minor-mode my-keys-minor-mode
-  "A minor mode for my keybindings"
-  :init-value t)
+(add-hook 'sly-mrepl-mode-hook (lambda ()
+                                 (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
+                                 (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map)))
 
-;; (tab-bar-mode)
-(my-keys-minor-mode)
+(tab-bar-mode)
+(cua-mode)
