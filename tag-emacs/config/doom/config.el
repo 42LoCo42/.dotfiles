@@ -10,6 +10,9 @@
 (setq doom-theme 'doom-gruvbox)
 (setq fancy-splash-image "~/.config/doom/splash.png")
 
+;; don't ask when quitting
+(setq confirm-kill-emacs nil)
+
 ;; kill whole line
 (setq kill-whole-line t)
 
@@ -18,7 +21,6 @@
 (setq whitespace-style '(face tabs tab-mark trailing))
 (setq whitespace-display-mappings
       '((tab-mark 9 [124 9])))
-(global-whitespace-mode)
 (setq backward-delete-char-untabify-method nil)
 
 ;; paren style
@@ -68,7 +70,6 @@
                                (v-mode . "v-mode_icon")
                                (vterm-mode . "vterm-mode_icon")
                                (zig-mode . "zig-mode_icon")))
-(when (eq (shell-command "pgrep -i discord") 0) (elcord-mode))
 
 ;; centaur-tabs
 (setq centaur-tabs-gray-out-icons nil)
@@ -220,6 +221,12 @@
     :modes v-mode)
   (add-to-list 'flycheck-checkers 'v-checker))
 
+;;; MODES
+(global-whitespace-mode)
+(tab-bar-mode)
+(cua-mode)
+(when (eq (shell-command "pgrep -i discord") 0) (elcord-mode))
+
 ;;; BINDINGS
 (defmacro my/bind-keys* (&rest body)
   `(progn
@@ -270,6 +277,3 @@
 (add-hook 'sly-mrepl-mode-hook (lambda ()
                                  (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
                                  (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map)))
-
-(tab-bar-mode)
-(cua-mode)
