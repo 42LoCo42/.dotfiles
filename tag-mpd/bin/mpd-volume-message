@@ -3,6 +3,6 @@ vol="$(mpc volume | cut -d ":" -f 2)"
 params=(
 	"-i" "/usr/share/icons/hicolor/scalable/apps/mpd.svg"
 	"mpd volume"
-	"mpd volume is now at$vol"
+	"mpd volume is now at ${vol##* }"
 )
 message "mpd" "${params[@]}"

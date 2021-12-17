@@ -6,7 +6,6 @@ alias diff="diff --color=auto"
 alias grep="grep --color=auto"
 alias ls="ls -hA --color=auto --group-directories-first"
 alias mkdir="mkdir -pv"
-alias man="man -a"
 
 # helpers
 alias fuck='sudo $(history -p !!)'
