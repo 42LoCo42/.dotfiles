@@ -118,7 +118,7 @@
   "Switch to the scratch buffer"
   (interactive)
   (switch-to-buffer "*scratch*")
-  (lisp-interaction-mode))
+  (emacs-lisp-mode))
 
 (defun my/open-zathura ()
   "Opens zathura on the generated output file"
@@ -272,7 +272,7 @@
  "M-+"         #'text-scale-increase
  "M--"         #'text-scale-decrease
  "M-="         #'my/text-scale-reset
- "C-x C-z"     #'nav-flash/blink-cursor)
+ "C-x C-z"     #'nav-flash-show)
 
 (add-hook 'sly-mrepl-mode-hook (lambda ()
                                  (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
