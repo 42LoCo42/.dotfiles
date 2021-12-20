@@ -22,7 +22,8 @@
 (setq show-paren-style 'expression)
 (setq show-paren-delay 0)
 (custom-set-faces!
-  '(show-paren-match :bold nil :foreground nil))
+  '(show-paren-match :bold t :background "#303030"))
+(setq rainbow-delimiters-max-face-count 10)
 
 ;; switch-window
 (setq switch-window-input-style 'minibuffer)
@@ -156,6 +157,30 @@
   (interactive)
   (text-scale-set 0))
 
+(defun dwim-backward-kill-word ()
+  "DWIM kill characters backward until encountering the beginning of a word or non-word."
+  (interactive)
+  (if (thing-at-point 'word) (backward-kill-word 1)
+    (let* ((orig-point              (point))
+           (orig-line               (line-number-at-pos))
+           (backward-word-point     (progn (backward-word) (point)))
+           (backward-non-word-point (progn (goto-char orig-point) (backward-non-word) (point)))
+           (min-point               (max backward-word-point backward-non-word-point)))
+
+      (if (< (line-number-at-pos min-point) orig-line) (progn (goto-char min-point) (end-of-line) (delete-horizontal-space))
+        (delete-region min-point orig-point)
+        (goto-char min-point)))))
+
+(defun backward-non-word ()
+  "Move backward until encountering the beginning of a non-word."
+  (interactive)
+  (search-backward-regexp "[^a-zA-Z0-9\s\n]")
+  (while (looking-at "[^a-zA-Z0-9\s\n]")
+    (backward-char))
+  (forward-char))
+
+(map! "M-<backspace>" #'dwim-backward-kill-word)
+
 ;;; HOOKS
 
 ;; enable tabs everywhere
@@ -174,6 +199,10 @@
  'nroff-mode-hook
  (lambda ()
    (add-hook 'after-save-hook #'my/run-special-compiler)))
+
+(add-hook 'sly-mode-hook (lambda () (map!)
+                           "M-n" #'sly-mrepl-next-input-or-button
+                           "M-p" #'sly-mrepl-previous-input-or-button))
 
 ;; zig-mode
 (use-package! zig-mode
@@ -238,8 +267,8 @@
           "C-,"         #'mc/mark-previous-like-this
           "C-."         #'mc/mark-next-like-this
           "M-l"         #'avy-goto-line
-          "M-n"         #'scroll-up-command
-          "M-p"         #'scroll-down-command
+          ;;"M-n"         #'scroll-up-command
+          ;;"M-p"         #'scroll-down-command
           "M-s"         #'avy-goto-char
 
           ;; Window controls
@@ -251,6 +280,7 @@
           "C-M-<home>"  #'tab-bar-new-tab
           "C-M-<next>"  #'tab-bar-switch-to-next-tab
           "C-M-<prior>" #'tab-bar-switch-to-prev-tab
+          "C-x b"       #'switch-to-buffer
           "C-x 2"       #'my/split-and-switch-below
           "C-x 3"       #'my/split-and-switch-right
           "C-x o"       #'switch-window
@@ -264,8 +294,8 @@
           "C-c x"       #'my/switch-to-scratch-buffer
           "M-+"         #'text-scale-increase
           "M--"         #'text-scale-decrease
-          "M-="         #'my/text-scale-reset
-          )
+          "M-="         #'my/text-scale-reset)
+
     map)
   "my-keys-minor-mode keymap.")
 
