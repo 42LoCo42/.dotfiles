@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Adds `~/.bin/` and all subdirectories to $PATH
-export PATH="$PATH:$(du "$HOME/.bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
-
 export DISPLAY=":1"
 export XAUTHORITY="$HOME/.local/share/sx/xauthority"
-
 export VFLAGS="-skip-unused"
