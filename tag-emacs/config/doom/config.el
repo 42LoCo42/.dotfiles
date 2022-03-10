@@ -63,6 +63,7 @@
                                (lisp-mode . "lisp-mode_icon")
                                (magit-mode . "git-mode_icon")
                                (makefile-mode . "compilation-mode_icon")
+                               (nim-mode . "nim-mode_icon")
                                (opencl-mode . "opencl-mode_icon")
                                (org-mode . "org-mode_icon")
                                (pdf-view-mode . "pdf-view-mode_icon")
@@ -197,6 +198,7 @@
 (add-hook 'haskell-mode-hook    (lambda () (interactive) (my/disable-tabs 2)))
 (add-hook 'lisp-mode-hook       #'my/disable-tabs)
 (add-hook 'emacs-lisp-mode-hook #'my/disable-tabs)
+(add-hook 'nim-mode-hook        (lambda () (interactive) (my/disable-tabs 2)))
 (add-hook 'python-mode-hook     #'my/disable-tabs)
 (add-hook 'zig-mode-hook        #'my/disable-tabs)
 
@@ -250,10 +252,13 @@
     :modes v-mode)
   (add-to-list 'flycheck-checkers 'v-checker))
 
+(use-package! nim-mode
+  :hook (nim-mode . lsp))
+
 ;;; MODES
 (global-whitespace-mode)
 (tab-bar-mode)
-(cua-mode)
+;;(cua-mode)
 (when (eq (shell-command "pgrep -i discord") 0) (elcord-mode))
 
 ;;; BINDINGS

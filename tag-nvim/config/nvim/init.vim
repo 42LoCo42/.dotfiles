@@ -21,6 +21,7 @@ Plug 'kovetskiy/sxhkd-vim'
 Plug 'ziglang/zig.vim'
 Plug 'petRUShka/vim-opencl'
 Plug 'ollykel/v-vim'
+Plug 'zah/nim.vim'
 call plug#end()
 
 " Settings =====================================================================
