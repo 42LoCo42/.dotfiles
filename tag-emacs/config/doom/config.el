@@ -43,6 +43,8 @@
 (setq company-dabbrev-ignore-case t)
 (setq company-dabbrev-downcase nil)
 (setq company-idle-delay 0)
+(setq company-show-numbers t)
+(add-to-list 'company-backends #'company-tabnine)
 
 ;; elcord
 (setq elcord-use-major-mode-as-main-icon t)
@@ -63,6 +65,7 @@
                                (lisp-mode . "lisp-mode_icon")
                                (magit-mode . "git-mode_icon")
                                (makefile-mode . "compilation-mode_icon")
+                               (nim-mode . "nim-mode_icon")
                                (opencl-mode . "opencl-mode_icon")
                                (org-mode . "org-mode_icon")
                                (pdf-view-mode . "pdf-view-mode_icon")
@@ -108,6 +111,7 @@
   (interactive)
   (save-buffer)
   (setq-local compilation-read-command nil)
+  (cd (substitute-env-in-file-name "$PROOT"))
   (call-interactively #'compile))
 
 (defun my/run-special-compiler ()
@@ -163,29 +167,27 @@
   (interactive)
   (text-scale-set 0))
 
-(defun dwim-backward-kill-word ()
+(defun my/dwim-backward-kill-word ()
   "DWIM kill characters backward until encountering the beginning of a word or non-word."
   (interactive)
   (if (thing-at-point 'word) (backward-kill-word 1)
     (let* ((orig-point              (point))
            (orig-line               (line-number-at-pos))
            (backward-word-point     (progn (backward-word) (point)))
-           (backward-non-word-point (progn (goto-char orig-point) (backward-non-word) (point)))
+           (backward-non-word-point (progn (goto-char orig-point) (my/backward-non-word) (point)))
            (min-point               (max backward-word-point backward-non-word-point)))
 
       (if (< (line-number-at-pos min-point) orig-line) (progn (goto-char min-point) (end-of-line) (delete-horizontal-space))
         (delete-region min-point orig-point)
         (goto-char min-point)))))
 
-(defun backward-non-word ()
+(defun my/backward-non-word ()
   "Move backward until encountering the beginning of a non-word."
   (interactive)
   (search-backward-regexp "[^a-zA-Z0-9\s\n]")
   (while (looking-at "[^a-zA-Z0-9\s\n]")
     (backward-char))
   (forward-char))
-
-(map! "M-<backspace>" #'dwim-backward-kill-word)
 
 ;;; HOOKS
 
@@ -195,6 +197,7 @@
 
 ;; disable tabs in some modes
 (add-hook 'haskell-mode-hook    (lambda () (interactive) (my/disable-tabs 2)))
+(add-hook 'nim-mode-hook        (lambda () (interactive) (my/disable-tabs 2)))
 (add-hook 'lisp-mode-hook       #'my/disable-tabs)
 (add-hook 'emacs-lisp-mode-hook #'my/disable-tabs)
 (add-hook 'python-mode-hook     #'my/disable-tabs)
@@ -228,17 +231,6 @@
 (advice-add #'v-load-tags    :around (lambda (&optional _) ()))
 (advice-add #'v-build-tags   :around (lambda (&optional _) ()))
 
-;; (use-package! v-mode
-;;   :hook ((v-mode . lsp-deferred))
-;;   :config
-;;   (after! lsp-mode
-;;     (add-to-list 'lsp-language-id-configuration '(v-mode . "v"))
-;;     (lsp-register-client
-;;      (make-lsp-client
-;;       :new-connection (lsp-stdio-connection "vls")
-;;       :major-modes '(v-mode)
-;;       :server-id 'v))))
-
 (use-package! v-mode
   :config
   (flycheck-define-checker v-checker
@@ -250,11 +242,13 @@
     :modes v-mode)
   (add-to-list 'flycheck-checkers 'v-checker))
 
+;; nim-mode
+(use-package! nim-mode
+  :hook (nim-mode . lsp))
+
 ;;; MODES
 (global-whitespace-mode)
-(tab-bar-mode)
-(cua-mode)
-(when (eq (shell-command "pgrep -i discord") 0) (elcord-mode))
+(when (zerop (shell-command "pgrep -i discord")) (elcord-mode))
 
 ;;; BINDINGS
 (defmacro my/bind-keys* (&rest body)
@@ -265,14 +259,17 @@
 
 (my/bind-keys*
  ;; Editing
- "<C-tab>"     #'my/indentall
- "C-y"         #'undo-fu-only-redo
- "C-z"         #'undo-fu-only-undo
- "M-v"         #'counsel-yank-pop
+ "<C-tab>"       #'my/indentall
+ "C-v"           #'yank
+ "C-y"           #'undo-fu-only-redo
+ "C-z"           #'undo-fu-only-undo
+ "M-<backspace>" #'my/dwim-backward-kill-word
+ "M-v"           #'counsel-yank-pop
 
  ;; Movement
  "C-,"         #'mc/mark-previous-like-this
  "C-."         #'mc/mark-next-like-this
+ "C-s"         #'counsel-grep-or-swiper
  "M-l"         #'avy-goto-line
  "M-n"         #'scroll-up-command
  "M-p"         #'scroll-down-command
@@ -283,10 +280,10 @@
  "C-<next>"    #'centaur-tabs-forward
  "C-<prior>"   #'centaur-tabs-backward
  "C-M-#"       #'previous-window-any-frame
- "C-M-<end>"   #'tab-bar-close-tab
- "C-M-<home>"  (lambda () (interactive) (tab-bar-new-tab) (switch-to-buffer "*doom*"))
- "C-M-<next>"  #'tab-bar-switch-to-next-tab
- "C-M-<prior>" #'tab-bar-switch-to-prev-tab
+ "C-M-<end>"   #'+workspace/delete
+ "C-M-<home>"  #'+workspace/new
+ "C-M-<next>"  #'+workspace/switch-right
+ "C-M-<prior>" #'+workspace/switch-left
  "C-x 2"       #'my/split-and-switch-below
  "C-x 3"       #'my/split-and-switch-right
  "C-x b"       #'counsel-switch-buffer
@@ -298,11 +295,13 @@
  "C-c C-o"     #'my/open-zathura
  "C-c C-p"     #'my/ps2pdf
  "C-c x"       #'my/switch-to-scratch-buffer
+ "C-x C-z"     #'+nav-flash/blink-cursor
  "M-+"         #'text-scale-increase
  "M--"         #'text-scale-decrease
- "M-="         #'my/text-scale-reset
- "C-x C-z"     #'nav-flash-show)
+ "M-="         #'my/text-scale-reset)
 
-(add-hook 'sly-mrepl-mode-hook (lambda ()
-                                 (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
-                                 (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map)))
+(add-hook
+ 'sly-mrepl-mode-hook
+ (lambda ()
+   (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
+   (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map)))
