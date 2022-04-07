@@ -22,9 +22,8 @@ alias web="w3m duckduckgo.com/lite"
 alias wine="PULSE_LATENCY_MSEC=60 wine"
 
 # youtube
-alias YT="youtube-viewer -C"
-alias yt="youtube-dl -i -o '%(upload_date)s-%(title)s.%(ext)s'"
-alias yta="yt -x -f bestaudio/best"
+alias yt="yt-dlp"
+alias ytm="yt -x -o '%(uploader)s - %(title)s.%(ext)s'"
 
 # git
 alias d="git --git-dir=\$HOME/.dotfiles/.git --work-tree=\$HOME/.dotfiles"
