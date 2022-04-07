@@ -18,9 +18,6 @@
 
 ;; whitespace and tabs
 (setq electric-indent-inhibit t)
-(setq whitespace-style '(face tabs tab-mark trailing))
-(setq whitespace-display-mappings
-      '((tab-mark 9 [124 9])))
 (setq backward-delete-char-untabify-method nil)
 
 ;; paren style
@@ -87,7 +84,7 @@
 ;;; FUNCTIONS
 
 (defun my/indentall ()
-  "Clean indentation in the whole buffer"
+  "Clean indentation in the whole buffer."
   (interactive)
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil))
@@ -107,7 +104,7 @@
   (other-window 1))
 
 (defun my/compile ()
-  "Save & compile buffer"
+  "Save & compile buffer."
   (interactive)
   (save-buffer)
   (setq-local compilation-read-command nil)
@@ -115,18 +112,18 @@
   (call-interactively #'compile))
 
 (defun my/run-special-compiler ()
-  "Runs the special compiler on this file"
+  "Runs the special compiler on this file."
   (interactive)
   (shell-command (concat "compiler " buffer-file-name)))
 
 (defun my/switch-to-scratch-buffer ()
-  "Switch to the scratch buffer"
+  "Switch to the scratch buffer."
   (interactive)
   (switch-to-buffer "*scratch*")
   (emacs-lisp-mode))
 
 (defun my/open-zathura ()
-  "Opens zathura on the generated output file"
+  "Opens zathura on the generated output file."
   (interactive)
   (call-process-shell-command
    (concat
@@ -135,7 +132,7 @@
     ".ps") nil 0))
 
 (defun my/ps2pdf ()
-  "Run the ps2pdf shell command"
+  "Run the ps2pdf shell command."
   (interactive)
   (call-process-shell-command
    (concat
@@ -144,26 +141,27 @@
     ".ps") nil 0))
 
 (defun my/disable-tabs (&optional width)
-  "Disable tabs, optionally specify indent width"
+  "Disable tabs, optionally specify indent width."
   (unless width (setq width 4))
   (setq indent-tabs-mode nil)
   (setq tab-width width))
 
 (defun my/enable-tabs (&optional width)
-  "Enable tabs, optionally specify tab width"
+  "Enable tabs, optionally specify tab width."
   (unless width (setq width 4))
   (local-set-key (kbd "TAB") #'tab-to-tab-stop)
   (setq indent-tabs-mode t)
   (setq tab-width width))
 
 (defun my/elcord-buffer-details-format ()
+  "Generate the elcord details string."
   (let ((pname (doom-project-name)))
     (pcase pname
       ("-" (buffer-name))
       (_ (format "%s - %s" pname (buffer-name))))))
 
 (defun my/text-scale-reset ()
-  "Set text scale to 0"
+  "Set text scale to 0."
   (interactive)
   (text-scale-set 0))
 
@@ -248,11 +246,11 @@
   :hook (nim-mode . lsp))
 
 ;;; MODES
-(global-whitespace-mode)
 (when (zerop (shell-command "pgrep -i discord")) (elcord-mode))
 
 ;;; BINDINGS
 (defmacro my/bind-keys* (&rest body)
+  "Globally bind all keys. BODY: a list of alternating key-function arguments."
   `(progn
      ,@(cl-loop
         while body collecting
@@ -274,7 +272,7 @@
  "M-l"         #'avy-goto-line
  "M-n"         #'scroll-up-command
  "M-p"         #'scroll-down-command
- "M-s"         #'avy-goto-char
+ "M-s"         #'ace-jump-mode
 
  ;; Window controls
  "C-#"         #'next-window-any-frame

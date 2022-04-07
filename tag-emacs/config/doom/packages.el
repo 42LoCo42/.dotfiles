@@ -48,8 +48,9 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-
+;
 (package! elcord)
 (package! hl-line :disable t)
 (package! v-mode)
+(package! ace-jump-mode)
 ;; (package! company-tabnine)
