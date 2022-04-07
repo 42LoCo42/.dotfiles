@@ -52,3 +52,4 @@
 (package! elcord)
 (package! hl-line :disable t)
 (package! v-mode)
+;; (package! company-tabnine)

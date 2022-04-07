@@ -26,7 +26,7 @@ cleanup() {
 trap cleanup EXIT
 
 generate() {
-	find "$dir" -maxdepth 1 -not -type d -print0 | xargs --null cat > "$file"
+	find "$dir" -maxdepth 1 -not -type d | sort | xargs cat > "$file"
 }
 trap generate USR1
 
