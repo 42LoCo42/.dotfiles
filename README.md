@@ -5,8 +5,9 @@ Also, every program (or group of related programs) has its own tag, so users of 
 
 ## Installation
 1. Get `rcm`: `yay -S rcm`
-2. Clone this repo to the standard rcm dotfile location: `git clone https://github.com/42LoCo42/.dotfiles ~/.dotfiles`
-3. Install the dotfiles: `rcup`
+2. Clone this repo to the standard rcm dotfile location:  
+   `git clone https://github.com/42LoCo42/.dotfiles ~/.dotfiles`
+4. Install the dotfiles: `rcup`
 
 The first installation will launch an interactive tag-selection menu. Select tags according to your needs and preferences.
 Automatic installation of dependencies is WIP.
