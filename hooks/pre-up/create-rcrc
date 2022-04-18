@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+dotf="$HOME/.dotfiles"
+rcrc="${RCRC:-$HOME/.rcrc}"
+[ -e "$rcrc" ] && exit
+
+echo 'EXCLUDES="README.md"' > "$rcrc"
+
+mapfile -t elements <<< "$(
+	find "$dotf" -mindepth 1 -maxdepth 1 -type d -name 'tag-*' \
+	| sed 's|.*tag-||' \
+	| sort
+)"
+declare -A choices
+exec {fd}</dev/tty
+
+while true; do
+	echo -n '[2J[H'
+	for i in $(seq 0 "$((${#elements[@]} - 1))"); do
+		printf "%s%2d: %s[m\n" "${choices[$i]}" "$i" "${elements[i]}"
+	done
+	echo
+	read -ru "$fd" \
+		-p "Select elements with numbers. d <number> to deselect. q to quit."$'\n' sel arg
+
+	if [ "$sel" == "q" ]; then
+		break
+	elif [ "$sel" == "d" ]; then
+		unset "choices[$arg]"
+	else
+		choices[$sel]="[32m"
+	fi
+done
+
+for i in "${!choices[@]}"; do echo "${elements[i]}"; done \
+| sort \
+| paste -sd ' ' \
+| sed 's|^|TAGS="|; s|$|"|' >> "$rcrc"
