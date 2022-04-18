@@ -1,6 +1,6 @@
 # Programs
 super + a
-	tdrop -w 800 -h 300 -x 560 -y 390 "$TERMINAL" --class floating -e qalc
+	tdrop -w 800 -h 300 -x 560 -y 390 "$TERMINAL" -c floating -e qalc
 super + shift + a
 	$TERMINAL -e pulsemixer
 super + c

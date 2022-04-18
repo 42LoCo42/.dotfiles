@@ -2,7 +2,7 @@
 # shellcheck disable=SC2155
 
 export EDITOR="nvim"
-export TERMINAL="kitty"
+export TERMINAL="xst"
 export BROWSER="firefox"
 export READER="zathura"
 export SUDO_ASKPASS="$HOME/.bin/dmenu/dmenupass"
