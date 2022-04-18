@@ -27,6 +27,9 @@
   '(show-paren-match :bold t :background "#303030"))
 (setq rainbow-delimiters-max-face-count 10)
 
+;; indent guides
+(setq highlight-indent-guides-responsive 'top)
+
 ;; switch-window
 (setq switch-window-input-style 'minibuffer)
 (setq switch-window-increase 4)
@@ -245,6 +248,10 @@
 (use-package! nim-mode
   :hook (nim-mode . lsp))
 
+(use-package centaur-tabs
+  :config
+  (centaur-tabs-group-by-projectile-project))
+
 ;;; MODES
 (when (zerop (shell-command "pgrep -i discord")) (elcord-mode))
 
@@ -272,7 +279,7 @@
  "M-l"         #'avy-goto-line
  "M-n"         #'scroll-up-command
  "M-p"         #'scroll-down-command
- "M-s"         #'ace-jump-mode
+ "M-s"         #'ace-jump-char-mode
 
  ;; Window controls
  "C-#"         #'next-window-any-frame
