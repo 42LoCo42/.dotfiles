@@ -1,5 +1,5 @@
 [merge]
-	tool = vimdiff3
+	tool = nvimdiff
 [pull]
 	rebase = false
 [commit]
