@@ -4,10 +4,9 @@ I have split many program configuration files into directories to enable modular
 Also, every program (or group of related programs) has its own tag, so users of these dotfiles can choose which features they want.
 
 ## Installation
-1. Get `rcm`: `yay -S rcm`
-2. Clone this repo to the standard rcm dotfile location:  
+1. Clone this repo to the standard rcm dotfile location:  
    `git clone https://github.com/42LoCo42/.dotfiles ~/.dotfiles`
-4. Install the dotfiles: `rcup`
+2. Install with `cd ~/.dotfiles && ./install.sh`
 
 The first installation will launch an interactive tag-selection menu. Select tags according to your needs and preferences.
 Automatic installation of dependencies is WIP.

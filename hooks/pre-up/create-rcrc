@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 dotf="$HOME/.dotfiles"
 rcrc="${RCRC:-$HOME/.rcrc}"
+
+trap 'echo "Installing dotfiles via rcup..."' EXIT
 [ -e "$rcrc" ] && exit
 
 echo 'EXCLUDES="README.md"' > "$rcrc"

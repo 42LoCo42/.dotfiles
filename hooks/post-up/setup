@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+echo "Generating personal dotfile metapackage..."
+
+dotpkg="$HOME/.config/dotpkg"
+readpkgs() {
+	mapfile -t "$1" <<< "$(
+		sort -u "$dotpkg/$2/"* \
+		| sed 's|^|"|; s|$|"|'
+	)"
+}
+readpkgs dep required; declare -a dep
+readpkgs opt optional; declare -a opt
+
+cat << EOF \
+	| sed "
+		s|OPTDEPENDS|${opt[*]}|;
+		s|DEPENDS|${dep[*]}|;
+		s|USER|$USER|;
+	" > "$dotpkg/PKGBUILD"
+pkgname=dotfiles-USER
+pkgver=1
+pkgrel=1
+pkgdesc="Dotfiles metapackage for USER"
+arch=("any")
+depends=(DEPENDS)
+optdepends=(OPTDEPENDS)
+EOF
+
+echo "Installing personal dotfiles metapackage..."
+cd "$dotpkg" || exit 1
+# yay -S --needed --noconfirm "${dep[@]}" "${opt[@]%%:*}"
+# yay -D --asdeps "${opt[@]%%:*}"
+makepkg -ci --noconfirm
