@@ -6,7 +6,9 @@ sudo pacman -S --needed --noconfirm base-devel git
 if ! command -v yay >/dev/null; then
 	git clone https://aur.archlinux.org/yay-bin
 	cd yay-bin || exit 1
-	makepkg -i
+	makepkg -cfi --noconfirm
+	cd ..
+	rm -rf yay-bin
 fi
 
 if ! command -v rcup >/dev/null; then

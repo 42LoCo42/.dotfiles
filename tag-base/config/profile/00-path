@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Adds `~/.bin/` and all subdirectories to $PATH
+PATH="$PATH:$(du "$HOME/.bin/" | cut -f2 | paste -sd:)"
+PATH="$PATH:$HOME/.nimble/bin"
+PATH="$PATH:$HOME/.config/emacs/bin"
+PATH="$PATH:$HOME/.ghcup/bin"
