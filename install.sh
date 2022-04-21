@@ -4,11 +4,12 @@ echo "Installing primary dependencies..."
 sudo pacman -S --needed --noconfirm base-devel git
 
 if ! command -v yay >/dev/null; then
-	git clone https://aur.archlinux.org/yay-bin
-	cd yay-bin || exit 1
+	yay="$HOME/yay-bin"
+	git clone https://aur.archlinux.org/yay-bin "$yay"
+	pushd "$yay" || exit 1
 	makepkg -cfi --noconfirm
-	cd ..
-	rm -rf yay-bin
+	popd
+	rm -rf "$yay"
 fi
 
 if ! command -v rcup >/dev/null; then
