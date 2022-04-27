@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
+atTerm() {
+	pid="$(xdotool getwindowfocus getwindowpid)"
+	cmd="$(command -v "$TERMINAL")"
+	[ "$(realpath "/proc/$pid/exe")" == "$cmd" ]
+}
+
+launch() {
+	tmux="tmux -f $HOME/.config/tmux.conf"
+	exec "$TERMINAL" -e bash -c "$tmux a || $tmux"
+}
+
 if (($(getcurrentws) == 0)); then
-	if xdotool getwindowfocus getwindowpid; then
+	if atTerm; then
 		i3-msg "workspace back_and_forth"
 	else
-		exec "$TERMINAL"
+		launch
 	fi
 else
 	i3-msg "workspace 0"
-	xdotool getwindowfocus getwindowpid || exec "$TERMINAL"
+	atTerm || launch
 fi

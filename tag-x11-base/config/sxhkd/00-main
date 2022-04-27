@@ -1,6 +1,6 @@
 # Programs
 super + a
-	tdrop -w 800 -h 300 -x 560 -y 390 "$TERMINAL" --class floating -e qalc
+	tdrop -w 800 -h 300 -x 560 -y 390 "$TERMINAL" -c floating -e qalc
 super + shift + a
 	$TERMINAL -e pulsemixer
 super + c
@@ -47,8 +47,10 @@ super + {minus, underscore}
 
 # System control commands
 super + BackSpace
-	prompt "Shutdown computer?" "sudo -A shutdown -h now"
+	prompt "Shutdown computer?" sudo -A poweroff
 super + shift + BackSpace
-	prompt "Reboot computer?" "sudo -A shutdown -r now"
+	prompt "Reboot computer?" sudo -A reboot
+super + control + BackSpace
+	prompt "Suspend to RAM?" bash -c 'i3lock -i "$HOME/.config/wall.png"; sus'
 super + x
-	xset dpms 0 0 3 && xset dpms force off && slock && xset dpms 0 0 600
+	xset dpms 1 1 3 && xset dpms force off && i3lock -n -i "$HOME/.config/wall.png" && xset dpms 0 0 600

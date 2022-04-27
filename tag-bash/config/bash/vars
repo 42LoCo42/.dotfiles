@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-# Adds `~/.bin/` and all subdirectories to $PATH
-export PATH="$PATH:$(du "$HOME/.bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+: "${DISPLAY:=:1}"
+export DISPLAY
 
-export DISPLAY=":1"
-export XAUTHORITY="$HOME/.local/share/sx/xauthority"
+if [ -n "$SSH_CONNECTION" ]; then
+	XAUTHORITY="$HOME/.Xauthority"
+else
+	XAUTHORITY="$HOME/.local/share/sx/xauthority"
+fi
+export XAUTHORITY
 
 export VFLAGS="-skip-unused"
