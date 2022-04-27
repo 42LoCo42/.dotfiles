@@ -71,6 +71,7 @@
                                (pdf-view-mode . "pdf-view-mode_icon")
                                (python-mode . "python-mode_icon")
                                (sh-mode . "vterm-mode_icon")
+                               (tcl-mode . "tcl-mode_icon")
                                (v-mode . "v-mode_icon")
                                (vterm-mode . "vterm-mode_icon")
                                (zig-mode . "zig-mode_icon")))
@@ -273,7 +274,7 @@
  "M-l"         #'avy-goto-line
  "M-n"         #'scroll-up-command
  "M-p"         #'scroll-down-command
- "M-s"         #'avy-goto-char
+ "M-s"         #'ace-jump-char-mode
 
  ;; Window controls
  "C-#"         #'next-window-any-frame
