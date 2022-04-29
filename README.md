@@ -8,8 +8,11 @@ Also, every program (or group of related programs) has its own tag, so users of 
    `git clone https://github.com/42LoCo42/.dotfiles ~/.dotfiles`
 2. Install with `cd ~/.dotfiles && ./install.sh`
 
-The first installation will launch an interactive tag-selection menu. Select tags according to your needs and preferences.
-Automatic installation of dependencies is WIP.
+The installation will launch an interactive tag-selection menu. Select tags according to your needs and preferences.
+Required packages will be automatically installed, with the exception of:
+- the terminal: I use [xst-aur-patched](https://github.com/42LoCo42/xst-aur-patched), which is just the AUR package
+  with the bold-is-not-bright patch applied (though I plan to include an install script for this)
+- the icon font for polybar: it is the Pro version of Font Awesome, so you have to obtain from *some* source
 
 ## Screenshot
 ![dotfiles](https://user-images.githubusercontent.com/39183040/165969701-acde10e3-80b6-4d70-ad6f-1d6bb61357b9.png)
