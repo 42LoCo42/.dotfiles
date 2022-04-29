@@ -2,7 +2,14 @@
 # shellcheck disable=SC1090 disable=SC2155
 stty -ixon # Disable ctrl-s and ctrl-q.
 shopt -s autocd #Allows you to cd into directory merely by typing the directory name.
-HISTSIZE="" HISTFILESIZE="" # Infinite history.
+
+histdir="$HOME/.local/state/bash"
+[ -d "$histdir" ] || mkdir "$histdir"
+
+HISTSIZE=""
+HISTFILESIZE=""
+HISTFILE="$histdir/history"
+HISTCONTROL="ignoreboth"
 
 # better colors in ls
 # shellcheck disable=SC2046
