@@ -20,8 +20,16 @@ npup() {
 	curl -F "file=@$1" "https://0x0.st"
 }
 
+if command -v zoxide >/dev/null 2>&1; then
+	eval "$(zoxide init bash)"
+else
+	# shellcheck disable=SC2139
+	# we only need to get the cd location once
+	alias z="$(command -v "cd")"
+fi
+
 mycd() {
-	cd "$@" && ls
+	z "$@" && ls
 }
 alias cd="mycd"
 
