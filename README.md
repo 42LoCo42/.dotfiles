@@ -12,4 +12,4 @@ The first installation will launch an interactive tag-selection menu. Select tag
 Automatic installation of dependencies is WIP.
 
 ## Screenshot
-![pic-screen-220418-0953-25](https://user-images.githubusercontent.com/39183040/163776090-25358f91-09c6-4732-85b0-ea016f7f2874.png)
+![dotfiles](https://user-images.githubusercontent.com/39183040/165969701-acde10e3-80b6-4d70-ad6f-1d6bb61357b9.png)
