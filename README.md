@@ -15,4 +15,4 @@ Required packages will be automatically installed, with the exception of:
 - the icon font for polybar: it is the Pro version of Font Awesome, so you have to obtain from *some* source
 
 ## Screenshot
-![dotfiles](https://user-images.githubusercontent.com/39183040/165969701-acde10e3-80b6-4d70-ad6f-1d6bb61357b9.png)
+![dotfiles](https://user-images.githubusercontent.com/39183040/165971439-38206b7f-8fe7-4d67-9248-6057ed61a5f6.png)
