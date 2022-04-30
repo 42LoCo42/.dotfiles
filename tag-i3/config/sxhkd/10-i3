@@ -16,17 +16,17 @@ super + shift + q
 super + space
 	i3-msg "focus mode_toggle"
 super + F2
-	i3-reload
+	config-wrapper-interact i3 USR1 USR2
 super + Escape
 	prompt "Logout?" pkill i3-wrapper
 
 # Workspace control
-super + control + {dead_circumflex, 1,2,3,4,5,6,7,8,9,0}
-	ws="{0, 1,2,3,4,5,6,7,8,9,0}" && i3-msg "move container to workspace $ws" && i3-msg "workspace $ws"
-super + shift + {dead_circumflex, 1,2,3,4,5,6,7,8,9,0}
-	i3-msg "move container to workspace {0, 1,2,3,4,5,6,7,8,9,0}"
-super + {dead_circumflex, 1,2,3,4,5,6,7,8,9,0}
-	i3-msg "workspace {0, 1,2,3,4,5,6,7,8,9,0}"
+super + control + {dead_circumflex, 1,2,3,4,5,6,7,8,9,0,ssharp}
+	ws="{0,1,2,3,4,5,6,7,8,9,0,sec}" && i3-msg "move container to workspace $ws" && i3-msg "workspace $ws"
+super + shift + {dead_circumflex, 1,2,3,4,5,6,7,8,9,0,ssharp}
+	i3-msg "move container to workspace {0,1,2,3,4,5,6,7,8,9,0,sec}"
+super + {dead_circumflex, 1,2,3,4,5,6,7,8,9,0,ssharp}
+	i3-msg "workspace {0,1,2,3,4,5,6,7,8,9,0,sec}"
 super + shift + {Left, Down, Up, Right}
 	i3-msg "move {left, down, up, right}"
 super + {Left, Down, Up, Right}
