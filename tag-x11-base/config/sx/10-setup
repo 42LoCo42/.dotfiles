@@ -3,7 +3,7 @@
 xrandr -s 1920x1080
 
 # Switch to DE with caps as CTRL
-setxkbmap -layout de -option ctrl:nocaps
+setxkbmap -layout de -option ctrl:nocaps -option compose:sclk
 
 xrdb "$HOME/.config/xresources" & # Load X resources
 setbg "$HOME/.config/wall.png" & # Set the background
