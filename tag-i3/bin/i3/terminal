@@ -6,7 +6,7 @@ atTerm() {
 }
 
 launch() {
-	tmux="tmux -f $HOME/.config/tmux.conf"
+	tmux="tmux"
 	exec "$TERMINAL" -e bash -c "$tmux a || $tmux"
 }
 

@@ -17,7 +17,6 @@ alias e="\$EDITOR"
 alias f="\$FILE"
 alias ffmpeg="ffmpeg -hide_banner"
 alias mpv='mpv --input-ipc-server=/tmp/mpvsoc$(date +%s)'
-alias tmux="tmux -f \$HOME/.config/tmux.conf"
 alias web="w3m duckduckgo.com/lite"
 alias wine="PULSE_LATENCY_MSEC=60 wine"
 
