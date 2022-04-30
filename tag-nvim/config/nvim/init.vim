@@ -8,20 +8,21 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 " Tools
 Plug 'LukeSmithxyz/vimling'
-Plug 'vimwiki/vimwiki'
-Plug 'bling/vim-airline'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'godlygeek/tabular'
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-syntastic/syntastic'
+Plug 'bling/vim-airline'
+Plug 'godlygeek/tabular'
 Plug 'lambdalisue/suda.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-syntastic/syntastic'
+Plug 'vimwiki/vimwiki'
 " Languages
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
-Plug 'ziglang/zig.vim'
-Plug 'petRUShka/vim-opencl'
+Plug 'neovimhaskell/haskell-vim'
 Plug 'ollykel/v-vim'
+Plug 'petRUShka/vim-opencl'
 Plug 'zah/nim.vim'
+Plug 'ziglang/zig.vim'
 call plug#end()
 
 " Settings =====================================================================
