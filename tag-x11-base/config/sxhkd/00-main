@@ -40,10 +40,10 @@ super + Print
 
 # Increase volume
 super + {plus,asterisk}
-	pulsemixer --change-volume +{5,15}
+	audioctl higher {5,15}
 # Decrease volume
 super + {minus, underscore}
-	pulsemixer --change-volume -{5,15}
+	audioctl lower -{5,15}
 
 # System control commands
 super + BackSpace
