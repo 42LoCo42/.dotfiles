@@ -43,7 +43,7 @@ super + {plus,asterisk}
 	audioctl higher {5,15}
 # Decrease volume
 super + {minus, underscore}
-	audioctl lower -{5,15}
+	audioctl lower {5,15}
 
 # System control commands
 super + BackSpace
