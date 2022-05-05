@@ -2,10 +2,7 @@
 dotf="$HOME/.dotfiles"
 rcrc="${RCRC:-$HOME/.rcrc}"
 
-trap 'echo "Installing dotfiles via rcup..."' EXIT
-[ -e "$rcrc" ] && exit
-
-echo 'EXCLUDES="README.md"' > "$rcrc"
+echo 'EXCLUDES="README.md install.sh scripts"' > "$rcrc"
 
 mapfile -t elements <<< "$(
 	find "$dotf" -mindepth 1 -maxdepth 1 -type d -name 'tag-*' \

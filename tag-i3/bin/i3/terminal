@@ -6,11 +6,11 @@ atTerm() {
 }
 
 launch() {
-	tmux="tmux -f $HOME/.config/tmux.conf"
+	tmux="tmux"
 	exec "$TERMINAL" -e bash -c "$tmux a || $tmux"
 }
 
-if (($(getcurrentws) == 0)); then
+if [ "$(getcurrentws)" == "0" ]; then
 	if atTerm; then
 		i3-msg "workspace back_and_forth"
 	else

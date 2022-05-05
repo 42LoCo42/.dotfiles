@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo "Generating personal dotfile metapackage..."
 
-dotpkg="$HOME/.config/dotpkg"
+dotpkg="$HOME/.config/dotpkg/"
 readpkgs() {
 	mapfile -t "$1" <<< "$(
 		sort -u "$dotpkg/$2/"* \
@@ -32,21 +32,3 @@ opt=("${opt[@]//\"/}")
 
 # remove descriptions from optional packages
 opt=("${opt[@]%%:*}")
-
-echo "Installing personal dotfile metapackage..."
-cd "$dotpkg" || exit 1
-yay -S --needed --noconfirm "${dep[@]}" "${opt[@]}" # install packages
-makepkg -cfi --noconfirm # create & install dotfile metapackage
-
-echo "Installing base-devel-meta..."
-yay -S --needed --noconfirm base-devel-meta
-
-echo "Performing cleanup..."
-# mark all explicitly installed packages that are dependencies of others as such
-comm -23 \
-	<(yay -Qeq | sort) \
-	<(yay -Qttq | sort) \
-| xargs yay -D --asdeps
-
-# remove unneeded packages
-yay -Yc --noconfirm

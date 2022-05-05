@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "Installing dotfiles via rcm..."
+rcdn
+rcup

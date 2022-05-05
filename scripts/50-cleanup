@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+echo "Performing cleanup..."
+# mark all explicitly installed packages that are dependencies of others as such
+comm -23 \
+	<(yay -Qeq | sort) \
+	<(yay -Qttq | sort) \
+| xargs yay -D --asdeps
+
+# remove unneeded packages
+yay -Yc --noconfirm
