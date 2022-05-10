@@ -2,6 +2,10 @@
 dotf="$HOME/.dotfiles"
 rcrc="${RCRC:-$HOME/.rcrc}"
 
+# shellcheck disable=SC1090
+source "$rcrc"
+declare TAGS
+
 echo 'EXCLUDES="README.md install.sh scripts"' > "$rcrc"
 
 mapfile -t elements <<< "$(
@@ -11,6 +15,20 @@ mapfile -t elements <<< "$(
 )"
 declare -A choices
 exec {fd}</dev/tty
+
+choose() {
+	choices[$1]="[32m"
+}
+
+for t in $TAGS; do
+	i=0
+	for e in "${elements[@]}"; do
+		[ "$t" == "$e" ] && break
+		((i++))
+	done
+	echo "$t $i"
+	choose "$i"
+done
 
 while true; do
 	echo -n '[2J[H'
@@ -26,7 +44,7 @@ while true; do
 	elif [ "$sel" == "d" ]; then
 		unset "choices[$arg]"
 	else
-		choices[$sel]="[32m"
+		choose "$sel"
 	fi
 done
 
