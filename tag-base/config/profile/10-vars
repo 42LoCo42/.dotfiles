@@ -19,3 +19,4 @@ export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 
 export GNUPGHOME="$HOME/.local/share/gnupg"
 export XCOMPOSEFILE="$HOME/.config/xcompose"
+# export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"

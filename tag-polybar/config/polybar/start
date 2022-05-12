@@ -3,4 +3,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 file="$(mktemp)"
 trap 'rm "$file"' EXIT
 cat "main.ini" "order.ini" "modules/"* > "$file"
+export tempsensor="$(echo /sys/devices/platform/coretemp.0/hwmon/hwmon*/temp1_input)"
 exec polybar -c "$file" default
