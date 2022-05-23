@@ -15,6 +15,7 @@ Plug 'lambdalisue/suda.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-syntastic/syntastic'
 Plug 'vimwiki/vimwiki'
+Plug 'nbouscal/vim-stylish-haskell'
 " Languages
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'kovetskiy/sxhkd-vim'
@@ -164,10 +165,12 @@ autocmd BufWritePost *xresources,*xdefaults !xrdb %
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Better colors in vimdiff
-highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17
+highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17
+highlight DiffChange cterm=bold ctermfg=10 ctermbg=17
+highlight DiffText   cterm=bold ctermfg=10 ctermbg=88
+
+highlight Pmenu ctermfg=white ctermbg=black
 
 " haskell-vim
 let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`

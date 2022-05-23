@@ -1,0 +1,6 @@
+steps:
+  - imports:
+      align: group
+columns: 80
+newline: native
+cabal: true
