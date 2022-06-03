@@ -4,10 +4,12 @@ battery = BAT0
 adapter = ADP1
 full-at = 95
 
-format-charging = <animation-charging> <label-charging>
+format-charging = <animation-charging><label-charging>
+label-charging = %percentage%% - Full in %time%
 format-charging-underline = #ffb52a
 
-format-discharging = <animation-discharging> <label-discharging>
+format-discharging = <animation-discharging><label-discharging>
+label-discharging = %percentage%% - Empty in %time%
 format-discharging-underline = ${self.format-charging-underline}
 
 format-full-prefix = " "
