@@ -56,6 +56,7 @@
                                (c-mode . "c-mode_icon")
                                (comint-mode . "comint-mode_icon")
                                (compilation-mode . "compilation-mode_icon")
+                               (css-mode . "css-mode_icon")
                                (emacs-lisp-mode . "emacs_icon")
                                (gdb-breakpoints-mode . "comint-mode_icon")
                                (gdb-frames-mode . "comint-mode_icon")
@@ -65,6 +66,7 @@
                                (lisp-mode . "lisp-mode_icon")
                                (magit-mode . "git-mode_icon")
                                (makefile-mode . "compilation-mode_icon")
+                               (mhtml-mode . "mhtml-mode_icon")
                                (nim-mode . "nim-mode_icon")
                                (opencl-mode . "opencl-mode_icon")
                                (org-mode . "org-mode_icon")
@@ -307,8 +309,8 @@
  "M--"         #'text-scale-decrease
  "M-="         #'my/text-scale-reset)
 
-(add-hook
- 'sly-mrepl-mode-hook
- (lambda ()
-   (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
-   (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map)))
+(add-hook! sly-mrepl-mode
+  (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
+  (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map))
+(add-hook! emacs-lisp-mode (bind-key "M-RET" #'eros-eval-last-sexp))
+(add-hook! scheme-mode (bind-key "M-RET" #'geiser-eval-last-sexp))

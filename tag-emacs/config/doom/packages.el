@@ -55,3 +55,4 @@
 (package! ace-jump-mode)
 ;; (package! company-tabnine)
 (package! ace-jump-mode)
+(package! d-mode)
