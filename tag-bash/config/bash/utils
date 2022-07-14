@@ -19,6 +19,8 @@ eval $(dircolors)
 bind 'set enable-bracketed-paste on'
 # Case insensitive tab completion
 bind 'set completion-ignore-case on'
+# Tab cycles through results
+bind '"\t":menu-complete'
 
 # Connect to ssh-agent
 if [ -f "/tmp/ssh-agent-$USER" ]; then

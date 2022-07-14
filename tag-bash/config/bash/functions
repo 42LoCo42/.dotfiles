@@ -48,3 +48,7 @@ merge_packages() {
 optional_packages() {
 	comm -13 <(pacman -Qeq | sort) <(pacman -Qttq | sort)
 }
+
+mksrcinfo() {
+	makepkg --printsrcinfo > .SRCINFO
+}

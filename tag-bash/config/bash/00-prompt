@@ -51,11 +51,20 @@ _after_command() {
 		elapsed="$(format_time "$((stop_time - start_time))")"
 		start_time=""
 	fi
+
+	if [ -z "$HIDE" ]; then
+		prompt_user="\u"
+		prompt_host="\h"
+	else
+		prompt_user="¿¿¿"
+		prompt_host="???"
+	fi
+
 PS1="\
 ${ANSI_BOLD}\
 ${ANSI_RED}[${exit_status} \
 ${ANSI_CYAN}${elapsed}\
-${ANSI_YELLOW}\u${ANSI_GREEN}@${ANSI_BLUE}\h \
+${ANSI_YELLOW}$prompt_user${ANSI_GREEN}@${ANSI_BLUE}$prompt_host \
 ${ANSI_GREEN}$(local_ip)\
 ${ANSI_PURPLE}\w\
 ${ANSI_CYAN}$(git_repo)\

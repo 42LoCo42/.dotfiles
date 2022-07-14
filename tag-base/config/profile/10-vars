@@ -17,6 +17,9 @@ export LESS_TERMCAP_se="$(printf '%b' '[0m')"
 export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
 export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 
+export BAT_THEME="ansi"
+export MANPAGER="sh -c 'col -bx | bat -l man -p --paging=always'"
+
 export GNUPGHOME="$HOME/.local/share/gnupg"
 export XCOMPOSEFILE="$HOME/.config/xcompose"
 # export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"

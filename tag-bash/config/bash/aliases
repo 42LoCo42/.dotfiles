@@ -19,6 +19,7 @@ alias ffmpeg="ffmpeg -hide_banner"
 alias mpv='mpv --input-ipc-server=/tmp/mpvsoc$(date +%s)'
 alias web="w3m duckduckgo.com/lite"
 alias wine="PULSE_LATENCY_MSEC=60 wine"
+alias vf="valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes"
 
 # youtube
 alias yt="yt-dlp"
