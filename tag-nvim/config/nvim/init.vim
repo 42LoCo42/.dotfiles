@@ -33,6 +33,8 @@ set bg=light
 set go=a
 set mouse=a
 set nohlsearch
+set ignorecase
+set smartcase
 set clipboard+=unnamedplus
 set nocompatible
 set encoding=utf-8
