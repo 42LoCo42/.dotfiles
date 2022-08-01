@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-exec config-wrapper "$HOME/.config/i3" i3 -c
+exec config-wrapper "$HOME/.config/i3" i3 -c > "/home/leonsch/i3log" 2>&1

@@ -14,11 +14,15 @@ current window (copy)
 full screen (copy)
 "
 choice="$(printf "$options" | dmenu -l 6 -i -p "Screenshot which area?")"
+sleep 0.5
 case "$choice" in
 	"a selected area")        maim -s "$name_selected" ;;
 	"current window")         maim -i "$(xdotool getactivewindow)" "$name_window" ;;
 	"full screen")            maim "$name_screen" ;;
-	"a selected area (copy)") maim -s | xclip -selection clipboard -t image/png ;;
+	"a selected area (copy)")
+		maim -s "$HOME/clipboard.png"
+		xclip -selection clipboard -t image/png < "$HOME/clipboard.png"
+	;;
 	"current window (copy)")  maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png ;;
 	"full screen (copy)")     maim | xclip -selection clipboard -t image/png ;;
 esac

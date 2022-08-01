@@ -5,3 +5,7 @@ PATH="$PATH:$HOME/.nimble/bin"
 PATH="$PATH:$HOME/.config/emacs/bin"
 PATH="$PATH:$HOME/.ghcup/bin"
 PATH="$PATH:$HOME/.cabal/bin"
+PATH="$PATH:$HOME/.cargo/bin"
+
+export CARP_DIR="$HOME/dev/carp/carp-v0.5.5-x86_64-linux/"
+PATH="$PATH:$CARP_DIR/bin"
