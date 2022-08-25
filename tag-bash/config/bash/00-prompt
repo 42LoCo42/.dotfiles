@@ -53,7 +53,7 @@ _after_command() {
 	fi
 
 	if [ -z "$HIDE" ]; then
-		prompt_user="eleonora"
+		prompt_user="\u"
 		prompt_host="\h"
 	else
 		prompt_user="¿¿¿"
