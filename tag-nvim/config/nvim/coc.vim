@@ -28,9 +28,9 @@ inoremap <silent><expr> <TAB>
 	\ coc#refresh()
 inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-inoremap <expr> <tab> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
+inoremap <expr> <tab> coc#pum#visible() ? coc#_select_confirm() : "\<tab>"
 inoremap <silent><expr> <tab> coc#pum#visible() ? coc#_select_confirm()
-	\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+	\: "\<C-g>u\<tab>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `<` and `>` to navigate diagnostics
 nmap <silent> < <Plug>(coc-diagnostic-prev)

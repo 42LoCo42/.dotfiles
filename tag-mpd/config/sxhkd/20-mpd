@@ -3,8 +3,8 @@ super + m
 	$TERMINAL -e ncmpcpp
 
 # Pause audio
-super + {_,shift +} p
-	mpc {toggle,pause}
+super + p
+	mpc toggle
 # Changes to next/previous tracks
 super + {comma,period}
 	mpc {prev,next}
@@ -18,11 +18,11 @@ super + control + {plus, asterisk}
 super + control + {minus, underscore}
 	mpc volume -{5,15} && mpd-volume-message
 # Seek foward in song
-super + {_,shift +} udiaeresis
-	mpc seek +{10,120}
+super + udiaeresis
+	mpc seek +10
 # Seek backward in song
-super + {_,shift +} adiaeresis
-	mpc seek -{10,120}
+super + adiaeresis
+	mpc seek -10
 
 # media keys
 

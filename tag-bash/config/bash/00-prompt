@@ -63,6 +63,7 @@ _after_command() {
 PS1="\
 ${ANSI_BOLD}\
 ${ANSI_RED}[${exit_status} \
+${ANSI_YELLOW}$(jobs -p | wc -l) \
 ${ANSI_CYAN}${elapsed}\
 ${ANSI_YELLOW}$prompt_user${ANSI_GREEN}@${ANSI_BLUE}$prompt_host \
 ${ANSI_GREEN}$(local_ip)\

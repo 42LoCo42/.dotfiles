@@ -1,7 +1,7 @@
 steps:
   - records:
       equals: "indent 2"
-      first_field: "indent 2"
+      first_field: "indent 0"
       field_comment: 2
       deriving: 2
       via: "indent 2"

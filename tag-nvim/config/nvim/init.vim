@@ -18,10 +18,12 @@ Plug 'vimwiki/vimwiki'
 Plug 'nbouscal/vim-stylish-haskell'
 " Languages
 Plug 'PotatoesMaster/i3-vim-syntax'
+Plug 'andy-morris/happy.vim'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'ollykel/v-vim'
 Plug 'petRUShka/vim-opencl'
+Plug 'unisonweb/unison', { 'branch': 'trunk', 'rtp': 'editor-support/vim' }
 Plug 'zah/nim.vim'
 Plug 'ziglang/zig.vim'
 call plug#end()

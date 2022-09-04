@@ -27,9 +27,6 @@
   '(show-paren-match :bold t :background "#303030"))
 (setq rainbow-delimiters-max-face-count 10)
 
-;; indent guides
-(setq highlight-indent-guides-responsive 'top)
-
 ;; switch-window
 (setq switch-window-input-style 'minibuffer)
 (setq switch-window-increase 4)
@@ -50,33 +47,33 @@
 (setq elcord-use-major-mode-as-main-icon t)
 (setq elcord-editor-icon "emacs_icon")
 (setq elcord-buffer-details-format-function #'my/elcord-buffer-details-format)
-(setq elcord-client-id "856822158574878751")
-(setq elcord-mode-icon-alist '((Man-mode . "man-mode_icon")
-                               (c++-mode . "cpp-mode_icon")
-                               (c-mode . "c-mode_icon")
-                               (comint-mode . "comint-mode_icon")
-                               (compilation-mode . "compilation-mode_icon")
-                               (css-mode . "css-mode_icon")
-                               (emacs-lisp-mode . "emacs_icon")
-                               (gdb-breakpoints-mode . "comint-mode_icon")
-                               (gdb-frames-mode . "comint-mode_icon")
-                               (gdb-locals-mode . "comint-mode_icon")
-                               (haskell-interactive-mode . "haskell-mode_icon")
-                               (haskell-mode . "haskell-mode_icon")
-                               (lisp-mode . "lisp-mode_icon")
-                               (magit-mode . "git-mode_icon")
-                               (makefile-mode . "compilation-mode_icon")
-                               (mhtml-mode . "mhtml-mode_icon")
-                               (nim-mode . "nim-mode_icon")
-                               (opencl-mode . "opencl-mode_icon")
-                               (org-mode . "org-mode_icon")
-                               (pdf-view-mode . "pdf-view-mode_icon")
-                               (python-mode . "python-mode_icon")
-                               (sh-mode . "vterm-mode_icon")
-                               (tcl-mode . "tcl-mode_icon")
-                               (v-mode . "v-mode_icon")
-                               (vterm-mode . "vterm-mode_icon")
-                               (zig-mode . "zig-mode_icon")))
+;; (setq elcord-client-id "856822158574878751")
+;; (setq elcord-mode-icon-alist '((Man-mode . "man-mode_icon")
+;;                                (c++-mode . "cpp-mode_icon"))
+;;                                (c-mode . "c-mode_icon"))
+;;                                (comint-mode . "comint-mode_icon"))
+;;                                (compilation-mode . "compilation-mode_icon"))
+;;                                (css-mode . "css-mode_icon"))
+;;                                (emacs-lisp-mode . "emacs_icon"))
+;;                                (gdb-breakpoints-mode . "comint-mode_icon"))
+;;                                (gdb-frames-mode . "comint-mode_icon"))
+;;                                (gdb-locals-mode . "comint-mode_icon"))
+;;                                (haskell-interactive-mode . "haskell-mode_icon"))
+;;                                (haskell-mode . "haskell-mode_icon"))
+;;                                (lisp-mode . "lisp-mode_icon"))
+;;                                (magit-mode . "git-mode_icon"))
+;;                                (makefile-mode . "compilation-mode_icon"))
+;;                                (mhtml-mode . "mhtml-mode_icon"))
+;;                                (nim-mode . "nim-mode_icon"))
+;;                                (opencl-mode . "opencl-mode_icon"))
+;;                                (org-mode . "org-mode_icon"))
+;;                                (pdf-view-mode . "pdf-view-mode_icon"))
+;;                                (python-mode . "python-mode_icon"))
+;;                                (sh-mode . "vterm-mode_icon"))
+;;                                (tcl-mode . "tcl-mode_icon"))
+;;                                (v-mode . "v-mode_icon"))
+;;                                (vterm-mode . "vterm-mode_icon"))
+;;                                (zig-mode . "zig-mode_icon"))
 
 ;; centaur-tabs
 (setq centaur-tabs-gray-out-icons nil)
@@ -193,6 +190,15 @@
     (backward-char))
   (forward-char))
 
+(defun my/haskell-setup ()
+  "Setup a Haskell work environment."
+  (interactive)
+  (haskell-interactive-switch)
+  (my/split-and-switch-below)
+  (call-interactively #'+vterm/here)
+  (vterm-send-string "ghcid\n")
+  (next-window-any-frame))
+
 ;;; HOOKS
 
 ;; enable tabs everywhere
@@ -251,9 +257,20 @@
 (use-package! nim-mode
   :hook (nim-mode . lsp))
 
+;; haskell-mode: format on save
+(use-package! haskell-mode
+  :config
+  (custom-set-variables '(haskell-stylish-on-save t)))
+
 (use-package centaur-tabs
   :config
   (centaur-tabs-group-by-projectile-project))
+
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-auto-enabled nil)
+  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  (setq highlight-indent-guides-responsive nil))
 
 ;;; MODES
 (when (zerop (shell-command "pgrep -i discord")) (elcord-mode))
@@ -301,6 +318,8 @@
  "<f5>"        #'my/compile
  "C-,"         #'mc/mark-previous-like-this
  "C-."         #'mc/mark-next-like-this
+ "C-c C-h"     #'my/haskell-setup
+ "C-c C-i"     (lambda () (interactive) (switch-to-buffer "*idle*"))
  "C-c C-o"     #'my/open-zathura
  "C-c C-p"     #'my/ps2pdf
  "C-c x"       #'my/switch-to-scratch-buffer
@@ -312,5 +331,19 @@
 (add-hook! sly-mrepl-mode
   (bind-key "C-n" #'sly-mrepl-next-input-or-button 'sly-mrepl-mode-map)
   (bind-key "C-p" #'sly-mrepl-previous-input-or-button 'sly-mrepl-mode-map))
+
 (add-hook! emacs-lisp-mode (bind-key "M-RET" #'eros-eval-last-sexp))
+
 (add-hook! scheme-mode (bind-key "M-RET" #'geiser-eval-last-sexp))
+
+(add-hook! haskell-interactive-mode
+  (bind-key "C-p" #'haskell-interactive-mode-history-previous 'haskell-interactive-mode-map)
+  (bind-key "C-n" #'haskell-interactive-mode-history-next 'haskell-interactive-mode-map)
+  (bind-key "C-r"
+   (lambda ()
+     (interactive)
+     (insert ":r")
+     (haskell-interactive-mode-return))
+   'haskell-interactive-mode-map))
+
+;;; END

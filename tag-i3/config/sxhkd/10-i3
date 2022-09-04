@@ -7,8 +7,6 @@ super + h
 	i3-msg "move scratchpad"
 super + shift + h
 	i3-msg "scratchpad show"
-super + shift + s
-	i3-msg "sticky toggle"
 super + q
 	i3-msg "kill"
 super + shift + q

@@ -4,6 +4,7 @@
 alias ccat="highlight --out-format=ansi"
 alias diff="diff --color=auto"
 alias grep="grep --color=auto"
+alias ip="ip -c"
 alias ls="ls -hA --color=auto --group-directories-first"
 alias mkdir="mkdir -pv"
 
@@ -13,7 +14,8 @@ alias rl="exec \$SHELL -l"
 
 # larger tools
 alias calcurse="calcurse -D ~/.config/calcurse"
-alias e="\$EDITOR"
+alias e="\$EDITOR -p"
+alias vim="\$EDITOR -p"
 alias f="\$FILE"
 alias ffmpeg="ffmpeg -hide_banner"
 alias mpv='mpv --input-ipc-server=/tmp/mpvsoc$(date +%s)'
@@ -28,3 +30,9 @@ alias ytm="yt -x -o '%(uploader)s - %(title)s.%(ext)s'"
 # git
 alias d="git --git-dir=\$HOME/.dotfiles/.git --work-tree=\$HOME/.dotfiles"
 alias g="git"
+
+# kubernetes
+alias k="kubectl"
+alias kc="kubectx"
+alias kn="kubens"
+alias ksvc="kubectl get services -A | grep LoadBalancer"
