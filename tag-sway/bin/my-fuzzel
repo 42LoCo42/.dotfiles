@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+exec fuzzel \
+	-T "foot -e" \
+	-t ebdbb2ff \
+	-b 282828e6 \
+	-S 000000ff \
+	-s ebdbb2ff \
+	"$@"
