@@ -13,13 +13,8 @@ local_ip() {
 	ip r get 1.1 2>/dev/null | sed -En 's|.*src ([^ ]*).*|\1 |p'
 }
 
-git_repo() {
-	git rev-parse --show-toplevel 2>/dev/null \
-	| sed 's|.*/||g' | sed -E 's|^(.)| \1|g'
-}
-
 git_branch() {
-	git branch 2>/dev/null | grep -E "^\*" | sed -E 's|^\* |:|g'
+	git branch 2>/dev/null | sed -En 's|^\*||p'
 }
 
 format_time() {
@@ -68,8 +63,7 @@ ${ANSI_CYAN}${elapsed}\
 ${ANSI_YELLOW}$prompt_user${ANSI_GREEN}@${ANSI_BLUE}$prompt_host \
 ${ANSI_GREEN}$(local_ip)\
 ${ANSI_PURPLE}\w\
-${ANSI_CYAN}$(git_repo)\
-$(git_branch)\
+${ANSI_CYAN}$(git_branch)\
 ${ANSI_RED}]\n${ANSI_WHITE}λ \
 ${ANSI_RESET}\
 "

@@ -23,3 +23,9 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p --paging=always'"
 export GNUPGHOME="$HOME/.local/share/gnupg"
 export XCOMPOSEFILE="$HOME/.config/xcompose"
 # export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+
+export QT_QPA_PLATFORM=wayland
+export SDL_VIDEODRIVER=wayland
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_DESKTOP=sway
+export _JAVA_AWT_WM_NONREPARENTING=1
