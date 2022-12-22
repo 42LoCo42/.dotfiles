@@ -44,7 +44,7 @@ input type:touchpad {
 # 	unlock      'swaymsg "output * dpms on"'
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+	dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
 exec my-audio
 exec mpd
@@ -55,11 +55,12 @@ exec flameshot
 bindsym $mod+Return       exec terminal
 bindsym $mod+Shift+Return exec $term
 
+bindsym $mod+a       exec my-toggle-calc
 bindsym $mod+Shift+a exec $term -e pulsemixer
 bindsym $mod+c       exec discord
 bindsym $mod+Shift+c exec pkill -i discord; sleep 1; pkill -i discord
 bindsym $mod+d       exec $menu
-bindsym $mod+e       exec emacs
+bindsym $mod+e       exec emacs -r
 bindsym $mod+i       exec $term -e htop
 bindsym $mod+m       exec $term -e ncmpcpp
 bindsym $mod+w       exec firefox
@@ -85,8 +86,9 @@ bindsym $mod+Control+plus  exec mpc vol +5
 bindsym $mod+Control+minus exec mpc vol -5
 
 # special
-bindsym Print       exec grim -g "$(slurp)" - | wl-copy
-bindsym Shift+Print exec grim
+bindsym Print         exec grim -g "$(slurp)" - | wl-copy
+bindsym Shift+Print   exec grim
+bindsym Control+Print exec flameshot gui
 
 bindsym XF86MonBrightnessDown exec xbacklight -set "$(($(xbacklight -get) - 10))"
 bindsym XF86MonBrightnessUp   exec xbacklight -set "$(($(xbacklight -get) + 10))"
