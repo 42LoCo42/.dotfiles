@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# shellcheck disable=SC1090
-echo "$0" | grep "bash$" >/dev/null && \
-[ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"

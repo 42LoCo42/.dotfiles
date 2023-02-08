@@ -1,8 +1,0 @@
-[module/filesystem]
-type = internal/fs
-interval = 25
-
-mount-0 = /
-
-label-mounted = " %percentage_used%%"
-format-mounted-underline = #0a81f5

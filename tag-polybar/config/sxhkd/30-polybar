@@ -1,2 +1,0 @@
-super + b
-	pkill polybar || "$HOME/.config/polybar/start"

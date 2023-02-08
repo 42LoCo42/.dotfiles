@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# Start Xorg if in tty1 and this user has no Xorg running.
-[ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg -U "$USER" >/dev/null && \
-exec dbus-run-session sx

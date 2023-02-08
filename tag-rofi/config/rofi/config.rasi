@@ -1,4 +1,0 @@
-configuration {
-	theme: "/usr/share/rofi/themes/glue_pro_blue.rasi";
-	kb-cancel: "Control+g,Super+q,Super+a";
-}

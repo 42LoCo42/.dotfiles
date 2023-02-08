@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-pipewire &
-wireplumber &
-pipewire-pulse &

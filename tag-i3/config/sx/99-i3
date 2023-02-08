@@ -1,2 +1,0 @@
-#!/usr/bin/env sh
-exec config-wrapper "$HOME/.config/i3" i3 -c

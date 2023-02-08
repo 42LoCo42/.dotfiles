@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-xset dpms 1 1 3
-xset dpms force off
-mpc pause
-playerctl pause
-discord-status idle &
-i3lock -n -i "$HOME/.config/wall.png"
-xset dpms 0 0 600
-discord-status online &
