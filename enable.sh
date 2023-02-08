@@ -7,7 +7,7 @@ hw="lo/hardware-configuration.nix"
 mount \
 	none -t overlay \
 	-o ro \
-	-o lowerdir=lo \
-	-o upperdir=hi \
-	-o workdir=work \
+	-o lowerdir="$PWD/lo" \
+	-o upperdir="$PWD/hi" \
+	-o workdir="$PWD/work" \
 	/etc/nixos
