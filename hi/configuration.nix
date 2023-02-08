@@ -1,4 +1,4 @@
-{ config, pkgs, home-manager, ... }: {
+{ self, config, pkgs, home-manager, ... }: {
   imports = [
     ./hardware-configuration.nix
     home-manager.nixosModule
@@ -6,9 +6,11 @@
 
   system.stateVersion = "22.11";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.tmpOnTmpfs = true;
   boot.kernelParams = [
     "vt.default_red=0x28,0xcc,0x98,0xd7,0x45,0xb1,0x68,0xa8,0x92,0xfb,0xb8,0xfa,0x83,0xd3,0x8e,0xeb"
     "vt.default_grn=0x28,0x24,0x97,0x99,0x85,0x62,0x9d,0x99,0x83,0x49,0xbb,0xbd,0xa5,0x86,0xc0,0xdb"
@@ -30,14 +32,16 @@
   fonts = {
     fonts = with pkgs; [
       font-awesome
-      iosevka
       noto-fonts
       noto-fonts-emoji
+      (nerdfonts.override {
+        fonts = [ "Iosevka" ];
+      })
     ];
 
     fontconfig.defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
-      monospace = [ "Iosevka" ];
+      monospace = [ "IosevkaNerdFont" ];
       sansSerif = [ "Noto Sans" ];
       serif = [ "Noto Serif" ];
     };
@@ -85,12 +89,22 @@
       neofetch = "hyfetch";
     };
 
+    xdg = {
+      enable = true;
+      userDirs.enable = true;
+    };
+
     home.packages = with pkgs; [
       file
       fuzzel
+      lsof
       mpv
       pulsemixer
     ];
+
+    services = {
+      mpd.enable = true;
+    };
 
     programs = {
       bash = {
@@ -100,7 +114,7 @@
       };
 
       starship = {
-        # enable = true;
+        enable = true;
       };
 
       git = {
@@ -377,15 +391,7 @@
               "1" = "";
               "2" = "";
               "3" = "";
-              "4" = "4";
-              "5" = "5";
-              "6" = "6";
-              "7" = "7";
-              "8" = "8";
               "9" = "";
-              urgent  = "";
-              focused = "";
-              default = "";
             };
           };
         };
@@ -410,8 +416,6 @@
         modifier = "Mod4";
 
         focus.followMouse = true;
-        menu = "${pkgs.fuzzel}/bin/fuzzel";
-        terminal = "${pkgs.foot}/bin/foot";
 
         window = {
           border = 1;
@@ -439,7 +443,7 @@
         };
 
         output."*" = {
-          bg = "${pkgs.sway}/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
+          bg = "${self}/wallpaper.jpg fill";
           mode = "1920x1080";
         };
 
@@ -451,10 +455,62 @@
 
         keybindings = let
           term = "${pkgs.foot}/bin/foot";
-          mod = config.wayland.windowManager.sway.config.modifier;
-        in lib.mkOptionDefault {
-          "${mod}+i" = "exec ${term} -e ${pkgs.htop}/bin/htop";
+          menu = "${pkgs.fuzzel}/bin/fuzzel";
+          mod  = config.wayland.windowManager.sway.config.modifier;
+        in {
+          # programs
+          "${mod}+Return"       = "exec ${term}";
+          "${mod}+Shift+Return" = "exec ${term}";
+
           "${mod}+Shift+a" = "exec ${term} -e ${pkgs.pulsemixer}/bin/pulsemixer";
+          "${mod}+c"       = "exec ${pkgs.discord}/bin/discord";
+          "${mod}+d"       = "exec ${menu}";
+          "${mod}+e"       = "exec ${pkgs.emacs}/bin/emacs";
+          "${mod}+i"       = "exec ${term} -e ${pkgs.htop}/bin/htop";
+          "${mod}+m"       = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
+          "${mod}+w"       = "exec ${pkgs.firefox}/bin/firefox";
+
+          # WM
+          "${mod}+f"       = "fullscreen";
+          "${mod}+Shift+f" = "floating toggle";
+          "${mod}+h"       = "move scratchpad";
+          "${mod}+Shift+h" = "scratchpad show";
+          "${mod}+q"       = "kill";
+
+          "${mod}+Tab"     = "workspace back_and_forth";
+          "${mod}+space"   = "focus mode_toggle";
+
+          "${mod}+Left"  = "focus left";
+          "${mod}+Right" = "focus right";
+          "${mod}+Up"    = "focus up";
+          "${mod}+Down"  = "focus down";
+
+          "${mod}+Shift+Left"  = "move left";
+          "${mod}+Shift+Right" = "move right";
+          "${mod}+Shift+Up"    = "move up";
+          "${mod}+Shift+Down"  = "move down";
+
+          "${mod}+0" = "workspace number 0";
+          "${mod}+1" = "workspace number 1";
+          "${mod}+2" = "workspace number 2";
+          "${mod}+3" = "workspace number 3";
+          "${mod}+4" = "workspace number 4";
+          "${mod}+5" = "workspace number 5";
+          "${mod}+6" = "workspace number 6";
+          "${mod}+7" = "workspace number 7";
+          "${mod}+8" = "workspace number 8";
+          "${mod}+9" = "workspace number 9";
+
+          "${mod}+Shift+0" = "move container to workspace number 0";
+          "${mod}+Shift+1" = "move container to workspace number 1";
+          "${mod}+Shift+2" = "move container to workspace number 2";
+          "${mod}+Shift+3" = "move container to workspace number 3";
+          "${mod}+Shift+4" = "move container to workspace number 4";
+          "${mod}+Shift+5" = "move container to workspace number 5";
+          "${mod}+Shift+6" = "move container to workspace number 6";
+          "${mod}+Shift+7" = "move container to workspace number 7";
+          "${mod}+Shift+8" = "move container to workspace number 8";
+          "${mod}+Shift+9" = "move container to workspace number 9";
         };
 
         workspaceAutoBackAndForth = true;

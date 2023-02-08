@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
 ((UID != 0)) && exec sudo "$0"
 
-files=(configuration.nix flake.nix flake.lock)
-out="/etc/nixos"
+hw="lo/hardware-configuration.nix"
+[ -f "$hw" ] || nixos-generate-config --show-hardware-config > "$hw"
 
-for f in "${files[@]}"; do
-	target="$out/$f"
-	umount -q "$target"
-	mount -o ro,bind "$f" "$target"
-done
-
-mkdir -p "$out/extra"
-mount -o ro,bind extra "$out/extra"
-
-nixos-generate-config --show-hardware-config > /etc/nixos/hardware-configuration.nix
+mount \
+	none -t overlay \
+	-o ro \
+	-o lowerdir=lo \
+	-o upperdir=hi \
+	-o workdir=work \
+	/etc/nixos
