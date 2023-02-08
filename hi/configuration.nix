@@ -104,6 +104,11 @@
 
     services = {
       mpd.enable = true;
+
+      gpg-agent = {
+        enable = true;
+        pinentryFlavor = "qt";
+      };
     };
 
     programs = {
@@ -117,11 +122,17 @@
         enable = true;
       };
 
+      gpg = {
+        enable = true;
+      };
+
       git = {
         enable = true;
         delta.enable = true;
+
         userName = "Leon Schumacher";
         userEmail = "leonsch@protonmail.com";
+
         aliases = {
           a  = "add";
           c  = "commit";
@@ -132,6 +143,11 @@
           r  = "restore";
           s  = "status";
           sf = "submodule foreach";
+        };
+
+        signing = {
+          key = "C743EE077172986F860FC0FE2F6FE1420970404C";
+          signByDefault = true;
         };
       };
 
