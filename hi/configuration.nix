@@ -85,10 +85,17 @@
   home-manager.users.leonsch = { config, lib, pkgs, ... }: {
     home.stateVersion = "22.11";
     home.shellAliases = {
+      cd = "mycd";
+      fuck = "sudo $(history -p !!)";
       g = "git";
+      ip = "ip -c";
+      mkdir = "mkdir -pv";
       neofetch = "hyfetch";
+      rl = "exec \\$SHELL -l";
       switch = "sudo mount -o remount /etc/nixos && sudo nixos-rebuild switch";
       upgrade = "cd ${config.home.homeDirectory}/dotfiles/hi && nix flake update";
+      vi = "vi -p";
+      vim = "vim -p";
     };
 
     xdg = {
@@ -118,8 +125,25 @@
         enable = true;
         enableCompletion = true;
         historyControl = [ "ignoredups" "ignorespace" ];
+        shellOptions = [ "autocd" ];
+
+        initExtra = ''
+          source "${pkgs.complete-alias}/bin/complete_alias"
+          while read -r name; do
+              complete -F _complete_alias "$name"
+          done < <(alias -p | sed 's|=.*||; s|.* ||')
+
+          bind 'set enable-bracketed-paste on'
+          bind 'set completion-ignore-case on'
+          bind '"\t":menu-complete'
+
+          mycd() {
+              z "$@" && ls -A
+          }
+        '';
       };
 
+      zoxide.enable = true;
       starship.enable = true;
 
       gpg.enable = true;
