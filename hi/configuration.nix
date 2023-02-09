@@ -87,6 +87,8 @@
     home.shellAliases = {
       g = "git";
       neofetch = "hyfetch";
+      switch = "sudo mount -o remount /etc/nixos && sudo nixos-rebuild switch";
+      upgrade = "cd ${config.home.homeDirectory}/dotfiles/hi && nix flake update";
     };
 
     xdg = {
@@ -118,13 +120,9 @@
         historyControl = [ "ignoredups" "ignorespace" ];
       };
 
-      starship = {
-        enable = true;
-      };
+      starship.enable = true;
 
-      gpg = {
-        enable = true;
-      };
+      gpg.enable = true;
 
       git = {
         enable = true;
@@ -243,6 +241,7 @@
         plugins = with allPlugins; [
           airline
           autoclose
+          gitgutter
           vim-nix
           { plugin = suda-vim; config = "let g:suda_smart_edit = 1"; }
         ];

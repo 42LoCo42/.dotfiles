@@ -6,7 +6,6 @@ hw="lo/hardware-configuration.nix"
 
 mount \
 	none -t overlay \
-	-o ro \
 	-o lowerdir="$PWD/lo" \
 	-o upperdir="$PWD/hi" \
 	-o workdir="$PWD/work" \
