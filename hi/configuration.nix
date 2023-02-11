@@ -100,45 +100,48 @@
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.users.leonsch = { config, lib, pkgs, ... }: {
-    home.stateVersion = "22.11";
-    home.shellAliases = {
-      cd = "mycd";
-      fuck = "sudo $(history -p !!)";
-      g = "git";
-      ip = "ip -c";
-      mkdir = "mkdir -pv";
-      neofetch = "hyfetch";
-      rl = "exec \\$SHELL -l";
-      switch = "sudo mount -o remount /etc/nixos && sudo nixos-rebuild switch";
-      upgrade = "cd ${config.home.homeDirectory}/dotfiles/hi && nix flake update";
-      vi = "vi -p";
-      vim = "vim -p";
+    home = let mybin = "${config.home.homeDirectory}/bin"; in {
+      stateVersion = "22.11";
+
+      shellAliases = {
+        cd = "mycd";
+        fuck = "sudo $(history -p !!)";
+        g = "git";
+        ip = "ip -c";
+        mkdir = "mkdir -pv";
+        neofetch = "hyfetch";
+        rl = "exec \\$SHELL -l";
+        switch = "sudo mount -o remount /etc/nixos && sudo nixos-rebuild switch";
+        upgrade = "cd ${config.home.homeDirectory}/dotfiles/hi && nix flake update";
+        vi = "vi -p";
+        vim = "vim -p";
+      };
+
+      packages = with pkgs; [
+        file
+        fuzzel
+        lsof
+        mpv
+        pulsemixer
+        wl-clipboard
+      ];
+
+      sessionPath = [ mybin ];
+
+      file = {
+        "${mybin}/prompt" = {
+          executable = true;
+          source = ./prompt.sh;
+        };
+      };
     };
 
     xdg = {
       enable = true;
       userDirs.enable = true;
 
-      configFile."fuzzel/fuzzel.ini".text = ''
-        [main]
-        terminal = foot -e
-        font = monospace:size=20
-
-        [colors]
-        text           = ebdbb2ff
-        background     = 282828e6
-        selection-text = ebdbb2ff
-        selection      = 000000ff
-      '';
+      configFile."fuzzel/fuzzel.ini".text = builtins.readFile ./fuzzel.ini;
     };
-
-    home.packages = with pkgs; [
-      file
-      fuzzel
-      lsof
-      mpv
-      pulsemixer
-    ];
 
     services = {
       mpd.enable = true;
@@ -155,25 +158,14 @@
         enableCompletion = true;
         historyControl = [ "ignoredups" "ignorespace" ];
         shellOptions = [ "autocd" ];
-
-        initExtra = ''
-          source "${pkgs.complete-alias}/bin/complete_alias"
-          while read -r name; do
-              complete -F _complete_alias "$name"
-          done < <(alias -p | sed 's|=.*||; s|.* ||')
-
-          bind 'set enable-bracketed-paste on'
-          bind 'set completion-ignore-case on'
-          bind '"\t":menu-complete'
-
-          mycd() {
-              z "$@" && ls -A
-          }
-        '';
+        initExtra = builtins.replaceStrings
+          [ "@{pkgs.complete-alias}" ]
+          [ "${pkgs.complete-alias}" ]
+          (builtins.readFile ./bashrc);
       };
 
-      zoxide.enable = true;
       starship.enable = true;
+      zoxide.enable = true;
 
       gpg.enable = true;
 
@@ -279,16 +271,7 @@
 
         coc = {
           enable = true;
-          pluginConfig = ''
-            inoremap <silent><expr> <TAB>
-                  \ coc#pum#visible() ? coc#pum#next(1) :
-                  \ CheckBackspace() ? "\<Tab>" :
-                  \ coc#refresh()
-            inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-            inoremap <silent><expr> <tab> coc#pum#visible() ? coc#pum#confirm()
-                                          \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-          '';
+          pluginConfig = builtins.readFile ./coc.vim;
         };
 
         plugins = with allPlugins; [
@@ -299,85 +282,7 @@
           { plugin = suda-vim; config = "let g:suda_smart_edit = 1"; }
         ];
 
-        extraConfig = ''
-          filetype plugin on
-          syntax on
-          set bg=light
-          set go=a
-          set mouse=a
-          set hlsearch
-          set ignorecase
-          set smartcase
-          set clipboard+=unnamedplus
-          set nocompatible
-          set encoding=utf-8
-          set relativenumber
-          set tabstop=4
-          set shiftwidth=4
-          set wildmode=longest,list,full
-          set updatetime=100
-          set colorcolumn=80
-          highlight ColorColumn ctermbg=black
-          highlight clear SignColumn
-          set list
-          set listchars=tab:→\ ,extends:»,precedes:«,trail:▒
-
-          " Emacs moves
-          inoremap <C-a> <Esc>I
-          inoremap <C-b> <Left>
-          inoremap <C-e> <Esc>A
-          inoremap <C-f> <Right>
-          inoremap <C-n> <Down>
-          inoremap <C-p> <Up>
-          nnoremap <C-b> <Left>
-          nnoremap <C-f> <Right>
-          vnoremap <C-b> <Left>
-          vnoremap <C-f> <Right>
-
-          " Exit with C-d
-          cnoremap <C-d> <Esc>
-          inoremap <C-d> <Esc>
-          nnoremap <C-d> <Esc>
-          vnoremap <C-d> <Esc>
-
-          " Some nice things
-          inoremap <C-s> <Esc>:w<CR>a
-          inoremap <C-y> <Esc><C-r>a
-          inoremap <C-z> <Esc>ua
-          nnoremap <C-d> :q<CR>
-          nnoremap <C-e> :Explore<CR>
-          nnoremap <C-s> :w<CR>
-          vnoremap <C-s> :sort<CR>
-
-          " Tools for tabs
-          inoremap <C-PageDown> <Esc>:tabnext<CR>
-          inoremap <C-PageUp> <Esc>:tabprevious<CR>
-          nnoremap <C-End> :tabnew<CR>:edit<Space>
-
-          " Shortcutting split navigation, saving a keypress:
-          map <C-h> <C-w>h
-          map <C-j> <C-w>j
-          map <C-k> <C-w>k
-          map <C-l> <C-w>l
-
-          " Replace all is aliased to S.
-          nnoremap S :%s//g<Left><Left>
-
-          " Remove trailing whitespace
-          noremap <M-Space> :%s/\s\+$//e<CR>
-
-          " Auto-completion
-          inoremap /* /*<space><space>*/<Esc>2hi
-          inoremap /** /**<space><space>*/<Esc>2hi
-          inoremap // //<space>
-          lua require("autoclose").setup({})
-
-          " Exit terminal with Escape
-          tnoremap <Esc> <C-\><C-n>
-
-          " dark coc menu
-          highlight Pmenu ctermfg=white ctermbg=black
-        '';
+        extraConfig = builtins.readFile ./init.vim;
       };
 
       hyfetch = {
@@ -637,6 +542,12 @@
           "${mod}+i"       = "exec ${term} -e ${pkgs.htop}/bin/htop";
           "${mod}+m"       = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
           "${mod}+w"       = "exec ${pkgs.firefox}/bin/firefox";
+
+          # special
+          "${mod}+Backspace"         = "exec prompt Shutdown? poweroff";
+          "${mod}+Shift+Backspace"   = "exec prompt Reboot?   reboot";
+          "${mod}+Control+Backspace" = "exec prompt Suspend?  systemctl suspend";
+          "${mod}+Escape"            = "exec prompt Logout?   pkill sway";
 
           # WM
           "${mod}+f"       = "fullscreen";
