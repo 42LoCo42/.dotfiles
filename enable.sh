@@ -2,7 +2,7 @@
 ((UID != 0)) && exec sudo "$0"
 
 hw="lo/hardware-configuration.nix"
-mkdir -pv "$(dirname "$hw")"
+mkdir -pv "$(dirname "$hw")" "work"
 [ -f "$hw" ] || nixos-generate-config --show-hardware-config > "$hw"
 
 mount \
