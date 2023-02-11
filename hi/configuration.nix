@@ -49,6 +49,7 @@
 
   programs = {
     sway.enable = true;
+    command-not-found.enable = false;
   };
 
   services = {
