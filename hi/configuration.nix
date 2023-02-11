@@ -32,7 +32,6 @@
 
   fonts = {
     fonts = with pkgs; [
-      font-awesome
       noto-fonts
       noto-fonts-emoji
       (nerdfonts.override {
@@ -424,9 +423,12 @@
 
       waybar = {
         enable = true;
+        style = ./waybar.css;
+
         settings.mainBar = {
           position = "top";
-          spacing = 10;
+          spacing = 2;
+          ipc = true;
 
           modules-left = [
             "sway/workspaces"
@@ -457,10 +459,119 @@
             format-icons = {
               "0" = "";
               "1" = "";
-              "2" = "";
+              "2" = "󰙯";
               "3" = "";
-              "9" = "";
+              "9" = "󰌆";
             };
+          };
+
+          mpd = {
+            format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%  ";
+            format-stopped = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped 󰝛 ";
+            format-disconnected = "Disconnected 󰀦 ";
+            unknown-tag = "";
+            interval = 2;
+            consume-icons = {
+              on = " ";
+            };
+            random-icons = {
+              on = " ";
+            };
+            repeat-icons = {
+              on = "󰑖 ";
+            };
+            single-icons = {
+              on = "󰑘 ";
+            };
+            state-icons = {
+              playing = " ";
+              paused = " ";
+            };
+            tooltip-format = "MPD (connected)";
+            tooltip-format-disconnected = "MPD (disconnected)";
+          };
+
+          pulseaudio = {
+            format = "{volume}% {icon} {format_source}";
+            format-bluetooth = "{volume}% {icon} {format_source}";
+            format-bluetooth-muted = " {icon} {format_source}";
+            format-muted = "  {format_source}";
+            format-source = "{volume}% ";
+            format-source-muted = "";
+            format-icons = {
+              headphone = "";
+              hands-free = "󰜟";
+              headset = "󰋎";
+              phone = "";
+              portable = "";
+              car = "";
+              default = [ "" "" "󰕾" "" ];
+            };
+          };
+
+          network = {
+            format-wifi = "{essid} ({signalStrength}%)  ";
+            format-ethernet = "{ipaddr}/{cidr} 󰈀 ";
+            tooltip-format = "{ifname} via {gwaddr} 󰈀 ";
+            format-linked = "{ifname} (No IP) 󰈀 ";
+            format-disconnected = "Disconnected 󰀦 ";
+            format-alt = "{ifname}: {ipaddr}/{cidr}";
+          };
+
+          cpu = {
+            format = "{usage}%  ";
+            tooltip = false;
+          };
+
+          memory = {
+            format = "{}%  ";
+          };
+
+          disk = {
+            format = "{percentage_used}% 󰋊 ";
+          };
+
+          temperature = {
+            hwmon-path = "/sys/class/hwmon/hwmon4/temp1_input";
+            critical-threshold = 60;
+            format-critical = "{temperatureC}°C {icon}";
+            format = "{temperatureC}°C {icon}";
+            format-icons = [ "" "" "" "" "" ];
+          };
+
+          backlight = {
+            device = "amdgpu";
+            format = "{percent}% {icon}";
+            format-icons = [ "󰃚" "󰃛" "󰃜" "󰃝" "󰃞" "󰃟" "󰃠" ];
+          };
+
+          battery = {
+            states = {
+              warning = 30;
+              critical = 15;
+            };
+
+            format = "{time} {capacity}% {icon}";
+            format-charging = "{time} {capacity}% 󰂄";
+            format-plugged = "{capacity}% ";
+            format-icons = [ "󰢟" "󱊤" "󱊥" "󱊦" ];
+          };
+
+          clock = {
+            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+            format-alt = "{:%Y-%m-%d}";
+          };
+
+          idle_inhibitor = {
+            format = "{icon} ";
+            format-icons = {
+              activated = "󰈈";
+              deactivated = "󰈉";
+            };
+          };
+
+          tray = {
+            spacing = 10;
           };
         };
       };
