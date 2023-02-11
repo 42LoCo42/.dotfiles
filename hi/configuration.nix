@@ -11,6 +11,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmpOnTmpfs = true;
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
   boot.kernelParams = [
     "vt.default_red=0x28,0xcc,0x98,0xd7,0x45,0xb1,0x68,0xa8,0x92,0xfb,0xb8,0xfa,0x83,0xd3,0x8e,0xeb"
     "vt.default_grn=0x28,0x24,0x97,0x99,0x85,0x62,0x9d,0x99,0x83,0x49,0xbb,0xbd,0xa5,0x86,0xc0,0xdb"
@@ -72,6 +73,19 @@
     };
   };
 
+  systemd.mounts = [{
+    what = "dotfiles";
+    where = "/etc/nixos";
+
+    after = [ "home.mount" ];
+    wantedBy = [ "local-fs.target" ];
+
+    type = "overlay";
+    options = let
+      dots = "${config.users.users.leonsch.home}/dotfiles";
+    in "lowerdir=${dots}/lo,upperdir=${dots}/hi,workdir=${dots}/work";
+  }];
+
   users.mutableUsers = false;
   users.users.leonsch = {
     isNormalUser = true;
@@ -101,6 +115,18 @@
     xdg = {
       enable = true;
       userDirs.enable = true;
+
+      configFile."fuzzel/fuzzel.ini".text = ''
+        [main]
+        terminal = foot -e
+        font = monospace:size=20
+
+        [colors]
+        text           = ebdbb2ff
+        background     = 282828e6
+        selection-text = ebdbb2ff
+        selection      = 000000ff
+      '';
     };
 
     home.packages = with pkgs; [
@@ -436,18 +462,6 @@
         };
       };
     };
-
-    xdg.configFile."fuzzel/fuzzel.ini".text = ''
-      [main]
-      terminal = foot -e
-      font = monospace:size=20
-
-      [colors]
-      text           = ebdbb2ff
-      background     = 282828e6
-      selection-text = ebdbb2ff
-      selection      = 000000ff
-    '';
 
     wayland.windowManager.sway = {
       enable = true;
