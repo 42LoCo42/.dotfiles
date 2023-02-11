@@ -85,6 +85,9 @@
       dots = "${config.users.users.leonsch.home}/dotfiles";
     in "lowerdir=${dots}/lo,upperdir=${dots}/hi,workdir=${dots}/work";
   }];
+  systemd.tmpfiles.rules = [
+    "d /var/cache/tuigreet 0755 greeter greeter"
+  ];
 
   users.mutableUsers = false;
   users.users.leonsch = {
