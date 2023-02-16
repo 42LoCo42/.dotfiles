@@ -2,8 +2,16 @@
 Beware: this config is still under construction (it takes a while to port all my old dotfiles over).
 
 ## Installation
-From the NixOS live system, after mounting your partitions on `/mnt`, run `./install.sh`.\
-Reboot and log in, then clone this repo with `git clone https://github.com/42LoCo42/.dotfiles -b nixos dotfiles`.\
+From the NixOS live system, after mounting your partitions on `/mnt`,
+start the installation process like this:
+```sh
+nix-shell -p git
+git clone https://github.com/42LoCo42/.dotfiles -b nixos dotfiles
+cd dotfiles
+# edit/personalize hi/configuration.nix now...
+./install.sh
+``` 
+Reboot and log in, then clone this repo again like before.\
 Finally, run `./postinstall.sh` to create local folders and files required for the overlay mount.
 
 ## Important things
