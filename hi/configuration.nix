@@ -1,8 +1,5 @@
 { self, config, pkgs, home-manager, ... }: {
-  imports = [
-    ./hardware-configuration.nix
-    home-manager.nixosModule
-  ];
+  imports = [ home-manager.nixosModule ];
 
   system.stateVersion = "22.11";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
