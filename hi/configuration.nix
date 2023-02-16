@@ -141,7 +141,15 @@
     };
 
     services = {
-      mpd.enable = true;
+      mpd = {
+        enable = true;
+        extraConfig = ''
+          audio_output {
+              type "pipewire"
+              name "pipewire"
+          }
+        '';
+      };
 
       gpg-agent = {
         enable = true;
