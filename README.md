@@ -10,7 +10,7 @@ git clone https://github.com/42LoCo42/.dotfiles -b nixos dotfiles
 cd dotfiles
 # edit/personalize hi/configuration.nix now...
 ./install.sh
-``` 
+```
 Reboot and log in, then clone this repo again like before.\
 Finally, run `./postinstall.sh` to create local folders and files required for the overlay mount.
 
