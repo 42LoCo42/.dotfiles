@@ -44,6 +44,8 @@
     };
   };
 
+  environment.variables = { GTK_THEME = "Adwaita:dark"; };
+
   programs = {
     sway.enable = true;
     command-not-found.enable = false;
@@ -305,7 +307,7 @@
         enable = true;
         settings = {
           main = {
-            font = "monospace:size=11,Font Awesome, Font Awesome 6 Brands";
+            font = "monospace:size=10.5";
           };
 
           colors = {
