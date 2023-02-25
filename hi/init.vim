@@ -3,7 +3,7 @@ syntax on
 set bg=light
 set go=a
 set mouse=a
-set hlsearch
+set nohlsearch
 set ignorecase
 set smartcase
 set clipboard+=unnamedplus

@@ -119,6 +119,7 @@
       packages = with pkgs; [
         file
         fuzzel
+        jq
         lsof
         mpv
         pulsemixer
@@ -128,9 +129,21 @@
       sessionPath = [ mybin ];
 
       file = {
+        "Desktop".text = "";
+
+        "${mybin}/new-pane-here" = {
+          executable = true;
+          source = ./new-pane-here.sh;
+        };
+
         "${mybin}/prompt" = {
           executable = true;
           source = ./prompt.sh;
+        };
+
+        "${mybin}/terminal" = {
+          executable = true;
+          source = ./terminal.sh;
         };
       };
     };
@@ -173,6 +186,20 @@
 
       starship.enable = true;
       zoxide.enable = true;
+
+      tmux = {
+        enable = true;
+
+        clock24 = true;
+        escapeTime = 300;
+        historyLimit = 10000;
+        keyMode = "vi";
+        mouse = true;
+        shortcut = "w";
+        terminal = "tmux-256color";
+
+        extraConfig = builtins.readFile ./tmux.conf;
+      };
 
       gpg.enable = true;
 
@@ -490,10 +517,15 @@
       };
     };
 
-    wayland.windowManager.sway = {
+    wayland.windowManager.sway = let
+      term = "${pkgs.foot}/bin/foot";
+      menu = "${pkgs.fuzzel}/bin/fuzzel";
+      mod  = "Mod4";
+    in {
       enable = true;
+      extraConfig = "set $term ${term}";
       config = {
-        modifier = "Mod4";
+        modifier = mod;
 
         focus.followMouse = true;
 
@@ -506,7 +538,7 @@
         floating = {
           border = 1;
           titlebar = false;
-          modifier = config.wayland.windowManager.sway.config.modifier;
+          modifier = mod;
         };
 
         gaps = {
@@ -530,16 +562,12 @@
         seat."*".hide_cursor = "when-typing enable";
 
         startup = [
-          { command = "foot"; }
+          { command = "terminal"; }
         ];
 
-        keybindings = let
-          term = "${pkgs.foot}/bin/foot";
-          menu = "${pkgs.fuzzel}/bin/fuzzel";
-          mod  = config.wayland.windowManager.sway.config.modifier;
-        in {
+        keybindings = {
           # programs
-          "${mod}+Return"       = "exec ${term}";
+          "${mod}+Return"       = "exec terminal";
           "${mod}+Shift+Return" = "exec ${term}";
 
           "${mod}+Shift+a" = "exec ${term} -e ${pkgs.pulsemixer}/bin/pulsemixer";
