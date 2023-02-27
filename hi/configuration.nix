@@ -111,7 +111,7 @@
         neofetch = "hyfetch";
         rl = "exec \\$SHELL -l";
         switch = "sudo mount -o remount /etc/nixos && sudo nixos-rebuild switch";
-        upgrade = "cd ${config.home.homeDirectory}/dotfiles/hi && nix flake update";
+        yay = "cd ${config.home.homeDirectory}/dotfiles/hi && nix flake update && switch";
         vi = "vi -p";
         vim = "vim -p";
       };
