@@ -52,7 +52,15 @@
   };
 
   services = {
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
+
+    spice-vdagentd.enable = true;
 
     pipewire = {
       enable = true;
@@ -122,6 +130,7 @@
         jq
         lsof
         mpv
+        pciutils
         pulsemixer
         wl-clipboard
       ];
@@ -156,6 +165,11 @@
     };
 
     services = {
+      mako = {
+        enable = true;
+        defaultTimeout = 5000;
+      };
+
       mpd = {
         enable = true;
         extraConfig = ''
