@@ -13,7 +13,7 @@
   };
 
   outputs = { self, nixpkgs, nix-index-database, lanzaboote, ... }@attrs: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.akyuro = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = attrs;
       modules = [

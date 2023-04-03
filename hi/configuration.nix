@@ -15,9 +15,18 @@
     "vt.default_blu=0x28,0x1d,0x1a,0x21,0x88,0x86,0x6a,0x84,0x74,0x34,0x26,0x2f,0x98,0x9b,0x7c,0xb2"
   ];
 
-  networking.hostName = "nixos";
-  networking.useNetworkd = true;
-  systemd.network.wait-online.anyInterface = true;
+  networking = {
+    hostName = "akyuro";
+    useNetworkd = true;
+    wireless = {
+      enable = true;
+      environmentFile = ./wireless.secret;
+      networks = {
+        "Entropy".psk = "@PSK_Entropy@";
+        # "LesserEntropy".psk = "@PSK_LesserEntropy@";
+      };
+    };
+  };
 
   time.timeZone = "Europe/Berlin";
 
@@ -60,8 +69,6 @@
       };
     };
 
-    spice-vdagentd.enable = true;
-
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -80,6 +87,8 @@
     };
   };
 
+  systemd.extraConfig = "DefaultTimeoutStopSec=10s";
+  systemd.network.wait-online.enable = false;
   systemd.mounts = [{
     what = "dotfiles";
     where = "/etc/nixos";
