@@ -15,6 +15,8 @@
     "vt.default_blu=0x28,0x1d,0x1a,0x21,0x88,0x86,0x6a,0x84,0x74,0x34,0x26,0x2f,0x98,0x9b,0x7c,0xb2"
   ];
 
+  zramSwap.enable = true;
+
   networking = {
     hostName = "akyuro";
     useNetworkd = true;
@@ -85,6 +87,8 @@
         };
       };
     };
+
+    tlp.enable = true;
   };
 
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
@@ -207,7 +211,16 @@
           (builtins.readFile ./bashrc);
       };
 
-      starship.enable = true;
+      starship = {
+        enable = true;
+        settings = {
+          character = {
+            success_symbol = "[λ](bold green)";
+            error_symbol   = "[λ](bold red)";
+          };
+        };
+      };
+
       zoxide.enable = true;
 
       tmux = {
@@ -285,6 +298,7 @@
         }  // (with config.lib.htop; leftMeters [
           (bar  "AllCPUs")
           (bar  "Memory")
+          (bar  "Zram")
           (bar  "DiskIO")
           (bar  "NetworkIO")
           (bar  "Load")
@@ -292,6 +306,7 @@
         ]) // (with config.lib.htop; rightMeters [
           (text "AllCPUs")
           (text "Memory")
+          (text "Zram")
           (text "DiskIO")
           (text "NetworkIO")
           (text "LoadAverage")
