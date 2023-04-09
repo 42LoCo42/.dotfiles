@@ -23,10 +23,6 @@
     wireless = {
       enable = true;
       environmentFile = ./wireless.secret;
-      networks = {
-        "Entropy".psk = "@PSK_Entropy@";
-        # "LesserEntropy".psk = "@PSK_LesserEntropy@";
-      };
     };
   };
 
@@ -422,6 +418,11 @@
         };
       };
 
+      swaylock.settings = {
+        daemonize = true;
+        image = builtins.toString ./wallpaper.jpg;
+      };
+
       waybar = {
         enable = true;
         style = ./waybar.css;
@@ -543,7 +544,7 @@
           backlight = {
             device = "amdgpu";
             format = "{percent}% {icon}";
-            format-icons = [ "󰃚" "󰃛" "󰃜" "󰃝" "󰃞" "󰃟" "󰃠" ];
+            format-icons = [ "󰃚 " "󰃛 " "󰃜 " "󰃝 " "󰃞 " "󰃟 " "󰃠 " ];
           };
 
           battery = {
@@ -554,8 +555,8 @@
 
             format = "{time} {capacity}% {icon}";
             format-charging = "{time} {capacity}% 󰂄";
-            format-plugged = "{capacity}% ";
-            format-icons = [ "󰢟" "󱊤" "󱊥" "󱊦" ];
+            format-plugged = "{capacity}%  ";
+            format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
           };
 
           clock = {
@@ -615,6 +616,11 @@
           xkb_options  = "ctrl:nocaps,compose:sclk";
         };
 
+        input."type:touchpad" = {
+          dwt = "enabled";
+          tap = "enabled";
+        };
+
         output."*" = {
           bg = "${self}/wallpaper.jpg fill";
           mode = "1920x1080";
@@ -638,11 +644,12 @@
           "${mod}+i"       = "exec ${term} -e ${pkgs.htop}/bin/htop";
           "${mod}+m"       = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
           "${mod}+w"       = "exec ${pkgs.firefox}/bin/firefox";
+          "${mod}+x"       = "exec ${pkgs.swaylock}/bin/swaylock";
 
           # special
           "${mod}+Backspace"         = "exec prompt Shutdown? poweroff";
           "${mod}+Shift+Backspace"   = "exec prompt Reboot?   reboot";
-          "${mod}+Control+Backspace" = "exec prompt Suspend?  systemctl suspend";
+          "${mod}+Control+Backspace" = "exec prompt Suspend?  swaylock && systemctl suspend";
           "${mod}+Escape"            = "exec prompt Logout?   pkill sway";
 
           # WM
