@@ -1,4 +1,4 @@
-{ self, config, pkgs, home-manager, ... }: {
+{ self, config, pkgs, home-manager, ... }@sysargs: {
   imports = [ home-manager.nixosModule ];
 
   system.stateVersion = "22.11";
@@ -55,7 +55,10 @@
     };
   };
 
-  environment.variables = { GTK_THEME = "Adwaita:dark"; };
+  environment.variables = {
+    GTK_THEME = "Adwaita:dark";
+    QT_STYLE_OVERRIDE = "Adwaita-Dark";
+  };
 
   programs = {
     sway.enable = true;
@@ -138,9 +141,14 @@
       };
 
       packages = with pkgs; [
+        adwaita-qt
+        emacs
+        feh
         file
         fuzzel
         jq
+        keepassxc
+        libnotify
         lsof
         mpv
         pciutils
@@ -175,6 +183,19 @@
       userDirs.enable = true;
 
       configFile."fuzzel/fuzzel.ini".text = builtins.readFile ./fuzzel.ini;
+    };
+
+    systemd.user.services.emacs = {
+      Install.WantedBy = [ "default.target" ];
+
+      Service = {
+        Environment = let
+          system = sysargs.config.system.path;
+          user   = config.home.path;
+        in "PATH=${system}/bin:${system}/sbin:${user}/bin:${user}/sbin";
+
+        ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
+      };
     };
 
     services = {
@@ -356,6 +377,8 @@
 
         extraConfig = builtins.readFile ./init.vim;
       };
+
+      go.enable = true;
 
       hyfetch = {
         enable = true;
@@ -611,7 +634,7 @@
           "${mod}+Shift+a" = "exec ${term} -e ${pkgs.pulsemixer}/bin/pulsemixer";
           "${mod}+c"       = "exec ${pkgs.discord}/bin/discord";
           "${mod}+d"       = "exec ${menu}";
-          "${mod}+e"       = "exec ${pkgs.emacs}/bin/emacs";
+          "${mod}+e"       = "exec ${pkgs.emacs}/bin/emacsclient -cne '(my/dashboard)'";
           "${mod}+i"       = "exec ${term} -e ${pkgs.htop}/bin/htop";
           "${mod}+m"       = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
           "${mod}+w"       = "exec ${pkgs.firefox}/bin/firefox";
