@@ -1,4 +1,4 @@
-{ self, config, pkgs, home-manager, ... }@sysargs: {
+{ self, config, lib, pkgs, home-manager, ... }@sysargs: {
   imports = [ home-manager.nixosModule ];
 
   system.stateVersion = "22.11";
@@ -92,6 +92,7 @@
 
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.network.wait-online.enable = false;
+  systemd.services.systemd-rfkill.enable = lib.mkForce true;
   systemd.mounts = [{
     what = "dotfiles";
     where = "/etc/nixos";
