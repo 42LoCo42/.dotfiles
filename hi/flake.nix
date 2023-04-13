@@ -12,13 +12,14 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nix-index-database, lanzaboote, ... }@attrs: {
+  outputs = { self, nixpkgs, home-manager, nix-index-database, lanzaboote, ... }@attrs: {
     nixosConfigurations.akyuro = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = attrs;
       modules = [
         ./configuration.nix
         ./hardware-configuration.nix
+        home-manager.nixosModules.home-manager
         nix-index-database.nixosModules.nix-index
         lanzaboote.nixosModules.lanzaboote
       ];
