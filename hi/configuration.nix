@@ -54,7 +54,11 @@
   environment.variables = {
     GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "Adwaita-Dark";
+    PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig/";
   };
+  environment.systemPackages = with pkgs; [
+    libsodium.dev
+  ];
 
   programs = {
     sway.enable = true;
