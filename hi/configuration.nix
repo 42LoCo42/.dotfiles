@@ -142,14 +142,14 @@
         emacs
         feh
         file
-        fuzzel
+        gcc
+        gopls
         jq
-        keepassxc
         libnotify
         lsof
         mpv
         pciutils
-        pulsemixer
+        pkg-config
         wl-clipboard
       ];
 
@@ -157,6 +157,11 @@
 
       file = {
         "Desktop".text = "";
+
+        "${mybin}/dropdown" = {
+          executable = true;
+          source = ./dropdown.sh;
+        };
 
         "${mybin}/new-pane-here" = {
           executable = true;
@@ -586,7 +591,6 @@
       mod  = "Mod4";
     in {
       enable = true;
-      extraConfig = "set $term ${term}";
       config = {
         modifier = mod;
 
@@ -631,6 +635,7 @@
 
         startup = [
           { command = "terminal"; }
+          { command = "${pkgs.keepassxc}/bin/keepassxc"; }
         ];
 
         keybindings = {
@@ -638,7 +643,8 @@
           "${mod}+Return"       = "exec terminal";
           "${mod}+Shift+Return" = "exec ${term}";
 
-          "${mod}+Shift+a" = "exec ${term} -e ${pkgs.pulsemixer}/bin/pulsemixer";
+          "${mod}+a"       = "exec dropdown ${pkgs.libqalculate}/bin/qalc";
+          "${mod}+Shift+a" = "exec dropdown ${pkgs.pulsemixer}/bin/pulsemixer";
           "${mod}+c"       = "exec ${pkgs.discord}/bin/discord";
           "${mod}+d"       = "exec ${menu}";
           "${mod}+e"       = "exec ${pkgs.emacs}/bin/emacsclient -cne '(my/dashboard)'";
@@ -702,7 +708,17 @@
           command = "${pkgs.waybar}/bin/waybar";
           position = "top";
         }];
+
+        assigns = {
+          "2" = [{ class  = "discord"; }];
+          "9" = [{ app_id = "org.keepassxc.KeePassXC"; }];
+        };
       };
+      extraConfig = ''
+        set $term ${term}
+        for_window [app_id="dropdown.*"] floating enable
+        for_window [app_id="dropdown.*"] resize set 800 400
+      '';
     };
   };
 }
