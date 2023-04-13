@@ -146,6 +146,7 @@
         emacs
         feh
         file
+        fuzzel
         gcc
         gopls
         jq
