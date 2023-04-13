@@ -162,6 +162,11 @@
       file = {
         "Desktop".text = "";
 
+        "${mybin}/brightness-helper" = {
+          executable = true;
+          source = ./brightness-helper.sh;
+        };
+
         "${mybin}/dropdown" = {
           executable = true;
           source = ./dropdown.sh;
@@ -662,6 +667,9 @@
           "${mod}+Shift+Backspace"   = "exec prompt Reboot?   reboot";
           "${mod}+Control+Backspace" = "exec prompt Suspend?  swaylock && systemctl suspend";
           "${mod}+Escape"            = "exec prompt Logout?   pkill sway";
+
+          "XF86MonBrightnessUp"   = "exec brightness-helper ${pkgs.brightnessctl} +10";
+          "XF86MonBrightnessDown" = "exec brightness-helper ${pkgs.brightnessctl} -10";
 
           # WM
           "${mod}+f"       = "fullscreen";
