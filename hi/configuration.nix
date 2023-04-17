@@ -58,6 +58,11 @@
     GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "Adwaita-Dark";
     PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig/";
+    SDL_VIDEODRIVER = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    QT_QPA_PLATFORM = "wayland";
+    XDG_CURRENT_DESKTOP = "sway";
+    XDG_SESSION_DESKTOP = "sway";
   };
   environment.systemPackages = with pkgs; [
     libsodium.dev
@@ -163,6 +168,7 @@
         pciutils
         pkg-config
         wl-clipboard
+        xdg_utils
       ];
 
       sessionPath = [ mybin ];
@@ -201,19 +207,21 @@
       enable = true;
       userDirs.enable = true;
 
-      configFile."fuzzel/fuzzel.ini".text = builtins.readFile ./fuzzel.ini;
+      configFile."fuzzel/fuzzel.ini".source = ./fuzzel.ini;
     };
 
-    systemd.user.services.emacs = {
-      Install.WantedBy = [ "default.target" ];
-
-      Service = {
-        Environment = let
-          system = sysargs.config.system.path;
-          user   = config.home.path;
-        in "PATH=${system}/bin:${system}/sbin:${user}/bin:${user}/sbin";
-
-        ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
+    systemd.user.services = let
+      Environment = let
+        system = sysargs.config.system.path;
+        user   = config.home.path;
+      in "PATH=${system}/bin:${system}/sbin:${user}/bin:${user}/sbin";
+    in {
+      emacs = {
+        Install.WantedBy = [ "default.target" ];
+        Service = {
+          inherit Environment;
+          ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
+        };
       };
     };
 
@@ -236,6 +244,22 @@
       gpg-agent = {
         enable = true;
         pinentryFlavor = "qt";
+      };
+
+      swayidle = {
+        enable = true;
+        events = [
+          { event = "lock";         command = "${pkgs.swaylock}/bin/swaylock"; }
+          { event = "before-sleep"; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
+        ];
+        timeouts = [
+          { timeout = 300; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
+          {
+            timeout       = 300;
+            command       = "${pkgs.sway}/bin/swaymsg 'output * dpms off'";
+            resumeCommand = "${pkgs.sway}/bin/swaymsg 'output * dpms on'";
+          }
+        ];
       };
     };
 
@@ -368,8 +392,8 @@
             name = "autoclose";
             src = pkgs.fetchgit {
               url = "https://github.com/m4xshen/autoclose.nvim";
-              rev = "389f7731f1fc508f5d5a6bdfef166901d8d1fc10";
-              sha256 = "8IrJdoDXrNvIKuk9uIUragmBqKggf4b97c7XgZ0tYcM=";
+              rev = "c4db42ffc0edbd244502be951c142df0c8a7e582";
+              sha256 = "hxizkj9pIEvdps4f1hl0eGt0pNVHd2ejMlTQNeis404=";
             };
           };
         };
@@ -448,6 +472,7 @@
 
       waybar = {
         enable = true;
+        systemd.enable = true;
         style = ./waybar.css;
 
         settings.mainBar = {
@@ -577,7 +602,7 @@
             };
 
             format = "{time} {capacity}% {icon}";
-            format-charging = "{time} {capacity}% 󰂄";
+            format-charging = "{time} {capacity}% {icon} 󱐋";
             format-plugged = "{capacity}%  ";
             format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
           };
@@ -608,6 +633,7 @@
       mod  = "Mod4";
     in {
       enable = true;
+      systemdIntegration = true;
       config = {
         modifier = mod;
 
@@ -668,14 +694,15 @@
           "${mod}+i"       = "exec ${term} -e ${pkgs.htop}/bin/htop";
           "${mod}+m"       = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
           "${mod}+w"       = "exec ${pkgs.firefox}/bin/firefox";
-          "${mod}+x"       = "exec ${pkgs.swaylock}/bin/swaylock";
+          "${mod}+x"       = "exec loginctl lock-session";
 
           # special
           "${mod}+Backspace"         = "exec prompt Shutdown? poweroff";
           "${mod}+Shift+Backspace"   = "exec prompt Reboot?   reboot";
-          "${mod}+Control+Backspace" = "exec prompt Suspend?  swaylock && systemctl suspend";
+          "${mod}+Control+Backspace" = "exec prompt Suspend?  systemctl suspend";
           "${mod}+Escape"            = "exec prompt Logout?   pkill sway";
 
+          # media keys
           "XF86MonBrightnessUp"   = "exec brightness-helper ${pkgs.brightnessctl} +10";
           "XF86MonBrightnessDown" = "exec brightness-helper ${pkgs.brightnessctl} -10";
 
@@ -724,10 +751,7 @@
 
         workspaceAutoBackAndForth = true;
 
-        bars = [{
-          command = "${pkgs.waybar}/bin/waybar";
-          position = "top";
-        }];
+        bars = [];
 
         assigns = {
           "2" = [{ class  = "discord"; }];
