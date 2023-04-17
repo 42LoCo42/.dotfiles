@@ -22,6 +22,7 @@
   networking = {
     hostName = "akyuro";
     useNetworkd = true;
+    localCommands = "${pkgs.util-linux}/bin/rfkill unblock wifi";
     wireless = {
       enable = true;
       environmentFile = ./wireless.secret;
@@ -98,7 +99,6 @@
 
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.network.wait-online.enable = false;
-  systemd.services.systemd-rfkill.enable = lib.mkForce true;
   systemd.mounts = [{
     what = "dotfiles";
     where = "/etc/nixos";
