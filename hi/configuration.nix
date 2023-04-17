@@ -15,6 +15,10 @@
 
   zramSwap.enable = true;
 
+  security.pam.services = {
+    sudo.u2fAuth = true;
+  };
+
   networking = {
     hostName = "akyuro";
     useNetworkd = true;
