@@ -97,6 +97,10 @@
     tlp.enable = true;
   };
 
+  virtualisation = {
+    docker.enable = true;
+  };
+
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.network.wait-online.enable = false;
   systemd.mounts = [{
@@ -118,7 +122,7 @@
   users.mutableUsers = false;
   users.users.leonsch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     hashedPassword = "$y$j9T$zjEgVmMSgM4dbXcVwITTT.$hLUP9jj1sE.hCf0DIAb8Nzlu40HiIwhYVkKmSWUgKv5";
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
   };
@@ -145,6 +149,7 @@
 
       packages = with pkgs; [
         adwaita-qt
+        docker-client
         emacs
         feh
         file
