@@ -176,6 +176,11 @@
       file = {
         "Desktop".text = "";
 
+        "${mybin}/audio-helper" = {
+          executable = true;
+          source = ./audio-helper.sh;
+        };
+
         "${mybin}/brightness-helper" = {
           executable = true;
           source = ./brightness-helper.sh;
@@ -703,6 +708,13 @@
           "${mod}+Escape"            = "exec prompt Logout?   pkill sway";
 
           # media keys
+          "XF86AudioLowerVolume"  = "exec audio-helper ${pkgs.pulsemixer} change -10";
+          "XF86AudioRaiseVolume"  = "exec audio-helper ${pkgs.pulsemixer} change +10";
+          "XF86AudioMute"         = "exec audio-helper ${pkgs.pulsemixer} mute";
+          "XF86AudioMicMute"      = "exec audio-helper ${pkgs.pulsemixer} micmute";
+          "XF86AudioPlay"         = "exec audio-helper ${pkgs.mpc-cli} play";
+          "XF86AudioPrev"         = "exec audio-helper ${pkgs.mpc-cli} prev";
+          "XF86AudioNext"         = "exec audio-helper ${pkgs.mpc-cli} next";
           "XF86MonBrightnessUp"   = "exec brightness-helper ${pkgs.brightnessctl} +10";
           "XF86MonBrightnessDown" = "exec brightness-helper ${pkgs.brightnessctl} -10";
 
