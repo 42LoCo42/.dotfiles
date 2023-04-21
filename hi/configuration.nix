@@ -223,6 +223,7 @@
 
     systemd.user.services =
       let
+        Install.WantedBy = [ "default.target" ];
         Environment =
           let
             system = sysargs.config.system.path;
@@ -232,10 +233,25 @@
       in
       {
         emacs = {
-          Install.WantedBy = [ "default.target" ];
+          inherit Install;
+          Unit.Requires = [ "async-git-clone.service" ];
           Service = {
             inherit Environment;
             ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
+          };
+        };
+        async-git-clone = {
+          inherit Install;
+          Unit = {
+            Requires = [ "network-online.target" ];
+            StartLimitIntervalSec = "1d";
+            StartLimitBurst = 5;
+          };
+          Service = {
+            inherit Environment;
+            ExecStart = "${pkgs.bash}/bin/bash " + ./async-git-clone.sh;
+            Restart = "on-failure";
+            RestartSec = 10;
           };
         };
       };
