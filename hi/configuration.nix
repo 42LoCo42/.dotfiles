@@ -154,17 +154,21 @@
 
       packages = with pkgs; [
         adwaita-qt
+        ccls
         docker-client
         emacs
         feh
         file
         fuzzel
         gcc
+        gocryptfs
         gopls
         jq
         libnotify
         lsof
         mpv
+        nil
+        nixpkgs-fmt
         pciutils
         pkg-config
         wl-clipboard
@@ -310,7 +314,12 @@
 
       git = {
         enable = true;
-        delta.enable = true;
+        delta = {
+          enable = true;
+          options = {
+            side-by-side = true;
+          };
+        };
 
         userName = "Leon Schumacher";
         userEmail = "leonsch@protonmail.com";
@@ -331,6 +340,8 @@
           key = "C743EE077172986F860FC0FE2F6FE1420970404C";
           signByDefault = true;
         };
+
+        extraConfig.pull.rebase = false;
       };
 
       htop = {
