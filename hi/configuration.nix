@@ -102,6 +102,14 @@
     tlp.enable = true;
   };
 
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
+  };
+
   virtualisation = {
     docker.enable = true;
   };
@@ -165,6 +173,7 @@
         gcc
         gocryptfs
         gopls
+        grim
         jq
         libnotify
         lsof
@@ -276,6 +285,8 @@
         enable = true;
         pinentryFlavor = "qt";
       };
+
+      flameshot.enable = true;
 
       swayidle = {
         enable = true;
@@ -746,9 +757,16 @@
 
             # special
             "${mod}+Backspace" = "exec prompt Shutdown? poweroff";
-            "${mod}+Shift+Backspace" = "exec prompt Reboot?   reboot";
-            "${mod}+Control+Backspace" = "exec prompt Suspend?  systemctl suspend";
-            "${mod}+Escape" = "exec prompt Logout?   pkill sway";
+            "${mod}+Shift+Backspace" = "exec prompt Reboot? reboot";
+            "${mod}+Control+Backspace" = "exec prompt Suspend? systemctl suspend";
+            "${mod}+Escape" = "exec prompt Logout? pkill sway";
+
+            "Print" = ''
+              exec \
+              rm -f "$XDG_RUNTIME_DIR/screenshot.png" && \
+              ${pkgs.flameshot}/bin/flameshot gui -p "$XDG_RUNTIME_DIR/screenshot.png" && \
+              ${pkgs.wl-clipboard}/bin/wl-copy < "$XDG_RUNTIME_DIR/screenshot.png"
+            '';
 
             # media keys
             "XF86AudioLowerVolume" = "exec audio-helper ${pkgs.pulsemixer} change -10";
