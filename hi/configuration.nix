@@ -231,6 +231,11 @@
       userDirs.enable = true;
 
       configFile."fuzzel/fuzzel.ini".source = ./fuzzel.ini;
+      dataFile."dbus-1/services/mako-path-fix.service".text = ''
+        [D-BUS Service]
+        Name=org.freedesktop.Notifications
+        Exec=/usr/bin/env PATH=/run/current-system/sw/bin ${pkgs.mako}/bin/mako
+      '';
     };
 
     systemd.user.services =
@@ -255,7 +260,6 @@
         async-git-clone = {
           inherit Install;
           Unit = {
-            Requires = [ "network-online.target" ];
             StartLimitIntervalSec = "1d";
             StartLimitBurst = 5;
           };
@@ -753,7 +757,7 @@
 
             "${mod}+a" = "exec dropdown ${pkgs.libqalculate}/bin/qalc";
             "${mod}+Shift+a" = "exec dropdown ${pkgs.pulsemixer}/bin/pulsemixer";
-            "${mod}+c" = "exec ${pkgs.discord}/bin/discord";
+            "${mod}+c" = "exec ${pkgs.discord}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland";
             "${mod}+d" = "exec ${menu}";
             "${mod}+e" = "exec ${pkgs.emacs}/bin/emacsclient -cne '(my/dashboard)'";
             "${mod}+i" = "exec ${term} -e ${pkgs.htop}/bin/htop";
@@ -833,7 +837,7 @@
           bars = [ ];
 
           assigns = {
-            "2" = [{ class = "discord"; }];
+            "2" = [{ app_id = "discord"; }];
             "9" = [{ app_id = "org.keepassxc.KeePassXC"; }];
           };
         };
