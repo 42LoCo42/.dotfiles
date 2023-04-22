@@ -1,6 +1,10 @@
 { self, config, pkgs, ... }@sysargs: {
   system.stateVersion = "22.11";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.extraOptions = ''
+    keep-outputs = true
+    keep-derivations = true
+  '';
   nixpkgs.config.allowUnfree = true;
 
   boot.loader.systemd-boot.enable = true;
@@ -172,7 +176,6 @@
         fuzzel
         gcc
         gocryptfs
-        gopls
         grim
         jq
         libnotify
@@ -329,6 +332,11 @@
 
       zoxide.enable = true;
 
+      direnv = {
+        enable = true;
+        nix-direnv.enable = true;
+      };
+
       tmux = {
         enable = true;
 
@@ -471,8 +479,6 @@
 
           extraConfig = builtins.readFile ./init.vim;
         };
-
-      go.enable = true;
 
       hyfetch = {
         enable = true;
