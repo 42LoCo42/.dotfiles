@@ -9,7 +9,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_2;
   boot.kernelParams = [
     "vt.default_red=0x28,0xcc,0x98,0xd7,0x45,0xb1,0x68,0xa8,0x92,0xfb,0xb8,0xfa,0x83,0xd3,0x8e,0xeb"
@@ -183,8 +183,10 @@
         mpv
         nil
         nixpkgs-fmt
+        nodePackages.bash-language-server
         pciutils
         pkg-config
+        shellcheck
         wl-clipboard
         xdg_utils
       ];
