@@ -19,6 +19,7 @@
 
   zramSwap.enable = true;
 
+  security.pam.u2f.cue = true;
   security.pam.services = {
     sudo.u2fAuth = true;
   };
