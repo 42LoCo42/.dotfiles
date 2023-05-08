@@ -69,9 +69,6 @@
     XDG_CURRENT_DESKTOP = "sway";
     XDG_SESSION_DESKTOP = "sway";
   };
-  environment.systemPackages = with pkgs; [
-    libsodium.dev
-  ];
 
   programs = {
     sway.enable = true;
@@ -181,6 +178,8 @@
         jq
         libnotify
         lsof
+        man-pages
+        man-pages-posix
         mpv
         nil
         nixpkgs-fmt
@@ -188,6 +187,7 @@
         pciutils
         pkg-config
         shellcheck
+        tor-browser-bundle-bin
         wl-clipboard
         xdg_utils
       ];
@@ -260,6 +260,7 @@
             ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
           };
         };
+
         async-git-clone = {
           inherit Install;
           Unit = {
@@ -339,6 +340,8 @@
 
       zoxide.enable = true;
 
+      man.generateCaches = true;
+
       direnv = {
         enable = true;
         nix-direnv.enable = true;
@@ -358,10 +361,13 @@
         extraConfig = builtins.readFile ./tmux.conf;
       };
 
+      yt-dlp.enable = true;
+
       gpg.enable = true;
 
       git = {
         enable = true;
+        lfs.enable = true;
         delta = {
           enable = true;
           options = {
