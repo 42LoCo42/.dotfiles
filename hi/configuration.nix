@@ -244,12 +244,8 @@
     systemd.user.services =
       let
         Install.WantedBy = [ "default.target" ];
-        Environment =
-          let
-            system = sysargs.config.system.path;
-            user = config.home.path;
-          in
-          "PATH=${system}/bin:${system}/sbin:${user}/bin:${user}/sbin";
+        Environment = let user = config.home.username; in
+          "PATH=/run/wrappers/bin:/home/${user}/.nix-profile/bin:/etc/profiles/per-user/${user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
       in
       {
         emacs = {
