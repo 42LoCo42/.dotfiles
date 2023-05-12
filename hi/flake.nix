@@ -10,18 +10,34 @@
 
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-alien.url = "github:thiagokokada/nix-alien";
+    nix-alien.inputs.nixpkgs.follows = "nixpkgs";
+    nix-alien.inputs.nix-index-database.follows = "nix-index-database";
+
+    "9mount".url = "github:42loco42/flakes?dir=9mount";
+    "9mount".inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-index-database, lanzaboote, ... }@attrs: {
-    nixosConfigurations.akyuro = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, ... }@attrs: {
+    nixosConfigurations.akyuro = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       specialArgs = attrs;
       modules = [
         ./configuration.nix
         ./hardware-configuration.nix
-        home-manager.nixosModules.home-manager
-        nix-index-database.nixosModules.nix-index
-        lanzaboote.nixosModules.lanzaboote
+
+        self.inputs.home-manager.nixosModules.home-manager
+        self.inputs.nix-index-database.nixosModules.nix-index
+        self.inputs.lanzaboote.nixosModules.lanzaboote
+        self.inputs."9mount".nixosModules.default
+
+        ({ self, ... }: {
+          environment.systemPackages = with self.inputs.nix-alien.packages.${system}; [
+            nix-alien
+          ];
+          programs.nix-ld.enable = true;
+        })
       ];
     };
   };
