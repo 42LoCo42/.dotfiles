@@ -762,7 +762,7 @@
 
             "${mod}+a" = "exec dropdown ${pkgs.libqalculate}/bin/qalc";
             "${mod}+Shift+a" = "exec dropdown ${pkgs.pulsemixer}/bin/pulsemixer";
-            "${mod}+c" = "exec ${pkgs.discord}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland";
+            "${mod}+c" = "exec ${pkgs.webcord}/bin/webcord --enable-features=UseOzonePlatform --ozone-platform=wayland";
             "${mod}+d" = "exec ${menu}";
             "${mod}+e" = "exec ${pkgs.emacs}/bin/emacsclient -cne '(my/dashboard)'";
             "${mod}+i" = "exec ${term} -e ${pkgs.htop}/bin/htop";
@@ -842,7 +842,7 @@
           bars = [ ];
 
           assigns = {
-            "2" = [{ app_id = "discord"; }];
+            "2" = [{ app_id = "WebCord"; }];
             "9" = [{ app_id = "org.keepassxc.KeePassXC"; }];
           };
         };
