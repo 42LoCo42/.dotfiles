@@ -171,8 +171,8 @@
       };
 
       packages = with pkgs; [
-        adwaita-qt
         ccls
+        clang-tools
         docker-client
         emacs
         feh
@@ -192,10 +192,14 @@
         nodePackages.bash-language-server
         pciutils
         pkg-config
+        ripgrep
         shellcheck
-        tor-browser-bundle-bin
         wl-clipboard
         xdg_utils
+
+        (tor-browser-bundle-bin.override {
+          useHardenedMalloc = false;
+        })
       ];
 
       sessionPath = [ mybin ];
