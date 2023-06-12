@@ -102,6 +102,8 @@
     };
 
     tlp.enable = true;
+
+    journald.extraConfig = "SystemMaxUse=1G";
   };
 
   xdg.portal = {
@@ -280,6 +282,7 @@
       mako = {
         enable = true;
         defaultTimeout = 5000;
+        layer = "overlay";
       };
 
       mpd = {
@@ -308,7 +311,7 @@
         timeouts = [
           { timeout = 300; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
           {
-            timeout = 300;
+            timeout = 290;
             command = "${pkgs.sway}/bin/swaymsg 'output * dpms off'";
             resumeCommand = "${pkgs.sway}/bin/swaymsg 'output * dpms on'";
           }
@@ -341,6 +344,8 @@
       zoxide.enable = true;
 
       man.generateCaches = true;
+
+      zathura.enable = true;
 
       direnv = {
         enable = true;
