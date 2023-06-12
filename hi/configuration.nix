@@ -27,10 +27,11 @@
     hostName = "akyuro";
     useNetworkd = true;
     localCommands = "${pkgs.util-linux}/bin/rfkill unblock wifi";
-    wireless = {
-      enable = true;
-      environmentFile = ./wireless.secret;
-    };
+    # wireless = {
+    #   enable = true;
+    #   environmentFile = ./wireless.secret;
+    # };
+    networkmanager.enable = true;
   };
 
   time.timeZone = "Europe/Berlin";
@@ -112,11 +113,15 @@
   };
 
   virtualisation = {
-    docker.enable = true;
+    docker = {
+      enable = true;
+      enableOnBoot = false;
+    };
   };
 
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.network.wait-online.enable = false;
+  systemd.services."NetworkManager-wait-online".enable = false;
   systemd.mounts = [{
     what = "dotfiles";
     where = "/etc/nixos";
@@ -138,7 +143,7 @@
   users.mutableUsers = false;
   users.users.leonsch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "networkmanager" ];
     hashedPassword = "$y$j9T$zjEgVmMSgM4dbXcVwITTT.$hLUP9jj1sE.hCf0DIAb8Nzlu40HiIwhYVkKmSWUgKv5";
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
   };
@@ -766,6 +771,7 @@
             "${mod}+e" = "exec ${pkgs.emacs}/bin/emacsclient -cne '(my/dashboard)'";
             "${mod}+i" = "exec ${term} -e ${pkgs.htop}/bin/htop";
             "${mod}+m" = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
+            "${mod}+n" = "exec ${term} -e ${pkgs.bash}/bin/bash -c 'sleep 0.1 && ${pkgs.networkmanager}/bin/nmtui'";
             "${mod}+w" = "exec ${pkgs.firefox}/bin/firefox";
             "${mod}+x" = "exec loginctl lock-session";
 
