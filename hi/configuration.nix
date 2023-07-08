@@ -27,11 +27,8 @@
     hostName = "akyuro";
     useNetworkd = true;
     localCommands = "${pkgs.util-linux}/bin/rfkill unblock wifi";
-    # wireless = {
-    #   enable = true;
-    #   environmentFile = ./wireless.secret;
-    # };
     networkmanager.enable = true;
+    firewall.checkReversePath = "loose"; # for tailscale exit node
   };
 
   time.timeZone = "Europe/Berlin";
@@ -101,6 +98,8 @@
       };
     };
 
+    tailscale.enable = true;
+
     tlp.enable = true;
 
     journald.extraConfig = "SystemMaxUse=1G";
@@ -153,6 +152,8 @@
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.users.leonsch = { config, lib, pkgs, ... }: {
+    qt.style.name = "Adwaita-Dark";
+    qt.style.package = pkgs.adwaita-qt;
     home = let mybin = "${config.home.homeDirectory}/bin"; in {
       stateVersion = "22.11";
 
@@ -209,32 +210,32 @@
 
         "${mybin}/audio-helper" = {
           executable = true;
-          source = ./audio-helper.sh;
+          source = ./scripts/audio-helper.sh;
         };
 
         "${mybin}/brightness-helper" = {
           executable = true;
-          source = ./brightness-helper.sh;
+          source = ./scripts/brightness-helper.sh;
         };
 
         "${mybin}/dropdown" = {
           executable = true;
-          source = ./dropdown.sh;
+          source = ./scripts/dropdown.sh;
         };
 
         "${mybin}/new-pane-here" = {
           executable = true;
-          source = ./new-pane-here.sh;
+          source = ./scripts/new-pane-here.sh;
         };
 
         "${mybin}/prompt" = {
           executable = true;
-          source = ./prompt.sh;
+          source = ./scripts/prompt.sh;
         };
 
         "${mybin}/terminal" = {
           executable = true;
-          source = ./terminal.sh;
+          source = ./scripts/terminal.sh;
         };
       };
     };
@@ -243,7 +244,7 @@
       enable = true;
       userDirs.enable = true;
 
-      configFile."fuzzel/fuzzel.ini".source = ./fuzzel.ini;
+      configFile."fuzzel/fuzzel.ini".source = ./misc/fuzzel.ini;
       dataFile."dbus-1/services/mako-path-fix.service".text = ''
         [D-BUS Service]
         Name=org.freedesktop.Notifications
@@ -260,29 +261,35 @@
       {
         emacs = {
           inherit Install;
-          Unit.Requires = [ "async-git-clone.service" ];
+          # Unit.Requires = [ "async-git-clone.service" ];
           Service = {
             inherit Environment;
             ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
           };
         };
 
-        async-git-clone = {
-          inherit Install;
-          Unit = {
-            StartLimitIntervalSec = "1d";
-            StartLimitBurst = 5;
-          };
-          Service = {
-            inherit Environment;
-            ExecStart = "${pkgs.bash}/bin/bash " + ./async-git-clone.sh;
-            Restart = "on-failure";
-            RestartSec = 10;
-          };
-        };
+        # async-git-clone = {
+        #   inherit Install;
+        #   Unit = {
+        #     StartLimitIntervalSec = "1d";
+        #     StartLimitBurst = 5;
+        #   };
+        #   Service = {
+        #     inherit Environment;
+        #     ExecStart = "${pkgs.bash}/bin/bash " + ./async-git-clone.sh;
+        #     Restart = "on-failure";
+        #     RestartSec = 10;
+        #   };
+        # };
       };
 
     services = {
+      wlsunset = {
+        enable = true;
+        latitude = "54.3075";
+        longitude = "13.0830";
+      };
+
       mako = {
         enable = true;
         defaultTimeout = 5000;
@@ -332,7 +339,7 @@
         initExtra = builtins.replaceStrings
           [ "@{pkgs.complete-alias}" ]
           [ "${pkgs.complete-alias}" ]
-          (builtins.readFile ./bashrc);
+          (builtins.readFile ./misc/bashrc);
       };
 
       starship = {
@@ -367,7 +374,7 @@
         shortcut = "w";
         terminal = "tmux-256color";
 
-        extraConfig = builtins.readFile ./tmux.conf;
+        extraConfig = builtins.readFile ./misc/tmux.conf;
       };
 
       yt-dlp.enable = true;
@@ -488,7 +495,7 @@
 
           coc = {
             enable = true;
-            pluginConfig = builtins.readFile ./coc.vim;
+            pluginConfig = builtins.readFile ./vim/coc.vim;
           };
 
           plugins = with allPlugins; [
@@ -499,7 +506,7 @@
             { plugin = suda-vim; config = "let g:suda_smart_edit = 1"; }
           ];
 
-          extraConfig = builtins.readFile ./init.vim;
+          extraConfig = builtins.readFile ./vim/init.vim;
         };
 
       hyfetch = {
@@ -546,13 +553,13 @@
 
       swaylock.settings = {
         daemonize = true;
-        image = builtins.toString ./wallpaper.jpg;
+        image = builtins.toString ./misc/wallpaper.jpg;
       };
 
       waybar = {
         enable = true;
         systemd.enable = true;
-        style = ./waybar.css;
+        style = ./misc/waybar.css;
 
         settings.mainBar = {
           position = "top";
@@ -757,7 +764,7 @@
           };
 
           output."*" = {
-            bg = "${self}/wallpaper.jpg fill";
+            bg = "${self}/misc/wallpaper.jpg fill";
             mode = "1920x1080";
           };
 
