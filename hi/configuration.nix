@@ -339,7 +339,7 @@
         initExtra = builtins.replaceStrings
           [ "@{pkgs.complete-alias}" ]
           [ "${pkgs.complete-alias}" ]
-          (builtins.readFile ./bashrc);
+          (builtins.readFile ./misc/bashrc);
       };
 
       starship = {
