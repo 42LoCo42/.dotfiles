@@ -19,8 +19,8 @@
     find ${pkgs.tpm2-tss}/lib -name 'libtss*.so*' \
     | while read -r i; do cp -a "$i" "$out/lib/"; done
 
-    $out/bin/tpm2 2>&1 | tail +2 \
-    | while read -r i; do ln -s tpm2 "$out/bin/tpm2_$i"; done
+    find ${pkgs.tpm2-tools}/bin -name 'tpm2_*' \
+    | while read -r i; do ln -sv tpm2 "$out/bin/''\${i##*/}"; done
 
     find ${pkgs.clevis}/bin -type f \
     | while read -r i; do copy_bin_and_libs "$i"; done
