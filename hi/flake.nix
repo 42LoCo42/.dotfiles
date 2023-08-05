@@ -20,6 +20,9 @@
     "9mount".url = "github:42loco42/flakes?dir=9mount";
     "9mount".inputs.nixpkgs.follows = "nixpkgs";
     "9mount".inputs.flake-utils.follows = "lanzaboote/flake-utils";
+
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, ... }@attrs: {

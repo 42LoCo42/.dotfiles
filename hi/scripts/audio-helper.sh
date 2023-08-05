@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-pulsemixer="$1/bin/pulsemixer"
-mpc="$1/bin/mpc"
+pulsemixer="$1"
+mpc="$1"
 
 case "$2" in
 	change) "$pulsemixer" --change-volume "$3" ;;

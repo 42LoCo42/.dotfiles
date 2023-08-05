@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 
-# if not in workspace 0, move there
-ws="$(swaymsg -t get_workspaces | jq '.[] | select(.focused).num')"
-if ((ws != 0)); then
-	swaymsg workspace 0
-	no_move=1
-fi
+name="1"
+should_move=1
 
-# if there is a window selected:
-windows=$(swaymsg -t get_workspaces | jq '.[] | select(.num == 0).focus | length')
-if ((windows > 0)); then
-	# then move unless we already did that
-	((no_move)) || swaymsg workspace back_and_forth
-else
-	# else start a new terminal
+# if not in terminal workspace, move there
+ws="$(hyprctl -j activeworkspace | jq -r '.name')"
+[ "$ws" != "$name" ] && {
+	hyprctl dispatch workspace "$name"
+	should_move=0
+}
 
-	# shellcheck disable=SC2016
-	# $term should expand in sway, not here
-	swaymsg exec '$term' "tmux new-session -A -s 0"
+# if there are no windows: create a terminal
+# else if we should move: do that
+windows="$(hyprctl -j activeworkspace | jq '.windows')"
+if ((windows == 0)); then
+	foot tmux new-session -A -s 0 &
+elif ((should_move)); then
+	hyprctl dispatch workspace previous
 fi

@@ -1,4 +1,4 @@
-{ self, config, pkgs, ... }: {
+{ config, pkgs, ... }: {
   system.stateVersion = "22.11";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.extraOptions = ''
@@ -6,6 +6,33 @@
     keep-derivations = true
   '';
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      nerdfonts = prev.nerdfonts.override {
+        fonts = [ "Iosevka" ];
+      };
+
+      tor-browser-bundle-bin = prev.tor-browser-bundle-bin.override {
+        useHardenedMalloc = false;
+      };
+
+      # xdg-desktop-portal = prev.xdg-desktop-portal.overrideAttrs (old: rec {
+      #   version = "1.14.6";
+
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "flatpak";
+      #     repo = "xdg-desktop-portal";
+      #     rev = version;
+      #     hash = "sha256-MD1zjKDWwvVTui0nYPgvVjX48DaHWcP7Q10vDrNKYz0=";
+      #   };
+      # });
+
+      waybar = prev.waybar.overrideAttrs (old: {
+        mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true " ];
+      });
+    })
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -21,6 +48,7 @@
   security.pam.u2f.cue = true;
   security.pam.services = {
     sudo.u2fAuth = true;
+    swaylock.text = "auth include login";
   };
 
   networking = {
@@ -40,12 +68,10 @@
   };
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       noto-fonts
       noto-fonts-emoji
-      (nerdfonts.override {
-        fonts = [ "Iosevka" ];
-      })
+      nerdfonts
     ];
 
     fontconfig.defaultFonts = {
@@ -58,17 +84,14 @@
 
   environment.variables = {
     GTK_THEME = "Adwaita:dark";
-    QT_STYLE_OVERRIDE = "Adwaita-Dark";
-    PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig/";
+    QT_QPA_PLATFORM = "wayland";
     SDL_VIDEODRIVER = "wayland";
     _JAVA_AWT_WM_NONREPARENTING = "1";
-    QT_QPA_PLATFORM = "wayland";
-    XDG_CURRENT_DESKTOP = "sway";
-    XDG_SESSION_DESKTOP = "sway";
   };
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs = {
-    sway.enable = true;
+    hyprland.enable = true;
     command-not-found.enable = false;
   };
 
@@ -93,7 +116,7 @@
       vt = 7;
       settings = {
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet -trc sway --remember-user-session";
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet -trc Hyprland --remember-user-session";
         };
       };
     };
@@ -105,13 +128,10 @@
     journald.extraConfig = "SystemMaxUse=1G";
   };
 
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
-  };
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+  ];
 
   virtualisation = {
     docker = {
@@ -152,8 +172,12 @@
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.users.leonsch = { config, lib, pkgs, ... }: {
-    qt.style.name = "Adwaita-Dark";
-    qt.style.package = pkgs.adwaita-qt;
+    qt = {
+      enable = true;
+      platformTheme = "gtk";
+      style.name = "Adwaita-Dark";
+    };
+
     home = let mybin = "${config.home.homeDirectory}/bin"; in {
       stateVersion = "22.11";
 
@@ -172,17 +196,14 @@
       };
 
       packages = with pkgs; [
-        ccls
         clang-tools
         docker-client
         emacs
         feh
         file
-        fuzzel
-        gcc
         gocryptfs
-        grim
         jq
+        keepassxc
         libnotify
         lsof
         man-pages
@@ -192,15 +213,11 @@
         nixpkgs-fmt
         nodePackages.bash-language-server
         pciutils
-        pkg-config
         ripgrep
         shellcheck
+        tor-browser-bundle-bin
         wl-clipboard
         xdg_utils
-
-        (tor-browser-bundle-bin.override {
-          useHardenedMalloc = false;
-        })
       ];
 
       sessionPath = [ mybin ];
@@ -230,7 +247,10 @@
 
         "${mybin}/prompt" = {
           executable = true;
-          source = ./scripts/prompt.sh;
+          source = pkgs.substituteAll {
+            src = ./scripts/prompt.sh;
+            fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
+          };
         };
 
         "${mybin}/terminal" = {
@@ -311,10 +331,9 @@
         pinentryFlavor = "qt";
       };
 
-      flameshot.enable = true;
-
       swayidle = {
         enable = true;
+        systemdTarget = "hyprland-session.target";
         events = [
           { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock"; }
           { event = "before-sleep"; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
@@ -323,8 +342,8 @@
           { timeout = 300; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
           {
             timeout = 290;
-            command = "${pkgs.sway}/bin/swaymsg 'output * dpms off'";
-            resumeCommand = "${pkgs.sway}/bin/swaymsg 'output * dpms on'";
+            command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+            resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
           }
         ];
       };
@@ -376,6 +395,8 @@
 
         extraConfig = builtins.readFile ./misc/tmux.conf;
       };
+
+      firefox.enable = true;
 
       yt-dlp.enable = true;
 
@@ -524,7 +545,7 @@
         enable = true;
         settings = {
           main = {
-            font = "monospace:size=7";
+            font = "monospace:size=10.5";
           };
 
           colors = {
@@ -559,19 +580,21 @@
       waybar = {
         enable = true;
         systemd.enable = true;
+        systemd.target = "hyprland-session.target";
         style = ./misc/waybar.css;
 
         settings.mainBar = {
+          layer = "top";
           position = "top";
           spacing = 2;
           ipc = true;
 
           modules-left = [
-            "sway/workspaces"
+            "wlr/workspaces"
           ];
 
           modules-center = [
-            "sway/window"
+            "hyprland/window"
           ];
 
           modules-right = [
@@ -589,15 +612,16 @@
             "tray"
           ];
 
-          "sway/workspaces" = {
+          "wlr/workspaces" = {
             all-outputs = true;
+            sort-by-number = true;
             format = "{icon}";
             format-icons = {
-              "0" = "";
-              "1" = "";
-              "2" = "󰙯";
-              "3" = "";
-              "9" = "󰌆";
+              "1" = "";
+              "2" = "";
+              "3" = "󰙯";
+              "4" = "";
+              "10" = "󰌆";
             };
           };
 
@@ -711,167 +735,26 @@
           };
         };
       };
-
-      firefox = {
-        enable = true;
-        # profiles."default" = {
-        # };
-      };
     };
 
-    wayland.windowManager.sway =
-      let
-        term = "${pkgs.foot}/bin/foot";
-        menu = "${pkgs.fuzzel}/bin/fuzzel";
-        mod = "Mod4";
-      in
-      {
-        enable = true;
-        systemd.enable = true;
-        config = {
-          modifier = mod;
+    wayland.windowManager.hyprland = {
+      enable = true;
+      extraConfig = builtins.readFile
+        (pkgs.substituteAll {
+          src = ./misc/hyprland.conf;
 
-          focus.followMouse = true;
-
-          window = {
-            border = 1;
-            titlebar = false;
-            hideEdgeBorders = "both";
-          };
-
-          floating = {
-            border = 1;
-            titlebar = false;
-            modifier = mod;
-          };
-
-          gaps = {
-            inner = 2;
-            smartGaps = true;
-            smartBorders = "on";
-          };
-
-          input."type:keyboard" = {
-            repeat_delay = "300";
-            repeat_rate = "50";
-            xkb_layout = "de";
-            xkb_options = "ctrl:nocaps,compose:sclk";
-          };
-
-          input."type:touchpad" = {
-            dwt = "enabled";
-            tap = "enabled";
-          };
-
-          output."*" = {
-            bg = "${self}/misc/wallpaper.jpg fill";
-            mode = "1920x1080";
-          };
-
-          seat."*".hide_cursor = "when-typing enable";
-
-          startup = [
-            { command = "terminal"; }
-            { command = "${pkgs.keepassxc}/bin/keepassxc"; }
-          ];
-
-          keybindings = {
-            # programs
-            "${mod}+Return" = "exec terminal";
-            "${mod}+Shift+Return" = "exec ${term}";
-
-            "${mod}+a" = "exec dropdown ${pkgs.libqalculate}/bin/qalc";
-            "${mod}+Shift+a" = "exec dropdown ${pkgs.pulsemixer}/bin/pulsemixer";
-            "${mod}+c" = "exec ${pkgs.webcord}/bin/webcord --enable-features=UseOzonePlatform --ozone-platform=wayland";
-            "${mod}+d" = "exec ${menu}";
-            "${mod}+e" = "exec ${pkgs.emacs}/bin/emacsclient -cne '(my/dashboard)'";
-            "${mod}+i" = "exec ${term} -e ${pkgs.htop}/bin/htop";
-            "${mod}+m" = "exec ${term} -e ${pkgs.ncmpcpp}/bin/ncmpcpp";
-            "${mod}+n" = "exec ${term} -e ${pkgs.bash}/bin/bash -c 'sleep 0.1 && ${pkgs.networkmanager}/bin/nmtui'";
-            "${mod}+w" = "exec ${pkgs.firefox}/bin/firefox";
-            "${mod}+x" = "exec loginctl lock-session";
-
-            # special
-            "${mod}+Backspace" = "exec prompt Shutdown? poweroff";
-            "${mod}+Shift+Backspace" = "exec prompt Reboot? reboot";
-            "${mod}+Control+Backspace" = "exec prompt Suspend? systemctl suspend";
-            "${mod}+Escape" = "exec prompt Logout? pkill sway";
-
-            "Print" = ''
-              exec \
-              rm -f "$XDG_RUNTIME_DIR/screenshot.png" && \
-              ${pkgs.flameshot}/bin/flameshot gui -p "$XDG_RUNTIME_DIR/screenshot.png" && \
-              ${pkgs.wl-clipboard}/bin/wl-copy < "$XDG_RUNTIME_DIR/screenshot.png"
-            '';
-
-            # media keys
-            "XF86AudioLowerVolume" = "exec audio-helper ${pkgs.pulsemixer} change -10";
-            "XF86AudioRaiseVolume" = "exec audio-helper ${pkgs.pulsemixer} change +10";
-            "XF86AudioMute" = "exec audio-helper ${pkgs.pulsemixer} mute";
-            "XF86AudioMicMute" = "exec audio-helper ${pkgs.pulsemixer} micmute";
-            "XF86AudioPlay" = "exec audio-helper ${pkgs.mpc-cli} play";
-            "XF86AudioPrev" = "exec audio-helper ${pkgs.mpc-cli} prev";
-            "XF86AudioNext" = "exec audio-helper ${pkgs.mpc-cli} next";
-            "XF86MonBrightnessUp" = "exec brightness-helper ${pkgs.brightnessctl} +10";
-            "XF86MonBrightnessDown" = "exec brightness-helper ${pkgs.brightnessctl} -10";
-
-            # WM
-            "${mod}+f" = "fullscreen";
-            "${mod}+Shift+f" = "floating toggle";
-            "${mod}+h" = "move scratchpad";
-            "${mod}+Shift+h" = "scratchpad show";
-            "${mod}+q" = "kill";
-
-            "${mod}+Tab" = "workspace back_and_forth";
-            "${mod}+space" = "focus mode_toggle";
-
-            "${mod}+Left" = "focus left";
-            "${mod}+Right" = "focus right";
-            "${mod}+Up" = "focus up";
-            "${mod}+Down" = "focus down";
-
-            "${mod}+Shift+Left" = "move left";
-            "${mod}+Shift+Right" = "move right";
-            "${mod}+Shift+Up" = "move up";
-            "${mod}+Shift+Down" = "move down";
-
-            "${mod}+0" = "workspace number 0";
-            "${mod}+1" = "workspace number 1";
-            "${mod}+2" = "workspace number 2";
-            "${mod}+3" = "workspace number 3";
-            "${mod}+4" = "workspace number 4";
-            "${mod}+5" = "workspace number 5";
-            "${mod}+6" = "workspace number 6";
-            "${mod}+7" = "workspace number 7";
-            "${mod}+8" = "workspace number 8";
-            "${mod}+9" = "workspace number 9";
-
-            "${mod}+Shift+0" = "move container to workspace number 0";
-            "${mod}+Shift+1" = "move container to workspace number 1";
-            "${mod}+Shift+2" = "move container to workspace number 2";
-            "${mod}+Shift+3" = "move container to workspace number 3";
-            "${mod}+Shift+4" = "move container to workspace number 4";
-            "${mod}+Shift+5" = "move container to workspace number 5";
-            "${mod}+Shift+6" = "move container to workspace number 6";
-            "${mod}+Shift+7" = "move container to workspace number 7";
-            "${mod}+Shift+8" = "move container to workspace number 8";
-            "${mod}+Shift+9" = "move container to workspace number 9";
-          };
-
-          workspaceAutoBackAndForth = true;
-
-          bars = [ ];
-
-          assigns = {
-            "2" = [{ app_id = "WebCord"; }];
-            "9" = [{ app_id = "org.keepassxc.KeePassXC"; }];
-          };
-        };
-        extraConfig = ''
-          set $term ${term}
-          for_window [app_id="dropdown.*"] floating enable
-          for_window [app_id="dropdown.*"] resize set 800 400
-        '';
-      };
+          brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+          firefox = "${pkgs.firefox}/bin/firefox";
+          fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
+          grim = "${pkgs.grim}/bin/grim";
+          mpc = "${pkgs.mpc-cli}/bin/mpc";
+          ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
+          pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
+          qalc = "${pkgs.libqalculate}/bin/qalc";
+          slurp = "${pkgs.slurp}/bin/slurp";
+          swappy = "${pkgs.swappy}/bin/swappy";
+          webcord = "${pkgs.webcord}/bin/webcord";
+        });
+    };
   };
 }
