@@ -17,17 +17,6 @@
         useHardenedMalloc = false;
       };
 
-      # xdg-desktop-portal = prev.xdg-desktop-portal.overrideAttrs (old: rec {
-      #   version = "1.14.6";
-
-      #   src = pkgs.fetchFromGitHub {
-      #     owner = "flatpak";
-      #     repo = "xdg-desktop-portal";
-      #     rev = version;
-      #     hash = "sha256-MD1zjKDWwvVTui0nYPgvVjX48DaHWcP7Q10vDrNKYz0=";
-      #   };
-      # });
-
       waybar = prev.waybar.overrideAttrs (old: {
         mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true " ];
       });
@@ -196,9 +185,7 @@
       };
 
       packages = with pkgs; [
-        clang-tools
         docker-client
-        emacs
         feh
         file
         gocryptfs
@@ -257,6 +244,16 @@
           executable = true;
           source = ./scripts/terminal.sh;
         };
+
+        "${mybin}/use" = {
+          executable = true;
+          source = ./scripts/use.sh;
+        };
+
+        "${mybin}/screenshot" = {
+          executable = true;
+          source = ./scripts/screenshot.sh;
+        };
       };
     };
 
@@ -272,38 +269,14 @@
       '';
     };
 
-    systemd.user.services =
-      let
-        Install.WantedBy = [ "default.target" ];
-        Environment = let user = config.home.username; in
-          "PATH=/run/wrappers/bin:/home/${user}/.nix-profile/bin:/etc/profiles/per-user/${user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
-      in
-      {
-        emacs = {
-          inherit Install;
-          # Unit.Requires = [ "async-git-clone.service" ];
-          Service = {
-            inherit Environment;
-            ExecStart = "${pkgs.emacs}/bin/emacs --fg-daemon";
-          };
-        };
-
-        # async-git-clone = {
-        #   inherit Install;
-        #   Unit = {
-        #     StartLimitIntervalSec = "1d";
-        #     StartLimitBurst = 5;
-        #   };
-        #   Service = {
-        #     inherit Environment;
-        #     ExecStart = "${pkgs.bash}/bin/bash " + ./async-git-clone.sh;
-        #     Restart = "on-failure";
-        #     RestartSec = 10;
-        #   };
-        # };
-      };
+    systemd.user.services = {
+      waybar.Service.RestartSec = 1;
+      waybar.Unit.StartLimitIntervalSec = 0;
+    };
 
     services = {
+      emacs.enable = true;
+
       wlsunset = {
         enable = true;
         latitude = "54.3075";
@@ -371,11 +344,15 @@
         };
       };
 
+      emacs = {
+        enable = true;
+        package = pkgs.emacs29-pgtk;
+      };
+
+      zathura.enable = true;
       zoxide.enable = true;
 
       man.generateCaches = true;
-
-      zathura.enable = true;
 
       direnv = {
         enable = true;
@@ -751,13 +728,10 @@
           brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
           firefox = "${pkgs.firefox}/bin/firefox";
           fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
-          grim = "${pkgs.grim}/bin/grim";
           mpc = "${pkgs.mpc-cli}/bin/mpc";
           ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
           pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
           qalc = "${pkgs.libqalculate}/bin/qalc";
-          slurp = "${pkgs.slurp}/bin/slurp";
-          swappy = "${pkgs.swappy}/bin/swappy";
           webcord = "${pkgs.webcord}/bin/webcord";
         });
     };

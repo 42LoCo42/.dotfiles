@@ -17,34 +17,41 @@
     nix-alien.inputs.flake-utils.follows = "lanzaboote/flake-utils";
     nix-alien.inputs.nix-index-database.follows = "nix-index-database";
 
-    "9mount".url = "github:42loco42/flakes?dir=9mount";
-    "9mount".inputs.nixpkgs.follows = "nixpkgs";
-    "9mount".inputs.flake-utils.follows = "lanzaboote/flake-utils";
+    obscura.url = "github:42loco42/obscura";
+    obscura.inputs.nixpkgs.follows = "nixpkgs";
+    obscura.inputs.flake-utils.follows = "lanzaboote/flake-utils";
 
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, ... }@attrs: {
-    nixosConfigurations.akyuro = nixpkgs.lib.nixosSystem rec {
-      system = "x86_64-linux";
-      specialArgs = attrs;
-      modules = [
-        ./configuration.nix
-        ./hardware-configuration.nix
+  outputs = { self, nixpkgs, ... }: {
+    nixosConfigurations.akyuro = let system = "x86_64-linux"; in
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./configuration.nix
+          ./hardware-configuration.nix
 
-        self.inputs.home-manager.nixosModules.home-manager
-        self.inputs.nix-index-database.nixosModules.nix-index
-        self.inputs.lanzaboote.nixosModules.lanzaboote
-        self.inputs."9mount".nixosModules.default
+          self.inputs.home-manager.nixosModules.home-manager
+          self.inputs.nix-index-database.nixosModules.nix-index
+          self.inputs.lanzaboote.nixosModules.lanzaboote
+          self.inputs.obscura.nixosModules."9mount"
 
-        ({ self, ... }: {
-          environment.systemPackages = with self.inputs.nix-alien.packages.${system}; [
-            nix-alien
-          ];
-          programs.nix-ld.enable = true;
-        })
-      ];
-    };
+          ({
+            environment.systemPackages =
+              let
+                pkgs = import nixpkgs { inherit system; };
+              in
+              [
+                pkgs.grim
+                self.inputs.nix-alien.packages.${system}.nix-alien
+                self.inputs.obscura.packages.flameshot-fixed.${system}
+              ];
+
+            programs.nix-ld.enable = true;
+          })
+        ];
+      };
   };
 }
