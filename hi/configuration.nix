@@ -209,57 +209,23 @@
 
       sessionPath = [ mybin ];
 
-      file = {
-        "Desktop".text = "";
-
-        "${mybin}/audio-helper" = {
-          executable = true;
-          source = ./scripts/audio-helper.sh;
-        };
-
-        "${mybin}/brightness-helper" = {
-          executable = true;
-          source = ./scripts/brightness-helper.sh;
-        };
-
-        "${mybin}/dropdown" = {
-          executable = true;
-          source = ./scripts/dropdown.sh;
-        };
-
-        "${mybin}/new-pane-here" = {
-          executable = true;
-          source = ./scripts/new-pane-here.sh;
-        };
-
-        "${mybin}/prompt" = {
-          executable = true;
-          source = pkgs.substituteAll {
-            src = ./scripts/prompt.sh;
-            fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
-          };
-        };
-
-        "${mybin}/terminal" = {
-          executable = true;
-          source = ./scripts/terminal.sh;
-        };
-
-        "${mybin}/use" = {
-          executable = true;
-          source = ./scripts/use.sh;
-        };
-
-        "${mybin}/screenshot" = {
-          executable = true;
-          source = ./scripts/screenshot.sh;
-        };
-      };
+      file = builtins.listToAttrs (
+        map
+          (name: {
+            name = "${mybin}/${builtins.replaceStrings [".sh"] [""] name}";
+            value = {
+              executable = true;
+              source = ./scripts + "/${name}";
+            };
+          })
+          (builtins.attrNames (builtins.readDir ./scripts))
+      );
     };
 
     xdg = {
       enable = true;
       userDirs.enable = true;
+      userDirs.music = "${config.home.homeDirectory}/music";
 
       configFile."fuzzel/fuzzel.ini".source = ./misc/fuzzel.ini;
       dataFile."dbus-1/services/mako-path-fix.service".text = ''
