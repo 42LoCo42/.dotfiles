@@ -2,6 +2,7 @@
 
 # get nixpkgs flake path currently in use by the system
 # this removes the need to download nixpkgs everytime nix shell is executed
+# shellcheck disable=SC2016
 nixpkgs="$(nix eval --raw --impure --expr '"${(builtins.getFlake "/etc/nixos").inputs.nixpkgs}"')"
 
 pkgs=()
