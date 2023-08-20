@@ -551,7 +551,7 @@
 
       swaylock.settings = {
         daemonize = true;
-        image = builtins.toString ./misc/wallpaper.jpg;
+        image = builtins.toString ./misc/wallpaper.png;
       };
 
       waybar = {
@@ -732,6 +732,8 @@
           ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
           pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
           qalc = "${pkgs.libqalculate}/bin/qalc";
+          swaybg = "${pkgs.swaybg}/bin/swaybg";
+          wallpaper = ./misc/wallpaper.png;
           webcord = "${pkgs.webcord}/bin/webcord";
         });
     };
