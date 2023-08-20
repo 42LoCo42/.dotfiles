@@ -23,7 +23,12 @@
     })
   ];
 
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.timeout = 0;
+  boot.loader.systemd-boot = {
+    enable = true;
+    editor = false;
+  };
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmp.useTmpfs = true;
   boot.kernelParams = [
@@ -43,10 +48,12 @@
   networking = {
     hostName = "akyuro";
     useNetworkd = true;
-    localCommands = "${pkgs.util-linux}/bin/rfkill unblock wifi";
+    localCommands = "${pkgs.util-linux}/bin/rfkill unblock all";
     networkmanager.enable = true;
     firewall.checkReversePath = "loose"; # for tailscale exit node
   };
+
+  hardware.bluetooth.enable = true;
 
   time.timeZone = "Europe/Berlin";
 
@@ -127,11 +134,14 @@
       enable = true;
       enableOnBoot = false;
     };
+
+    libvirtd.enable = true;
   };
 
   systemd.extraConfig = "DefaultTimeoutStopSec=10s";
   systemd.network.wait-online.enable = false;
   systemd.services."NetworkManager-wait-online".enable = false;
+  systemd.services."tailscaled".serviceConfig.Type = "simple";
   systemd.mounts = [{
     what = "dotfiles";
     where = "/etc/nixos";
@@ -153,7 +163,7 @@
   users.mutableUsers = false;
   users.users.leonsch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "networkmanager" ];
+    extraGroups = [ "wheel" "docker" "networkmanager" "libvirtd" ];
     hashedPassword = "$y$j9T$zjEgVmMSgM4dbXcVwITTT.$hLUP9jj1sE.hCf0DIAb8Nzlu40HiIwhYVkKmSWUgKv5";
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
   };
@@ -203,6 +213,7 @@
         ripgrep
         shellcheck
         tor-browser-bundle-bin
+        virt-manager
         wl-clipboard
         xdg_utils
       ];
