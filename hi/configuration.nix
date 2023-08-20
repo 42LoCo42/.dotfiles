@@ -226,7 +226,14 @@
             name = "${mybin}/${builtins.replaceStrings [".sh"] [""] name}";
             value = {
               executable = true;
-              source = ./scripts + "/${name}";
+              source = pkgs.substituteAll {
+                src = ./scripts + "/${name}";
+
+                brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+                fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
+                mpc = "${pkgs.mpc-cli}/bin/mpc";
+                pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
+              };
             };
           })
           (builtins.attrNames (builtins.readDir ./scripts))
@@ -702,10 +709,8 @@
         (pkgs.substituteAll {
           src = ./misc/hyprland.conf;
 
-          brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
           firefox = "${pkgs.firefox}/bin/firefox";
           fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
-          mpc = "${pkgs.mpc-cli}/bin/mpc";
           ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
           pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
           qalc = "${pkgs.libqalculate}/bin/qalc";
