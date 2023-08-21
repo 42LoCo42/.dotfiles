@@ -20,9 +20,6 @@
     obscura.url = "github:42loco42/obscura";
     obscura.inputs.nixpkgs.follows = "nixpkgs";
     obscura.inputs.flake-utils.follows = "lanzaboote/flake-utils";
-
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, ... }: {

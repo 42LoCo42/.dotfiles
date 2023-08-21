@@ -16,10 +16,6 @@
       tor-browser-bundle-bin = prev.tor-browser-bundle-bin.override {
         useHardenedMalloc = false;
       };
-
-      waybar = prev.waybar.overrideAttrs (old: {
-        mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true " ];
-      });
     })
   ];
 
@@ -540,6 +536,7 @@
 
       waybar = {
         enable = true;
+        package = pkgs.waybar-hyprland;
         systemd.enable = true;
         systemd.target = "hyprland-session.target";
         style = ./misc/waybar.css;
