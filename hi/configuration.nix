@@ -1,6 +1,17 @@
 { config, pkgs, ... }: {
   system.stateVersion = "22.11";
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [ "nix-command" "flakes" ];
+    substituters = [
+      "https://nix-community.cachix.org"
+      "https://cache.nixos.org/"
+    ];
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+
+  };
   nix.extraOptions = ''
     keep-outputs = true
     keep-derivations = true
@@ -126,9 +137,9 @@
   ];
 
   virtualisation = {
-    docker = {
+    docker.rootless = {
       enable = true;
-      enableOnBoot = false;
+      setSocketVariable = true;
     };
 
     libvirtd.enable = true;
@@ -536,7 +547,6 @@
 
       waybar = {
         enable = true;
-        package = pkgs.waybar-hyprland;
         systemd.enable = true;
         systemd.target = "hyprland-session.target";
         style = ./misc/waybar.css;

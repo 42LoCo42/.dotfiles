@@ -43,7 +43,8 @@
               [
                 pkgs.grim
                 self.inputs.nix-alien.packages.${system}.nix-alien
-                self.inputs.obscura.packages.flameshot-fixed.${system}
+                self.inputs.obscura.packages.${system}.flameshot-fixed
+                self.inputs.obscura.packages.${system}.SwayAudioIdleInhibit
               ];
 
             programs.nix-ld.enable = true;
