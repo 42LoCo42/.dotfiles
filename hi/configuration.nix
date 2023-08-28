@@ -24,9 +24,9 @@
         fonts = [ "Iosevka" ];
       };
 
-      tor-browser-bundle-bin = prev.tor-browser-bundle-bin.override {
-        useHardenedMalloc = false;
-      };
+      # tor-browser-bundle-bin = prev.tor-browser-bundle-bin.override {
+      #   useHardenedMalloc = false;
+      # };
     })
   ];
 
@@ -60,7 +60,10 @@
     firewall.checkReversePath = "loose"; # for tailscale exit node
   };
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    settings.General.Experimental = true;
+  };
 
   time.timeZone = "Europe/Berlin";
 
