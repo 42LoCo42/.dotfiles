@@ -102,6 +102,8 @@
   };
 
   services = {
+    dbus.packages = [ pkgs.gcr ];
+
     openssh = {
       enable = true;
       settings = {
@@ -295,7 +297,7 @@
 
       gpg-agent = {
         enable = true;
-        pinentryFlavor = "qt";
+        pinentryFlavor = "gnome3";
       };
 
       swayidle = {
