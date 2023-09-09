@@ -1,4 +1,4 @@
-source "@{pkgs.complete-alias}/bin/complete_alias"
+source "@complete_alias@"
 while read -r name; do
 	complete -F _complete_alias "$name"
 done < <(alias -p | sed 's|=.*||; s|.* ||')
