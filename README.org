@@ -1,0 +1,40 @@
+* My NixOS configuration
+Abandon hope, all ye who enter here.
+
+[[./screenshot.png]]
+
+** Machines
+| akyuro        | Laptop       |
+| TODO astylos  | Main PC      |
+| TODO bunny    | Main Server  |
+| TODO laniakea | Odroid M1    |
+| TODO rubicon  | Raspberry Pi |
+
+** Modules
+- base
+  - nix-settings: Default settings for Nix, the store and nixpkgs
+  - system: Basic system settings & services
+  - user: My user account
+- boot
+  - default: systemd-boot as UEFI bootloader & some kernel settings
+  - lanza: Use [[https://github.com/nix-community/lanzaboote][Lanzaboote]] for Secure Boot
+  - zfs: Enable booting from ZFS
+- home
+  - gui: Default settings for a graphical system
+  - hyprland: My current [[https://hyprland.org/][Hyprland]] setup for user-facing machines
+  - terminal: Default settings for a nice terminal environment
+- networking
+  - bluetooth: Enables bluetooth (duh)
+  - default: Enables NetworkManager & WiFi and exposes TCP ports
+    18213 and 37812 in the firewall (cuz I like those)
+  - tailscale: Enables [[https://tailscale.com/][Tailscale]], a Wireguard mesh VPN
+- security
+  - u2f: Enables usage of [[https://solokeys.com/][FIDO2 security keys]] for sudo authentication
+- virt
+  - docker: Enables (rootless) docker
+  - libvirt: Enables [[https://libvirt.org/][libvirt]], a virtualisation framework
+
+** TODOs
+- Settings for [[https://github.com/nix-community/impermanence][impermanence]]
+- Automatic unlocking of encrypted root devices using the TPM and [[https://github.com/latchset/clevis][clevis]]
+- ZFS support for system-based initrds
