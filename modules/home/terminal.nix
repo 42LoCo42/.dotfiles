@@ -38,6 +38,7 @@
 
       packages = with pkgs; [
         file
+        git-crypt
         jq
         lsof
         man-pages
