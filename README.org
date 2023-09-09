@@ -13,8 +13,22 @@ Abandon hope, all ye who enter here.
 ** Modules
 - base
   - nix-settings: Default settings for Nix, the store and nixpkgs
-  - system: Basic system settings & services
-  - user: My user account
+  - system: Basic system settings & services.
+    CHANGE HERE: keymap, locale, timezone.
+  - user: My user account.
+    The password hash is stored in the encrypted file [[file:modules/base/hash.secret]].
+    When this file is not decrypted, the default password
+    of " " (a single space) will be used.
+    To change it:
+    - create a new hash: ~mkpasswd > modules/base/hash.secret~
+    - change ~wantHash~ in [[file:modules/base/user.nix]] to the hash from \\
+      ~sha256sum modules/base/hash.secret~
+    - optionally reencrypt with [[https://github.com/AGWA/git-crypt][git-crypt]]:
+      #+begin_src shell
+        rm -rf .git-crypt .git/git-crypt
+        git crypt init
+        git crypt add-gpg-user your@gpg.id
+      #+end_src
 - boot
   - default: systemd-boot as UEFI bootloader & some kernel settings
   - lanza: Use [[https://github.com/nix-community/lanzaboote][Lanzaboote]] for Secure Boot
