@@ -16,7 +16,7 @@
 
       sessionPath = [ mybin ];
 
-      file = let dir = ./scripts; in lib.trivial.pipe dir [
+      file = let dir = ./scripts; in (lib.trivial.pipe dir [
         builtins.readDir
         builtins.attrNames
         (map (name: {
@@ -34,7 +34,7 @@
           };
         }))
         builtins.listToAttrs
-      ];
+      ]) // { Desktop.text = ""; };
 
       packages = with pkgs; [
         file
