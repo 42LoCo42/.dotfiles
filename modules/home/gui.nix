@@ -1,4 +1,4 @@
-{ self, pkgs, ... }: {
+{ self, pkgs, lib, ... }: {
   fonts = {
     packages = with pkgs; [
       noto-fonts
@@ -78,5 +78,7 @@
       yt-dlp.enable = true;
       zathura.enable = true;
     };
+
+    systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
   };
 }
