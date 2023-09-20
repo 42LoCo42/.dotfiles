@@ -127,7 +127,7 @@
           ipc = true;
 
           modules-left = [
-            "wlr/workspaces"
+            "hyprland/workspaces"
           ];
 
           modules-center = [
@@ -149,7 +149,7 @@
             "tray"
           ];
 
-          "wlr/workspaces" = {
+          "hyprland/workspaces" = {
             all-outputs = true;
             sort-by-number = true;
             format = "{icon}";
