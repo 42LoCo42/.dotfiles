@@ -83,7 +83,7 @@
           };
 
           colors = {
-            alpha = "0.9";
+            alpha = "0.5";
             foreground = "ebdbb2";
             background = "282828";
             regular0 = "282828";
