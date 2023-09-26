@@ -51,4 +51,5 @@ Abandon hope, all ye who enter here.
 ** TODOs
 - Settings for [[https://github.com/nix-community/impermanence][impermanence]]
 - Automatic unlocking of encrypted root devices using the TPM and [[https://github.com/latchset/clevis][clevis]]
+  - Update: I'm now using ~systemd-cryptenroll~ instead of clevis for LUKS
 - ZFS support for system-based initrds
