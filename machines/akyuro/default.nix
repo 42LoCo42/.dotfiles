@@ -9,6 +9,7 @@
     # self.inputs.obscura.nixosModules."9mount"
 
     "${self}/modules/base/all.nix"
+    "${self}/modules/base/greeter.nix"
     "${self}/modules/boot/lanza.nix"
     "${self}/modules/boot/zfs.nix"
     "${self}/modules/home/hyprland.nix"
