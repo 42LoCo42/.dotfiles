@@ -19,66 +19,24 @@
     obscura.inputs.nixpkgs.follows = "nixpkgs";
     obscura.inputs.flake-utils.follows = "flake-utils";
 
-    deploy-rs.url = "github:serokell/deploy-rs";
-    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-    deploy-rs.inputs.utils.follows = "flake-utils";
-    deploy-rs.inputs.flake-compat.follows = "lanzaboote/flake-compat";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixinate.url = "github:matthewcroughan/nixinate";
+    nixinate.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
-    let
-      nixosConfigurations =
-        let
-          dir = ./machines;
-          # include pipe from pkgs.lib.trivial since we can't import nixpkgs here
-          pipe = val: functions:
-            let reverseApply = x: f: f x;
-            in builtins.foldl' reverseApply val functions;
-        in
-        pipe dir [
-          builtins.readDir
-          builtins.attrNames
-          (map (name: {
-            inherit name;
-            value = import "${dir}/${name}" { inherit self nixpkgs; };
-          }))
-          builtins.listToAttrs
-        ];
-
-      deploy = config:
-        let
-          system = config.pkgs.system;
-          pkgs = import nixpkgs { inherit system; };
-          deployPkgs = import nixpkgs {
-            inherit system;
-            overlays = [
-              self.inputs.deploy-rs.overlay
-              (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-            ];
-          };
-        in
-        {
-          profiles.system = {
-            user = "root";
-            path = deployPkgs.deploy-rs.lib.activate.nixos config;
-          };
-        };
-    in
-    (flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = import nixpkgs { inherit system; }; in {
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            deploy-rs
-            just
-          ];
-        };
-      })) // {
-      inherit nixosConfigurations;
-
-      deploy.nodes = {
-        "test" = {
-          hostname = "192.168.122.98";
-        } // (deploy nixosConfigurations.test);
-      };
-    };
+  outputs = { self, nixpkgs, flake-utils, ... }: {
+    nixosConfigurations =
+      let dir = ./machines; in nixpkgs.lib.pipe dir [
+        builtins.readDir
+        builtins.attrNames
+        (map (name: {
+          inherit name;
+          value = import "${dir}/${name}" { inherit self nixpkgs; };
+        }))
+        builtins.listToAttrs
+      ];
+  } // (flake-utils.lib.eachDefaultSystem (system: {
+    apps = (self.inputs.nixinate.nixinate.${system} self).nixinate;
+  }));
 }

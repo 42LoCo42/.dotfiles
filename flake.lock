@@ -58,31 +58,23 @@
         "type": "github"
       }
     },
-    "deploy-rs": {
+    "disko": {
       "inputs": {
-        "flake-compat": [
-          "lanzaboote",
-          "flake-compat"
-        ],
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "utils": [
-          "flake-utils"
         ]
       },
       "locked": {
-        "lastModified": 1695052866,
-        "narHash": "sha256-agn7F9Oww4oU6nPiw+YiYI9Xb4vOOE73w8PAoBRP4AA=",
-        "owner": "serokell",
-        "repo": "deploy-rs",
-        "rev": "e3f41832680801d0ee9e2ed33eb63af398b090e9",
+        "lastModified": 1698023869,
+        "narHash": "sha256-iIi9HhMFEhC0ca1GUoBPXhzFp5N4fm7QIBt21ScnX9A=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "a3283f0e5cba07dc1f6795a6ee71bf3a23b3fc53",
         "type": "github"
       },
       "original": {
-        "owner": "serokell",
-        "repo": "deploy-rs",
-        "type": "github"
+        "id": "disko",
+        "type": "indirect"
       }
     },
     "flake-compat": {
@@ -249,6 +241,26 @@
         "type": "github"
       }
     },
+    "nixinate": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1688141737,
+        "narHash": "sha256-qHrNMYWukOKmKVf6wXOGKj1xxUnOGjvTRbt/PLLXuBE=",
+        "owner": "matthewcroughan",
+        "repo": "nixinate",
+        "rev": "7902ae845e6cc5bd450e510cdf5e009a6e4a44d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "matthewcroughan",
+        "repo": "nixinate",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1697009197,
@@ -337,11 +349,12 @@
     },
     "root": {
       "inputs": {
-        "deploy-rs": "deploy-rs",
+        "disko": "disko",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nix-index-database": "nix-index-database",
+        "nixinate": "nixinate",
         "nixpkgs": "nixpkgs",
         "obscura": "obscura"
       }
