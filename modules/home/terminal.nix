@@ -1,4 +1,4 @@
-{ ... }: {
+{ self, ... }: {
   home-manager.users.default = { pkgs, lib, config, ... }: {
     home = let mybin = "${config.home.homeDirectory}/bin"; in {
       shellAliases = let flake = "path:$HOME/config"; in {
@@ -29,6 +29,7 @@
               brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
               fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
               mpc = "${pkgs.mpc-cli}/bin/mpc";
+              nixpkgs = "${self.inputs.nixpkgs}";
               pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
             };
           };
