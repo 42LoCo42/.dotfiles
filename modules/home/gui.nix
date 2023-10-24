@@ -25,7 +25,7 @@
     ];
   };
 
-  home-manager.users.default = { config, ... }: {
+  home-manager.users.leonsch = { config, ... }: {
     qt = {
       enable = true;
       platformTheme = "gtk";

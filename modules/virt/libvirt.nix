@@ -4,8 +4,8 @@
     qemu.swtpm.enable = true;
   };
 
-  users.users.default.extraGroups = [ "libvirtd" ];
-  home-manager.users.default = { pkgs, ... }: {
+  users.users.leonsch.extraGroups = [ "libvirtd" ];
+  home-manager.users.leonsch = { pkgs, ... }: {
     home.packages = with pkgs; [
       virt-manager
     ];

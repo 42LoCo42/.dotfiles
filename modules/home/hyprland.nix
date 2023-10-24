@@ -14,7 +14,7 @@
 
   programs.hyprland.enable = true;
 
-  home-manager.users.default = { pkgs, ... }: {
+  home-manager.users.leonsch = { pkgs, ... }: {
     home.packages = with pkgs; [
       self.inputs.obscura.packages.${system}.SwayAudioIdleInhibit
       wl-clipboard
