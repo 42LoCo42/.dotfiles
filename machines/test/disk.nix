@@ -71,6 +71,12 @@
             options.mountpoint = mountpoint;
           };
 
+          "nixos/docker" = rec {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/docker";
+            options.mountpoint = mountpoint;
+          };
+
           # encrypted = {
           #   type = "zfs_fs";
           #   options = {
