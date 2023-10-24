@@ -8,8 +8,10 @@
     self.inputs.disko.nixosModules.disko
     self.inputs.home-manager.nixosModules.home-manager
     self.inputs.impermanence.nixosModules.impermanence
+    self.inputs.lanzaboote.nixosModules.lanzaboote
 
     "${self}/modules/base/all.nix"
+    "${self}/modules/boot/lanza.nix"
     "${self}/modules/boot/zfs.nix"
     "${self}/modules/home/terminal.nix"
     "${self}/modules/networking/default.nix"
@@ -32,6 +34,7 @@
       fileSystems."/persist".neededForBoot = true;
       environment.persistence."/persist" = {
         directories = [
+          "/etc/secureboot"
           "/var/log/"
         ];
         files = [
