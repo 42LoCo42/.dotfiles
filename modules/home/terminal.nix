@@ -1,5 +1,5 @@
 { self, ... }: {
-  home-manager.users.default = { pkgs, lib, config, ... }: {
+  home-manager.users.leonsch = { pkgs, lib, config, ... }: {
     home = let mybin = "${config.home.homeDirectory}/bin"; in {
       shellAliases = let flake = "path:$HOME/config"; in {
         cd = "mycd";
