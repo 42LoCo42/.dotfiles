@@ -16,12 +16,36 @@
     "${self}/modules/home/terminal.nix"
     "${self}/modules/networking/default.nix"
 
-    ({ lib, ... }: {
+    ({ pkgs, lib, ... }: {
       _module.args.nixinate = {
         host = "192.168.122.66";
         sshUser = "leonsch";
         buildOn = "remote";
         hermetic = false;
+      };
+
+      boot.initrd = {
+        kernelModules = [ "tpm_crb" ];
+
+        systemd = {
+          emergencyAccess = true;
+
+          contents."/jwt".source = ./jwt.secret;
+          initrdBin = with pkgs; [
+            clevis
+            jose
+            tpm2-tools
+          ];
+
+          services = {
+            zfs-import-rpool = {
+              script = lib.mkForce ''
+                zpool import -N rpool
+                clevis decrypt < /jwt | zfs load-key rpool/nixos
+              '';
+            };
+          };
+        };
       };
 
       networking = {

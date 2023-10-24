@@ -59,6 +59,14 @@
         };
 
         datasets = {
+          "nixos" = {
+            type = "zfs_fs";
+            options = {
+              encryption = "on";
+              keyformat = "passphrase";
+            };
+          };
+
           "nixos/nix" = rec {
             type = "zfs_fs";
             mountpoint = "/nix";
@@ -76,20 +84,6 @@
             mountpoint = "/var/lib/docker";
             options.mountpoint = mountpoint;
           };
-
-          # encrypted = {
-          #   type = "zfs_fs";
-          #   options = {
-          #     mountpoint = "none";
-          #     encryption = "aes-256-gcm";
-          #     keyformat = "passphrase";
-          #     keylocation = "file:///tmp/secret.key";
-          #   };
-          #   # use this to read the key during boot
-          #   # postCreateHook = ''
-          #   #   zfs set keylocation="prompt" "zroot/$name";
-          #   # '';
-          # };
         };
       };
     };
