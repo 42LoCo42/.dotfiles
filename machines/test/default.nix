@@ -41,10 +41,10 @@
         ];
       };
 
-      # virtualisation.docker = {
-      #   enable = true;
-      #   storageDriver = "zfs";
-      # };
+      virtualisation.docker = {
+        enable = true;
+        storageDriver = "zfs";
+      };
     })
   ];
 }
