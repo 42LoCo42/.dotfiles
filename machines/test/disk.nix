@@ -14,6 +14,10 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [
+                  "fmask=0077"
+                  "dmask=0077"
+                ];
               };
             };
             zfs = {
@@ -59,14 +63,12 @@
             type = "zfs_fs";
             mountpoint = "/nix";
             options.mountpoint = mountpoint;
-            mountOptions = [ "zfsutil" ];
           };
 
           "nixos/persist" = rec {
             type = "zfs_fs";
             mountpoint = "/persist";
             options.mountpoint = mountpoint;
-            mountOptions = [ "zfsutil" ];
           };
 
           # encrypted = {
