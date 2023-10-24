@@ -4,8 +4,10 @@
   modules = [
     ./disk.nix
     ./hardware.nix
-    self.inputs.home-manager.nixosModules.home-manager
+
     self.inputs.disko.nixosModules.disko
+    self.inputs.home-manager.nixosModules.home-manager
+    self.inputs.impermanence.nixosModules.impermanence
 
     "${self}/modules/base/all.nix"
     "${self}/modules/boot/zfs.nix"
@@ -25,6 +27,18 @@
         hostId = "a5d4deab";
 
         networkmanager.enable = lib.mkForce false;
+      };
+
+      fileSystems."/persist".neededForBoot = true;
+      environment.persistence."/persist" = {
+        directories = [
+          "/var/log/"
+        ];
+        files = [
+          "/etc/machine-id"
+          "/etc/ssh/ssh_host_ed25519_key"
+          "/etc/ssh/ssh_host_ed25519_key.pub"
+        ];
       };
 
       # virtualisation.docker = {
