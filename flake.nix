@@ -21,13 +21,12 @@
 
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixinate.url = "github:matthewcroughan/nixinate";
-    nixinate.inputs.nixpkgs.follows = "nixpkgs";
-
     impermanence.url = "github:nix-community/impermanence";
+    und.url = "github:42loco42/und";
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }: {
+    apps = self.inputs.und.und self;
     nixosConfigurations =
       let dir = ./machines; in nixpkgs.lib.pipe dir [
         builtins.readDir
@@ -38,7 +37,5 @@
         }))
         builtins.listToAttrs
       ];
-  } // (flake-utils.lib.eachDefaultSystem (system: {
-    apps = (self.inputs.nixinate.nixinate.${system} self).nixinate;
-  }));
+  };
 }

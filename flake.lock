@@ -256,26 +256,6 @@
         "type": "github"
       }
     },
-    "nixinate": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1688141737,
-        "narHash": "sha256-qHrNMYWukOKmKVf6wXOGKj1xxUnOGjvTRbt/PLLXuBE=",
-        "owner": "matthewcroughan",
-        "repo": "nixinate",
-        "rev": "7902ae845e6cc5bd450e510cdf5e009a6e4a44d9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "matthewcroughan",
-        "repo": "nixinate",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1697009197,
@@ -370,9 +350,9 @@
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
         "nix-index-database": "nix-index-database",
-        "nixinate": "nixinate",
         "nixpkgs": "nixpkgs",
-        "obscura": "obscura"
+        "obscura": "obscura",
+        "und": "und"
       }
     },
     "rust-overlay": {
@@ -413,6 +393,20 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "und": {
+      "locked": {
+        "dirtyRev": "79e31159be2225571b3a456ae843f2824efe5cac-dirty",
+        "dirtyShortRev": "79e3115-dirty",
+        "lastModified": 1698223842,
+        "narHash": "sha256-1PkxZrZ1B4C2xfBaE4gLYgPlwOvfNwZRU9jafgvBmtc=",
+        "type": "git",
+        "url": "file:///home/leonsch/dev/nix/und"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/leonsch/dev/nix/und"
       }
     }
   },
