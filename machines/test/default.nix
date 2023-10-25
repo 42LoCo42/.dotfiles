@@ -17,19 +17,16 @@
     "${self}/modules/networking/default.nix"
 
     ({ pkgs, lib, ... }: {
-      _module.args.nixinate = {
+      _module.args.und = {
         host = "192.168.122.66";
-        sshUser = "leonsch";
-        buildOn = "remote";
-        hermetic = false;
+        user = "leonsch";
+        kexec = "192.168.122.1:8000/nixos-kexec-installer-x86_64-linux.tar.gz";
       };
 
       boot.initrd = {
         kernelModules = [ "tpm_crb" ];
 
         systemd = {
-          emergencyAccess = true;
-
           contents."/jwt".source = ./jwt.secret;
           initrdBin = with pkgs; [
             clevis
@@ -53,6 +50,11 @@
         hostId = "a5d4deab";
 
         networkmanager.enable = lib.mkForce false;
+      };
+
+      security.pam.zfs = {
+        enable = true;
+        homes = "rpool/nixos/users";
       };
 
       fileSystems."/persist".neededForBoot = true;
