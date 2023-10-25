@@ -397,16 +397,17 @@
     },
     "und": {
       "locked": {
-        "dirtyRev": "79e31159be2225571b3a456ae843f2824efe5cac-dirty",
-        "dirtyShortRev": "79e3115-dirty",
-        "lastModified": 1698223842,
-        "narHash": "sha256-1PkxZrZ1B4C2xfBaE4gLYgPlwOvfNwZRU9jafgvBmtc=",
-        "type": "git",
-        "url": "file:///home/leonsch/dev/nix/und"
+        "lastModified": 1698238587,
+        "narHash": "sha256-HR6w5rPNTZYlWis9Mj99AIlyDoQp2B5SbSA9285Q4rA=",
+        "owner": "42loco42",
+        "repo": "und",
+        "rev": "2162a4bf4bc827028c0a42ece0a1b55b775a1628",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/leonsch/dev/nix/und"
+        "owner": "42loco42",
+        "repo": "und",
+        "type": "github"
       }
     }
   },
