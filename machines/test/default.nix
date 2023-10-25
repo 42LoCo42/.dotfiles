@@ -8,17 +8,17 @@
     self.inputs.disko.nixosModules.disko
     self.inputs.home-manager.nixosModules.home-manager
     self.inputs.impermanence.nixosModules.impermanence
-    self.inputs.lanzaboote.nixosModules.lanzaboote
+    # self.inputs.lanzaboote.nixosModules.lanzaboote
 
     "${self}/modules/base/all.nix"
-    "${self}/modules/boot/lanza.nix"
+    # "${self}/modules/boot/lanza.nix"
     "${self}/modules/boot/zfs.nix"
     "${self}/modules/home/terminal.nix"
     "${self}/modules/networking/default.nix"
 
     ({ pkgs, lib, ... }: {
       _module.args.und = {
-        host = "192.168.122.66";
+        host = "192.168.122.92";
         user = "leonsch";
         kexec = "192.168.122.1:8000/nixos-kexec-installer-x86_64-linux.tar.gz";
       };
@@ -35,12 +35,12 @@
           ];
 
           services = {
-            zfs-import-rpool = {
-              script = lib.mkForce ''
-                zpool import -N rpool
-                clevis decrypt < /jwt | zfs load-key rpool/nixos
-              '';
-            };
+            # zfs-import-rpool = {
+            #   script = lib.mkForce ''
+            #     zpool import -N rpool
+            #     clevis decrypt < /jwt | zfs load-key rpool/nixos
+            #   '';
+            # };
           };
         };
       };
