@@ -1,6 +1,6 @@
 { ... }: {
   users.mutableUsers = false;
-  users.users.leonsch = {
+  users.users.default = {
     name = "leonsch";
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -23,7 +23,7 @@
 
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
-  home-manager.users.leonsch = { ... }: {
+  home-manager.users.default = { ... }: {
     home.stateVersion = "23.11";
   };
 }

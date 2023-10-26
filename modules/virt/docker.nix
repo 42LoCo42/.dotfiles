@@ -4,7 +4,7 @@
     setSocketVariable = true;
   };
 
-  home-manager.users.leonsch = { pkgs, ... }: {
+  home-manager.users.default = { pkgs, ... }: {
     home.packages = with pkgs; [
       docker-client
     ];

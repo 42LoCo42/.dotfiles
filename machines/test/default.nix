@@ -52,10 +52,10 @@
         networkmanager.enable = lib.mkForce false;
       };
 
-      security.pam.zfs = {
-        enable = true;
-        homes = "rpool/nixos/users";
-      };
+      security.pam.services.login.text = lib.mkDefault (lib.mkBefore ''
+        auth    optional pam_exec.so expose_authtok ${self}/zfs-pam rpool/nixos/home
+        session optional pam_exec.so ${pkgs.systemd}/bin/systemd-run -E PATH=/run/current-system/sw/bin -E PAM_USER -E PAM_TYPE ${self}/zfs-pam rpool/nixos/home
+      '');
 
       fileSystems."/persist".neededForBoot = true;
       environment.persistence."/persist" = {
@@ -68,12 +68,6 @@
           "/etc/ssh/ssh_host_ed25519_key"
           "/etc/ssh/ssh_host_ed25519_key.pub"
         ];
-
-        users.leonsch = {
-          files = [
-            ".bash_history"
-          ];
-        };
       };
 
       virtualisation.docker = {

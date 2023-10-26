@@ -84,6 +84,14 @@
             mountpoint = "/var/lib/docker";
             options.mountpoint = mountpoint;
           };
+
+          "nixos/home" = {
+            type = "zfs_fs";
+            options = {
+              mountpoint = "/persist/home";
+              canmount = "off";
+            };
+          };
         };
       };
     };
