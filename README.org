@@ -48,8 +48,8 @@ Abandon hope, all ye who enter here.
   - docker: Enables (rootless) docker
   - libvirt: Enables [[https://libvirt.org/][libvirt]], a virtualisation framework
 
-** TODOs
+** In progress
+See [[file:machines/test/default.nix]] for this stuff.
 - Settings for [[https://github.com/nix-community/impermanence][impermanence]]
-- Automatic unlocking of encrypted root devices using the TPM and [[https://github.com/latchset/clevis][clevis]]
-  - Update: I'm now using ~systemd-cryptenroll~ instead of clevis for LUKS
-- ZFS support for system-based initrds
+- System dataset: automatic unlocking via [[https://github.com/latchset/clevis][clevis]] in initrd
+- User datasets: unlock on login via PAM module
