@@ -9,5 +9,5 @@
     ];
   };
 
-  users.users.leonsch.extraGroups = [ "networkmanager" ];
+  users.users.default.extraGroups = [ "networkmanager" ];
 }

@@ -29,7 +29,7 @@
 
       programs.command-not-found.enable = false;
 
-      home-manager.users.leonsch = { pkgs, config, ... }: {
+      home-manager.users.default = { pkgs, config, ... }: {
         systemd.user.services =
           let
             Install.WantedBy = [ "default.target" ];
