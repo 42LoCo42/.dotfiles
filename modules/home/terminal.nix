@@ -6,12 +6,13 @@
         fuck = "sudo $(history -p !!)";
         g = "git";
         ip = "ip -c";
+        man = "batman";
         mkdir = "mkdir -pv";
         neofetch = "hyfetch";
         switch = "sudo nixos-rebuild switch --flake ${flake} -L";
-        yay = "nix flake update ${flake} && switch";
         vi = "vi -p";
         vim = "vim -p";
+        yay = "nix flake update ${flake} && switch";
       };
 
       sessionPath = [ mybin ];
@@ -53,6 +54,17 @@
     };
 
     programs = {
+      bat = {
+        enable = true;
+        extraPackages = with pkgs.bat-extras; [
+          batman
+        ];
+        config = {
+          theme = "gruvbox-dark";
+          pager = "less -fR";
+        };
+      };
+
       bash = {
         enable = true;
         enableCompletion = true;

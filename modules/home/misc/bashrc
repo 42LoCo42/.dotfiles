@@ -1,7 +1,7 @@
 source "@complete_alias@"
 while read -r name; do
 	complete -F _complete_alias "$name"
-done < <(alias -p | sed 's|=.*||; s|.* ||')
+done < <(alias -p | sed 's|=.*||; s|.* ||' | grep -v man)
 
 bind 'set enable-bracketed-paste on'
 bind 'set completion-ignore-case on'
