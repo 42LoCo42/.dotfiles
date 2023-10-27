@@ -27,6 +27,8 @@
         hostId = "872955ae";
       };
 
+      virtualisation.waydroid.enable = true;
+
       programs.command-not-found.enable = false;
 
       home-manager.users.default = { pkgs, config, ... }: {
