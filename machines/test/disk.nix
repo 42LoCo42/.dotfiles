@@ -1,4 +1,4 @@
-{
+{ initial }: {
   disko.devices = {
     disk = {
       main = {
@@ -64,6 +64,7 @@
             options = {
               encryption = "on";
               keyformat = "passphrase";
+              keylocation = "file://${initial}";
             };
           };
 
@@ -79,18 +80,17 @@
             options.mountpoint = mountpoint;
           };
 
-          "nixos/docker" = rec {
-            type = "zfs_fs";
-            mountpoint = "/var/lib/docker";
-            options.mountpoint = mountpoint;
-          };
-
           "nixos/home" = {
             type = "zfs_fs";
             options = {
               mountpoint = "/persist/home";
               canmount = "off";
             };
+          };
+
+          "nixos/home/leonsch" = {
+            type = "zfs_fs";
+            options.keyformat = "passphrase";
           };
         };
       };
