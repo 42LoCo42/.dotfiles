@@ -21,7 +21,6 @@
 
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    impermanence.url = "github:nix-community/impermanence";
     und.url = "github:42loco42/und";
   };
 
