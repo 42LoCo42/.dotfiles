@@ -36,8 +36,6 @@
       systemd.services."zfs-mount".serviceConfig.Restart = "on-failure";
 
       environment.feengold = {
-        # persistentLocation = "/persist"; # default
-
         directories = [
           { path = "/etc/secureboot"; neededForBoot = true; }
           { path = "/var/db/sudo"; mode = "0711"; }
@@ -127,17 +125,23 @@
                 e2fsprogs
                 mokutil
                 sbctl
+                zfs
               ];
               text = ''
+                [ ! -L /etc/nixos ] && rmdir /etc/nixos
+                ln -sfT "${self}" /etc/nixos
+
+                zfs change-key rpool/nixos -o keylocation=file://${initial}
+
                 if [ ! -f /etc/secureboot/GUID ]; then
                   sbctl create-keys
-                  # sbctl enroll-keys --tpm-eventlog
-                  # reboot
                   touch /create
                 fi
 
                 if mokutil --sb-state | grep -q disabled; then
-                  chattr -i /sys/firmware/efi/efivars/{KEK,db}-*
+                  for i in /sys/firmware/efi/efivars/{KEK,db}-*; do
+                    [ -e "$i" ] && chattr -i "$i"
+                  done
                   sbctl enroll-keys --tpm-eventlog
                   touch /enroll
                 elif [ ! -f /persist/jwt ]; then
