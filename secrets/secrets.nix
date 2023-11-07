@@ -1,8 +1,11 @@
 let
-  akyuro = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID5x4vhIb02WC6ZbiNbpKTjKEFY+lv232vCRWoqde60T";
-  test = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5m2wcBV3xzDzhLWdW7SRP74a9zgYMtn+DBXYlPbl5u";
+  # machines
+  test = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICcCguBV6loAZZyJ2PCqQUxpZJy4H4YLdoZcoXkq65qY";
 
-  all = [ akyuro test ];
+  # users
+  leonsch = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql";
+
+  all = [ test leonsch ];
 in
 {
   "password-hash.age".publicKeys = all;
