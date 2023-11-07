@@ -22,6 +22,11 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     und.url = "github:42loco42/und";
+
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.inputs.home-manager.follows = "home-manager";
+    agenix.inputs.darwin.follows = "";
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }: {
