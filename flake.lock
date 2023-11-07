@@ -406,11 +406,11 @@
     },
     "und": {
       "locked": {
-        "lastModified": 1698673616,
-        "narHash": "sha256-SEKVCbRoi4qrSeC7XCX3XKqjpdRrnt103+SHfR6rgcs=",
+        "lastModified": 1699346480,
+        "narHash": "sha256-ItfvtFPlgT1n3dfj5TcB4ywyyG1V/rgqkkpKRDHrO+k=",
         "owner": "42loco42",
         "repo": "und",
-        "rev": "b82b7f23994e2412abf70ed52b8cb5b8b00b8b4a",
+        "rev": "7a5999a84cea5ee26e241a393675730c8c3d8985",
         "type": "github"
       },
       "original": {

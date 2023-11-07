@@ -27,6 +27,8 @@
         networkmanager.enable = lib.mkForce false;
       };
 
+      age.identityPaths = lib.mkForce [ "/persist/age.key" ];
+
       security.pam.services.login.text = lib.mkDefault (lib.mkBefore ''
         auth    optional pam_exec.so expose_authtok ${self}/zfs-pam rpool/nixos/home
         session optional pam_exec.so ${pkgs.systemd}/bin/systemd-run -E PATH=/run/current-system/sw/bin -E PAM_USER -E PAM_TYPE ${self}/zfs-pam rpool/nixos/home
@@ -62,106 +64,65 @@
         initial = pkgs.writeText "initial-password" "feengold";
 
         import-lanza =
-          if true # builtins.pathExists "/etc/secureboot/GUID"
+          if false
           then [ "${self}/modules/boot/lanza.nix" ]
           else [ ];
-
-        # jwt-path = "/persist/jwt";
-        # jwt-exists = false; # builtins.pathExists jwt-path;
-
-        # contents = if jwt-exists then { "/jwt".source = jwt-path; } else { };
-
-        # initrdBin =
-        #   if jwt-exists then with pkgs; [
-        #     clevis
-        #     jose
-        #     tpm2-tools
-        #   ] else [ ];
-
-        # services =
-        #   if jwt-exists then {
-        #     zfs-import-rpool = {
-        #       script = lib.mkForce ''
-        #         zpool import -N rpool
-        #         clevis decrypt < /jwt | zfs load-key rpool/nixos
-        #       '';
-        #     };
-        #   } else { };
-
-        # storePaths = if jwt-exists then [ ] else [ initial ];
       in
       {
         imports = [ (import ./disk.nix { inherit initial; }) ] ++ import-lanza;
 
         boot.initrd = {
           kernelModules = [ "tpm_crb" ];
-          systemd = {
-            # inherit contents initrdBin services storePaths;
-            storePaths = [ initial ];
-            # services.feengold-init = {
-            #   description = "Feengold initial testing environment";
-            #   # before = [ "local-fs.target" ];
-            #   wantedBy = [ "sysinit.target" ];
-            #   after = [ "sysroot-etc-secureboot.mount" ];
-            #   unitConfig.DefaultDependencies = false;
-            #   script = ''
-            #     exec >& /sysroot/persist/feengold.log
-            #     set -x
-            #     mount
-            #     ls /sysroot/etc/secureboot
-            #     systemctl list-units
-            #   '';
-            # };
-          };
+          systemd.storePaths = [ initial ];
         };
-
-        system.activationScripts.feengold =
-          let
-            name = "feengold-activation";
-            program = pkgs.writeShellApplication {
-              inherit name;
-              runtimeInputs = with pkgs; [
-                clevis
-                e2fsprogs
-                mokutil
-                sbctl
-                zfs
-              ];
-              text = ''
-                [ ! -L /etc/nixos ] && rmdir /etc/nixos
-                ln -sfT "${self}" /etc/nixos
-
-                zfs change-key rpool/nixos -o keylocation=file://${initial}
-
-                if [ ! -f /etc/secureboot/GUID ]; then
-                  sbctl create-keys
-                  touch /create
-                fi
-
-                if mokutil --sb-state | grep -q disabled; then
-                  for i in /sys/firmware/efi/efivars/{KEK,db}-*; do
-                    [ -e "$i" ] && chattr -i "$i"
-                  done
-                  sbctl enroll-keys --tpm-eventlog
-                  touch /enroll
-                elif [ ! -f /persist/jwt ]; then
-                  key="$(mktemp feengold.XXXXXXXX)"
-                  trap 'rm "$key"' EXIT
-                  head -c 32 /dev/urandom > "$key"
-                  clevis encrypt tpm2 \
-                    '{"pcr_ids":"7","pcr_bank":"sha256"}' \
-                    < "$key" \
-                    > /persist/jwt
-                  touch /encrypt
-                  # zfs change-key rpool/nixos -o keylocation=prompt < "$key"
-                fi
-              '';
-            };
-          in
-          "${program}/bin/${name}";
 
         environment.etc."machine-id".text = machine-id;
         networking.hostId = builtins.substring 0 8 machine-id;
+
+        # system.activationScripts.feengold =
+        #   let
+        #     name = "feengold-activation";
+        #     program = pkgs.writeShellApplication {
+        #       inherit name;
+        #       runtimeInputs = with pkgs; [
+        #         clevis
+        #         e2fsprogs
+        #         mokutil
+        #         sbctl
+        #         zfs
+        #       ];
+        #       text = ''
+        #         [ -d /etc/nixos ] && [ ! -L /etc/nixos ] && rmdir /etc/nixos
+        #         ln -sfT "${self}" /etc/nixos
+
+        #         zfs change-key rpool/nixos -o keylocation=file://${initial}
+
+        #         if [ ! -f /etc/secureboot/GUID ]; then
+        #           sbctl create-keys
+        #           touch /create
+        #         fi
+
+        #         if mokutil --sb-state | grep -q disabled; then
+        #           for i in /sys/firmware/efi/efivars/{KEK,db}-*; do
+        #             [ -e "$i" ] && chattr -i "$i"
+        #           done
+        #           sbctl enroll-keys --tpm-eventlog
+        #           touch /enroll
+        #         elif [ ! -f /persist/jwt ]; then
+        #           key="$(mktemp feengold.XXXXXXXX)"
+        #           trap 'rm "$key"' EXIT
+        #           head -c 32 /dev/urandom > "$key"
+        #           clevis encrypt tpm2 \
+        #             '{"pcr_ids":"7","pcr_bank":"sha256"}' \
+        #             < "$key" \
+        #             > /persist/jwt
+        #           touch /encrypt
+        #           # zfs change-key rpool/nixos -o keylocation=prompt < "$key"
+        #         fi
+        #       '';
+        #     };
+        #   in
+        #   "${program}/bin/${name}";
       })
   ];
 }
