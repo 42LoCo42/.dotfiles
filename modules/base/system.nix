@@ -1,10 +1,16 @@
-{ ... }: {
+{ self, ... }: {
   system.stateVersion = "23.11";
   zramSwap.enable = true;
 
   console.keyMap = "de-latin1";
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "Europe/Berlin";
+
+
+  system.activationScripts.link-current-config.text = ''
+    rm -rf /etc/nixos
+    ln -s "${self}" /etc/nixos
+  '';
 
   services = {
     openssh = {
