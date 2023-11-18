@@ -9,7 +9,7 @@
         man = "batman";
         mkdir = "mkdir -pv";
         neofetch = "hyfetch";
-        switch = "sudo nixos-rebuild switch --flake ${flake} -L";
+        # switch = "sudo nixos-rebuild switch --flake ${flake} -L";
         vi = "vi -p";
         vim = "vim -p";
         yay = "nix flake update ${flake} && switch";
@@ -31,6 +31,8 @@
               fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
               mpc = "${pkgs.mpc-cli}/bin/mpc";
               nixpkgs = "${self.inputs.nixpkgs}";
+              nom = "${pkgs.nix-output-monitor}/bin/nom";
+              nvd = "${pkgs.nvd}/bin/nvd";
               pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
             };
           };
