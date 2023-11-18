@@ -1,5 +1,8 @@
-{ lib, self, ... }: {
+{ pkgs, lib, self, ... }: {
   imports = [ self.inputs.agenix.nixosModules.default ];
+  nixpkgs.overlays = [ self.inputs.agenix.overlays.default ];
+
+  environment.systemPackages = with pkgs; [ agenix ];
 
   age = {
     identityPaths = [ "/etc/age.key" ];
