@@ -1,12 +1,16 @@
-{ self, ... }: {
-  home-manager.users.default = { pkgs, lib, config, ... }: {
+{ self, pkgs, ... }: {
+  programs.zsh.enable = true;
+  users.users.default.shell = pkgs.zsh;
+  environment.pathsToLink = [ "/share/zsh" ];
+
+  home-manager.users.default = { lib, config, ... }: {
     home = let mybin = "${config.home.homeDirectory}/bin"; in {
       shellAliases = let flake = "path:$HOME/config"; in {
-        cd = "mycd";
-        fuck = "sudo $(history -p !!)";
+        cd = "z";
+        # fuck = "sudo $(history -p !!)";
         g = "git";
         ip = "ip -c";
-        man = "batman";
+        # man = "batman";
         mkdir = "mkdir -pv";
         neofetch = "hyfetch";
         # switch = "sudo nixos-rebuild switch --flake ${flake} -L";
@@ -16,6 +20,10 @@
       };
 
       sessionPath = [ mybin ];
+      sessionVariables = {
+        MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+        MANROFFOPT = "-c";
+      };
 
       file = let dir = ./scripts; in (lib.trivial.pipe dir [
         builtins.readDir
@@ -38,7 +46,12 @@
           };
         }))
         builtins.listToAttrs
-      ]) // { Desktop.text = ""; };
+      ]) // {
+        Desktop.text = "";
+        ".profile".text = ''
+          . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
+        '';
+      };
 
       packages = with pkgs; [
         file
@@ -67,15 +80,47 @@
         };
       };
 
-      bash = {
+      # bash = {
+      #   enable = true;
+      #   enableCompletion = true;
+      #   historyControl = [ "ignoredups" "ignorespace" ];
+      #   shellOptions = [ "autocd" ];
+      #   initExtra = builtins.readFile (pkgs.substituteAll {
+      #     src = ./misc/bashrc;
+      #     complete_alias = "${pkgs.complete-alias}/bin/complete_alias";
+      #   });
+      # };
+
+      fzf.enable = true;
+
+      zsh = {
         enable = true;
-        enableCompletion = true;
-        historyControl = [ "ignoredups" "ignorespace" ];
-        shellOptions = [ "autocd" ];
-        initExtra = builtins.readFile (pkgs.substituteAll {
-          src = ./misc/bashrc;
-          complete_alias = "${pkgs.complete-alias}/bin/complete_alias";
-        });
+        enableAutosuggestions = true;
+        syntaxHighlighting.enable = true;
+        autocd = true;
+        defaultKeymap = "emacs";
+        initExtra = ''
+          autoload -z edit-command-line
+          zle -N edit-command-line
+          bindkey "^X^E" edit-command-line
+
+          autoload -Uz select-word-style
+          select-word-style bash
+
+          bindkey ";3D" backward-word
+          bindkey ";3C" forward-word
+        '';
+        plugins = [
+          rec {
+            name = "zsh-fzf-history-search";
+            src = pkgs.fetchFromGitHub {
+              owner = "joshskidmore";
+              repo = name;
+              rev = "d1aae98";
+              hash = "sha256-4Dp2ehZLO83NhdBOKV0BhYFIvieaZPqiZZZtxsXWRaQ=";
+            };
+          }
+        ];
       };
 
       starship = {
