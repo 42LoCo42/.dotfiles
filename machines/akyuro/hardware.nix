@@ -1,4 +1,4 @@
-{ lib, modulesPath, ... }: {
+{ modulesPath, ... }: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -31,7 +31,7 @@
     fsType = "vfat";
   };
 
-  networking.useDHCP = lib.mkDefault true;
+  networking.interfaces."wlp2s0".useDHCP = true;
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = true;
 }

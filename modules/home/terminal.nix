@@ -226,16 +226,24 @@
           vimAlias = true;
           vimdiffAlias = true;
 
-          coc = {
-            enable = true;
-            pluginConfig = builtins.readFile ./vim/coc.vim;
-          };
+          # coc = {
+          #   enable = true;
+          #   pluginConfig = builtins.readFile ./vim/coc.vim;
+          # };
 
           plugins = with allPlugins; [
             airline
+            ale
             autoclose
             gitgutter
             vim-nix
+            {
+              plugin = deoplete-nvim;
+              config = ''
+                call deoplete#enable()
+                call deoplete#custom#option("auto_complete_delay", 0)
+              '';
+            }
             { plugin = suda-vim; config = "let g:suda_smart_edit = 1"; }
           ];
 
