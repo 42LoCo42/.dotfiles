@@ -51,8 +51,9 @@
 
         users.default = {
           links = [
-            ".bash_history"
-            ".local/share/zoxide/db.zo"
+            ".zcompdump"
+            ".zsh_history"
+            ".local/share/zoxide"
           ];
         };
       };
