@@ -93,11 +93,13 @@
 
       fzf.enable = true;
 
-      zsh = {
+      zsh = rec {
         enable = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
         autocd = true;
+        dotDir = ".cache/zsh";
+        history.path = "${dotDir}/history";
         defaultKeymap = "emacs";
         initExtra = ''
           autoload -z edit-command-line
@@ -146,7 +148,7 @@
       };
 
       gpg.enable = true;
-      man.generateCaches = true;
+      # man.generateCaches = true;
       ripgrep.enable = true;
       zoxide.enable = true;
 

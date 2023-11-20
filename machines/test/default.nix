@@ -51,8 +51,7 @@
 
         users.default = {
           links = [
-            ".zcompdump"
-            ".zsh_history"
+            ".cache/zsh"
             ".local/share/zoxide"
           ];
         };
