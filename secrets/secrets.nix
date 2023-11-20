@@ -10,4 +10,5 @@ let
 in
 {
   "password-hash.age".publicKeys = all;
+  "id_ed25519.age".publicKeys = all;
 }
