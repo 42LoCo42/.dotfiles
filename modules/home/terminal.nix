@@ -80,17 +80,6 @@
         };
       };
 
-      # bash = {
-      #   enable = true;
-      #   enableCompletion = true;
-      #   historyControl = [ "ignoredups" "ignorespace" ];
-      #   shellOptions = [ "autocd" ];
-      #   initExtra = builtins.readFile (pkgs.substituteAll {
-      #     src = ./misc/bashrc;
-      #     complete_alias = "${pkgs.complete-alias}/bin/complete_alias";
-      #   });
-      # };
-
       fzf.enable = true;
 
       zsh = rec {
@@ -102,6 +91,10 @@
         history.path = "${dotDir}/history";
         defaultKeymap = "emacs";
         initExtra = ''
+          # completion: case-insensitive, highlight
+          zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+          zstyle ':completion:*' menu select
+
           autoload -z edit-command-line
           zle -N edit-command-line
           bindkey "^X^E" edit-command-line
