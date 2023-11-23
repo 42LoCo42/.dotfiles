@@ -28,6 +28,7 @@
       };
 
       programs.command-not-found.enable = false;
+      services.fwupd.enable = true;
 
       home-manager.users.default = { pkgs, config, ... }: {
         # systemd.user.services =
