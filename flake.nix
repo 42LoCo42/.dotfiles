@@ -6,8 +6,8 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote/v0.3.0";
-    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-    lanzaboote.inputs.flake-utils.follows = "flake-utils";
+    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    # lanzaboote.inputs.flake-utils.follows = "flake-utils";
 
     # nix-alien.url = "github:thiagokokada/nix-alien";
     # nix-alien.inputs.nixpkgs.follows = "nixpkgs";
