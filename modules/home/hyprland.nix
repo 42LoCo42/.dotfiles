@@ -82,6 +82,10 @@
             font = "monospace:size=10.5";
           };
 
+          key-bindings = {
+            spawn-terminal = "none";
+          };
+
           colors = {
             alpha = "0.5";
             foreground = "ebdbb2";
