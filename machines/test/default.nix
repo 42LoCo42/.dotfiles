@@ -75,6 +75,10 @@
           systemd.storePaths = [ initial ];
         };
 
+        system.activationScripts.zfs-set-keylocation.text = ''
+          ${pkgs.zfs}/bin/zfs set keylocation=file://${initial} rpool/nixos
+        '';
+
         environment.etc."machine-id".text = machine-id;
         networking.hostId = builtins.substring 0 8 machine-id;
 
