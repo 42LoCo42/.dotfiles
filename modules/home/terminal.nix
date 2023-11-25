@@ -10,13 +10,10 @@
     home = let mybin = "${config.home.homeDirectory}/bin"; in {
       shellAliases = let flake = "path:$HOME/config"; in {
         cd = "z";
-        # fuck = "sudo $(history -p !!)";
         g = "git";
         ip = "ip -c";
-        # man = "batman";
         mkdir = "mkdir -pv";
         neofetch = "hyfetch";
-        # switch = "sudo nixos-rebuild switch --flake ${flake} -L";
         vi = "vi -p";
         vim = "vim -p";
         yay = "nix flake update ${flake} && switch";
@@ -100,6 +97,9 @@
 
           bindkey "[1;3C" forward-word
           bindkey "[1;3D" backward-word
+
+          # https://github.com/zsh-users/zsh-syntax-highlighting/issues/295#issuecomment-214581607
+          zstyle ':bracketed-paste-magic' active-widgets '.self-*'
         '';
 
         plugins = [
