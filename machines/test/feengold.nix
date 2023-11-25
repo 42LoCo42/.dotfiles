@@ -52,13 +52,19 @@ in
       "${cfg.persistentLocation}".neededForBoot = true;
     };
 
-    system.activationScripts.feengold-system-links.text = lib.concatMapStringsSep "\n"
-      (path: ''
-        mkdir -p ${cfg.persistentLocation}/${dirOf path} /${dirOf path}
-        rm -rf /${path}
-        ln -sT ${cfg.persistentLocation}/${path} /${path}
-      '')
-      cfg.links;
+    system.activationScripts = {
+      feengold-system-binds.text = lib.concatMapStringsSep "\n"
+        (path: "mkdir -p ${cfg.persistentLocation}/${path}")
+        cfg.binds + "\nmount -a";
+
+      feengold-system-links.text = lib.concatMapStringsSep "\n"
+        (path: ''
+          mkdir -p ${cfg.persistentLocation}/${dirOf path} /${dirOf path}
+          rm -rf /${path}
+          ln -sT ${cfg.persistentLocation}/${path} /${path}
+        '')
+        cfg.links;
+    };
 
     home-manager.users = builtins.mapAttrs
       (_: paths:
