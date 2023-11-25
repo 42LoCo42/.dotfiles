@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ self, pkgs, lib, ... }: {
   imports = [
     ./default.nix
   ];
@@ -9,6 +9,11 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
+      package = lib.mkForce (pkgs.writeShellScriptBin "lzbt" ''
+        set -ex
+        [ -e /etc/secureboot/keys ] || ${pkgs.sbctl}/bin/sbctl create-keys
+        exec ${self.inputs.lanzaboote.packages.${pkgs.system}.lzbt}/bin/lzbt "$@"
+      '');
     };
   };
 }
