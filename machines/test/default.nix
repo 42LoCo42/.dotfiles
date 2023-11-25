@@ -37,24 +37,23 @@
       # this fixes occasional "failures" of zfs-mount
       systemd.services."zfs-mount".serviceConfig.Restart = "on-failure";
 
+      fileSystems."/etc/secureboot".neededForBoot = true;
       environment.feengold = {
-        directories = [
-          { path = "/etc/secureboot"; neededForBoot = true; }
-          { path = "/var/db/sudo"; mode = "0711"; }
+        binds = [
+          "/etc/secureboot"
+          "/var/db/sudo"
           "/var/log"
         ];
 
-        files = [
+        links = [
           "/etc/ssh/ssh_host_ed25519_key"
           "/etc/ssh/ssh_host_ed25519_key.pub"
         ];
 
-        users.default = {
-          links = [
-            ".cache/zsh"
-            ".local/share/zoxide"
-          ];
-        };
+        users.default = [
+          ".cache/zsh"
+          ".local/share/zoxide"
+        ];
       };
     })
 
