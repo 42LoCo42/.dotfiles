@@ -89,26 +89,17 @@
         enable = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
+
         autocd = true;
         defaultKeymap = "emacs";
-
         history.path = "${cache}/history";
-        completionInit = "autoload -U compinit && compinit -d ${cache}/completion";
 
         initExtra = ''
-          # completion: case-insensitive, highlight
-          zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-          zstyle ':completion:*' menu select
+          bindkey "" insert-cycledright
+          bindkey "" insert-cycledleft
 
-          autoload -z edit-command-line
-          zle -N edit-command-line
-          bindkey "^X^E" edit-command-line
-
-          autoload -Uz select-word-style
-          select-word-style bash
-
-          bindkey ";3D" backward-word
-          bindkey ";3C" forward-word
+          bindkey "[1;3C" forward-word
+          bindkey "[1;3D" backward-word
         '';
 
         plugins = [
@@ -122,6 +113,49 @@
             };
           }
         ];
+
+        oh-my-zsh = {
+          enable = true;
+          extraConfig = ''ZSH_COMPDUMP="${cache}/completion"'';
+          plugins = [
+            "aliases"
+            "bgnotify"
+            # "common-aliases"
+            "copybuffer"
+            "copyfile"
+            "copypath"
+            "dircycle"
+            "encode64"
+            "extract"
+            "fancy-ctrl-z"
+            # "fbterm"
+            "genpass"
+            "git-auto-fetch"
+            # "git-escape-magic"
+            # "git-extras"
+            "git-lfs"
+            "git"
+            "gitignore"
+            "golang"
+            "history"
+            "isodate"
+            "magic-enter"
+            "perms"
+            "qrcode"
+            "ripgrep"
+            "rsync"
+            "rust"
+            # "single-char"
+            "sudo"
+            "systemadmin"
+            "systemd"
+            # "thefuck"
+            "tmux"
+            # "tmuxinator"
+            "universalarchive"
+            "urltools"
+          ];
+        };
       };
 
       starship = {
