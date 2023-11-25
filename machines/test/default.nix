@@ -10,6 +10,7 @@
     self.inputs.lanzaboote.nixosModules.lanzaboote
 
     "${self}/modules/base/all.nix"
+    "${self}/modules/boot/lanza.nix"
     "${self}/modules/boot/zfs.nix"
     "${self}/modules/home/terminal.nix"
     "${self}/modules/networking/default.nix"
@@ -61,14 +62,9 @@
       let
         machine-id = "28b614da10fbda25dabb87d7653faf3a";
         initial = pkgs.writeText "initial-password" "feengold";
-
-        import-lanza =
-          if false
-          then [ "${self}/modules/boot/lanza.nix" ]
-          else [ ];
       in
       {
-        imports = [ (import ./disk.nix { inherit initial; }) ] ++ import-lanza;
+        imports = [ (import ./disk.nix { inherit initial; }) ];
 
         boot.initrd = {
           kernelModules = [ "tpm_crb" ];
