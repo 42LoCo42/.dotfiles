@@ -285,6 +285,7 @@
 
           firefox = "${pkgs.firefox}/bin/firefox";
           fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
+          libEGL = "${pkgs.libglvnd}/lib/libEGL.so";
           libnotify = "${pkgs.libnotify}/lib/libnotify.so";
           ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
           pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
