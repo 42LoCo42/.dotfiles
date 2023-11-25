@@ -1,5 +1,8 @@
 { self, pkgs, ... }: {
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableGlobalCompInit = false;
+  };
   users.users.default.shell = pkgs.zsh;
   environment.pathsToLink = [ "/share/zsh" ];
 
@@ -82,14 +85,16 @@
 
       fzf.enable = true;
 
-      zsh = rec {
+      zsh = let cache = ".cache/zsh"; in {
         enable = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
         autocd = true;
-        dotDir = ".cache/zsh";
-        history.path = "${dotDir}/history";
         defaultKeymap = "emacs";
+
+        history.path = "${cache}/history";
+        completionInit = "autoload -U compinit && compinit -d ${cache}/completion";
+
         initExtra = ''
           # completion: case-insensitive, highlight
           zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -105,6 +110,7 @@
           bindkey ";3D" backward-word
           bindkey ";3C" forward-word
         '';
+
         plugins = [
           rec {
             name = "zsh-fzf-history-search";
