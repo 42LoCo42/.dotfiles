@@ -85,7 +85,7 @@
 
       fzf.enable = true;
 
-      zsh = let cache = ".cache/zsh"; in {
+      zsh = let cache = "$HOME/.cache/zsh"; in {
         enable = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
