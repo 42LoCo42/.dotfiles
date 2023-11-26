@@ -40,7 +40,7 @@
       # this fixes occasional "failures" of zfs-mount
       systemd.services."zfs-mount".serviceConfig.Restart = "on-failure";
 
-      fileSystems."/etc/secureboot".neededForBoot = true;
+
       environment.feengold = {
         binds = [
           "/etc/secureboot"
