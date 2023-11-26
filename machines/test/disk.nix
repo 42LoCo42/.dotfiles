@@ -55,6 +55,11 @@
         };
 
         datasets = {
+          "keys" = {
+            type = "zfs_fs";
+            mountpoint = "/keys";
+          };
+
           "nixos" = {
             type = "zfs_fs";
             options = {
@@ -64,16 +69,14 @@
             };
           };
 
-          "nixos/nix" = rec {
+          "nixos/nix" = {
             type = "zfs_fs";
             mountpoint = "/nix";
-            options.mountpoint = mountpoint;
           };
 
-          "nixos/persist" = rec {
+          "nixos/persist" = {
             type = "zfs_fs";
             mountpoint = "/persist";
-            options.mountpoint = mountpoint;
           };
 
           "nixos/home" = {
