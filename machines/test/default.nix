@@ -17,11 +17,13 @@
 
     ({ pkgs, lib, ... }: {
       _module.args.und = {
-        host = "192.168.122.92";
+        host = "192.168.122.130";
         user = "leonsch";
         preUser = "root";
         kexec = "192.168.122.1:8000/nixos-kexec-installer-x86_64-linux.tar.gz";
       };
+
+      machine-id = "28b614da10fbda25dabb87d7653faf3a";
 
       networking = {
         hostName = "test";
