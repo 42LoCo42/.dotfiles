@@ -40,22 +40,15 @@ in
   };
 
   config = {
-    fileSystems = (builtins.listToAttrs (map
-      (path: {
-        name = path;
-        value = {
-          device = "${cfg.persistentLocation}/${path}";
-          options = [ "bind" "X-mount.mkdir" ];
-        };
-      })
-      cfg.binds)) // {
-      "${cfg.persistentLocation}".neededForBoot = true;
-    };
+    fileSystems.${cfg.persistentLocation}.neededForBoot = true;
 
     system.activationScripts = {
       feengold-system-binds.text = lib.concatMapStringsSep "\n"
-        (path: "mkdir -p ${cfg.persistentLocation}/${path}")
-        cfg.binds + "\nmount -a";
+        (path: ''
+          mkdir -p ${cfg.persistentLocation}/${path}
+          findmnt ${path} >/dev/null || mount -Bm ${cfg.persistentLocation}/${path} ${path}
+        '')
+        cfg.binds;
 
       feengold-system-links.text = lib.concatMapStringsSep "\n"
         (path: ''
