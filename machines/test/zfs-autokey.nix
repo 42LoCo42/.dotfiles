@@ -12,10 +12,11 @@ let initial = pkgs.writeText "initial-password" "password"; in {
       mkdir -p /sysroot/keys # IMPORTANT or switch-root hangs
       mount -m -t zfs -o zfsutil rpool/keys /keys
 
-      if zfs get -H keylocation rpool/nixos | awk '{exit !($3 == "prompt")}'; then
-        clevis decrypt < /keys/primary | zfs load-key rpool/nixos
-      else
+      read -r _ _ key _ < <(zfs get -H keylocation rpool/nixos)
+      if [[ "$key" =~ initial ]]; then
         zfs load-key rpool/nixos
+      else
+        clevis decrypt < /keys/primary | zfs load-key rpool/nixos
       fi
     '';
   };
