@@ -1,6 +1,6 @@
-{ self, nixpkgs }@args: nixpkgs.lib.nixosSystem {
+{ self, nixpkgs, my-utils }@args: nixpkgs.lib.nixosSystem rec {
   system = "x86_64-linux";
-  specialArgs = args;
+  specialArgs = args // my-utils system;
   modules = [
     ./hardware.nix
     self.inputs.home-manager.nixosModules.home-manager
