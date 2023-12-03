@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, my-utils, ... }:
 let
   inherit (lib)
     mkOption
@@ -62,14 +62,13 @@ in
     home-manager.users = builtins.mapAttrs
       (_: paths:
         { ... }@hm: {
-          home.file = builtins.listToAttrs (map
-            (path: {
-              name = path;
-              value.source =
-                hm.config.lib.file.mkOutOfStoreSymlink
-                  "${cfg.persistentLocation}/${hm.config.home.homeDirectory}/${path}";
-            })
-            paths);
+          home.activation.linkFeengold = lib.pipe paths [
+            (map (path: {
+              src = "${cfg.persistentLocation}/${hm.config.home.homeDirectory}/${path}";
+              dst = "${hm.config.home.homeDirectory}/${path}";
+            }))
+            my-utils.mkHomeLinks
+          ];
         })
       cfg.users;
   };

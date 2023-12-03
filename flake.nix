@@ -37,7 +37,12 @@
         builtins.attrNames
         (map (name: {
           inherit name;
-          value = import "${dir}/${name}" { inherit self nixpkgs; };
+          value = import "${dir}/${name}" {
+            inherit self nixpkgs;
+            my-utils = import ./modules/utils.nix {
+              inherit (self.inputs) nixpkgs home-manager;
+            };
+          };
         }))
         builtins.listToAttrs
       ];
