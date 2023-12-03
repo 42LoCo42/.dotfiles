@@ -5,7 +5,6 @@
     ./hardware.nix
     self.inputs.home-manager.nixosModules.home-manager
     self.inputs.nix-index-database.nixosModules.nix-index
-    self.inputs.lanzaboote.nixosModules.lanzaboote
     # self.inputs.obscura.nixosModules."9mount"
 
     "${self}/modules/base/all.nix"

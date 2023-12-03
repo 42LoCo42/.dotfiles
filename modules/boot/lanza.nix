@@ -1,6 +1,7 @@
-{ self, pkgs, lib, ... }: {
+{ pkgs, lib, my-utils, ... }: {
   imports = [
     ./default.nix
+    my-utils.lanza.nixosModules.lanzaboote
   ];
 
   boot = {
@@ -11,7 +12,7 @@
       pkiBundle = "/etc/secureboot";
       package = lib.mkForce (pkgs.writeShellScriptBin "lzbt" ''
         [ -e /etc/secureboot/keys ] || ${pkgs.sbctl}/bin/sbctl create-keys
-        exec ${self.inputs.lanzaboote.packages.${pkgs.system}.lzbt}/bin/lzbt "$@"
+        exec ${my-utils.lanza.packages.${pkgs.system}.lzbt}/bin/lzbt "$@"
       '');
     };
   };

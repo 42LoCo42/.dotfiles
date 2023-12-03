@@ -5,10 +5,6 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    lanzaboote.url = "github:nix-community/lanzaboote/v0.3.0";
-    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-    # lanzaboote.inputs.flake-utils.follows = "flake-utils";
-
     # nix-alien.url = "github:thiagokokada/nix-alien";
     # nix-alien.inputs.nixpkgs.follows = "nixpkgs";
     # nix-alien.inputs.flake-compat.follows = "lanzaboote/flake-compat";
@@ -17,7 +13,6 @@
 
     obscura.url = "github:42loco42/obscura";
     obscura.inputs.nixpkgs.follows = "nixpkgs";
-    obscura.inputs.flake-utils.follows = "flake-utils";
 
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -29,7 +24,7 @@
     agenix.inputs.darwin.follows = "";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }: {
+  outputs = { self, nixpkgs, ... }: {
     apps = self.inputs.und.und self;
     nixosConfigurations =
       let dir = ./machines; in nixpkgs.lib.pipe dir [
