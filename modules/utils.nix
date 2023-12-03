@@ -9,5 +9,12 @@ let pkgs = import nixpkgs { inherit system; }; in {
       (builtins.concatStringsSep "\n")
       (home-manager.lib.hm.dag.entryAfter [ "linkGeneration" ])
     ];
+
+    lanza = import (pkgs.fetchFromGitHub {
+      owner = "nix-community";
+      repo = "lanzaboote";
+      rev = "v0.3.0";
+      hash = "sha256-Fb5TeRTdvUlo/5Yi2d+FC8a6KoRLk2h1VE0/peMhWPs=";
+    });
   };
 }

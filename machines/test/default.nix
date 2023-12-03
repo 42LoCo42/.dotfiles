@@ -8,7 +8,6 @@
 
     self.inputs.disko.nixosModules.disko
     self.inputs.home-manager.nixosModules.home-manager
-    self.inputs.lanzaboote.nixosModules.lanzaboote
 
     "${self}/modules/base/all.nix"
     "${self}/modules/boot/lanza.nix"
