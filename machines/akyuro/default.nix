@@ -21,10 +21,8 @@
     "${self}/modules/virt/libvirt.nix"
 
     ({ ... }: {
-      networking = {
-        hostName = "akyuro";
-        hostId = "872955ae";
-      };
+      networking.hostName = "akyuro";
+      machine-id = "a68e65917ee5417a93bcd77aeb5f1a66";
 
       programs.command-not-found.enable = false;
       services.fwupd.enable = true;
