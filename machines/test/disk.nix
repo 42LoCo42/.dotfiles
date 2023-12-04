@@ -55,11 +55,6 @@
         };
 
         datasets = {
-          "keys" = {
-            type = "zfs_fs";
-            mountpoint = "/keys";
-          };
-
           "nixos" = {
             type = "zfs_fs";
             options = {
