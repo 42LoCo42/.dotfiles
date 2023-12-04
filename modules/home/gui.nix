@@ -36,6 +36,7 @@
       grim
       keepassxc
       libnotify
+      qt5.qtwayland
       self.inputs.obscura.packages.${system}.flameshot-fixed
       tor-browser-bundle-bin
       xdg_utils
