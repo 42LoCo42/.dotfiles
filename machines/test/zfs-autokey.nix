@@ -5,18 +5,17 @@ let initial = pkgs.writeText "initial-password" "password"; in {
   # this fixes occasional "failures" of zfs-mount
   systemd.services."zfs-mount".serviceConfig.Restart = "on-failure";
 
+  fileSystems."/boot".neededForBoot = true;
+
   boot.initrd.systemd = {
     initrdBin = with pkgs; [ clevis jose tpm2-tools ];
     services.zfs-import-rpool.script = lib.mkForce ''
-      zpool status rpool || zpool import rpool
-      mkdir -p /sysroot/keys # IMPORTANT or switch-root hangs
-      mount -m -t zfs -o zfsutil rpool/keys /keys
-
+      zpool status rpool || zpool import -N rpool
       read -r _ _ key _ < <(zfs get -H keylocation rpool/nixos)
       if [[ "$key" =~ initial ]]; then
         zfs load-key rpool/nixos
       else
-        clevis decrypt < /keys/primary | zfs load-key rpool/nixos
+        clevis decrypt < /sysroot/boot/primary | zfs load-key rpool/nixos
       fi
     '';
   };
@@ -27,8 +26,8 @@ let initial = pkgs.writeText "initial-password" "password"; in {
     read -r _ _ key _ < <(zfs get -H keylocation rpool/nixos)
     if [[ "$key" =~ initial ]]; then
       echo "[1;31mWARNING: ZFS is using the initial key![m"
-      cp "${initial}" /keys/initial
-      zfs set keylocation=file:///keys/initial rpool/nixos
+      cp "${initial}" /boot/initial
+      zfs set keylocation=file:///sysroot/boot/initial rpool/nixos
     else
       echo "[1;32mZFS is using the secure key![m"
     fi
@@ -42,9 +41,9 @@ let initial = pkgs.writeText "initial-password" "password"; in {
         read -r _ _ key _ < <(zfs get -H keylocation rpool/nixos)
         if [[ "$key" =~ initial ]]; then
           echo "Switching to a secure ZFS key..."
-          head -c 64 /dev/urandom | clevis encrypt tpm2 '{"pcr_bank":"sha256","pcr_ids":"7"}' > /keys/primary
-          clevis decrypt < /keys/primary | zfs change-key rpool/nixos -o keylocation=prompt
-          rm -f /keys/initial
+          head -c 64 /dev/urandom | clevis encrypt tpm2 '{"pcr_bank":"sha256","pcr_ids":"7"}' > /boot/primary
+          clevis decrypt < /boot/primary | zfs change-key rpool/nixos -o keylocation=prompt
+          rm -f /boot/initial
         fi
       fi
     '';
