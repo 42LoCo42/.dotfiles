@@ -12,7 +12,6 @@
     # nix-alien.inputs.nix-index-database.follows = "nix-index-database";
 
     obscura.url = "github:42loco42/obscura";
-    obscura.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
