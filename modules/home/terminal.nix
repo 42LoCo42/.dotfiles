@@ -1,4 +1,4 @@
-{ self, pkgs, ... }: {
+{ pkgs, ... }: {
   programs.zsh = {
     enable = true;
     enableGlobalCompInit = false;
@@ -38,7 +38,6 @@
               brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
               fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
               mpc = "${pkgs.mpc-cli}/bin/mpc";
-              nixpkgs = "${self.inputs.nixpkgs}";
               nom = "${pkgs.nix-output-monitor}/bin/nom";
               nvd = "${pkgs.nvd}/bin/nvd";
               pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";

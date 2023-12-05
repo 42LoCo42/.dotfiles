@@ -1,4 +1,4 @@
-{ ... }: {
+{ self, lib, ... }: {
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = [ "nix-command" "flakes" ];
@@ -16,6 +16,18 @@
     keep-outputs = true
     keep-derivations = true
   '';
+
+  environment.etc."nix/channel".source = self.inputs.nixpkgs.outPath;
+  nix.nixPath = lib.mkForce [ "nixpkgs=/etc/nix/channel" ];
+  nix.registry = lib.pipe "${self}/flake.lock" [
+    builtins.readFile
+    builtins.fromJSON
+    (lock: builtins.mapAttrs
+      (_: name: {
+        to = lock.nodes.${name}.locked;
+      })
+      lock.nodes.root.inputs)
+  ];
 
   nixpkgs.overlays = [
     (final: prev: {
