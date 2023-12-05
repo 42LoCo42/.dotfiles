@@ -26,7 +26,7 @@
       (_: name: {
         to = lock.nodes.${name}.locked;
       })
-      lock.nodes.root.inputs)
+      lock.nodes.${lock.root}.inputs)
   ];
 
   nixpkgs.overlays = [
