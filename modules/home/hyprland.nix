@@ -77,6 +77,7 @@
     programs = {
       foot = {
         enable = true;
+        package = self.inputs.nyxpkgs.packages.${pkgs.system}.foot-transparent;
         settings = {
           main = {
             font = "monospace:size=10.5";
