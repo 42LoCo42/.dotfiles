@@ -21,6 +21,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.home-manager.follows = "home-manager";
     agenix.inputs.darwin.follows = "";
+
+    nyxpkgs.url = "github:notashelf/nyxpkgs";
   };
 
   outputs = { self, nixpkgs, ... }: {
