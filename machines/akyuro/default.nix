@@ -28,24 +28,12 @@
       services.fwupd.enable = true;
 
       home-manager.users.default = { pkgs, config, ... }: {
-        # systemd.user.services =
-        #   let
-        #     Install.WantedBy = [ "default.target" ];
-        #     Environment = let user = config.home.username; in
-        #       "PATH=/run/wrappers/bin:/home/${user}/.nix-profile/bin:/etc/profiles/per-user/${user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
-        #   in
-        #   {
-        #     remo-acceptor = {
-        #       inherit Install;
-        #       Service = {
-        #         inherit Environment;
-        #         ExecStart = "${config.home.homeDirectory}/dev/bash/remo-acceptor/remo-acceptor.sh";
-        #       };
-        #     };
-        #   };
-
+        home.file.".ghci".text = ''
+          :set -Wall
+          :set -Wno-type-defaults
+          :set prompt "[1;35mλ>[m "
+        '';
         services.syncthing.enable = true;
-
         services.mako.extraConfig = ''
           [app-name=remo]
           on-notify=exec ${pkgs.mpv}/bin/mpv ~/sounds/exclamation.wav
