@@ -4,6 +4,7 @@
 
   console.keyMap = "de-latin1";
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings.LC_TIME = "de_DE.UTF-8";
   time.timeZone = "Europe/Berlin";
 
   environment.etc.nixos.source = self;
@@ -28,7 +29,7 @@
     };
 
     tlp.enable = true;
-    journald.extraConfig = "SystemMaxUse=500M";
+    journald.extraConfig = "SystemMaxUse=100M";
   };
 
   systemd = {

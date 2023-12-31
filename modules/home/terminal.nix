@@ -60,6 +60,7 @@
         man-pages
         man-pages-posix
         nil
+        nix-output-monitor
         nixpkgs-fmt
         pciutils
         shellcheck
