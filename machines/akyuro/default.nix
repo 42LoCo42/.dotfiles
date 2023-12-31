@@ -17,10 +17,16 @@
     "${self}/modules/networking/default.nix"
     "${self}/modules/networking/tailscale.nix"
     "${self}/modules/security/u2f.nix"
+    "${self}/modules/virt/binfmt.nix"
     # "${self}/modules/virt/docker.nix"
     "${self}/modules/virt/libvirt.nix"
 
     ({ ... }: {
+      boot.binfmt.qemuUserEmu.aarch64-linux = {
+        version = "v7.2.0-1";
+        hash = "sha256-3OZLLcawBUhceqc1p+o5ywAGv35brcKLMkss0Mc9iD8=";
+      };
+
       networking.hostName = "akyuro";
       machine-id = "a68e65917ee5417a93bcd77aeb5f1a66";
 
