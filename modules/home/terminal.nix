@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, my-utils, ... }: {
   programs.zsh = {
     enable = true;
     enableGlobalCompInit = false;
@@ -32,9 +32,7 @@
           name = "${mybin}/${builtins.replaceStrings [".sh"] [""] name}";
           value = {
             executable = true;
-            source = pkgs.substituteAll {
-              src = "${dir}/${name}";
-
+            text = my-utils.substituteAll "${dir}/${name}" {
               brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
               fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
               mpc = "${pkgs.mpc-cli}/bin/mpc";
@@ -207,10 +205,7 @@
       git = {
         enable = true;
         lfs.enable = true;
-        delta = {
-          enable = true;
-          options.side-by-side = true;
-        };
+        difftastic.enable = true;
 
         userName = "Eleonora";
         userEmail = "leonsch@protonmail.com";
