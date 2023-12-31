@@ -16,5 +16,16 @@ let pkgs = import nixpkgs { inherit system; }; in {
       rev = "v0.3.0";
       hash = "sha256-Fb5TeRTdvUlo/5Yi2d+FC8a6KoRLk2h1VE0/peMhWPs=";
     });
+
+    substituteAll = file: vars:
+      let
+        pairs = pkgs.lib.mapAttrsToList (k: v: { inherit k v; }) vars;
+        srcs = map (i: "@${i.k}@") pairs;
+        dsts = map (i: toString i.v) pairs;
+      in
+      pkgs.lib.pipe file [
+        builtins.readFile
+        (builtins.replaceStrings srcs dsts)
+      ];
   };
 }

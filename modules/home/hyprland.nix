@@ -1,4 +1,4 @@
-{ self, ... }: {
+{ self, my-utils, ... }: {
   imports = [
     ./gui.nix
   ];
@@ -22,10 +22,10 @@
 
     xdg = {
       configFile."fuzzel/fuzzel.ini".source = ./misc/fuzzel.ini;
-      dataFile."dbus-1/services/mako-path-fix.service".source = pkgs.substituteAll {
-        src = ./misc/mako-path-fix.service;
-        mako = "${pkgs.mako}/bin/mako";
-      };
+      dataFile."dbus-1/services/mako-path-fix.service".text =
+        my-utils.substituteAll ./misc/mako-path-fix.service {
+          mako = "${pkgs.mako}/bin/mako";
+        };
     };
 
     systemd.user.services = {
@@ -284,21 +284,18 @@
 
     wayland.windowManager.hyprland = {
       enable = true;
-      extraConfig = builtins.readFile
-        (pkgs.substituteAll {
-          src = ./misc/hyprland.conf;
-
-          firefox = "${pkgs.firefox}/bin/firefox";
-          fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
-          libEGL = "${pkgs.libglvnd}/lib/libEGL.so";
-          libnotify = "${pkgs.libnotify}/lib/libnotify.so";
-          ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
-          pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
-          qalc = "${pkgs.libqalculate}/bin/qalc";
-          swaybg = "${pkgs.swaybg}/bin/swaybg";
-          wallpaper = ./misc/wallpaper.png;
-          webcord = "${pkgs.webcord}/bin/webcord";
-        });
+      extraConfig = my-utils.substituteAll ./misc/hyprland.conf {
+        firefox = "${pkgs.firefox}/bin/firefox";
+        fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
+        libEGL = "${pkgs.libglvnd}/lib/libEGL.so";
+        libnotify = "${pkgs.libnotify}/lib/libnotify.so";
+        ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
+        pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
+        qalc = "${pkgs.libqalculate}/bin/qalc";
+        swaybg = "${pkgs.swaybg}/bin/swaybg";
+        wallpaper = ./misc/wallpaper.png;
+        webcord = "${pkgs.webcord}/bin/webcord";
+      };
     };
   };
 }
