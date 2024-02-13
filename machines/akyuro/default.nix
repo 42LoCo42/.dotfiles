@@ -48,8 +48,8 @@
         services.syncthing.enable = true;
         services.mako.extraConfig = ''
           [app-name=remo]
-          on-notify=exec ${pkgs.mpv}/bin/mpv ~/sounds/exclamation.wav
-          on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && echo | ${pkgs.socat}/bin/socat UNIX-CONNECT:/tmp/remo -
+          on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
+          on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && ${pkgs.netcat}/bin/nc -dU /tmp/remo
         '';
       };
     })
