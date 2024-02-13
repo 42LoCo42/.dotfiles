@@ -205,7 +205,10 @@
       git = {
         enable = true;
         lfs.enable = true;
-        difftastic.enable = true;
+        difftastic = {
+          enable = true;
+          display = "side-by-side-show-both";
+        };
 
         userName = "Eleonora";
         userEmail = "leonsch@protonmail.com";
