@@ -34,6 +34,12 @@
       services.fwupd.enable = true;
 
       home-manager.users.default = { pkgs, config, ... }: {
+        home.pointerCursor = {
+          name = "Vanilla-DMZ";
+          package = pkgs.vanilla-dmz;
+          gtk.enable = true;
+        };
+
         home.file.".ghci".text = ''
           :set -Wall
           :set -Wno-type-defaults
