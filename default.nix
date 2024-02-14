@@ -2,6 +2,11 @@ let
   users = {
     leonsch = {
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql";
+      git = {
+        name = "Eleonora";
+        email = "leonsch@protonmail.com";
+        key = "C743EE077172986F860FC0FE2F6FE1420970404C";
+      };
     };
   };
 
