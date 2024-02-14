@@ -3,19 +3,23 @@
   imports = [ self.inputs.nix-index-database.nixosModules.nix-index ];
   programs.command-not-found.enable = false;
 
-  # console greeter
-  services.greetd = {
-    enable = true;
-    restart = true;
-    vt = 7;
-    settings.default_session.command =
-      "${pkgs.greetd.tuigreet}/bin/tuigreet -tr --remember-user-session";
+  security.pam = {
+    u2f.cue = true;
+    services.sudo.u2fAuth = true;
   };
 
-  # for GPG key prompt
-  services.dbus.packages = [ pkgs.gcr ];
-
   services = {
+    dbus.packages = [ pkgs.gcr ]; # for GPG key prompt
+
+    # console greeter
+    greetd = {
+      enable = true;
+      restart = true;
+      vt = 7;
+      settings.default_session.command =
+        "${pkgs.greetd.tuigreet}/bin/tuigreet -tr --remember-user-session";
+    };
+
     pipewire = {
       enable = true;
       alsa.enable = true;
