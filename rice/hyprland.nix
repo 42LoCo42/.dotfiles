@@ -1,36 +1,27 @@
-{ self, my-utils, ... }: {
-  imports = [
-    ./gui.nix
-  ];
-
-  security.pam.services.swaylock.text = "auth include login";
-
-  environment.variables = {
-    QT_QPA_PLATFORM = "wayland";
-    SDL_VIDEODRIVER = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-  };
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+{ self, pkgs, lib, my-utils, ... }: {
+  security.pam.services.swaylock = { };
 
   programs.hyprland.enable = true;
 
-  home-manager.users.default = { pkgs, ... }: {
+  home-manager.users.leonsch = hm: {
     home.packages = with pkgs; [
-      self.inputs.obscura.packages.${system}.SwayAudioIdleInhibit
+      qt5.qtwayland
       wl-clipboard
     ];
 
     xdg = {
       configFile."fuzzel/fuzzel.ini".source = ./misc/fuzzel.ini;
       dataFile."dbus-1/services/mako-path-fix.service".text =
-        my-utils.substituteAll ./misc/mako-path-fix.service {
-          mako = "${pkgs.mako}/bin/mako";
+        my-utils.subsT ./misc/mako-path-fix.service {
+          mako = lib.getExe pkgs.mako;
         };
     };
 
-    systemd.user.services = {
-      waybar.Service.RestartSec = 1;
-      waybar.Unit.StartLimitIntervalSec = 0;
+    # sometimes waybar starts before hyprland and then crashes
+    # fix: just restart it until it works
+    systemd.user.services.waybar = {
+      Service.RestartSec = 1;
+      Unit.StartLimitIntervalSec = 0;
     };
 
     services = {
@@ -79,13 +70,8 @@
         enable = true;
         package = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
         settings = {
-          main = {
-            font = "monospace:size=10.5";
-          };
-
-          key-bindings = {
-            spawn-terminal = "none";
-          };
+          main.font = "monospace:size=10.5";
+          # key-bindings.spawn-terminal = "none";
 
           colors = {
             alpha = "0.5";
@@ -115,7 +101,7 @@
         enable = true;
         settings = {
           daemonize = true;
-          image = builtins.toString ./misc/wallpaper.png;
+          image = "${./misc/wallpaper.png}";
         };
       };
 
@@ -284,17 +270,57 @@
 
     wayland.windowManager.hyprland = {
       enable = true;
-      extraConfig = my-utils.substituteAll ./misc/hyprland.conf {
-        firefox = "${pkgs.firefox}/bin/firefox";
-        fuzzel = "${pkgs.fuzzel}/bin/fuzzel";
+      extraConfig = my-utils.subsT ./misc/hyprland.conf {
+        fuzzel = lib.getExe pkgs.fuzzel;
         libEGL = "${pkgs.libglvnd}/lib/libEGL.so";
         libnotify = "${pkgs.libnotify}/lib/libnotify.so";
-        ncmpcpp = "${pkgs.ncmpcpp}/bin/ncmpcpp";
-        pulsemixer = "${pkgs.pulsemixer}/bin/pulsemixer";
-        qalc = "${pkgs.libqalculate}/bin/qalc";
-        swaybg = "${pkgs.swaybg}/bin/swaybg";
+        ncmpcpp = lib.getExe pkgs.ncmpcpp;
+        pulsemixer = lib.getExe pkgs.pulsemixer;
+        qalc = lib.getExe pkgs.libqalculate;
+        sway-audio-idle-inhibit = lib.getExe self.inputs.obscura.packages.${pkgs.system}.SwayAudioIdleInhibit;
+        swaybg = lib.getExe pkgs.swaybg;
         wallpaper = ./misc/wallpaper.png;
-        webcord = "${pkgs.webcord}/bin/webcord";
+        webcord = lib.getExe pkgs.webcord;
+
+        audio-helper = my-utils.subsF {
+          file = ./scripts/audio-helper.sh;
+          func = pkgs.writeScript;
+          subs = {
+            pulsemixer = lib.getExe pkgs.pulsemixer;
+            mpc = lib.getExe pkgs.mpc-cli;
+          };
+        };
+
+        brightness-helper = my-utils.subsF {
+          file = ./scripts/brightness-helper.sh;
+          func = pkgs.writeScript;
+          subs = {
+            brightnessctl = lib.getExe pkgs.brightnessctl;
+          };
+        };
+
+        dropdown = my-utils.subsF {
+          file = ./scripts/dropdown.sh;
+          func = pkgs.writeScript;
+        };
+
+        prompt = my-utils.subsF {
+          file = ./scripts/prompt.sh;
+          func = pkgs.writeScript;
+          subs = {
+            fuzzel = lib.getExe pkgs.fuzzel;
+          };
+        };
+
+        screenshot = my-utils.subsF {
+          file = ./scripts/screenshot.sh;
+          func = pkgs.writeScript;
+        };
+
+        terminal = my-utils.subsF {
+          file = ./scripts/terminal.sh;
+          func = pkgs.writeScript;
+        };
       };
     };
   };

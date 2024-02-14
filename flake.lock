@@ -2,11 +2,15 @@
   "nodes": {
     "agenix": {
       "inputs": {
-        "darwin": [],
+        "darwin": [
+          "aquaris"
+        ],
         "home-manager": [
+          "aquaris",
           "home-manager"
         ],
         "nixpkgs": [
+          "aquaris",
           "nixpkgs"
         ],
         "systems": "systems"
@@ -25,23 +29,25 @@
         "type": "github"
       }
     },
-    "disko": {
+    "aquaris": {
       "inputs": {
+        "agenix": "agenix",
+        "home-manager": "home-manager",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1707524024,
-        "narHash": "sha256-HmumZ8FuWAAYZrWUKm3N4G4h8nmZ5VUVX+vXLmCJNKM=",
-        "owner": "nix-community",
-        "repo": "disko",
-        "rev": "d07de570ba05cec2807d058daaa044f6955720c7",
+        "lastModified": 1707905975,
+        "narHash": "sha256-i59WRpNlEP8vmzBrYJY3ESK4trsSDgVmPtMiVrFK7jg=",
+        "owner": "42loco42",
+        "repo": "aquaris",
+        "rev": "9ba24c37c329e852f5bc1e0767a30297f17a7140",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "disko",
+        "owner": "42loco42",
+        "repo": "aquaris",
         "type": "github"
       }
     },
@@ -65,15 +71,16 @@
     "home-manager": {
       "inputs": {
         "nixpkgs": [
+          "aquaris",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1707467182,
-        "narHash": "sha256-/Bw/xgCXfj4nXDd8Xq+r1kaorfsYkkomMf5w5MpsDyA=",
+        "lastModified": 1703674883,
+        "narHash": "sha256-Jna6MOmLdfgot+AopHv28L+wpwVDfaiafLtO7E4bkj0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5b9156fa9a8b8beba917b8f9adbfd27bf63e16af",
+        "rev": "458544594ba7f0333cf5718045ee7a8eaf5de433",
         "type": "github"
       },
       "original": {
@@ -89,11 +96,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1707016097,
-        "narHash": "sha256-V4lHr6hFQ3rK650dh64Xffxsf4kse9vUYWsM+ldjkco=",
+        "lastModified": 1707620986,
+        "narHash": "sha256-XE0tCSkSVBeJDWhjFwusNInwAhrnp+TloUNUpvnTiLw=",
         "owner": "Mic92",
         "repo": "nix-index-database",
-        "rev": "3e3dad2808379c522138e2e8b0eb73500721a237",
+        "rev": "0cb4345704123492e6d1f1068629069413c80de0",
         "type": "github"
       },
       "original": {
@@ -112,10 +119,8 @@
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "nixpkgs_2": {
@@ -153,13 +158,10 @@
     },
     "root": {
       "inputs": {
-        "agenix": "agenix",
-        "disko": "disko",
-        "home-manager": "home-manager",
+        "aquaris": "aquaris",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
-        "obscura": "obscura",
-        "und": "und"
+        "obscura": "obscura"
       }
     },
     "systems": {
@@ -189,21 +191,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "und": {
-      "locked": {
-        "lastModified": 1706519894,
-        "narHash": "sha256-/4a3qD8W9/9/O2E76Ze/8JleaDkkmkCfxaz5V2o0S4s=",
-        "owner": "42loco42",
-        "repo": "und",
-        "rev": "ec4635048662dcb0219d361597034e9908fe9959",
-        "type": "github"
-      },
-      "original": {
-        "owner": "42loco42",
-        "repo": "und",
         "type": "github"
       }
     }
