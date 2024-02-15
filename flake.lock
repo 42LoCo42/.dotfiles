@@ -32,17 +32,19 @@
     "aquaris": {
       "inputs": {
         "agenix": "agenix",
-        "home-manager": "home-manager",
+        "home-manager": [
+          "home-manager"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1707938071,
-        "narHash": "sha256-FfgIYi0pjiWoowAvrguyGaW48StyDsasTB6vghgJGd8=",
+        "lastModified": 1707981746,
+        "narHash": "sha256-GzQ5RLN+FvePDpsq/k+s2YjMTHKkPgdhJDnzvzXrRnw=",
         "owner": "42loco42",
         "repo": "aquaris",
-        "rev": "4653c3b2be7f08f508a6734b2c3f7be9ddaf716c",
+        "rev": "49fe1afce720c96c250bf9522aef7ae61de353bb",
         "type": "github"
       },
       "original": {
@@ -71,16 +73,15 @@
     "home-manager": {
       "inputs": {
         "nixpkgs": [
-          "aquaris",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1703674883,
-        "narHash": "sha256-Jna6MOmLdfgot+AopHv28L+wpwVDfaiafLtO7E4bkj0=",
+        "lastModified": 1707919853,
+        "narHash": "sha256-qxmBGDzutuJ/tsX4gp+Mr7fjxOZBbeT9ixhS5o4iFOw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "458544594ba7f0333cf5718045ee7a8eaf5de433",
+        "rev": "043ba285c6dc20f36441d48525402bcb9743c498",
         "type": "github"
       },
       "original": {
@@ -111,16 +112,18 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1707451808,
-        "narHash": "sha256-UwDBUNHNRsYKFJzyTMVMTF5qS4xeJlWoeyJf+6vvamU=",
+        "lastModified": 1707907779,
+        "narHash": "sha256-dtktfFJn+36yBkZ1mnQGdiDsqnzC9pXt/Ecpsui0hiY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "442d407992384ed9c0e6d352de75b69079904e4e",
+        "rev": "c5e9528855e4e6feda2b16dec28de880ce774b93",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs_2": {
@@ -159,6 +162,7 @@
     "root": {
       "inputs": {
         "aquaris": "aquaris",
+        "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
         "obscura": "obscura"
