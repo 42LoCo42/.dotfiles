@@ -1,0 +1,8 @@
+{{define "prompt"}}
+  <x-prompt>
+    <span>eleonora@bunny</span>:
+    <span>{{index . 0}}</span>$&nbsp;
+    <typw-ctrl pause="750" delay="50">{{index . 1}}</typw-ctrl>
+    <typw-ctrl delay="5"></typw-ctrl>
+  </x-prompt>
+{{end}}

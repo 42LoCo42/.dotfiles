@@ -1,4 +1,4 @@
-{ pkgs, config, lib, my-utils, ... }: {
+{ self, pkgs, config, lib, my-utils, ... }: {
   fileSystems."/" = {
     fsType = "tmpfs";
     options = [ "mode=755" ];
@@ -93,6 +93,44 @@
           image = "volume-setup:latest";
           volumes = map (v: "${v}:/vol/${v}") volumes;
         };
+
+      homepage-builder = pkgs.buildGoModule {
+        name = "homepage-builder";
+        src = "${self}/homepage/builder";
+        vendorHash = null;
+        CGO_ENABLED = "0";
+      };
+
+      homepage-font = lib.pipe pkgs.nerdfonts [
+        (f: f.override { fonts = [ "Iosevka" ]; })
+        (f: "${f}/share/fonts/truetype/NerdFonts/IosevkaNerdFont-Regular.ttf")
+      ];
+
+      homepage = pkgs.stdenvNoCC.mkDerivation {
+        name = "homepage";
+        src = "${self}/homepage/content";
+
+        nativeBuildInputs = with pkgs; [
+          glibcLocales
+          rsync
+          tree
+        ];
+
+        buildPhase = ''
+          cp -r $src src
+          chmod -R +w src
+          cd src
+          mkdir -p out/foo
+          bash processStuff.sh
+          ${lib.getExe homepage-builder}
+          rsync -av static/ out/
+          cp "${homepage-font}" out/iosevka.ttf
+        '';
+
+        installPhase = ''
+          cp -r out $out
+        '';
+      };
     in
     {
       volume-setup = mkVolumeSetup [
@@ -113,6 +151,7 @@
         volumes = [
           "caddy_data:/data"
           "${./Caddyfile}:/etc/caddy/Caddyfile"
+          "${homepage}:/srv/homepage"
           "${pkgs.element-web}:/srv/element"
           "${subsDomain ./element.json}:/srv/element/config.json"
         ];
@@ -162,4 +201,6 @@
         cmd = [ "run" "-c" "/config" ];
       };
     };
+
+  _module.args.foo = (pkgs.nerdfonts.override { fonts = [ "Iosevka" ]; });
 }

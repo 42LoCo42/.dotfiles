@@ -61,6 +61,14 @@
 	header /.well-known/matrix/* Access-Control-Allow-Origin *
 	respond /.well-known/matrix/server `{"m.server": "matrix.{$DOMAIN}:443"}`
 	respond /.well-known/matrix/client `{"m.homeserver":{"base_url":"https://matrix.{$DOMAIN}"}}`
+
+	##### homepage #####
+	root * /srv/homepage
+	file_server
+}
+
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}
 }
 
 searx.{$DOMAIN} {

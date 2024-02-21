@@ -1,0 +1,138 @@
+:root {
+	--white:  #ebdbb2;
+	--black:  #282828;
+	--green:  #98971a;
+	--yellow: #d79921;
+	--blue:   #458588;
+	--blue-light: #83A598;
+
+	--darkreader-text--white:  #ebdbb2;
+	--darkreader-text--green:  #98971a;
+	--darkreader-text--yellow: #d79921;
+	--darkreader-text--blue:   #458588;
+	--darkreader-text--blue-light: #83A598;
+
+	--darkreader-bg--black:  #282828;
+}
+
+@font-face {
+	font-family: "Iosevka Nerd Font";
+	font-style: normal;
+	font-weight: 400;
+	font-stretch: normal;
+	src:
+		local("Iosevka Nerd Font"),
+		url(/iosevka.ttf) format("truetype");
+}
+
+html {
+	background-color: var(--black) !important;
+}
+
+body {
+	display: table;
+	vertical-align: middle;
+	margin: 25px auto;
+
+	color: var(--white);
+	background-color: var(--black) !important;
+	font-family: "Iosevka Nerd Font", "monospace";
+	font-size: 2.5vmin;
+}
+
+.mobile-v-box {
+	display: flex;
+}
+
+@media only screen and (min-width: 768px) {
+	#terminal > :nth-child(2) {
+		margin-left: 25px;
+		padding-left: 25px;
+		border-left: 2px solid var(--green);
+	}
+
+	.mobile-v-box {
+		flex-flow: row wrap;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	body {
+		font-size: 4vmin;
+		margin-bottom: 75px;
+	}
+
+	.mobile-v-box {
+		flex-flow: column wrap;
+	}
+
+	#split-pane {
+		display: none;
+	}
+}
+
+v-box {
+	display: flex;
+	flex-flow: column wrap;
+}
+
+h-box {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+a {
+	color: var(--blue);
+	text-decoration: none;
+}
+
+a:hover {
+	color: var(--blue-light);
+	text-decoration: var(--blue-light) dotted underline;
+}
+
+a:active {
+	color: var(--green);
+	text-decoration: var(--green) underline;
+}
+
+x-prompt {
+	display: flex;
+	flex-flow: row;
+}
+
+x-prompt > :nth-child(1) {
+	color: var(--green);
+	font-weight: bold;
+}
+
+x-prompt > :nth-child(2) {
+	color: var(--blue);
+	font-weight: bold;
+}
+
+x-neofetch {
+	color: var(--green);
+	font-weight: bold;
+}
+
+x-neosub {
+	margin-left: 1em;
+	color: var(--yellow);
+}
+
+@keyframes blink {
+	0%   { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+#profile {
+	width: 250px;
+	height: 250px;
+	border-radius: 50%;
+	margin-bottom: 10px;
+}
+
+cursor {
+	animation: blink 500ms linear infinite alternate;
+}

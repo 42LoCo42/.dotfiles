@@ -1,0 +1,34 @@
+<div>
+  {{template "prompt" (arr "~/homepage" "cat stuff/hosted/matrix")}}
+  <h1>[matrix]</h1>
+  <h2>An open network for secure, decentralized communication</h2>
+
+  <p>
+    I am hosting a
+    <a href="https://matrix.org/docs/projects/server/synapse">Synapse</a>
+    server, the reference implementation of a Matrix homeserver, at matrix.eleonora.gay.<br>
+    It is private at the moment. Ask me on Discord if you want to join!<br>
+    On Discord I am 42LoCo42#0130, on Matrix @eleonora:eleonora.gay.<br>
+    Or use this <a href="https://matrix.to/#/@eleonora:eleonora.gay">direct link</a> (should work now)<br>
+  </p>
+
+  <p>
+    <span style="color: var(--green)">Update:</span> I'm now also hosting
+    <a href="https://element.io/">Element</a>,
+    a cool web client for Matrix, at
+    <a href="https://element.eleonora.gay">element.eleonora.gay</a>
+  </p>
+
+  <p>
+    For more information about Matrix, visit the
+    <a href="https://matrix.org/">website</a>.
+  </p>
+
+  <hr>
+  <x-prompt>
+    <span>eleonora@bunny</span>:
+    <span>~/homepage</span>$&nbsp;
+    <typw-ctrl pause="750" delay="50"><a href="..">cd ..</a></typw-ctrl>
+    <typw-ctrl delay="5"></typw-ctrl>
+  </x-prompt>
+</div>
