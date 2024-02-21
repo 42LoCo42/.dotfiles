@@ -201,6 +201,4 @@
         cmd = [ "run" "-c" "/config" ];
       };
     };
-
-  _module.args.foo = (pkgs.nerdfonts.override { fonts = [ "Iosevka" ]; });
 }
