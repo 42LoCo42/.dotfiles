@@ -97,6 +97,7 @@
     {
       volume-setup = mkVolumeSetup [
         "caddy_data"
+        "redis_data"
         "synapse_data"
       ];
 
@@ -123,6 +124,7 @@
         image = select
           "redis@sha256:fe98b2d39d462d06a7360e2860dd6ceff930745e3731eccb3c1406dd0dd7f744"
           "redis@sha256:197c38d14b42b59a49ed7d76adf85b93f8c18c1631031841ad26c81c5e11f96e";
+        volumes = [ "redis_data:/data" ];
       };
 
       searxng =
