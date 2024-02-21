@@ -1,0 +1,88 @@
+{
+	admin off
+	http_port 8000
+	https_port 4430
+
+	log {
+		format console
+		level ERROR
+	}
+}
+
+(default) {
+	header {
+		X-Clacks-Overhead "GNU Terry Pratchett"
+
+		##### https://github.com/searxng/searxng-docker/blob/master/Caddyfile
+
+		# Enable HTTP Strict Transport Security (HSTS) to force clients to always connect via HTTPS
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		# Enable cross-site filter (XSS) and tell browser to block detected attacks
+		X-XSS-Protection "1; mode=block"
+
+		# Prevent some browsers from MIME-sniffing a response away from the declared Content-Type
+		X-Content-Type-Options "nosniff"
+
+		# Disable some features, disable FLoC tracking
+		Permissions-Policy "accelerometer=(),ambient-light-sensor=(),autoplay=(),camera=(),encrypted-media=(),focus-without-user-activation=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(),speaker=(),sync-xhr=(),usb=(),vr=(),interest-cohort=()"
+
+		# Disable some features (legacy)
+		Feature-Policy "accelerometer 'none';ambient-light-sensor 'none'; autoplay 'none';camera 'none';encrypted-media 'none';focus-without-user-activation 'none'; geolocation 'none';gyroscope 'none';magnetometer 'none';microphone 'none';midi 'none';payment 'none';picture-in-picture 'none'; speaker 'none';sync-xhr 'none';usb 'none';vr 'none'"
+
+		# Referer
+		Referrer-Policy "no-referrer"
+
+		# X-Robots-Tag
+		X-Robots-Tag "noindex, noarchive, nofollow"
+
+		# Remove Server header
+		-Server
+
+		########################################
+
+		Content-Security-Policy "frame-ancestors 'self'"
+
+		# clickjacking protection
+		X-Frame-Options DENY
+	}
+
+	log {
+		format console
+		level ERROR
+	}
+}
+
+{$DOMAIN} {
+	import default
+
+	##### synapse #####
+	header /.well-known/matrix/* Content-Type application/json
+	header /.well-known/matrix/* Access-Control-Allow-Origin *
+	respond /.well-known/matrix/server `{"m.server": "matrix.{$DOMAIN}:443"}`
+	respond /.well-known/matrix/client `{"m.homeserver":{"base_url":"https://matrix.{$DOMAIN}"}}`
+}
+
+searx.{$DOMAIN} {
+	import default
+	reverse_proxy searxng:8080 {
+		header_up X-Forwarded-Port {http.request.port}
+		header_up X-Real-IP {remote_host}
+	}
+}
+
+matrix.{$DOMAIN} {
+	import default
+	reverse_proxy /_matrix/* synapse:8080
+	reverse_proxy /_synapse/client/* synapse:8080
+}
+
+{$DOMAIN}:8448 {
+	reverse_proxy /_matrix/* synapse:8080
+}
+
+element.{$DOMAIN} {
+	import default
+	root * /srv/element
+	file_server
+}
