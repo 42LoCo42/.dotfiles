@@ -4,9 +4,9 @@ Abandon hope, all ye who enter here.
 [[./screenshot.png]]
 
 ** Machines
-| akyuro        | Laptop       |
+| [[file:machines/akyuro/default.nix][akyuro]]        | Laptop       |
 | TODO astylos  | Main PC      |
-| TODO bunny    | Main Server  |
+| [[file:machines/bunny/default.nix][bunny]]         | Main Server  |
 | TODO laniakea | Odroid M1    |
 | TODO rubicon  | Raspberry Pi |
 
