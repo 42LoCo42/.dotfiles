@@ -3,46 +3,12 @@ Abandon hope, all ye who enter here.
 
 [[./screenshot.png]]
 
+This config is based on my [[https://github.com/42LoCo42/aquaris/][Aquaris]] library,
+which provides a wealth of default options, tools and functions.
+
 ** Machines
 | [[file:machines/akyuro/default.nix][akyuro]]        | Laptop       |
 | TODO astylos  | Main PC      |
 | [[file:machines/bunny/default.nix][bunny]]         | Main Server  |
 | TODO laniakea | Odroid M1    |
 | TODO rubicon  | Raspberry Pi |
-
-** Modules
-- base
-  - age: Configures [[https://github.com/ryantm/agenix][agenix]], a secrets manager for Nix.
-  - greeter: Enables [[https://git.sr.ht/~kennylevinsen/greetd][greetd]] and [[https://github.com/apognu/tuigreet][tuigreet]] for a pseudographical console login greeter.
-  - id: Creates the =machine-id= option, which also sets the host ID.
-  - nix-settings: Default settings for Nix, the store and nixpkgs
-  - system: Basic system settings & services.
-    CHANGE HERE: keymap, locale, timezone.
-  - user: My user account. Uses the agenix secret [[file:secrets/password-hash.age][password-hash]].
-- boot
-  - default: systemd-boot as UEFI bootloader & some kernel settings
-  - lanza: Use [[https://github.com/nix-community/lanzaboote][Lanzaboote]] for Secure Boot.
-    Keys are automatically generated!
-  - zfs: Enable booting from ZFS
-- home
-  - gui: Default settings for a graphical system
-  - hyprland: My current [[https://hyprland.org/][Hyprland]] setup for user-facing machines
-  - terminal: Default settings for a nice terminal environment
-- networking
-  - bluetooth: Enables bluetooth (duh)
-  - default: Enables NetworkManager & WiFi and exposes TCP ports
-    18213 and 37812 in the firewall (cuz I like those)
-  - tailscale: Enables [[https://tailscale.com/][Tailscale]], a Wireguard mesh VPN
-- security
-  - u2f: Enables usage of [[https://solokeys.com/][FIDO2 security keys]] for sudo authentication
-- virt
-  - docker: Enables (rootless) docker
-  - libvirt: Enables [[https://libvirt.org/][libvirt]], a virtualisation framework
-
-** In progress
-See [[file:machines/test/default.nix]] for this stuff.
-- Settings for +[[https://github.com/nix-community/impermanence][impermanence]]+ - now using [[file:machines/test/feengold.nix][Feengold]], my own implementation!
-- System dataset:
-  - automatic unlocking via [[https://github.com/latchset/clevis][clevis]] in initrd
-  - automatic key management via [[file:machines/test/zfs-autokey.nix][zfs-autokey]]
-- User datasets: unlock on login via [[file:zfs-pam][zfs-pam]]
