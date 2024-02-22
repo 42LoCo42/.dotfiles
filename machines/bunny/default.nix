@@ -38,6 +38,9 @@
       system = [
         "/var/lib/containers"
       ];
+      users.admin = [
+        "media"
+      ];
     };
   };
 
@@ -142,6 +145,7 @@
     {
       volume-setup = mkVolumeSetup [
         "caddy_data"
+        "pigallery2_data"
         "redis_data"
         "synapse_data"
       ];
@@ -207,6 +211,20 @@
           "${config.aquaris.secrets."machine/synapse-signing-key"}:/config/signing.key"
         ];
         cmd = [ "run" "-c" "/config" ];
+      };
+
+      pigallery2 = {
+        inherit user;
+        image = select
+          "bpatrik/pigallery2@sha256:8c9844bb9ea2816c000af78a1538ea64a3a05958affb86a1e175775d5214e599"
+          "bpatrik/pigallery2@sha256:c6a216c36f29de66bfba5f0c2cc855992e1a8e715ca9c6838ea630d2411b5e46";
+        extraOptions = [ "--health-cmd=none" ];
+        volumes = [
+          "${subsDomain ./pigallery2.json}:/app/data/config/config.json"
+          "${config.aquaris.persist.root}/home/admin/media:/media"
+          "pigallery2_data:/data"
+        ];
+        environment.NODE_ENV = "production";
       };
     };
 }

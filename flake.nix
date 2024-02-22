@@ -15,7 +15,7 @@
     obscura.url = "github:42loco42/obscura";
   };
 
-  outputs = { self, aquaris, ... }:
+  outputs = { self, aquaris, nixpkgs, ... }:
     let
       users = {
         leonsch = {
@@ -46,6 +46,16 @@
         };
       };
     in
-    aquaris.lib.main self { inherit users machines; };
+    aquaris.lib.main self { inherit users machines; } //
+    aquaris.inputs.flake-utils.lib.eachDefaultSystem (system:
+      let pkgs = import nixpkgs { inherit system; }; in {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            go
+            gopls
+            nodePackages.prettier
+          ];
+        };
+      });
 
 }
