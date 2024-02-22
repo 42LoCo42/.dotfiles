@@ -50,8 +50,8 @@
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPorts = [ 443 ];
 
+  systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
-
   virtualisation.oci-containers.containers =
     let
       domain = "42loco42.duckdns.org";
@@ -83,7 +83,7 @@
             ];
             text = lib.pipe volumes [
               (map (v: "chown ${user} /vol/${v}"))
-              (s: [ "set -x" ] ++ s ++ [ "sleep inf" ])
+              (s: [ "set -x" ] ++ s)
               (builtins.concatStringsSep "\n")
             ];
           };
@@ -185,6 +185,7 @@
           image = select
             "searxng/searxng@sha256:5e4afc01591e1208ad3b74a29ce65802f78d3bf92cddcfbdd9427ce690e935f6"
             "searxng/searxng@sha256:29dcad2e76a4ab3e87129755df4b3ca6d1ff72b1eca6320d23056ac184afd8a4";
+          extraOptions = [ "--stop-signal=SIGINT" ];
           volumes = [
             "${./searxng.yaml}:/etc/searxng/settings.yml"
             "${su-exec}:/sbin/su-exec"
