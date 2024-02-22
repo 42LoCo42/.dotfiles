@@ -103,3 +103,8 @@ element.{$DOMAIN} {
 	root * /srv/element
 	file_server
 }
+
+img.{$DOMAIN} {
+	import default
+	reverse_proxy pigallery2:8080
+}
