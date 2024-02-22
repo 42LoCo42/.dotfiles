@@ -33,6 +33,12 @@
       "machine/synapse-secrets".user = "nobody";
       "machine/synapse-signing-key".user = "nobody";
     };
+
+    persist = {
+      system = [
+        "/var/lib/containers"
+      ];
+    };
   };
 
   boot.lanzaboote.enable = lib.mkForce false;
@@ -149,7 +155,7 @@
           "443:4430"
         ];
         volumes = [
-          "caddy_data:/data"
+          "caddy_data:/data/caddy"
           "${./Caddyfile}:/etc/caddy/Caddyfile"
           "${homepage}:/srv/homepage"
           "${pkgs.element-web}:/srv/element"
