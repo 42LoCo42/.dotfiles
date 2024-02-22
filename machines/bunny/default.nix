@@ -49,6 +49,7 @@
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPorts = [ 443 ];
+  networking.networkmanager.enable = lib.mkForce false;
 
   systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
