@@ -94,10 +94,6 @@ matrix.{$DOMAIN} {
 	reverse_proxy /_synapse/client/* synapse:8080
 }
 
-{$DOMAIN}:8448 {
-	reverse_proxy /_matrix/* synapse:8080
-}
-
 element.{$DOMAIN} {
 	import default
 	root * /srv/element
