@@ -120,6 +120,12 @@
         package = pkgs.emacs29-pgtk;
       };
 
+      ncmpcpp = {
+        enable = true;
+        package = self.inputs.obscura.packages.${pkgs.system}.my-ncmpcpp;
+        settings.startup_screen = "media_library";
+      };
+
       feh.enable = true;
       firefox.enable = true;
       mpv.enable = true;

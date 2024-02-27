@@ -274,7 +274,6 @@
         fuzzel = lib.getExe pkgs.fuzzel;
         libEGL = "${pkgs.libglvnd}/lib/libEGL.so";
         libnotify = "${pkgs.libnotify}/lib/libnotify.so";
-        ncmpcpp = lib.getExe pkgs.ncmpcpp;
         pulsemixer = lib.getExe pkgs.pulsemixer;
         qalc = lib.getExe pkgs.libqalculate;
         sway-audio-idle-inhibit = lib.getExe self.inputs.obscura.packages.${pkgs.system}.SwayAudioIdleInhibit;
