@@ -33,16 +33,24 @@
       };
 
       machines = {
+        # laptop
         akyuro = {
           id = "86b0e292e1fc27eb4168defa65cb41fd";
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBdZDuw+7O6+pV13ObPR/H4P8UCc1FzPmkufeaiJUc75";
           admins = { inherit (users) leonsch; };
         };
 
+        # server
         bunny = {
           id = "488cb972c1ac70db8307933f65d5defc";
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbsL7HyOCM56ejtlWqEBG1YzQwX2KmZ3S5KzoGnWh/j";
           admins = { inherit (users) admin; };
+        };
+
+        # live ISO
+        guanyin = {
+          id = "99f7c536ac386aeb32291d4e65f549dc";
+          admins.root = { };
         };
       };
     in
