@@ -114,7 +114,7 @@
       };
     };
 
-    programs = let op = self.inputs.obscura.packages.${pkgs.system}; in {
+    programs = {
       emacs = {
         enable = true;
         package = pkgs.emacs29-pgtk;
@@ -122,13 +122,12 @@
 
       ncmpcpp = {
         enable = true;
-        package = op.my-ncmpcpp;
+        package = self.inputs.obscura.packages.${pkgs.system}.my-ncmpcpp;
         settings.startup_screen = "media_library";
       };
 
       feh.enable = true;
       firefox.enable = true;
-      htop.package = lib.mkForce op.my-htop;
       mpv.enable = true;
       yt-dlp.enable = true;
       zathura.enable = true;

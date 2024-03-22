@@ -1,4 +1,4 @@
-{ self, pkgs, lib, modulesPath, ... }: {
+{ pkgs, lib, modulesPath, ... }: {
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
   ];
@@ -34,10 +34,5 @@
     openssh.authorizedKeys.keys = lib.mkForce [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql"
     ];
-  };
-
-  home-manager.users.root = {
-    programs.htop.package = lib.mkForce
-      self.inputs.obscura.packages.${pkgs.system}.my-htop;
   };
 }
