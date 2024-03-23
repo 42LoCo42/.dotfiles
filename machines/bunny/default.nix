@@ -1,13 +1,7 @@
 { self, pkgs, config, lib, my-utils, ... }: {
-  fileSystems."/" = {
-    fsType = "tmpfs";
-    options = [ "mode=755" ];
-  };
-
   aquaris = {
     filesystem = { filesystem, zpool, ... }: {
-      # TODO real disk id: scsi-36024c6ac39264da98ce1a64b9fab7a20
-      disks."/dev/disk/by-id/virtio-root".partitions = [
+      disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
         {
           type = "uefi";
           size = "512M";
@@ -30,8 +24,8 @@
     };
 
     secrets = {
-      "machine/synapse-secrets".user = "nobody";
-      "machine/synapse-signing-key".user = "nobody";
+      "machine/synapse/secrets".user = "nobody";
+      "machine/synapse/signing-key".user = "nobody";
     };
 
     persist = {
@@ -39,7 +33,7 @@
         "/var/lib/containers"
       ];
       users.admin = [
-        "media"
+        "img"
       ];
     };
   };
@@ -54,21 +48,18 @@
   networking.firewall.allowedUDPPorts = [ 443 ];
   networking.networkmanager.enable = lib.mkForce false;
 
+  services.openssh.ports = lib.mkForce [ 18213 ];
+
   systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
   virtualisation.oci-containers.containers =
     let
-      domain = "42loco42.duckdns.org";
+      domain = "eleonora.gay";
       subsDomain = file: my-utils.subsF {
         inherit file;
         func = pkgs.writeText;
         subs = { inherit domain; };
       };
-
-      select = amd64: arm64:
-        if pkgs.system == "x86_64-linux" then amd64
-        else if pkgs.system == "aarch64-linux" then arm64
-        else abort "pkgs.system: ${pkgs.system}: invalid!";
 
       user = lib.pipe [
         config.users.users.nobody.uid
@@ -152,9 +143,7 @@
 
       caddy = {
         inherit user;
-        image = select
-          "caddy@sha256:67d0aa24ce021bee77049ddd2c0cc64732dd43d04598085ec39f950a13981bd0"
-          "caddy@sha256:2ec95d40ce2d1f18f92eee012a5dd18b352075d92eb6c4f4e0ea18c46ad4b069";
+        image = "caddy@sha256:2ec95d40ce2d1f18f92eee012a5dd18b352075d92eb6c4f4e0ea18c46ad4b069";
         ports = [
           "80:8000"
           "443:4430"
@@ -171,9 +160,7 @@
 
       redis = {
         inherit user;
-        image = select
-          "redis@sha256:fe98b2d39d462d06a7360e2860dd6ceff930745e3731eccb3c1406dd0dd7f744"
-          "redis@sha256:197c38d14b42b59a49ed7d76adf85b93f8c18c1631031841ad26c81c5e11f96e";
+        image = "redis@sha256:197c38d14b42b59a49ed7d76adf85b93f8c18c1631031841ad26c81c5e11f96e";
         volumes = [ "redis_data:/data" ];
       };
 
@@ -187,9 +174,7 @@
         in
         {
           inherit user;
-          image = select
-            "searxng/searxng@sha256:5e4afc01591e1208ad3b74a29ce65802f78d3bf92cddcfbdd9427ce690e935f6"
-            "searxng/searxng@sha256:29dcad2e76a4ab3e87129755df4b3ca6d1ff72b1eca6320d23056ac184afd8a4";
+          image = "searxng/searxng@sha256:29dcad2e76a4ab3e87129755df4b3ca6d1ff72b1eca6320d23056ac184afd8a4";
           extraOptions = [ "--stop-signal=SIGINT" ];
           volumes = [
             "${./searxng.yaml}:/etc/searxng/settings.yml"
@@ -199,29 +184,25 @@
           environment.SEARXNG_BASE_URL = "https://searx.${domain}";
         };
 
-      synapse = {
-        inherit user;
-        image = select
-          "matrixdotorg/synapse@sha256:f8de2fc05de8a15e46ce152a2708e00be3b1fe25f68fbf596a108a5c236bb3f6"
-          "matrixdotorg/synapse@sha256:8816e729ef77fc3f79f39e6c38ffc73388059c0eac3c34a13b0d11f6d61ab64a";
-        volumes = [
-          "synapse_data:/data"
-          "${subsDomain ./synapse.yaml}:/config/homeserver.yaml"
-          "${config.aquaris.secrets."machine/synapse-secrets"}:/config/secrets.yaml"
-          "${config.aquaris.secrets."machine/synapse-signing-key"}:/config/signing.key"
-        ];
-        cmd = [ "run" "-c" "/config" ];
-      };
+      # synapse = {
+      #   inherit user;
+      #   image = "matrixdotorg/synapse@sha256:8816e729ef77fc3f79f39e6c38ffc73388059c0eac3c34a13b0d11f6d61ab64a";
+      #   volumes = [
+      #     "synapse_data:/data"
+      #     "${subsDomain ./synapse.yaml}:/config/homeserver.yaml"
+      #     "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml"
+      #     "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key"
+      #   ];
+      #   cmd = [ "run" "-c" "/config" ];
+      # };
 
       pigallery2 = {
         inherit user;
-        image = select
-          "bpatrik/pigallery2@sha256:8c9844bb9ea2816c000af78a1538ea64a3a05958affb86a1e175775d5214e599"
-          "bpatrik/pigallery2@sha256:c6a216c36f29de66bfba5f0c2cc855992e1a8e715ca9c6838ea630d2411b5e46";
+        image = "bpatrik/pigallery2@sha256:c6a216c36f29de66bfba5f0c2cc855992e1a8e715ca9c6838ea630d2411b5e46";
         extraOptions = [ "--health-cmd=none" ];
         volumes = [
           "${subsDomain ./pigallery2.json}:/app/data/config/config.json"
-          "${config.aquaris.persist.root}/home/admin/media:/media"
+          "${config.aquaris.persist.root}/home/admin/img:/media"
           "pigallery2_data:/data"
         ];
         environment.NODE_ENV = "production";
