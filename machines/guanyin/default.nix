@@ -31,6 +31,8 @@
   users.users.root = {
     isNormalUser = lib.mkForce false;
     password = " ";
+    hashedPassword = lib.mkForce null;
+    initialHashedPassword = lib.mkForce null;
     openssh.authorizedKeys.keys = lib.mkForce [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql"
     ];

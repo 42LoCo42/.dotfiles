@@ -1,4 +1,4 @@
-{ self, pkgs, config, lib, my-utils, ... }: {
+{ pkgs, config, lib, my-utils, ... }: {
   aquaris = {
     filesystem = { filesystem, zpool, ... }: {
       disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
