@@ -33,6 +33,7 @@
         "/var/lib/containers"
       ];
       users.admin = [
+        "hidden"
         "img"
       ];
     };
@@ -158,6 +159,7 @@
           "caddy_data:/data/caddy"
           "${./Caddyfile}:/etc/caddy/Caddyfile"
           "${homepage}:/srv/homepage"
+          "${config.aquaris.persist.root}/home/admin/hidden:/srv/homepage/foo"
           "${pkgs.element-web}:/srv/element"
           "${subsDomain ./element.json}:/srv/element/config.json"
         ];
