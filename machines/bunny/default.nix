@@ -108,6 +108,7 @@
         };
         vendorHash = null;
         CGO_ENABLED = "0";
+        meta.mainProgram = "homepage-builder";
       };
 
       homepage-font = lib.pipe pkgs.nerdfonts [
