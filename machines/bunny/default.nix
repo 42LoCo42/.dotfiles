@@ -44,6 +44,7 @@
   users.users.admin.openssh.authorizedKeys.keys =
     [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
 
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 0;
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPorts = [ 443 ];
   networking.networkmanager.enable = lib.mkForce false;
@@ -110,7 +111,10 @@
 
       homepage = pkgs.stdenvNoCC.mkDerivation {
         name = "homepage";
-        src = "${self}/homepage/content";
+        src = let d = ../../homepage/content; in lib.fileset.toSource {
+          root = d;
+          fileset = d;
+        };
 
         nativeBuildInputs = with pkgs; [
           glibcLocales
@@ -146,8 +150,9 @@
         inherit user;
         image = "caddy@sha256:2ec95d40ce2d1f18f92eee012a5dd18b352075d92eb6c4f4e0ea18c46ad4b069";
         ports = [
-          "80:8000"
-          "443:4430"
+          "80:80"
+          "443:443"
+          "443:443/udp"
         ];
         volumes = [
           "caddy_data:/data/caddy"
