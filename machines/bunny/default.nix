@@ -73,9 +73,7 @@
         let
           program = pkgs.writeShellApplication {
             name = "volume-setup";
-            runtimeInputs = with pkgs; [
-              coreutils
-            ];
+            runtimeInputs = with pkgs; [ coreutils ];
             text = lib.pipe volumes [
               (map (v: "chown ${user} /vol/${v}"))
               (s: [ "set -x" ] ++ s)
@@ -97,7 +95,10 @@
 
       homepage-builder = pkgs.buildGoModule {
         name = "homepage-builder";
-        src = "${self}/homepage/builder";
+        src = let d = ../../homepage/builder; in lib.fileset.toSource {
+          root = d;
+          fileset = d;
+        };
         vendorHash = null;
         CGO_ENABLED = "0";
       };
@@ -184,17 +185,27 @@
           environment.SEARXNG_BASE_URL = "https://searx.${domain}";
         };
 
-      # synapse = {
-      #   inherit user;
-      #   image = "matrixdotorg/synapse@sha256:8816e729ef77fc3f79f39e6c38ffc73388059c0eac3c34a13b0d11f6d61ab64a";
-      #   volumes = [
-      #     "synapse_data:/data"
-      #     "${subsDomain ./synapse.yaml}:/config/homeserver.yaml"
-      #     "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml"
-      #     "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key"
-      #   ];
-      #   cmd = [ "run" "-c" "/config" ];
-      # };
+      synapse = {
+        inherit user;
+        image = "matrixdotorg/synapse@sha256:8816e729ef77fc3f79f39e6c38ffc73388059c0eac3c34a13b0d11f6d61ab64a";
+        volumes = [
+          "synapse_data:/data"
+          "${subsDomain ./synapse.yaml}:/config/homeserver.yaml"
+          "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml"
+          "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key"
+        ];
+        cmd = [ "run" "-c" "/config" ];
+      };
+
+      synapse-db = {
+        image = "postgres@sha256:354a818d8a1e94707704902edb8c4e98b0eb64de3ee0354c4d94b4e2905c63ee";
+        volumes = [ "synapse-db_data:/db" ];
+        environment = {
+          POSTGRES_INITDB_ARGS = "--encoding=UTF8 --locale=C";
+          PGDATA = "/db";
+        };
+        environmentFiles = [ config.aquaris.secrets."machine/synapse/db-password" ];
+      };
 
       pigallery2 = {
         inherit user;

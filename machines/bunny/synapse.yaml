@@ -1,5 +1,6 @@
 server_name: "@domain@"
 pid_file: /data/homeserver.pid
+
 listeners:
   - port: 8080
     tls: false
@@ -8,10 +9,7 @@ listeners:
     resources:
       - names: [client, federation]
         compress: false
-database:
-  name: sqlite3
-  args:
-    database: /data/homeserver.db
+
 media_store_path: /data/media_store
 report_stats: false
 signing_key_path: "/config/signing.key"
