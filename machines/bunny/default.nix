@@ -42,6 +42,11 @@
   boot.lanzaboote.enable = lib.mkForce false;
   boot.loader.systemd-boot.enable = lib.mkOverride 0 true;
 
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:42loco42/.dotfiles";
+  };
+
   users.users.admin.openssh.authorizedKeys.keys =
     [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
 
