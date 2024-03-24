@@ -13,14 +13,11 @@
         { content = zpool (p: p.rpool); }
       ];
 
-      zpools.rpool.datasets =
-        { "nixos/nix" = { }; } //
-        (lib.mapAttrs'
-          (_: user: {
-            name = "nixos${config.aquaris.persist.root}/home/${user.name}";
-            value = { };
-          })
-          config.aquaris.users);
+      zpools.rpool.datasets = {
+        "nixos/nix" = { };
+        "nixos/persist".options."com.sun:auto-snapshot" = "true";
+        "nixos/persist/home/admin" = { };
+      };
     };
 
     secrets = {
@@ -57,6 +54,8 @@
   networking.networkmanager.enable = lib.mkForce false;
 
   services.openssh.ports = lib.mkForce [ 18213 ];
+
+  services.zfs.autoSnapshot.enable = true;
 
   systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
