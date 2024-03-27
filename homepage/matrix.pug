@@ -1,0 +1,30 @@
+extends layout
+block content
+  div
+    +prompt("~/homepage", "cat stuff/hosted/matrix")
+    h1 [matrix]
+    h2 An open network for secure, decentralized communication
+
+    p
+      | I am hosting a&nbsp;
+      a(href = "https://element-hq.github.io/synapse") Synapse&nbsp;
+      | server, the reference implementation of a Matrix homeserver, at matrix.eleonora.gay. <br>
+      | It is private at the moment. Ask me on Discord if you want to join! <br>
+      | On Discord I am 42loco42, on Matrix @eleonora:eleonora.gay. <br>
+      | Or use this <a href="https://matrix.to/#/@eleonora:eleonora.gay">direct link</a>.<br>
+
+    p
+      span(style = "color: var(--green)") Update:&nbsp;
+      | I'm now also hosting&nbsp;
+      a(href = "https://element.io") Element
+      | , a cool web client for Matrix, at&nbsp;
+      a(href = "https://element.eleonora.gay") element.eleonora.gay
+
+    p
+      | For more information about Matrix, visit the&nbsp;
+      a(href = "https://matrix.org") website
+      | .
+
+    hr
+    +prompt("~/homepage")
+      a(href = "..") cd ..

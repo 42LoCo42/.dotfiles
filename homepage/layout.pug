@@ -1,0 +1,44 @@
+doctype html
+html(lang = "en")
+  head
+    meta(charset = "utf-8")
+    meta(name = "viewport", content = "width=device-width,initial-scale=1")
+
+    title Ellie's Homepage
+
+    meta(property = "og:title"       content = "Ellie's Homepage")
+    meta(property = "og:site_name"   content = "Ellie's Homepage")
+    meta(property = "og:url"         content = "https://eleonora.gay")
+    meta(property = "og:description" content = "Welcome to the silly realm :3")
+    meta(property = "og:type"        content = "website")
+    meta(property = "og:image"       content = "https://eleonora.gay/profile.jpg")
+
+    link(href = "/style.css" rel = "stylesheet")
+
+  body
+    div(id = "terminal" class = "mobile-vbox")
+      mixin prompt(dir, cmd)
+        x-prompt
+          span eleonora@bunny
+          | :
+          span #{dir}
+          | $&nbsp;
+          x-typw(pause = "750" delay = "50") #{cmd}
+          block
+          x-typw(delay = "5")
+
+      mixin neofetch(key, val = "")
+        x-neofetch #{key}
+        = ": " + val
+        block
+        br
+
+      mixin neosub(key, val = "")
+        x-neosub #{key}
+        = ": " + val
+        block
+        br
+
+      block content
+    script(src = "/typewriter.js")
+    script(src = "/oneko.js")
