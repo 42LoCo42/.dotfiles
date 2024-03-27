@@ -1,0 +1,80 @@
+extends layout.pug
+block content
+  div
+    +prompt("~", "cd homepage")
+    +prompt("~/homepage", "neofetch")
+    br
+    br
+
+    x-hbox(class = "mobile-vbox" style="row-gap: 20px; column-gap: 20px;")
+      x-vbox(style = "row-gap: 5px;")
+        img(id = "profile" src = "/profile.jpg"
+            alt = "My profile picture: a strawberry on a trans flag, both made out of wool")
+        small 󰇮&emsp;leonsch@protonmail.com
+        small 󰙯&emsp;42loco42
+        small [] @eleonora:eleonora.gay
+
+      div
+        span(style = "color: var(--green); font-weight: bold;") eleonora
+        | @
+        span(style = "color: var(--green); font-weight: bold;") bunny
+        br
+        | ──────────────
+        br
+
+        +neofetch("Name"     , "Eleonora")
+        +neofetch("Pronouns" , "xe/xem/xyr, she/her")
+        +neofetch("Age"      , "21")
+
+        +neofetch("Public key")
+          a(href = "/pubkey.asc" download = "") Download
+
+        +neofetch("Studying")
+          a(href = "https://www.hochschule-stralsund.de/smsb") IT-Security and Mobile Systems
+
+        +neofetch("GitHub")
+          a(href = "https://github.com/42LoCo42") Link
+
+        +neofetch("OS")
+          a(href = "https://nixos.org") NixOS
+          | &nbsp;(
+          a(href = "https://github.com/42LoCo42/.dotfiles") Dotfiles
+          | )
+
+        +neofetch("Languages")
+        +neosub("Human"         , "German (native), English (fluent)")
+        +neosub("Systems"       , "C/C++, Go, Rust")
+        +neosub("Functional"    , "Haskell, Lisp, Elixir")
+        +neosub("JVM"           , "Java, Kotlin")
+        +neosub("Scripting"     , "Bash, Python")
+        +neosub("Want to learn" , "OCaml, ")
+          a(href = "https://c9x.me/compile") QBE
+
+        +neofetch("Trans rights are", "Human rights")
+        br
+
+        x-hbox
+          span(style = "color: #cc241d !important; background-color: #cc241d !important;") if&nbsp;
+          span(style = "color: #98971a !important; background-color: #98971a !important;") you
+          span(style = "color: #d79921 !important; background-color: #d79921 !important;") &nbsp;re
+          span(style = "color: #458588 !important; background-color: #458588 !important;") ad&nbsp;
+          span(style = "color: #b16286 !important; background-color: #b16286 !important;") thi
+          span(style = "color: #689d6a !important; background-color: #689d6a !important;") s,&nbsp;
+          span(style = "color: #a89984 !important; background-color: #a89984 !important;") you
+        x-hbox
+          span(style = "color: #fb4934 !important; background-color: #fb4934 !important;") &nbsp;&nbsp;&nbsp;
+          span(style = "color: #b8bb26 !important; background-color: #b8bb26 !important;") are
+          span(style = "color: #fabd2f !important; background-color: #fabd2f !important;") &nbsp;&nbsp;&nbsp;
+          span(style = "color: #83a598 !important; background-color: #83a598 !important;") gay
+          span(style = "color: #d3869b !important; background-color: #d3869b !important;") &nbsp;&nbsp;&nbsp;
+          span(style = "color: #8ec07c !important; background-color: #8ec07c !important;") lol
+          span(style = "color: #ebdbb2 !important; background-color: #ebdbb2 !important;") &nbsp;&nbsp;&nbsp;
+        br
+
+    div(id = "split-pane")
+      +prompt("~/homepage", "tmux splitw -h")
+
+  div
+    +prompt("~/homepage", "tree stuff")
+    include tree.html
+    +prompt("~/homepage", "# TODO...")

@@ -1,18 +1,18 @@
 :root {
-	--white:  #ebdbb2;
-	--black:  #282828;
-	--green:  #98971a;
+	--white: #ebdbb2;
+	--black: #282828;
+	--green: #98971a;
 	--yellow: #d79921;
-	--blue:   #458588;
-	--blue-light: #83A598;
+	--blue: #458588;
+	--blue-light: #83a598;
 
-	--darkreader-text--white:  #ebdbb2;
-	--darkreader-text--green:  #98971a;
+	--darkreader-text--white: #ebdbb2;
+	--darkreader-text--green: #98971a;
 	--darkreader-text--yellow: #d79921;
-	--darkreader-text--blue:   #458588;
-	--darkreader-text--blue-light: #83A598;
+	--darkreader-text--blue: #458588;
+	--darkreader-text--blue-light: #83a598;
 
-	--darkreader-bg--black:  #282828;
+	--darkreader-bg--black: #282828;
 }
 
 @font-face {
@@ -40,7 +40,7 @@ body {
 	font-size: 2.5vmin;
 }
 
-.mobile-v-box {
+.mobile-vbox {
 	display: flex;
 }
 
@@ -51,7 +51,7 @@ body {
 		border-left: 2px solid var(--green);
 	}
 
-	.mobile-v-box {
+	.mobile-vbox {
 		flex-flow: row wrap;
 	}
 }
@@ -62,7 +62,7 @@ body {
 		margin-bottom: 75px;
 	}
 
-	.mobile-v-box {
+	.mobile-vbox {
 		flex-flow: column wrap;
 	}
 
@@ -71,12 +71,12 @@ body {
 	}
 }
 
-v-box {
+x-vbox {
 	display: flex;
 	flex-flow: column wrap;
 }
 
-h-box {
+x-hbox {
 	display: flex;
 	flex-flow: row wrap;
 }
@@ -122,8 +122,12 @@ x-neosub {
 }
 
 @keyframes blink {
-	0%   { opacity: 0; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 #profile {

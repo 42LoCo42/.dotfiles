@@ -1,4 +1,4 @@
-{ pkgs, config, lib, my-utils, ... }: {
+{ self, pkgs, config, lib, my-utils, ... }: {
   aquaris = {
     filesystem = { filesystem, zpool, ... }: {
       disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
@@ -100,17 +100,6 @@
           volumes = map (v: "${v}:/vol/${v}") volumes;
         };
 
-      homepage-builder = pkgs.buildGoModule {
-        name = "homepage-builder";
-        src = let d = ../../homepage/builder; in lib.fileset.toSource {
-          root = d;
-          fileset = d;
-        };
-        vendorHash = null;
-        CGO_ENABLED = "0";
-        meta.mainProgram = "homepage-builder";
-      };
-
       homepage-font = lib.pipe pkgs.nerdfonts [
         (f: f.override { fonts = [ "Iosevka" ]; })
         (f: "${f}/share/fonts/truetype/NerdFonts/IosevkaNerdFont-Regular.ttf")
@@ -118,30 +107,22 @@
 
       homepage = pkgs.stdenvNoCC.mkDerivation {
         name = "homepage";
-        src = let d = ../../homepage/content; in lib.fileset.toSource {
+        src = let d = ../../homepage; in lib.fileset.toSource {
           root = d;
           fileset = d;
         };
 
         nativeBuildInputs = with pkgs; [
           glibcLocales
-          rsync
           tree
+          self.inputs.obscura.packages.${pkgs.system}.pug
         ];
 
         buildPhase = ''
-          cp -r $src src
-          chmod -R +w src
-          cd src
-          mkdir -p out/foo
+          cp -r static $out
+          cp "${homepage-font}" $out/iosevka.ttf
           bash processStuff.sh
-          ${lib.getExe homepage-builder}
-          rsync -av static/ out/
-          cp "${homepage-font}" out/iosevka.ttf
-        '';
-
-        installPhase = ''
-          cp -r out $out
+          pug3 -o $out .
         '';
       };
     in

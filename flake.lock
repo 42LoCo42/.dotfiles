@@ -120,11 +120,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1711187337,
-        "narHash": "sha256-DQdtq3CxbZFBqJtGAEGtnwGAiBmIG+aA28DoYkTyu9A=",
+        "lastModified": 1711537145,
+        "narHash": "sha256-oGpJIkKM0gBdGS+dbcOZtyJwxapCeTnIe26sI20zVZU=",
         "owner": "42loco42",
         "repo": "obscura",
-        "rev": "d9f72e8eb9f3467be4a67b313a8b2e7dcb7544e7",
+        "rev": "0dbc10a60ca59ff5151ff506353dcec5f6d266fc",
         "type": "github"
       },
       "original": {
