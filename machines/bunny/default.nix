@@ -45,6 +45,13 @@
     flags = [ "--refresh" "-L" ];
   };
 
+  nix.gc.automatic = true;
+  system.activationScripts.gc-generations.text = ''
+    ${pkgs.nix}/bin/nix-env                  \
+      --profile /nix/var/nix/profiles/system \
+      --delete-generations +5
+  '';
+
   users.users.admin.openssh.authorizedKeys.keys =
     [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
 
