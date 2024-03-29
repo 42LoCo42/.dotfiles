@@ -1,8 +1,6 @@
 * My NixOS configuration
 Abandon hope, all ye who enter here.
 
-[[./screenshot.png]]
-
 This config is based on my [[https://github.com/42LoCo42/aquaris/][Aquaris]] library,
 which provides a wealth of default options, tools and functions.
 
@@ -13,3 +11,18 @@ which provides a wealth of default options, tools and functions.
 | [[file:machines/guanyin/default.nix][guanyin]]       | Live ISO     |
 | TODO laniakea | Odroid M1    |
 | TODO rubicon  | Raspberry Pi |
+
+** Screenshots
+
+Obligatory neofetch
+[[./images/akyuro-neofetch.png]]
+
+A little bit of demonstrative clutter on =akyuro=, featuring my [[https://github.com/42LoCo42/emacs-config/][Emacs config]]
+[[./images/akyuro-work.png]]
+
+My server =bunny= hard at work
+[[./images/bunny.png]]
+
+=guanyin=, a modernized NixOS live ISO w/ flakes and other goodies enabled,
+running inside a VM
+[[./images/guanyin.png]]
