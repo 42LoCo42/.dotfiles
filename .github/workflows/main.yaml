@@ -1,0 +1,30 @@
+name: build-guanyin-iso
+
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v26
+        with:
+          extra_nix_config: |
+            substituters = https://42loco42.cachix.org https://cache.nixos.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 42loco42.cachix.org-1:6HvWFER3RdTSqEZDznqahkqaoI6QCOiX2gRpMMsThiQ=
+
+      - name: Build ISO
+        run: nix build .#nixosConfigurations.guanyin.config.system.build.isoImage
+
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@v1.2.1"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "guanyin"
+          prerelease: false
+          title: "Guanyin ISO release"
+          files: result/iso/nixos-guanyin-*.iso

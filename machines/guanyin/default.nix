@@ -3,6 +3,7 @@
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
   ];
 
+  isoImage.isoBaseName = lib.mkForce "nixos-guanyin";
   isoImage.squashfsCompression = "lz4";
 
   aquaris.standalone = true;
