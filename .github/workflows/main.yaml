@@ -18,7 +18,7 @@ jobs:
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 42loco42.cachix.org-1:6HvWFER3RdTSqEZDznqahkqaoI6QCOiX2gRpMMsThiQ=
 
       - name: Build ISO
-        run: nix build .#nixosConfigurations.guanyin.config.system.build.isoImage
+        run: nix build -L .#nixosConfigurations.guanyin.config.system.build.isoImage
 
       - name: Release
         uses: "marvinpinto/action-automatic-releases@v1.2.1"
