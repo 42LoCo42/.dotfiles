@@ -230,11 +230,16 @@
         image = "vaultwarden/server@sha256:edb8e2bab9cbca22e555638294db9b3657ffbb6e5d149a29d7ccdb243e3c71e0";
         volumes = [
           "vaultwarden_data:/data"
+          "${./vwmail.sh}:/sendmail"
         ];
         environment = {
           DOMAIN = "https://vw.${domain}";
           ROCKET_PORT = "8080";
           SIGNUPS_ALLOWED = "false";
+
+          USE_SENDMAIL = "true";
+          SENDMAIL_COMMAND = "/sendmail";
+          SMTP_FROM = "root@example.org";
         };
         environmentFiles = [ config.aquaris.secrets."machine/vaultwarden" ];
       };
