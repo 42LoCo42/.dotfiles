@@ -234,7 +234,9 @@
         environment = {
           DOMAIN = "https://vw.${domain}";
           ROCKET_PORT = "8080";
+          SIGNUPS_ALLOWED = "false";
         };
+        environmentFiles = [ config.aquaris.secrets."machine/vaultwarden" ];
       };
     };
 }
