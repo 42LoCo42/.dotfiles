@@ -102,3 +102,10 @@ img.{$DOMAIN} {
 	import default
 	reverse_proxy pigallery2:8080
 }
+
+vw.{$DOMAIN} {
+	import default
+	reverse_proxy vaultwarden:8080 {
+		header_up X-Real-IP {remote_host}
+	}
+}

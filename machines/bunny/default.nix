@@ -143,6 +143,7 @@
         "pigallery2_data"
         "redis_data"
         "synapse_data"
+        "vaultwarden_data"
       ];
 
       caddy = {
@@ -222,6 +223,18 @@
           "pigallery2_data:/data"
         ];
         environment.NODE_ENV = "production";
+      };
+
+      vaultwarden = {
+        inherit user;
+        image = "vaultwarden/server@sha256:edb8e2bab9cbca22e555638294db9b3657ffbb6e5d149a29d7ccdb243e3c71e0";
+        volumes = [
+          "vaultwarden_data:/data"
+        ];
+        environment = {
+          DOMAIN = "https://vw.${domain}";
+          ROCKET_PORT = "8080";
+        };
       };
     };
 }
