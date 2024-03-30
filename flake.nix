@@ -14,6 +14,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     obscura.url = "github:42loco42/obscura";
+    obscura.inputs.nce.follows = "";
+    obscura.inputs.nsc.follows = "";
   };
 
   outputs = { self, aquaris, nixpkgs, ... }:
@@ -60,8 +62,6 @@
       let pkgs = import nixpkgs { inherit system; }; in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            go
-            gopls
             nodePackages.prettier
           ];
         };
