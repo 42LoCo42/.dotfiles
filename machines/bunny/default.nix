@@ -141,6 +141,7 @@
       volume-setup = mkVolumeSetup [
         "caddy_data"
         "pigallery2_data"
+        "pinlist_data"
         "redis_data"
         "synapse_data"
         "vaultwarden_data"
@@ -163,6 +164,14 @@
           "${subsDomain ./element.json}:/srv/element/config.json"
         ];
         environment.DOMAIN = domain;
+      };
+
+      pinlist = {
+        inherit user;
+        image = "pinlist:latest";
+        imageFile = self.inputs.pinlist.packages.${pkgs.system}.image;
+        volumes = [ "pinlist_data:/db" ];
+        environmentFiles = [ config.aquaris.secrets."machine/pinlist" ];
       };
 
       redis = {

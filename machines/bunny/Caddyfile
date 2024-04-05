@@ -109,3 +109,8 @@ vw.{$DOMAIN} {
 		header_up X-Real-IP {remote_host}
 	}
 }
+
+pin.{$DOMAIN} {
+	import default
+	reverse_proxy pinlist:8000
+}
