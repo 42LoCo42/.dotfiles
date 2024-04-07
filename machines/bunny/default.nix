@@ -224,7 +224,7 @@
 
       pigallery2 = {
         inherit user;
-        image = "bpatrik/pigallery2@sha256:c6a216c36f29de66bfba5f0c2cc855992e1a8e715ca9c6838ea630d2411b5e46";
+        image = "bpatrik/pigallery2@sha256:e3a260d8eff86ea9e5b16f905ef7ce342e20654ee7e782f49a23acc204bb5300";
         extraOptions = [ "--health-cmd=none" ];
         volumes = [
           "${subsDomain ./pigallery2.json}:/app/data/config/config.json"
