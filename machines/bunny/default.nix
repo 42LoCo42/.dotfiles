@@ -237,18 +237,14 @@
       vaultwarden = {
         inherit user;
         image = "vaultwarden/server@sha256:edb8e2bab9cbca22e555638294db9b3657ffbb6e5d149a29d7ccdb243e3c71e0";
-        volumes = [
-          "vaultwarden_data:/data"
-          "${./vwmail.sh}:/sendmail"
-        ];
+        volumes = [ "vaultwarden_data:/data" ];
         environment = {
           DOMAIN = "https://vw.${domain}";
           ROCKET_PORT = "8080";
           SIGNUPS_ALLOWED = "false";
 
-          USE_SENDMAIL = "true";
-          SENDMAIL_COMMAND = "/sendmail";
-          SMTP_FROM = "root@example.org";
+          SMTP_HOST = "smtp.gmail.com";
+          SMTP_FROM = "vault@${domain}";
         };
         environmentFiles = [ config.aquaris.secrets."machine/vaultwarden" ];
       };
