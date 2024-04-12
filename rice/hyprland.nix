@@ -159,7 +159,7 @@
           };
 
           mpd = {
-            format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{album}: {artist} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%  ";
+            format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{album}: {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%  ";
             format-stopped = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped 󰝛 ";
             format-disconnected = "Disconnected 󰀦 ";
             unknown-tag = "";
