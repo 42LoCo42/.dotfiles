@@ -4,7 +4,7 @@
   ];
 
   isoImage.isoBaseName = lib.mkForce "nixos-guanyin";
-  isoImage.squashfsCompression = "lz4";
+  # isoImage.squashfsCompression = "lz4";
 
   aquaris.standalone = true;
 
@@ -27,6 +27,7 @@
 
   environment.systemPackages = with pkgs; [
     rsync
+    sshx
   ];
 
   users.users.root = {
