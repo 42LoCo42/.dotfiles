@@ -190,7 +190,7 @@
         in
         {
           inherit user;
-          image = "searxng/searxng@sha256:29dcad2e76a4ab3e87129755df4b3ca6d1ff72b1eca6320d23056ac184afd8a4";
+          image = "searxng/searxng@sha256:719d46534dbef6444d972172b1a4b1daa8e913ed35b2bb0ff30499bffe4b4240";
           extraOptions = [ "--stop-signal=SIGINT" ];
           volumes = [
             "${./searxng.yaml}:/etc/searxng/settings.yml"
