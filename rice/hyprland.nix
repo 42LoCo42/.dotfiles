@@ -272,14 +272,12 @@
       enable = true;
       extraConfig = my-utils.subsT ./misc/hyprland.conf {
         fuzzel = lib.getExe pkgs.fuzzel;
-        libEGL = "${pkgs.libglvnd}/lib/libEGL.so";
-        libnotify = "${pkgs.libnotify}/lib/libnotify.so";
         pulsemixer = lib.getExe pkgs.pulsemixer;
         qalc = lib.getExe pkgs.libqalculate;
         sway-audio-idle-inhibit = lib.getExe self.inputs.obscura.packages.${pkgs.system}.SwayAudioIdleInhibit;
         swaybg = lib.getExe pkgs.swaybg;
         wallpaper = ./misc/wallpaper.png;
-        webcord = lib.getExe pkgs.webcord;
+        vesktop = lib.getExe (pkgs.vesktop.override { withSystemVencord = false; });
 
         audio-helper = my-utils.subsF {
           file = ./scripts/audio-helper.sh;
