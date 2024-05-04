@@ -1,6 +1,8 @@
 { self, pkgs, config, lib, ... }: {
   imports = [ "${self}/rice" ];
 
+  hardware.firmware = with pkgs; lib.mkForce [ linux-firmware ];
+
   aquaris = {
     persist.enable = false;
     filesystem = { };
@@ -28,7 +30,7 @@
     # };
   };
 
-  networking.firewall.checkReversePath = false;
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   virtualisation.libvirtd = {
     enable = true;
@@ -44,7 +46,8 @@
   home-manager.users.leonsch = { ... }: {
     home.packages = with pkgs; [ virt-manager ];
 
-    services.syncthing.enable = true;
+    programs.firefox.package = pkgs.firefox.override
+      { cfg.speechSynthesisSupport = false; };
 
     services.mako.extraConfig = ''
       [app-name=remo]
