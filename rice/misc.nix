@@ -26,7 +26,7 @@
       pulse.enable = true;
     };
 
-    tlp.enable = true;
+    auto-cpufreq.enable = true;
   };
 
   xdg.portal = {
@@ -48,6 +48,15 @@
       serif = [ "Noto Serif" ];
     };
   };
+
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.swtpm.enable = true;
+  };
+
+  users.users.leonsch.extraGroups = [ "libvirtd" ];
 
   home-manager.users.leonsch = hm: {
     home = {
@@ -82,7 +91,7 @@
         keepassxc
         libnotify
         self.inputs.obscura.packages.${system}.flameshot-fixed
-        tor-browser-bundle-bin
+        virt-manager
         xdg_utils
       ];
     };
@@ -120,6 +129,12 @@
         package = pkgs.emacs29-pgtk;
       };
 
+      firefox = {
+        enable = true;
+        package = pkgs.firefox.override
+          { cfg.speechSynthesisSupport = false; };
+      };
+
       ncmpcpp = {
         enable = true;
         package = self.inputs.obscura.packages.${pkgs.system}.my-ncmpcpp;
@@ -127,7 +142,6 @@
       };
 
       feh.enable = true;
-      firefox.enable = true;
       mpv.enable = true;
       yt-dlp.enable = true;
       zathura.enable = true;
