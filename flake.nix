@@ -14,8 +14,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     obscura.url = "github:42loco42/obscura";
-    obscura.inputs.nce.follows = "";
-    obscura.inputs.nsc.follows = "";
 
     pinlist.url = "github:42loco42/pinlist";
     pinlist.inputs.nixpkgs.follows = "nixpkgs";
