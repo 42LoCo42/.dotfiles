@@ -98,8 +98,8 @@
 
     qt = {
       enable = true;
-      platformTheme = "gtk";
-      style.name = "Adwaita-Dark";
+      platformTheme.name = "gtk3";
+      style.name = "adwaita-dark";
     };
 
     services = {
