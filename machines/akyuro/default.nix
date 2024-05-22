@@ -30,25 +30,12 @@
     # };
   };
 
-  networking.firewall.trustedInterfaces = [ "virbr0" ];
-
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu.swtpm.enable = true;
-  };
-
   hardware.bluetooth = {
     enable = true;
     settings.General.Experimental = true;
   };
 
-  users.users.leonsch.extraGroups = [ "libvirtd" ];
   home-manager.users.leonsch = { ... }: {
-    home.packages = with pkgs; [ virt-manager ];
-
-    programs.firefox.package = pkgs.firefox.override
-      { cfg.speechSynthesisSupport = false; };
-
     services.mako.extraConfig = ''
       [app-name=remo]
       on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
