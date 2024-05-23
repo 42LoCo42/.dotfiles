@@ -66,7 +66,11 @@
 
   services.openssh.ports = lib.mkForce [ 18213 ];
 
-  services.zfs.autoSnapshot.enable = true;
+  services.zfs = {
+    autoScrub = { enable = true; interval = "weekly"; };
+    autoSnapshot.enable = true;
+    trim.enable = true;
+  };
 
   systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
