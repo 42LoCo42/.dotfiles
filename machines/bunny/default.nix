@@ -56,9 +56,6 @@
     self.inputs.obscura.packages.${pkgs.system}.pug
   ];
 
-  users.users.admin.openssh.authorizedKeys.keys =
-    [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql" ];
-
   boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 0;
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPorts = [ 443 ];
