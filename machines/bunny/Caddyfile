@@ -114,3 +114,8 @@ pin.{$DOMAIN} {
 	import default
 	reverse_proxy pinlist:8000
 }
+
+attic.{$DOMAIN} {
+	import default
+	reverse_proxy attic:8080
+}

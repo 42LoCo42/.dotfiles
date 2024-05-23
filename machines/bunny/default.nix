@@ -76,6 +76,8 @@
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
   virtualisation.oci-containers.containers =
     let
+      inherit (lib) getExe getExe' pipe;
+
       domain = "eleonora.gay";
       subsDomain = file: my-utils.subsF {
         inherit file;
@@ -83,7 +85,7 @@
         subs = { inherit domain; };
       };
 
-      user = lib.pipe [
+      user = pipe [
         config.users.users.nobody.uid
         config.users.groups.nogroup.gid
       ] [
@@ -96,7 +98,7 @@
           program = pkgs.writeShellApplication {
             name = "volume-setup";
             runtimeInputs = with pkgs; [ coreutils ];
-            text = lib.pipe volumes [
+            text = pipe volumes [
               (map (v: "chown ${user} /vol/${v}"))
               (s: [ "set -x" ] ++ s)
               (builtins.concatStringsSep "\n")
@@ -106,7 +108,7 @@
           imageFile = pkgs.dockerTools.buildImage {
             name = "volume-setup";
             tag = "latest";
-            config.Cmd = [ (lib.getExe program) ];
+            config.Cmd = [ (getExe program) ];
           };
         in
         {
@@ -115,7 +117,7 @@
           volumes = map (v: "${v}:/vol/${v}") volumes;
         };
 
-      homepage-font = lib.pipe pkgs.nerdfonts [
+      homepage-font = pipe pkgs.nerdfonts [
         (f: f.override { fonts = [ "Iosevka" ]; })
         (f: "${f}/share/fonts/truetype/NerdFonts/IosevkaNerdFont-Regular.ttf")
       ];
@@ -143,6 +145,7 @@
     in
     {
       volume-setup = mkVolumeSetup [
+        "attic_data"
         "caddy_data"
         "pigallery2_data"
         "pinlist_data"
@@ -168,6 +171,24 @@
           "${subsDomain ./element.json}:/srv/element/config.json"
         ];
         environment.DOMAIN = domain;
+      };
+
+      attic = {
+        inherit user;
+        image = "attic:latest";
+        imageFile = pkgs.dockerTools.buildImage {
+          name = "attic";
+          tag = "latest";
+          config.Cmd = [ (getExe pkgs.attic-server) "-f" "/attic.toml" ];
+          extraCommands = ''
+            ln -s "${getExe' pkgs.attic-server "atticadm"}"
+          '';
+        };
+        volumes = [
+          "attic_data:/data"
+          "${subsDomain ./attic.toml}:/attic.toml"
+        ];
+        environmentFiles = [ config.aquaris.secrets."machine/attic" ];
       };
 
       pinlist = {
