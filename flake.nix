@@ -24,9 +24,10 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, aquaris, nixpkgs, ... }:
+  outputs = { self, aquaris, ... }:
     let
       users = {
+        # for personal systems
         leonsch = {
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVieLCkWGImVI9c7D0Z0qRxBAKf0eaQWUfMn0uyM/Ql";
           git = {
@@ -36,8 +37,16 @@
           };
         };
 
+        # for servers
         admin = {
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGiwOxk510hj/zeputisjNvzkMgSfnKSqqVaIBjasO09";
+          extraKeys = [ users.leonsch.publicKey ];
+        };
+
+        # for testing stuff
+        dev = {
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGU5yJfnChhNtv176WJ1Zqg+Q8Vph+Mk96HwCk94z+yt";
+          extraKeys = [ users.leonsch.publicKey ];
         };
       };
 
@@ -68,15 +77,14 @@
           id = "99f7c536ac386aeb32291d4e65f549dc";
           admins.root = { };
         };
+
+        # incubator VM
+        kyubey = {
+          id = "b6afc8210c5187e9ecd3d6ea664f3746";
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBeJBR85DERUH5gKDVot2DgTxNcxzgDFXUOouOCaI36f";
+          admins = { inherit (users) dev; };
+        };
       };
     in
-    aquaris.lib.main self { inherit users machines; } //
-    aquaris.inputs.flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = import nixpkgs { inherit system; }; in {
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            nodePackages.prettier
-          ];
-        };
-      });
+    aquaris.lib.main self { inherit users machines; };
 }
