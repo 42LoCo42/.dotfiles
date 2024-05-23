@@ -18,6 +18,10 @@
     pinlist.url = "github:42loco42/pinlist";
     pinlist.inputs.nixpkgs.follows = "nixpkgs";
     pinlist.inputs.flake-utils.follows = "aquaris/flake-utils";
+
+    stylix.url = "github:danth/stylix";
+    stylix.inputs.home-manager.follows = "home-manager";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, aquaris, nixpkgs, ... }:
@@ -38,6 +42,13 @@
       };
 
       machines = {
+        # pc
+        astylos = {
+          id = "79ac9d33c2bae577ba349fcd664df8a4";
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBAXjwzaVjqP489PKDGHGkFdioYBrD0Fn/LdJ95MPMk+";
+          admins = { inherit (users) leonsch; };
+        };
+
         # laptop
         akyuro = {
           id = "86b0e292e1fc27eb4168defa65cb41fd";
