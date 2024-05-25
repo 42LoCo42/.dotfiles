@@ -119,3 +119,8 @@ attic.{$DOMAIN} {
 	import default
 	reverse_proxy attic:8080
 }
+
+avh.{$DOMAIN} {
+	import default
+	reverse_proxy avh:8080
+}
