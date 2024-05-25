@@ -270,5 +270,15 @@
         };
         environmentFiles = [ config.aquaris.secrets."machine/vaultwarden" ];
       };
+
+      avh = {
+        inherit user;
+        image = "avh:latest";
+        imageFile = self.inputs.avh.packages.${pkgs.system}.foo;
+        volumes = [
+          "/persist/home/admin/avh/users.db:/users.db"
+          "/persist/home/admin/avh/videos:/videos"
+        ];
+      };
     };
 }

@@ -5,6 +5,11 @@
     aquaris.inputs.nixpkgs.follows = "nixpkgs";
     aquaris.inputs.obscura.follows = "obscura";
 
+    avh.url = "github:42loco42/avh";
+    avh.inputs.flake-utils.follows = "aquaris/flake-utils";
+    avh.inputs.nixpkgs.follows = "nixpkgs";
+    avh.inputs.obscura.follows = "obscura";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
