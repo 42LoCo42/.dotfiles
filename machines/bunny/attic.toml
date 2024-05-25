@@ -3,7 +3,7 @@ allowed-hosts = [ "attic.@domain@" ]
 api-endpoint  = "https://attic.@domain@/"
 
 [database]
-url = "sqlite:///data/attic.db"
+# set via ATTIC_SERVER_DATABASE_URL
 
 [storage]
 type = "local"
