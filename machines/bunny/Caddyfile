@@ -1,6 +1,9 @@
 {
 	admin off
 
+	http_port 8000
+	https_port 4430
+
 	log {
 		format console
 		level ERROR
@@ -9,6 +12,8 @@
 
 (default) {
 	header {
+		Alt-Svc `h3=":443"; ma=2592000`
+
 		X-Clacks-Overhead "GNU Terry Pratchett"
 
 		##### https://github.com/searxng/searxng-docker/blob/master/Caddyfile
@@ -74,22 +79,14 @@
 	}
 }
 
-www.{$DOMAIN} {
-	redir https://{$DOMAIN}
+attic.{$DOMAIN} {
+	import default
+	reverse_proxy attic:8080
 }
 
-searx.{$DOMAIN} {
+avh.{$DOMAIN} {
 	import default
-	reverse_proxy searxng:8080 {
-		header_up X-Forwarded-Port {http.request.port}
-		header_up X-Real-IP {remote_host}
-	}
-}
-
-matrix.{$DOMAIN} {
-	import default
-	reverse_proxy /_matrix/* synapse:8080
-	reverse_proxy /_synapse/client/* synapse:8080
+	reverse_proxy avh:8080
 }
 
 element.{$DOMAIN} {
@@ -103,11 +100,10 @@ img.{$DOMAIN} {
 	reverse_proxy pigallery2:8080
 }
 
-vw.{$DOMAIN} {
+matrix.{$DOMAIN} {
 	import default
-	reverse_proxy vaultwarden:8080 {
-		header_up X-Real-IP {remote_host}
-	}
+	reverse_proxy /_matrix/* synapse:8080
+	reverse_proxy /_synapse/client/* synapse:8080
 }
 
 pin.{$DOMAIN} {
@@ -115,12 +111,21 @@ pin.{$DOMAIN} {
 	reverse_proxy pinlist:8000
 }
 
-attic.{$DOMAIN} {
+searx.{$DOMAIN} {
 	import default
-	reverse_proxy attic:8080
+	reverse_proxy searxng:8888 {
+		header_up X-Forwarded-Port {http.request.port}
+		header_up X-Real-IP {remote_host}
+	}
 }
 
-avh.{$DOMAIN} {
+vw.{$DOMAIN} {
 	import default
-	reverse_proxy avh:8080
+	reverse_proxy vaultwarden:8080 {
+		header_up X-Real-IP {remote_host}
+	}
+}
+
+www.{$DOMAIN} {
+	redir https://{$DOMAIN}
 }
