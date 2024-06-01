@@ -41,11 +41,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716559260,
-        "narHash": "sha256-S7jw90rDVySzWHRHtQy4JXkJAvAO1WYrgRgo34pfBMs=",
+        "lastModified": 1717242391,
+        "narHash": "sha256-V/QXDGzgDgRfkcJTSH8SYRg6cpzq4cjRV4Zg/BAMBjs=",
         "owner": "42loco42",
         "repo": "avh",
-        "rev": "f0d90bc5958a4d0bcda65a7456e60bf39d529b56",
+        "rev": "7319f37496c03076cd2ac2d40ed3929760780ae5",
         "type": "github"
       },
       "original": {
@@ -293,11 +293,11 @@
     },
     "nixpkgs-new": {
       "locked": {
-        "lastModified": 1716358718,
-        "narHash": "sha256-NQbegJb2ZZnAqp2EJhWwTf6DrZXSpA6xZCEq+RGV1r0=",
+        "lastModified": 1717112898,
+        "narHash": "sha256-7R2ZvOnvd9h8fDd65p0JnB7wXfUvreox3xFdYWd1BnY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3f316d2a50699a78afe5e77ca486ad553169061e",
+        "rev": "6132b0f6e344ce2fe34fc051b72fb46e34f668e0",
         "type": "github"
       },
       "original": {
@@ -329,11 +329,11 @@
         "nixpkgs-pin": "nixpkgs-pin"
       },
       "locked": {
-        "lastModified": 1716559896,
-        "narHash": "sha256-x4Jl8LRs5DUdpZgDQV5Hc8APRXy1JTtQLKIi1ymziZY=",
+        "lastModified": 1717264666,
+        "narHash": "sha256-yxXiByMOKUNzHOYg7i9zHDjeU7xtjreQm7o8MjNTYM4=",
         "owner": "42loco42",
         "repo": "obscura",
-        "rev": "347df84e11bedb8ddc9ec3c2fdc282f184d57e7a",
+        "rev": "4b27345b02577f772b91dba3ddf501170be292bd",
         "type": "github"
       },
       "original": {
