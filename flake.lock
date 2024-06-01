@@ -329,11 +329,11 @@
         "nixpkgs-pin": "nixpkgs-pin"
       },
       "locked": {
-        "lastModified": 1717264666,
-        "narHash": "sha256-yxXiByMOKUNzHOYg7i9zHDjeU7xtjreQm7o8MjNTYM4=",
+        "lastModified": 1717265536,
+        "narHash": "sha256-R7hLF7Avy2xcr4LObe+NTIrD/d+tU9COOng3FTfLZjQ=",
         "owner": "42loco42",
         "repo": "obscura",
-        "rev": "4b27345b02577f772b91dba3ddf501170be292bd",
+        "rev": "d40b60eb7fdf5230aa7506baf0de42510a15b2b5",
         "type": "github"
       },
       "original": {

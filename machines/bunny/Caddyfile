@@ -97,7 +97,7 @@ element.{$DOMAIN} {
 
 img.{$DOMAIN} {
 	import default
-	reverse_proxy pigallery2:8080
+	reverse_proxy photoview:4001
 }
 
 matrix.{$DOMAIN} {

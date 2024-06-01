@@ -91,6 +91,7 @@ in
   '';
 
   system.extraDependencies = [
+    self.inputs.obscura.packages.${pkgs.system}.photoview
     self.inputs.obscura.packages.${pkgs.system}.pug
   ];
 
@@ -125,7 +126,7 @@ in
       volumes = [
         "caddy:/caddy"
         "${homepage}:/srv/homepage"
-        "/persist/home/admin/hidden:/srv/homepage/foo"
+        "/persist/home/admin/hidden:/srv/homepage/foo:ro"
         "${pkgs.element-web}:/srv/element"
         "${subsDomain ./element.json}:/srv/element/config.json"
       ];
@@ -143,7 +144,21 @@ in
       cmd = [ (getExe self.inputs.avh.packages.${pkgs.system}.default) ];
       volumes = [
         "/persist/home/admin/avh/users.db:/users.db"
-        "/persist/home/admin/avh/videos:/videos"
+        "/persist/home/admin/avh/videos:/videos:ro"
+      ];
+    };
+
+    photoview = {
+      cmd = [ (getExe self.inputs.obscura.packages.${pkgs.system}.photoview) ];
+      environment = {
+        PHOTOVIEW_DATABASE_DRIVER = "postgres";
+        PHOTOVIEW_LISTEN_IP = "0.0.0.0";
+        PHOTOVIEW_MEDIA_CACHE = "/data";
+      };
+      environmentFiles = [ config.aquaris.secrets."machine/photoview" ];
+      volumes = [
+        "photoview:/data"
+        "/persist/home/admin/img:/media:ro"
       ];
     };
 
@@ -210,20 +225,6 @@ in
       cmd = [ (getExe' pkgs.redis "redis-server") "--protected-mode" "no" ];
       volumes = [ "redis:/data" ];
       workdir = "/data";
-    };
-  };
-
-  virtualisation.oci-containers.containers = {
-    pigallery2 = {
-      user = "65534:65534";
-      image = "bpatrik/pigallery2@sha256:e3a260d8eff86ea9e5b16f905ef7ce342e20654ee7e782f49a23acc204bb5300";
-      extraOptions = [ "--health-cmd=none" ];
-      volumes = [
-        "${subsDomain ./pigallery2.json}:/app/data/config/config.json"
-        "/persist/home/admin/img:/media"
-        "pigallery2_data:/data"
-      ];
-      environment.NODE_ENV = "production";
     };
   };
 }
