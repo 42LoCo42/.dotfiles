@@ -14,7 +14,7 @@ ws="$(hyprctl -j activeworkspace | jq -r '.name')"
 # else if we should move: do that
 windows="$(hyprctl -j activeworkspace | jq '.windows')"
 if ((windows == 0)); then
-	foot tmux new-session -A -s 0 &
+	hyprctl dispatch exec "[workspace $name] foot tmux new-session -A -s 0"
 elif ((should_move)); then
 	hyprctl dispatch workspace previous
 fi
