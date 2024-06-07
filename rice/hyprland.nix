@@ -17,11 +17,23 @@
         };
     };
 
-    # sometimes waybar starts before hyprland and then crashes
-    # fix: just restart it until it works
-    systemd.user.services.waybar = {
-      Service.RestartSec = 1;
-      Unit.StartLimitIntervalSec = 0;
+    systemd.user.services = {
+      # sometimes waybar starts before hyprland and then crashes
+      # fix: just restart it until it works
+      waybar = {
+        Service.RestartSec = 1;
+        Unit.StartLimitIntervalSec = 0;
+      };
+
+      sway-audio-idle-inhbit = {
+        Install.WantedBy = [ "graphical-session.target" ];
+        Service.ExecStart = lib.getExe pkgs.sway-audio-idle-inhibit;
+      };
+
+      swaybg = {
+        Install.WantedBy = [ "graphical-session.target" ];
+        Service.ExecStart = "${lib.getExe pkgs.swaybg} -i ${./misc/wallpaper.png}";
+      };
     };
 
     services = {
@@ -274,9 +286,6 @@
         fuzzel = lib.getExe pkgs.fuzzel;
         pulsemixer = lib.getExe pkgs.pulsemixer;
         qalc = lib.getExe pkgs.libqalculate;
-        sway-audio-idle-inhibit = lib.getExe self.inputs.obscura.packages.${pkgs.system}.SwayAudioIdleInhibit;
-        swaybg = lib.getExe pkgs.swaybg;
-        wallpaper = ./misc/wallpaper.png;
         vesktop = lib.getExe (pkgs.vesktop.override { withSystemVencord = false; });
 
         audio-helper = my-utils.subsF {
