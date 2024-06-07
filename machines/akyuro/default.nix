@@ -35,6 +35,11 @@
     settings.General.Experimental = true;
   };
 
+  programs = {
+    nix-ld.enable = true;
+    gamemode.enable = true;
+  };
+
   home-manager.users.leonsch = { ... }: {
     services.mako.extraConfig = ''
       [app-name=remo]
