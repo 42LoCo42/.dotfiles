@@ -1,4 +1,4 @@
-{ pkgs, lib, config, my-utils, ... }:
+{ pkgs, lib, config, my-utils, ... }@top:
 let
   inherit (lib)
     fileContents
@@ -74,7 +74,8 @@ let
             SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
           };
 
-          extraOptions = config.extraOptions ++ [ "--hostuser" name ];
+          extraOptions = config.extraOptions ++
+            [ "--hostuser" name "--tz" top.config.time.timeZone ];
 
           image = "${empty.imageName}:${empty.imageTag}";
           imageFile = empty;
