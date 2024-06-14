@@ -2,8 +2,8 @@
   imports = [ self.inputs.stylix.nixosModules.stylix ];
 
   nixpkgs.overlays = [
+    self.inputs.obscura.overlay
     (_: super: {
-      foot = self.inputs.obscura.packages.${super.system}.foot-transparent;
       nerdfonts = super.nerdfonts.override { fonts = [ "Iosevka" ]; };
     })
   ];
@@ -96,6 +96,7 @@
 
       foot = {
         enable = true;
+        package = pkgs.foot-transparent;
         settings = {
           main.font = lib.mkForce "monospace:size=10.5";
           colors.alpha = lib.mkForce "0.5";

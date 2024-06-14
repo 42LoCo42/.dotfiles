@@ -80,7 +80,7 @@
     programs = {
       foot = {
         enable = true;
-        package = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
+        package = pkgs.foot-transparent;
         settings = {
           main.font = "monospace:size=10.5";
           # key-bindings.spawn-terminal = "none";

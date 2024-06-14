@@ -9,7 +9,7 @@ which provides a wealth of default options, tools and functions.
 | [[file:machines/bunny/default.nix][bunny]]         | Main Server  |
 | [[file:machines/guanyin/default.nix][guanyin]]       | Live ISO     |
 | [[file:machines/kyubey/default.nix][kyubey]]        | Incubator VM |
-| TODO astylos  | Main PC      |
+| [[file:machines/astylos/default.nix][TODO astylos]]  | Main PC      |
 | TODO laniakea | Odroid M1    |
 | TODO rubicon  | Raspberry Pi |
 
