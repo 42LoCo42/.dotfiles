@@ -1,4 +1,6 @@
 { self, pkgs, lib, ... }: {
+  nixpkgs.overlays = [ self.inputs.obscura.overlay ];
+
   # nix-locate as command-not-found replacement
   imports = [ self.inputs.nix-index-database.nixosModules.nix-index ];
   programs.command-not-found.enable = false;
@@ -87,10 +89,10 @@
       };
 
       packages = with pkgs; [
+        flameshot-fixed
         grim
         keepassxc
         libnotify
-        self.inputs.obscura.packages.${system}.flameshot-fixed
         virt-manager
         xdg_utils
       ];
@@ -137,7 +139,7 @@
 
       ncmpcpp = {
         enable = true;
-        package = self.inputs.obscura.packages.${pkgs.system}.my-ncmpcpp;
+        package = pkgs.my-ncmpcpp;
         settings.startup_screen = "media_library";
       };
 

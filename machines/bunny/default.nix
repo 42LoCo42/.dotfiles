@@ -21,11 +21,7 @@ let
       fileset = d;
     };
 
-    nativeBuildInputs = with pkgs; [
-      glibcLocales
-      tree
-      self.inputs.obscura.packages.${pkgs.system}.pug
-    ];
+    nativeBuildInputs = with pkgs; [ glibcLocales pug tree ];
 
     buildPhase = ''
       cp -r static $out
@@ -36,6 +32,8 @@ let
   };
 in
 {
+  nixpkgs.overlays = [ self.inputs.obscura.overlay ];
+
   aquaris = {
     filesystem = { filesystem, zpool, ... }: {
       disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
@@ -90,10 +88,7 @@ in
       --delete-generations +5
   '';
 
-  system.extraDependencies = [
-    self.inputs.obscura.packages.${pkgs.system}.photoview
-    self.inputs.obscura.packages.${pkgs.system}.pug
-  ];
+  system.extraDependencies = with pkgs; [ photoview pug ];
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   networking.firewall.allowedUDPPorts = [ 443 ];
@@ -149,7 +144,7 @@ in
     };
 
     photoview = {
-      cmd = [ (getExe self.inputs.obscura.packages.${pkgs.system}.photoview) ];
+      cmd = [ (getExe pkgs.photoview) ];
       environment = {
         PHOTOVIEW_DATABASE_DRIVER = "postgres";
         PHOTOVIEW_LISTEN_IP = "0.0.0.0";
