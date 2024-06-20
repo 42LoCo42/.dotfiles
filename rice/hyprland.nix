@@ -80,11 +80,8 @@
     programs = {
       foot = {
         enable = true;
-        package = pkgs.foot-transparent;
         settings = {
           main.font = "monospace:size=10.5";
-          # key-bindings.spawn-terminal = "none";
-
           colors = {
             alpha = "0.5";
             foreground = "ebdbb2";
@@ -286,7 +283,7 @@
         fuzzel = lib.getExe pkgs.fuzzel;
         pulsemixer = lib.getExe pkgs.pulsemixer;
         qalc = lib.getExe pkgs.libqalculate;
-        vesktop = lib.getExe (pkgs.vesktop.override { withSystemVencord = false; });
+        vesktop = lib.getExe pkgs.vesktop;
 
         audio-helper = my-utils.subsF {
           file = ./scripts/audio-helper.sh;

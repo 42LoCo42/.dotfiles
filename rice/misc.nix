@@ -38,7 +38,7 @@
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "Iosevka" ]; })
+      nerdfonts
       noto-fonts
       noto-fonts-emoji
     ];
@@ -89,7 +89,7 @@
       };
 
       packages = with pkgs; [
-        flameshot-fixed
+        flameshot
         grim
         keepassxc
         libnotify
@@ -131,19 +131,13 @@
         package = pkgs.emacs29-pgtk;
       };
 
-      firefox = {
-        enable = true;
-        package = pkgs.firefox.override
-          { cfg.speechSynthesisSupport = false; };
-      };
-
       ncmpcpp = {
         enable = true;
-        package = pkgs.my-ncmpcpp;
         settings.startup_screen = "media_library";
       };
 
       feh.enable = true;
+      firefox.enable = true;
       mpv.enable = true;
       yt-dlp.enable = true;
       zathura.enable = true;
