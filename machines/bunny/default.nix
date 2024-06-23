@@ -52,6 +52,7 @@ in
         "nixos/nix" = { };
         "nixos/persist".options."com.sun:auto-snapshot" = "true";
         "nixos/persist/home/admin" = { };
+        "nixos/persist/home/coder" = { };
       };
     };
 
