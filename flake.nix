@@ -53,6 +53,14 @@
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGU5yJfnChhNtv176WJ1Zqg+Q8Vph+Mk96HwCk94z+yt";
           extraKeys = [ users.leonsch.publicKey ];
         };
+
+        coder = {
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPU1Mi6swudVo9JkJl8Og/fzr+gCJTQ2bK4qd652IOgz";
+          extraKeys = [
+            users.leonsch.publicKey
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILckymOuvsGYKZxW2EuTaBoQUBaamDNCoCygxIWz/3cF"
+          ];
+        };
       };
 
       machines = {
@@ -75,6 +83,7 @@
           id = "488cb972c1ac70db8307933f65d5defc";
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbsL7HyOCM56ejtlWqEBG1YzQwX2KmZ3S5KzoGnWh/j";
           admins = { inherit (users) admin; };
+          users = { inherit (users) coder; };
         };
 
         # live ISO
