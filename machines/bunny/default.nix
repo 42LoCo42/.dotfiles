@@ -95,12 +95,21 @@ in
   networking.firewall.allowedUDPPorts = [ 443 ];
   networking.networkmanager.enable = lib.mkForce false;
 
-  services.openssh.ports = lib.mkForce [ 18213 ];
+  services = {
+    endlessh = {
+      enable = true;
+      port = 22;
+      openFirewall = true;
+      extraOptions = [ "-v" ];
+    };
 
-  services.zfs = {
-    autoScrub = { enable = true; interval = "weekly"; };
-    autoSnapshot.enable = true;
-    trim.enable = true;
+    openssh.ports = lib.mkForce [ 18213 ];
+
+    zfs = {
+      autoScrub = { enable = true; interval = "weekly"; };
+      autoSnapshot.enable = true;
+      trim.enable = true;
+    };
   };
 
   systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
