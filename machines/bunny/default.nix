@@ -1,4 +1,4 @@
-{ self, pkgs, config, lib, aquaris, ... }:
+{ self, pkgs, config, lib, aquaris, obscura, ... }:
 let
   inherit (lib) getExe getExe' pipe;
 
@@ -31,10 +31,14 @@ let
     '';
   };
 
-  avh = self.inputs.avh.packages.${pkgs.system}.default;
+  avh = self.inputs.packages.${pkgs.system}.default;
 in
 {
-  nixpkgs.overlays = [ self.inputs.obscura.overlay ];
+  nixpkgs.overlays = [
+    (_: _: {
+      inherit (obscura.packages.${pkgs.system}) photoview pug;
+    })
+  ];
 
   aquaris = {
     machine = {
