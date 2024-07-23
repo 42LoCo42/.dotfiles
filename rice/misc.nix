@@ -1,6 +1,4 @@
 { self, pkgs, lib, ... }: {
-  nixpkgs.overlays = [ self.inputs.obscura.overlay ];
-
   # nix-locate as command-not-found replacement
   imports = [ self.inputs.nix-index-database.nixosModules.nix-index ];
   programs.command-not-found.enable = false;
