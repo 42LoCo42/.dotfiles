@@ -15,9 +15,7 @@
           --set XDG_CURRENT_DESKTOP sway
       '';
 
-      firefox = prev.firefox.override { cfg.speechSynthesisSupport = false; };
       foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
-      ncmpcpp = self.inputs.obscura.packages.${pkgs.system}.my-ncmpcpp;
       nerdfonts = prev.nerdfonts.override { fonts = [ "Iosevka" ]; };
       vesktop = prev.vesktop.override { withSystemVencord = false; };
     })

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, my-utils, ... }@top:
+{ pkgs, lib, config, aquaris, ... }@top:
 let
   inherit (lib)
     fileContents
@@ -116,7 +116,7 @@ in
         };
         groups.${x} = { };
       }))
-      my-utils.recMerge
+      aquaris.lib.merge
     ];
 
     virtualisation.oci-containers.containers =
