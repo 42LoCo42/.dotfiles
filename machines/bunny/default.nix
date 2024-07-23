@@ -30,6 +30,8 @@ let
       pug3 -o $out .
     '';
   };
+
+  avh = self.inputs.avh.packages.${pkgs.system}.default;
 in
 {
   nixpkgs.overlays = [ self.inputs.obscura.overlay ];
@@ -72,13 +74,11 @@ in
       zpools.rpool = fs.defaultPool;
     };
 
+    persist.enable = true;
+
     secrets = {
       "machine/synapse/secrets".user = "synapse";
       "machine/synapse/signing-key".user = "synapse";
-    };
-
-    persist = {
-      enable = true;
     };
   };
 
@@ -96,7 +96,7 @@ in
       flags = [ "--refresh" "-L" ];
     };
 
-    extraDependencies = with pkgs; [ photoview pug ];
+    extraDependencies = with pkgs; [ avh photoview pug ];
   };
 
   networking = {
@@ -159,7 +159,7 @@ in
     };
 
     avh = {
-      cmd = [ (getExe self.inputs.avh.packages.${pkgs.system}.default) ];
+      cmd = [ (getExe avh) ];
       volumes = [
         "/persist/home/admin/avh/users.db:/users.db"
         "/persist/home/admin/avh/videos:/videos:ro"
