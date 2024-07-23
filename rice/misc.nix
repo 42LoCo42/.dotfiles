@@ -6,7 +6,7 @@
   programs.command-not-found.enable = false;
 
   security.pam = {
-    u2f.cue = true;
+    u2f.settings.cue = true;
     services.sudo.u2fAuth = true;
   };
 

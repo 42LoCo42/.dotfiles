@@ -1,9 +1,9 @@
-{ self, pkgs, config, lib, my-utils, ... }:
+{ self, pkgs, config, lib, aquaris, ... }:
 let
   inherit (lib) getExe getExe' pipe;
 
   domain = "eleonora.gay";
-  subsDomain = file: my-utils.subsF {
+  subsDomain = file: aquaris.lib.subsF {
     inherit file;
     func = pkgs.writeText;
     subs = { inherit domain; };
@@ -35,25 +35,41 @@ in
   nixpkgs.overlays = [ self.inputs.obscura.overlay ];
 
   aquaris = {
-    filesystem = { filesystem, zpool, ... }: {
+    machine = {
+      id = "488cb972c1ac70db8307933f65d5defc";
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbsL7HyOCM56ejtlWqEBG1YzQwX2KmZ3S5KzoGnWh/j";
+      secureboot = false;
+    };
+
+    users = {
+      admin = {
+        admin = true;
+        sshKeys = [ aquaris.cfg.mainSSHKey ];
+      };
+
+      coder = {
+        sshKeys = [
+          aquaris.cfg.mainSSHKey
+          # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPU1Mi6swudVo9JkJl8Og/fzr+gCJTQ2bK4qd652IOgz legacy"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILckymOuvsGYKZxW2EuTaBoQUBaamDNCoCygxIWz/3cF francisco"
+        ];
+      };
+    };
+
+    filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
         {
           type = "uefi";
           size = "512M";
-          content = filesystem {
+          content = fs.regular {
             type = "vfat";
             mountpoint = "/boot";
           };
         }
-        { content = zpool (p: p.rpool); }
+        { content = fs.zpool (p: p.rpool); }
       ];
 
-      zpools.rpool.datasets = {
-        "nixos/nix" = { };
-        "nixos/persist".options."com.sun:auto-snapshot" = "true";
-        "nixos/persist/home/admin" = { };
-        "nixos/persist/home/coder" = { };
-      };
+      zpools.rpool = fs.defaultPool;
     };
 
     secrets = {
@@ -62,38 +78,35 @@ in
     };
 
     persist = {
-      system = [
-        "/var/lib/containers"
-        "/var/lib/nixos"
-      ];
-      users.admin = [
-        "hidden"
-        "img"
-      ];
+      enable = true;
     };
   };
 
-  boot.lanzaboote.enable = lib.mkForce false;
-  boot.loader.systemd-boot.enable = lib.mkOverride 0 true;
-
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:42loco42/.dotfiles";
-    flags = [ "--refresh" "-L" ];
-  };
+  home-manager.users.admin.aquaris.persist = [
+    "hidden"
+    "img"
+  ];
 
   nix.gc.automatic = true;
-  system.activationScripts.gc-generations.text = ''
-    ${pkgs.nix}/bin/nix-env                  \
-      --profile /nix/var/nix/profiles/system \
-      --delete-generations +5
-  '';
 
-  system.extraDependencies = with pkgs; [ photoview pug ];
+  system = {
+    autoUpgrade = {
+      enable = true;
+      flake = "github:42loco42/.dotfiles";
+      flags = [ "--refresh" "-L" ];
+    };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 443 ];
-  networking.networkmanager.enable = lib.mkForce false;
+    extraDependencies = with pkgs; [ photoview pug ];
+  };
+
+  networking = {
+    firewall = {
+      allowedTCPPorts = [ 80 443 ];
+      allowedUDPPorts = [ 443 ];
+    };
+
+    networkmanager.enable = false;
+  };
 
   services = {
     endlessh = {

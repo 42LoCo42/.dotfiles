@@ -1,4 +1,9 @@
-{ self, pkgs, lib, my-utils, ... }: {
+{ pkgs, lib, aquaris, ... }:
+let
+  inherit (lib) getExe;
+  inherit (aquaris.lib) subsF subsT;
+in
+{
   security.pam.services.swaylock = { };
 
   programs.hyprland.enable = true;
@@ -12,8 +17,8 @@
     xdg = {
       configFile."fuzzel/fuzzel.ini".source = ./misc/fuzzel.ini;
       dataFile."dbus-1/services/mako-path-fix.service".text =
-        my-utils.subsT ./misc/mako-path-fix.service {
-          mako = lib.getExe pkgs.mako;
+        subsT ./misc/mako-path-fix.service {
+          mako = getExe pkgs.mako;
         };
     };
 
@@ -27,12 +32,12 @@
 
       sway-audio-idle-inhbit = {
         Install.WantedBy = [ "graphical-session.target" ];
-        Service.ExecStart = lib.getExe pkgs.sway-audio-idle-inhibit;
+        Service.ExecStart = getExe pkgs.sway-audio-idle-inhibit;
       };
 
       swaybg = {
         Install.WantedBy = [ "graphical-session.target" ];
-        Service.ExecStart = "${lib.getExe pkgs.swaybg} -i ${./misc/wallpaper.png}";
+        Service.ExecStart = "${getExe pkgs.swaybg} -i ${./misc/wallpaper.png}";
       };
     };
 
@@ -279,48 +284,48 @@
 
     wayland.windowManager.hyprland = {
       enable = true;
-      extraConfig = my-utils.subsT ./misc/hyprland.conf {
-        fuzzel = lib.getExe pkgs.fuzzel;
-        pulsemixer = lib.getExe pkgs.pulsemixer;
-        qalc = lib.getExe pkgs.libqalculate;
-        vesktop = lib.getExe pkgs.vesktop;
+      extraConfig = subsT ./misc/hyprland.conf {
+        fuzzel = getExe pkgs.fuzzel;
+        pulsemixer = getExe pkgs.pulsemixer;
+        qalc = getExe pkgs.libqalculate;
+        vesktop = getExe pkgs.vesktop;
 
-        audio-helper = my-utils.subsF {
+        audio-helper = subsF {
           file = ./scripts/audio-helper.sh;
           func = pkgs.writeScript;
           subs = {
-            pulsemixer = lib.getExe pkgs.pulsemixer;
-            mpc = lib.getExe pkgs.mpc-cli;
+            pulsemixer = getExe pkgs.pulsemixer;
+            mpc = getExe pkgs.mpc-cli;
           };
         };
 
-        brightness-helper = my-utils.subsF {
+        brightness-helper = subsF {
           file = ./scripts/brightness-helper.sh;
           func = pkgs.writeScript;
           subs = {
-            brightnessctl = lib.getExe pkgs.brightnessctl;
+            brightnessctl = getExe pkgs.brightnessctl;
           };
         };
 
-        dropdown = my-utils.subsF {
+        dropdown = subsF {
           file = ./scripts/dropdown.sh;
           func = pkgs.writeScript;
         };
 
-        prompt = my-utils.subsF {
+        prompt = subsF {
           file = ./scripts/prompt.sh;
           func = pkgs.writeScript;
           subs = {
-            fuzzel = lib.getExe pkgs.fuzzel;
+            fuzzel = getExe pkgs.fuzzel;
           };
         };
 
-        screenshot = my-utils.subsF {
+        screenshot = subsF {
           file = ./scripts/screenshot.sh;
           func = pkgs.writeScript;
         };
 
-        terminal = my-utils.subsF {
+        terminal = subsF {
           file = ./scripts/terminal.sh;
           func = pkgs.writeScript;
         };

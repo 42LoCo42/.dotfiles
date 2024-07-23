@@ -1,50 +1,66 @@
-{ self, pkgs, config, lib, ... }: {
+{ self, pkgs, config, lib, aquaris, ... }: {
   imports = [ "${self}/rice" ];
 
-  hardware.firmware = with pkgs; lib.mkForce [ linux-firmware ];
-
   aquaris = {
-    persist.enable = false;
-    filesystem = { };
-    # filesystem = { filesystem, zpool, ... }: {
-    #   disks."/dev/disk/by-id/nvme-eui.8ce38e0400d8442a".partitions = [
-    #     {
-    #       type = "uefi";
-    #       size = "512M";
-    #       content = filesystem {
-    #         type = "vfat";
-    #         mountpoint = "/boot";
-    #       };
-    #     }
-    #     { content = zpool (p: p.rpool); }
-    #   ];
+    machine = {
+      id = "86b0e292e1fc27eb4168defa65cb41fd";
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBdZDuw+7O6+pV13ObPR/H4P8UCc1FzPmkufeaiJUc75";
+    };
 
-    #   zpools.rpool.datasets =
-    #     { "nixos/nix" = { }; } //
-    #     (lib.mapAttrs'
-    #       (_: user: {
-    #         name = "nixos${config.aquaris.persist.root}/home/${user.name}";
-    #         value = { };
-    #       })
-    #       config.aquaris.users);
-    # };
+    users = aquaris.lib.merge [
+      { inherit (aquaris.cfg.users) leonsch; }
+      { leonsch.admin = true; }
+    ];
+
+    filesystems = { fs, ... }: {
+      disks."/dev/disk/by-id/nvme-eui.8ce38e0400d8442a".partitions = [
+        {
+          type = "uefi";
+          size = "512M";
+          content = fs.regular {
+            type = "vfat";
+            mountpoint = "/boot";
+          };
+        }
+        # btrfs-on-LUKS partition, see hardware.nix
+      ];
+    };
+
+    secrets."users/leonsch/secretKey".user = "leonsch";
   };
 
-  hardware.bluetooth = {
-    enable = true;
-    settings.General.Experimental = true;
+  boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    supportedFilesystems.zfs = true;
+  };
+
+  hardware = {
+    bluetooth = {
+      enable = true;
+      settings.General.Experimental = true;
+    };
+
+    firmware = with pkgs; lib.mkForce [
+      linux-firmware
+    ];
   };
 
   programs = {
-    nix-ld.enable = true;
     gamemode.enable = true;
+    nix-ld.enable = true;
   };
 
-  home-manager.users.leonsch = { ... }: {
+  home-manager.users.leonsch = hm: {
     services.mako.extraConfig = ''
       [app-name=remo]
       on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
       on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && ${pkgs.netcat}/bin/nc -dU /tmp/remo
     '';
+
+    systemd.user.tmpfiles.rules =
+      let home = hm.config.home.homeDirectory; in [
+        "L+ ${home}/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."users/leonsch/secretKey"}"
+      ];
   };
 }
