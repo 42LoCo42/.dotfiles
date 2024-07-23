@@ -45,7 +45,7 @@ in
   ];
 
   users.users.root = {
-    # isNormalUser = mkForce false;
+    isNormalUser = false;
 
     password = " ";
     hashedPassword = null;
