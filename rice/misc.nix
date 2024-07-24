@@ -53,7 +53,10 @@
 
   virtualisation.libvirtd = {
     enable = true;
-    qemu.swtpm.enable = true;
+    qemu = {
+      ovmf.packages = with pkgs; [ OVMFFull.fd ];
+      swtpm.enable = true;
+    };
   };
 
   users.users.leonsch.extraGroups = [ "libvirtd" ];
