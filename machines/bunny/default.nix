@@ -31,7 +31,7 @@ let
     '';
   };
 
-  avh = self.inputs.packages.${pkgs.system}.default;
+  avh = self.inputs.avh.packages.${pkgs.system}.default;
 in
 {
   nixpkgs.overlays = [
