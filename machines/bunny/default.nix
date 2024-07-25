@@ -81,6 +81,7 @@ in
     persist.enable = true;
 
     secrets = {
+      "machine/rustdesk".user = "rustdesk";
       "machine/synapse/secrets".user = "synapse";
       "machine/synapse/signing-key".user = "synapse";
     };
@@ -100,13 +101,13 @@ in
       flags = [ "--refresh" "-L" ];
     };
 
-    extraDependencies = with pkgs; [ avh photoview pug ];
+    extraDependencies = with pkgs; [ avh homepage photoview pug ];
   };
 
   networking = {
     firewall = {
-      allowedTCPPorts = [ 80 443 ];
-      allowedUDPPorts = [ 443 ];
+      allowedTCPPorts = [ 80 443 21115 21116 21117 21118 21119 ];
+      allowedUDPPorts = [ 443 21116 ];
     };
 
     networkmanager.enable = false;
@@ -169,6 +170,32 @@ in
         "/persist/home/admin/avh/videos:/videos:ro"
       ];
     };
+
+    rustdesk =
+      let
+        pubkey = "Dh0lsYDLdL7GIb0BHWR2VS0mRCLSmyKIJHdtkzmWjdQ=";
+        app = pkgs.writeShellApplication {
+          name = "rustdesk";
+          text = aquaris.lib.subsT ./rustdesk.sh { inherit pubkey; };
+          runtimeInputs = with pkgs; [ rustdesk-server ];
+        };
+      in
+      {
+        cmd = [ (getExe app) ];
+        ports = [
+          "21115:21115"
+          "21116:21116"
+          "21116:21116/udp"
+          "21117:21117"
+          "21118:21118"
+          "21119:21119"
+        ];
+        volumes = [
+          "rustdesk:/data"
+          "${config.aquaris.secrets."machine/rustdesk"}:/data/id_ed25519"
+        ];
+        workdir = "/data";
+      };
 
     photoview = {
       cmd = [ (getExe pkgs.photoview) ];
