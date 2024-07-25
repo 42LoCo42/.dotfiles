@@ -6,9 +6,9 @@ which provides a wealth of default options, tools and functions.
 
 ** Machines
 | [[file:machines/akyuro/default.nix][akyuro]]        | Laptop       |
-| [[file:machines/bunny/default.nix][bunny]]         | Main Server  |
+| [[file:machines/astylos/default.nix][astylos]]       | Desktop      |
+| [[file:machines/bunny/default.nix][bunny]]         | Server       |
 | [[file:machines/guanyin/default.nix][guanyin]]       | Live ISO     |
-| TODO astylos  | Main PC      |
 | TODO laniakea | Odroid M1    |
 | TODO rubicon  | Raspberry Pi |
 

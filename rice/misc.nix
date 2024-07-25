@@ -3,9 +3,13 @@
   imports = [ self.inputs.nix-index-database.nixosModules.nix-index ];
   programs.command-not-found.enable = false;
 
-  security.pam = {
-    u2f.settings.cue = true;
-    services.sudo.u2fAuth = true;
+  security = {
+    pam = {
+      services.sudo.u2fAuth = true;
+      u2f.settings.cue = true;
+    };
+
+    rtkit.enable = true; # for pipewire
   };
 
   services = {
@@ -36,6 +40,7 @@
 
   fonts = {
     packages = with pkgs; [
+      emacs-all-the-icons-fonts
       nerdfonts
       noto-fonts
       noto-fonts-emoji
@@ -90,9 +95,10 @@
       };
 
       packages = with pkgs; [
+        alarm
         flameshot
         grim
-        keepassxc
+        hrtrack
         libnotify
         virt-manager
         xdg_utils
@@ -127,11 +133,6 @@
     };
 
     programs = {
-      emacs = {
-        enable = true;
-        package = pkgs.emacs29-pgtk;
-      };
-
       ncmpcpp = {
         enable = true;
         settings.startup_screen = "media_library";
@@ -142,6 +143,19 @@
       mpv.enable = true;
       yt-dlp.enable = true;
       zathura.enable = true;
+    };
+
+    aquaris.emacs = {
+      enable = true;
+      package = pkgs.emacs29-pgtk;
+      config = ./emacs.org; # TODO one must imagine sisyphus happy
+      extraPrograms = with pkgs; [
+        clang-tools
+        gopls
+        haskell-language-server
+        nodePackages.bash-language-server
+        stylish-haskell
+      ];
     };
 
     systemd.user.services.emacs.Service.Restart = lib.mkForce "always";

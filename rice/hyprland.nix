@@ -1,4 +1,4 @@
-{ pkgs, lib, aquaris, ... }:
+{ pkgs, lib, config, aquaris, ... }:
 let
   inherit (lib) getExe;
   inherit (aquaris.lib) subsF subsT;
@@ -15,7 +15,10 @@ in
     ];
 
     xdg = {
-      configFile."fuzzel/fuzzel.ini".source = ./misc/fuzzel.ini;
+      configFile."fuzzel/fuzzel.ini".text = subsT ./misc/fuzzel.ini {
+        font-size = config.rice.fuzzel-font-size;
+      };
+
       dataFile."dbus-1/services/mako-path-fix.service".text =
         subsT ./misc/mako-path-fix.service {
           mako = getExe pkgs.mako;
@@ -37,7 +40,7 @@ in
 
       swaybg = {
         Install.WantedBy = [ "graphical-session.target" ];
-        Service.ExecStart = "${getExe pkgs.swaybg} -i ${./misc/wallpaper.png}";
+        Service.ExecStart = "${getExe pkgs.swaybg} -i ${config.rice.wallpaper}";
       };
     };
 
@@ -115,7 +118,7 @@ in
         enable = true;
         settings = {
           daemonize = true;
-          image = "${./misc/wallpaper.png}";
+          image = "${config.rice.wallpaper}";
         };
       };
 
@@ -140,6 +143,7 @@ in
           ];
 
           modules-right = [
+            "custom/weather"
             "mpd"
             "pulseaudio"
             "network"
@@ -170,6 +174,14 @@ in
               "9" = "8";
               "10" = "󰌆";
             };
+          };
+
+          "custom/weather" = {
+            format = "{}°";
+            tooltip = true;
+            interval = 3600;
+            exec = "${getExe pkgs.wttrbar}";
+            return-type = "json";
           };
 
           mpd = {
@@ -236,11 +248,11 @@ in
 
           disk = {
             format = "{percentage_used}% 󰋊 ";
+            path = config.rice.disk-path;
           };
 
           temperature = {
-            hwmon-path = "/sys/class/hwmon/hwmon4/temp1_input";
-            critical-threshold = 60;
+            inherit (config.rice.temperature) critical-threshold hwmon-path;
             format-critical = "{temperatureC}°C {icon}";
             format = "{temperatureC}°C {icon}";
             format-icons = [ "" "" "" "" "" ];
@@ -265,8 +277,29 @@ in
           };
 
           clock = {
-            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-            format-alt = "{:%Y-%m-%d}";
+            format = "{:%T}";
+            interval = 1;
+            tooltip-format = "<tt><small>{calendar}</small></tt>";
+            calendar = {
+              mode = "year";
+              mode-mon-col = 3;
+              weeks-pos = "right";
+              on-scroll = 1;
+              format = {
+                months = "<span color='#ffead3'><b>{}</b></span>";
+                days = "<span color='#ecc6d9'><b>{}</b></span>";
+                weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+                weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+                today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+              };
+            };
+            actions = {
+              on-click-right = "mode";
+              on-click-forward = "tz_up";
+              on-click-backward = "tz_down";
+              on-scroll-up = "shift_up";
+              on-scroll-down = "shift_down";
+            };
           };
 
           idle_inhibitor = {
@@ -285,6 +318,8 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       extraConfig = subsT ./misc/hyprland.conf {
+        early-config = config.rice.hypr-early-config;
+
         fuzzel = getExe pkgs.fuzzel;
         pulsemixer = getExe pkgs.pulsemixer;
         qalc = getExe pkgs.libqalculate;
