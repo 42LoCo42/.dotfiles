@@ -25,27 +25,15 @@ in
       flameshot = prev.runCommand "flameshot"
         { nativeBuildInputs = with prev; [ makeBinaryWrapper ]; } ''
         mkdir -p $out/bin
-        makeWrapper                     \
-          ${getExe prev.flameshot}  \
-          $out/bin/flameshot            \
+        makeWrapper                \
+          ${getExe prev.flameshot} \
+          $out/bin/flameshot       \
           --set XDG_CURRENT_DESKTOP sway
       '';
 
       foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
       nerdfonts = prev.nerdfonts.override { fonts = [ "Iosevka" ]; };
       vesktop = prev.vesktop.override { withSystemVencord = false; };
-
-      # TODO security patch; remove once nixpkgs has 1.3.3
-      xdg-desktop-portal-hyprland =
-        prev.xdg-desktop-portal-hyprland.overrideAttrs (old: rec {
-          version = "1.3.3";
-          src = prev.fetchFromGitHub {
-            inherit (old.src) owner repo;
-            rev = "v${version}";
-            hash = "sha256-cyyxu/oj4QEFp3CVx2WeXa9T4OAUyynuBJHGkBZSxJI=";
-          };
-          patches = [ ];
-        });
 
       ##### custom scripts #####
 
