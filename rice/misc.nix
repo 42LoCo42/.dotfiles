@@ -71,6 +71,7 @@
       # a cursor theme is required for virt-manager
       pointerCursor = {
         name = "Vanilla-DMZ";
+        size = 24;
         package = pkgs.vanilla-dmz;
         gtk.enable = true;
       };
@@ -83,8 +84,6 @@
       '';
 
       sessionVariables = {
-        GTK_THEME = "Adwaita:dark";
-
         # make stuff use wayland
         NIXOS_OZONE_WL = "1";
         QT_QPA_PLATFORM = "wayland";
@@ -103,6 +102,14 @@
         virt-manager
         xdg_utils
       ];
+    };
+
+    gtk = let dark = { gtk-application-prefer-dark-theme = true; }; in {
+      enable = true;
+      theme.name = "Adwaita";
+
+      gtk3.extraConfig = dark;
+      gtk4.extraConfig = dark;
     };
 
     qt = {
