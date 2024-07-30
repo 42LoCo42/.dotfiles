@@ -58,7 +58,7 @@
 
   rice = {
     fuzzel-font-size = 20;
-    temp-select = ''KERNELS=="coretemp.o"'';
+    temp-select = ''KERNELS=="coretemp.0"'';
     temp-warn = 70;
 
     hypr-early-config = ''
@@ -74,6 +74,7 @@
       persist = [
         "config"
         "dev"
+        "doc"
 
         ".cache/mesa_shader_cache"
         ".cache/nvidia"
