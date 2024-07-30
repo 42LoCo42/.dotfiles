@@ -57,12 +57,9 @@
   };
 
   rice = {
-    temperature = {
-      hwmon-path = "/sys/class/hwmon/hwmon1/temp1_input";
-      critical-threshold = 70;
-    };
-
     fuzzel-font-size = 20;
+    temp-select = ''KERNELS=="coretemp.o"'';
+    temp-warn = 70;
 
     hypr-early-config = ''
       env = AQ_DRM_DEVICES,/dev/dri/by-path/pci-0000:01:00.0-card

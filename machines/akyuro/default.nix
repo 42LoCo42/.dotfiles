@@ -52,12 +52,9 @@
   };
 
   rice = {
-    temperature = {
-      hwmon-path = "/sys/class/hwmon/hwmon4/temp1_input";
-      critical-threshold = 60;
-    };
-
     fuzzel-font-size = 14;
+    temp-select = ''DRIVERS=="k10temp"'';
+    temp-warn = 60;
 
     hypr-early-config = ''
       monitor = eDP-1,1920x1080@60,0x0,1

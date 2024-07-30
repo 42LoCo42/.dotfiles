@@ -252,10 +252,11 @@ in
           };
 
           temperature = {
-            inherit (config.rice.temperature) critical-threshold hwmon-path;
-            format-critical = "{temperatureC}°C {icon}";
+            critical-threshold = config.rice.temp-warn;
             format = "{temperatureC}°C {icon}";
+            format-critical = "{temperatureC}°C {icon}";
             format-icons = [ "" "" "" "" "" ];
+            hwmon-path = "/dev/cpu_temp";
           };
 
           backlight = {

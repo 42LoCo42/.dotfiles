@@ -1,4 +1,4 @@
-{ self, pkgs, lib, ... }: {
+{ self, pkgs, config, lib, ... }: {
   # nix-locate as command-not-found replacement
   imports = [ self.inputs.nix-index-database.nixosModules.nix-index ];
   programs.command-not-found.enable = false;
@@ -31,6 +31,12 @@
     };
 
     auto-cpufreq.enable = true;
+
+    # persistent CPU temperature path
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="hwmon", ${config.rice.temp-select}, \
+      RUN+="${pkgs.coreutils}/bin/ln -s /sys$devpath/temp1_input /dev/cpu_temp"
+    '';
   };
 
   xdg.portal = {
