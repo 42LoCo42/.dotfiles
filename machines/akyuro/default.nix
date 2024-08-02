@@ -46,11 +46,6 @@
     ];
   };
 
-  programs = {
-    gamemode.enable = true;
-    nix-ld.enable = true;
-  };
-
   rice = {
     fuzzel-font-size = 14;
     temp-select = ''DRIVERS=="k10temp"'';
@@ -62,6 +57,13 @@
   };
 
   home-manager.users.leonsch = hm: {
+    # TODO
+    aquaris.emacs.enable = lib.mkForce false;
+    programs.emacs = {
+      enable = true;
+      package = pkgs.emacs29-pgtk;
+    };
+
     services.mako.extraConfig = ''
       [app-name=remo]
       on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
