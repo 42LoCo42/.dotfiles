@@ -8,7 +8,7 @@ in
 
   programs.hyprland.enable = true;
 
-  home-manager.users.leonsch = hm: {
+  home-manager.users.leonsch = {
     home.packages = with pkgs; [
       qt5.qtwayland
       wl-clipboard

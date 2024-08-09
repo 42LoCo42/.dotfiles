@@ -143,6 +143,8 @@
         enable = true;
         pinentryPackage = pkgs.pinentry-gnome3;
       };
+
+      ssh-agent.enable = true;
     };
 
     programs = {
