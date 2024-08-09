@@ -1,4 +1,4 @@
-{ self, pkgs, config, aquaris, ... }: {
+{ self, aquaris, ... }: {
   imports = [ "${self}/rice" ];
 
   aquaris = {
@@ -15,6 +15,7 @@
     persist = {
       enable = true;
       dirs = [
+        "/root/.android"
         "/var/cache/tuigreet"
       ];
     };
@@ -75,6 +76,7 @@
         "config"
         "dev"
         "doc"
+        "music"
 
         ".cache/mesa_shader_cache"
         ".cache/nvidia"
