@@ -37,6 +37,8 @@ in
   nixpkgs.overlays = [
     (_: _: {
       inherit (obscura.packages.${pkgs.system}) photoview pug;
+
+      vaultwarden = (builtins.getFlake "github:nixos/nixpkgs/ef23c7da7a9aa7be229d1a7d041d3079ee998607?narHash=sha256-RrP%2BzSgCK6zW/wS/dM/DjFmSfpfboHD4TFsPPDL3szM%3D").legacyPackages.${pkgs.system}.vaultwarden;
     })
   ];
 
