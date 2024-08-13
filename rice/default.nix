@@ -33,7 +33,10 @@ in
 
       foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
       nerdfonts = prev.nerdfonts.override { fonts = [ "Iosevka" ]; };
-      vesktop = prev.vesktop.override { withSystemVencord = false; };
+      vesktop = prev.vesktop.override {
+        withSystemVencord = false;
+        withTTS = false;
+      };
 
       ##### custom scripts #####
 
