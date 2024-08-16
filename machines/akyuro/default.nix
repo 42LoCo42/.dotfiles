@@ -56,6 +56,8 @@
     '';
   };
 
+  services.auto-cpufreq.enable = true;
+
   home-manager.users.leonsch = hm: {
     # TODO
     aquaris.emacs.enable = lib.mkForce false;

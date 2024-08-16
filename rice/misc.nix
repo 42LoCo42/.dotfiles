@@ -30,8 +30,6 @@
       pulse.enable = true;
     };
 
-    auto-cpufreq.enable = true;
-
     # persistent CPU temperature path
     udev.extraRules = ''
       ACTION=="add", SUBSYSTEM=="hwmon", ${config.rice.temp-select}, \
