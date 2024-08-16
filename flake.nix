@@ -8,7 +8,6 @@
     avh.url = "github:42loco42/avh";
     avh.inputs.flake-utils.follows = "aquaris/flake-utils";
     avh.inputs.nixpkgs.follows = "nixpkgs";
-    avh.inputs.obscura.follows = "obscura";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -21,12 +20,8 @@
     obscura.url = "github:42loco42/obscura";
 
     pinlist.url = "github:42loco42/pinlist";
-    pinlist.inputs.nixpkgs.follows = "nixpkgs";
     pinlist.inputs.flake-utils.follows = "aquaris/flake-utils";
-
-    # stylix.url = "github:danth/stylix";
-    # stylix.inputs.home-manager.follows = "home-manager";
-    # stylix.inputs.nixpkgs.follows = "nixpkgs";
+    pinlist.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { aquaris, self, ... }: aquaris self rec {
