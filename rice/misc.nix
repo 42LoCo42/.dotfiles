@@ -1,34 +1,11 @@
-{ self, pkgs, config, lib, ... }: {
-  # nix-locate as command-not-found replacement
-  imports = [ self.inputs.nix-index-database.nixosModules.nix-index ];
-  programs.command-not-found.enable = false;
-
-  security = {
-    pam = {
-      services.sudo.u2fAuth = true;
-      u2f.settings.cue = true;
-    };
-
-    rtkit.enable = true; # for pipewire
+{ pkgs, config, lib, ... }: {
+  security.pam = {
+    services.sudo.u2fAuth = true;
+    u2f.settings.cue = true;
   };
 
   services = {
     dbus.packages = [ pkgs.gcr ]; # for GPG key prompt
-
-    # console greeter
-    greetd = {
-      enable = true;
-      restart = true;
-      vt = 7;
-      settings.default_session.command =
-        "${pkgs.greetd.tuigreet}/bin/tuigreet -tr --remember-user-session";
-    };
-
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      pulse.enable = true;
-    };
 
     # persistent CPU temperature path
     udev.extraRules = ''
@@ -42,44 +19,8 @@
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
-  fonts = {
-    packages = with pkgs; [
-      emacs-all-the-icons-fonts
-      nerdfonts
-      noto-fonts
-      noto-fonts-emoji
-    ];
-
-    fontconfig.defaultFonts = {
-      emoji = [ "Noto Color Emoji" ];
-      monospace = [ "IosevkaNerdFont" ];
-      sansSerif = [ "Noto Sans" ];
-      serif = [ "Noto Serif" ];
-    };
-  };
-
-  networking.firewall.trustedInterfaces = [ "virbr0" ];
-
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      ovmf.packages = with pkgs; [ OVMFFull.fd ];
-      swtpm.enable = true;
-    };
-  };
-
-  users.users.leonsch.extraGroups = [ "libvirtd" ];
-
   home-manager.users.leonsch = hm: {
     home = {
-      # a cursor theme is required for virt-manager
-      pointerCursor = {
-        name = "Vanilla-DMZ";
-        size = 24;
-        package = pkgs.vanilla-dmz;
-        gtk.enable = true;
-      };
-
       # haskek my beloved <3
       file.".ghci".text = ''
         :set -Wall
@@ -100,10 +41,11 @@
       packages = with pkgs; [
         alarm
         flameshot
-        grim
         hrtrack
         libnotify
+        qt5.qtwayland
         virt-manager
+        wl-clipboard
         xdg_utils
       ];
     };
@@ -123,8 +65,6 @@
     };
 
     services = {
-      emacs.enable = true;
-
       mpd = {
         enable = true;
         musicDirectory = "${hm.config.home.homeDirectory}/music";
@@ -157,20 +97,5 @@
       yt-dlp.enable = true;
       zathura.enable = true;
     };
-
-    aquaris.emacs = {
-      enable = true;
-      package = pkgs.emacs29-pgtk;
-      config = ./emacs.org; # TODO one must imagine sisyphus happy
-      extraPrograms = with pkgs; [
-        clang-tools
-        gopls
-        haskell-language-server
-        nodePackages.bash-language-server
-        stylish-haskell
-      ];
-    };
-
-    systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
   };
 }
