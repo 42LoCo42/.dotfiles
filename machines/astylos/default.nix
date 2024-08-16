@@ -1,5 +1,7 @@
-{ self, aquaris, ... }: {
+{ self, pkgs, aquaris, ... }: {
   imports = [ "${self}/rice" ];
+
+  nix.package = pkgs.lib.mkForce pkgs.lix;
 
   aquaris = {
     users = aquaris.lib.merge [
@@ -43,13 +45,19 @@
     autoSnapshot.enable = true;
   };
 
-  networking.nameservers = [
-    "1.1.1.1#one.one.one.one"
-    "1.0.0.1#one.one.one.one"
+  networking = {
+    hosts = {
+      "127.0.0.1" = [ "dc10.readers.lakd" ];
+    };
 
-    "9.9.9.9#dns.quad9.net"
-    "149.112.112.112#dns.quad9.net"
-  ];
+    nameservers = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+
+      "9.9.9.9#dns.quad9.net"
+      "149.112.112.112#dns.quad9.net"
+    ];
+  };
 
   services.resolved = {
     dnsovertls = "true";
@@ -77,14 +85,21 @@
         "dev"
         "doc"
         "music"
+        "work"
 
         ".cache/mesa_shader_cache"
         ".cache/nvidia"
+
+        ".config/JetBrains"
         ".config/Yubico"
         ".config/dconf"
         ".config/emacs"
         ".config/vesktop"
+
+        ".local/share/JetBrains"
+        ".local/share/direnv"
         ".local/share/flatpak"
+
         ".local/state/wireplumber"
       ];
     };
