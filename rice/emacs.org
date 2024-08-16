@@ -391,6 +391,12 @@ https://github.com/minad/vertico
 #+end_src
 
 * Languages
+** Golang
+- https://github.com/dominikh/go-mode.el
+  #+begin_src elisp
+    (use-package go-mode)
+  #+end_src
+
 ** Lisp
 - https://github.com/Lindydancer/lisp-extra-font-lock
 - https://github.com/justinbarclay/parinfer-rust-mode
