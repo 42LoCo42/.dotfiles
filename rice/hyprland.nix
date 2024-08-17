@@ -47,11 +47,6 @@ in
           };
         };
 
-        screenshot = subsF {
-          file = ./scripts/screenshot.sh;
-          func = pkgs.writeScript;
-        };
-
         terminal = subsF {
           file = ./scripts/terminal.sh;
           func = pkgs.writeScript;
