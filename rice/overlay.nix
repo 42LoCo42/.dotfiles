@@ -1,19 +1,17 @@
-{ self, lib, aquaris, ... }:
+{ pkgs, self, lib, aquaris, ... }:
 let
-  inherit (lib) flip getExe makeBinPath pipe;
+  inherit (lib) flip getExe pipe;
 in
 {
   nixpkgs.overlays = [
     (_: pkgs: {
-      flameshot = pkgs.runCommand "flameshot"
-        { nativeBuildInputs = with pkgs; [ makeBinaryWrapper ]; } ''
-        mkdir -p $out/bin
-        makeWrapper                      \
-          ${getExe pkgs.flameshot}       \
-          $out/bin/flameshot             \
-          --set XDG_CURRENT_DESKTOP sway \
-          --prefix PATH : ${makeBinPath [ pkgs.grim ]}
-      '';
+      flameshot = pkgs.writeShellApplication {
+        name = "flameshot";
+        text = ''
+          export XDG_CURRENT_DESKTOP=sway
+          ${getExe pkgs.flameshot} gui -r | wl-copy
+        '';
+      };
 
       foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
 

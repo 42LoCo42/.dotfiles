@@ -41,6 +41,7 @@
       packages = with pkgs; [
         alarm
         flameshot
+        grim
         hrtrack
         libnotify
         qt5.qtwayland
