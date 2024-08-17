@@ -81,6 +81,7 @@
   home-manager.users.leonsch = {
     aquaris = {
       persist = [
+        "IU"
         "config"
         "dev"
         "doc"
