@@ -2,14 +2,30 @@
 let
   inherit (lib) getExe;
   inherit (aquaris.lib) subsT;
+
+  effect = pkgs.runCommandCC "effect.so" { } ''
+    gcc -fPIC -shared ${./misc/effect.c} -o $out
+  '';
 in
 {
   security.pam.services.swaylock = { };
 
   home-manager.sharedModules = [{
     xdg = {
-      configFile."fuzzel/fuzzel.ini".text = subsT ./misc/fuzzel.ini {
-        font-size = config.rice.fuzzel-font-size;
+      configFile = {
+        "fuzzel/fuzzel.ini".text = subsT ./misc/fuzzel.ini {
+          font-size = config.rice.fuzzel-font-size;
+        };
+
+        "swaylock/config".text = ''
+          screenshots
+          effect-scale=0.5
+          effect-custom=${effect}
+          effect-scale=2
+
+          clock
+          fade-in=0.5
+        '';
       };
 
       dataFile."dbus-1/services/mako-path-fix.service".text =
@@ -53,29 +69,31 @@ in
         '';
       };
 
-      swayidle = {
+      hypridle = {
         enable = true;
-        systemdTarget = "hyprland-session.target";
-        events = [
-          { event = "lock"; command = getExe pkgs.swaylock; }
-          { event = "before-sleep"; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
-        ];
-        timeouts = [
-          { timeout = 300; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
-          {
-            timeout = 290;
-            command = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-            resumeCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
-          }
-        ];
-      };
-    };
+        settings = {
+          general = {
+            lock_cmd = "pidof swaylock || ${getExe pkgs.swaylock-effects}";
+            before_sleep_cmd = "loginctl lock-session";
+            after_sleep_cmd = "hyprctl dispatch dpms on";
+          };
 
-    programs.swaylock = {
-      enable = true;
-      settings = {
-        daemonize = true;
-        image = "${config.rice.wallpaper}";
+          listener = [
+            {
+              timeout = 300;
+              on-timeout = "loginctl lock-session";
+            }
+            {
+              timeout = 305;
+              on-timeout = "hyprctl dispatch dpms off";
+              on-resume = "hyprctl dispatch dpms on";
+            }
+            {
+              timeout = 600;
+              on-timeout = "systemctl suspend";
+            }
+          ];
+        };
       };
     };
   }];
