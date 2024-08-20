@@ -150,8 +150,8 @@ in
         "caddy:/caddy"
         "${homepage}:/srv/homepage"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
-        "${pkgs.element-web}:/srv/element"
-        "${subsDomain ./element.json}:/srv/element/config.json"
+        # "${pkgs.element-web}:/srv/element"
+        # "${subsDomain ./element.json}:/srv/element/config.json"
       ];
     };
 

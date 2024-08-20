@@ -89,11 +89,11 @@ avh.{$DOMAIN} {
 	reverse_proxy avh:8080
 }
 
-element.{$DOMAIN} {
-	import default
-	root * /srv/element
-	file_server
-}
+# element.{$DOMAIN} {
+# 	import default
+# 	root * /srv/element
+# 	file_server
+# }
 
 img.{$DOMAIN} {
 	import default
