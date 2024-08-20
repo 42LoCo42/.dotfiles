@@ -40,6 +40,8 @@
     };
   };
 
+  boot.zfs.package = pkgs.zfs_unstable;
+
   services.zfs = {
     autoScrub.enable = true;
     autoSnapshot.enable = true;
@@ -71,38 +73,48 @@
     temp-warn = 70;
 
     hypr-early-config = ''
-      env = AQ_DRM_DEVICES,/dev/dri/by-path/pci-0000:01:00.0-card
+      env = AQ_DRM_DEVICES,/persist/gpu/nvidia
+
+      env = GBM_BACKEND,nvidia-drm
+      env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+      env = LIBVA_DRIVER_NAME,nvidia
+
+      env = GDK_BACKEND,wayland
+      env = QT_QPA_PLATFORM,wayland
+      env = SDL_VIDEODRIVER,wayland
+
+      env = NIXOS_OZONE_WL,1
+      env = _JAVA_AWT_WM_NONREPARENTING,1
 
       monitor = DVI-D-1,1920x1080@60,0x0,1
+      # monitor = DP-1,1920x1080@60,1920x0,1
       monitor = DP-1,disable # TODO
     '';
   };
 
   home-manager.users.leonsch = {
-    aquaris = {
-      persist = [
-        "IU"
-        "config"
-        "dev"
-        "doc"
-        "music"
-        "work"
+    aquaris.persist = [
+      "IU"
+      "config"
+      "dev"
+      "doc"
+      "music"
+      "work"
 
-        ".cache/mesa_shader_cache"
-        ".cache/nvidia"
+      ".cache/mesa_shader_cache"
+      ".cache/nvidia"
 
-        ".config/JetBrains"
-        ".config/Yubico"
-        ".config/dconf"
-        ".config/emacs"
-        ".config/vesktop"
+      ".config/JetBrains"
+      ".config/Yubico"
+      ".config/dconf"
+      ".config/emacs"
+      ".config/vesktop"
 
-        ".local/share/JetBrains"
-        ".local/share/direnv"
-        ".local/share/flatpak"
+      ".local/share/JetBrains"
+      ".local/share/direnv"
+      ".local/share/flatpak"
 
-        ".local/state/wireplumber"
-      ];
-    };
+      ".local/state/wireplumber"
+    ];
   };
 }

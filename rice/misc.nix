@@ -28,16 +28,6 @@
         :set prompt "[1;35mλ>[m "
       '';
 
-      sessionVariables = {
-        # make stuff use wayland
-        NIXOS_OZONE_WL = "1";
-        QT_QPA_PLATFORM = "wayland";
-        SDL_VIDEODRIVER = "wayland";
-
-        # apparently needed for java on tiling WMs
-        _JAVA_AWT_WM_NONREPARENTING = "1";
-      };
-
       packages = with pkgs; [
         alarm
         flameshot
