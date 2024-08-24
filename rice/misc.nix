@@ -5,8 +5,6 @@
   };
 
   services = {
-    dbus.packages = [ pkgs.gcr ]; # for GPG key prompt
-
     # persistent CPU temperature path
     udev.extraRules = ''
       ACTION=="add", SUBSYSTEM=="hwmon", ${config.rice.temp-select}, \
@@ -33,6 +31,7 @@
         flameshot
         grim
         hrtrack
+        kdePackages.qtwayland
         libnotify
         qt5.qtwayland
         virt-manager
@@ -65,12 +64,6 @@
             name "pipewire"
           }
         '';
-      };
-
-      # gpg-agent GUI should use GTK3
-      gpg-agent = {
-        enable = true;
-        pinentryPackage = pkgs.pinentry-gnome3;
       };
 
       ssh-agent.enable = true;
