@@ -31,11 +31,7 @@
       leonsch = {
         description = "Leon Schumacher";
         sshKeys = [ mainSSHKey ];
-
-        git = {
-          email = "leonsch@protonmail.com";
-          key = "C743EE077172986F860FC0FE2F6FE1420970404C";
-        };
+        git.email = "leonsch@protonmail.com";
       };
     };
   };
