@@ -1,0 +1,38 @@
+theme: "auto"
+
+server:
+  address: "tcp://0.0.0.0:8080/authelia"
+
+authentication_backend:
+  file:
+    path: /data/users.yaml
+
+storage:
+  postgres:
+    address: "tcp://postgres:5432"
+    database: "authelia"
+    username: "authelia"
+
+session:
+  redis:
+    host: "redis"
+
+  cookies:
+    - domain: "pin.@domain@"
+      authelia_url: "https://pin.@domain@/authelia"
+
+notifier:
+  smtp:
+    address: "submission://smtp.gmail.com:587"
+    sender: "authelia@@domain@"
+
+access_control:
+  rules:
+    - domain: '*.@domain@'
+      resources:
+        - "^/authelia/"
+        - "^/favicon.ico$"
+      policy: "bypass"
+
+    - domain: "*.@domain@"
+      policy: "two_factor"

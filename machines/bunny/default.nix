@@ -34,6 +34,8 @@ let
   avh = self.inputs.avh.packages.${pkgs.system}.default;
 in
 {
+  imports = [ "${self}/rice/pnoc.nix" ];
+
   nixpkgs.overlays = [
     (_: _: {
       inherit (obscura.packages.${pkgs.system}) photoview pug;
@@ -130,7 +132,6 @@ in
     };
   };
 
-  systemd.services.podman-volume-setup.serviceConfig.Restart = lib.mkForce "on-failure";
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
 
   virtualisation.pnoc = {
@@ -213,7 +214,6 @@ in
 
     pinlist = {
       cmd = [ (getExe self.inputs.pinlist.packages.${pkgs.system}.default) ];
-      environmentFiles = [ config.aquaris.secrets."machine/pinlist" ];
       volumes = [ "pinlist:/db" ];
     };
 
@@ -259,6 +259,13 @@ in
     };
 
     ##### support services #####
+
+    authelia = {
+      cmd = [ (getExe pkgs.authelia) "-c" "${subsDomain ./authelia.yaml}" ];
+      environmentFiles = [ config.aquaris.secrets."machine/authelia" ];
+      ssl = true;
+      volumes = [ "authelia:/data" ];
+    };
 
     postgres = {
       cmd = [ (getExe' pkgs.postgresql_16 "postgres") "-D" "/data" ];
