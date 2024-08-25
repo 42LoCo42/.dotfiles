@@ -397,6 +397,12 @@ https://github.com/minad/vertico
     (use-package go-mode)
   #+end_src
 
+** Haskell
+#+begin_src elisp
+  (use-package haskell-mode)
+  (use-package lsp-haskell)
+#+end_src
+
 ** Lisp
 - https://github.com/Lindydancer/lisp-extra-font-lock
 - https://github.com/justinbarclay/parinfer-rust-mode
@@ -425,6 +431,11 @@ https://github.com/minad/vertico
 https://github.com/NixOS/nix-mode
 #+begin_src elisp
   (use-package nix-mode)
+#+end_src
+
+** YAML
+#+begin_src elisp
+  (use-package yaml-mode)
 #+end_src
 
 * Custom functions

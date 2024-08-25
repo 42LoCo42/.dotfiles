@@ -56,6 +56,15 @@
 	}
 }
 
+(auth) {
+	reverse_proxy /authelia/* authelia:8080
+
+	forward_auth authelia:8080 {
+		uri /api/authz/forward-auth
+		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+	}
+}
+
 {$DOMAIN} {
 	import default
 
@@ -108,7 +117,8 @@ matrix.{$DOMAIN} {
 
 pin.{$DOMAIN} {
 	import default
-	reverse_proxy pinlist:8000
+	import auth
+	reverse_proxy pinlist:8080
 }
 
 rd.{$DOMAIN} {
