@@ -57,8 +57,6 @@
 }
 
 (auth) {
-	reverse_proxy /authelia/* authelia:8080
-
 	forward_auth authelia:8080 {
 		uri /api/authz/forward-auth
 		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
@@ -91,6 +89,11 @@
 attic.{$DOMAIN} {
 	import default
 	reverse_proxy attic:8080
+}
+
+auth.{$DOMAIN} {
+	import default
+	reverse_proxy authelia:8080
 }
 
 avh.{$DOMAIN} {

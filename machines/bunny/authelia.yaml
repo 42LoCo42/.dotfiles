@@ -1,7 +1,7 @@
 theme: "auto"
 
 server:
-  address: "tcp://0.0.0.0:8080/authelia"
+  address: "tcp://0.0.0.0:8080"
 
 authentication_backend:
   file:
@@ -18,11 +18,8 @@ session:
     host: "redis"
 
   cookies:
-    - domain: "pin.@domain@"
-      authelia_url: "https://pin.@domain@/authelia"
-
-    - domain: "avh.@domain@"
-      authelia_url: "https://avh.@domain@/authelia"
+    - domain: "@domain@"
+      authelia_url: "https://auth.@domain@"
 
 notifier:
   smtp:
@@ -31,12 +28,6 @@ notifier:
 
 access_control:
   rules:
-    - domain: '*.@domain@'
-      resources:
-        - "^/authelia/"
-        - "^/favicon.ico$"
-      policy: "bypass"
-
     - domain: "avh.@domain@"
       subject:
         - "group:avh"
