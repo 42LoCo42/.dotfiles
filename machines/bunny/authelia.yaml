@@ -21,6 +21,9 @@ session:
     - domain: "pin.@domain@"
       authelia_url: "https://pin.@domain@/authelia"
 
+    - domain: "avh.@domain@"
+      authelia_url: "https://avh.@domain@/authelia"
+
 notifier:
   smtp:
     address: "submission://smtp.gmail.com:587"
@@ -34,5 +37,12 @@ access_control:
         - "^/favicon.ico$"
       policy: "bypass"
 
-    - domain: "*.@domain@"
+    - domain: "avh.@domain@"
+      subject:
+        - "group:avh"
+      policy: "two_factor"
+
+    - domain: "pin.@domain@"
+      subject:
+        - "group:pin"
       policy: "two_factor"

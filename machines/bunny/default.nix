@@ -167,7 +167,6 @@ in
     avh = {
       cmd = [ (getExe avh) ];
       volumes = [
-        "/persist/home/admin/avh/users.db:/users.db"
         "/persist/home/admin/avh/videos:/videos:ro"
       ];
     };

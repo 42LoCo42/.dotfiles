@@ -95,6 +95,7 @@ attic.{$DOMAIN} {
 
 avh.{$DOMAIN} {
 	import default
+	import auth
 	reverse_proxy avh:8080
 }
 
