@@ -108,8 +108,25 @@ in
 
   networking = {
     firewall = {
-      allowedTCPPorts = [ 80 443 21115 21116 21117 21118 21119 ];
-      allowedUDPPorts = [ 443 21116 ];
+      allowedTCPPorts = [
+        # caddy
+        80
+        443
+
+        # rustdesk
+        21115
+        21116
+        21117
+        21118
+        21119
+
+        22000 # syncthing
+      ];
+      allowedUDPPorts = [
+        443 # caddy (QUIC)
+        21116 # rustdesk
+        22000 # syncthing
+      ];
     };
 
     networkmanager.enable = false;
@@ -241,6 +258,10 @@ in
     syncthing = {
       cmd = [ (getExe pkgs.syncthing) "--home=/data" "--gui-address=http://0.0.0.0:8080" ];
       environment.HOME = "/sync";
+      ports = [
+        "22000:22000"
+        "22000:22000/udp"
+      ];
       ssl = true;
       volumes = [
         "syncthing:/data"
