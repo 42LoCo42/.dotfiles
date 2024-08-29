@@ -79,13 +79,6 @@
       env = __GLX_VENDOR_LIBRARY_NAME,nvidia
       env = LIBVA_DRIVER_NAME,nvidia
 
-      env = GDK_BACKEND,wayland
-      env = QT_QPA_PLATFORM,wayland
-      env = SDL_VIDEODRIVER,wayland
-
-      env = NIXOS_OZONE_WL,1
-      env = _JAVA_AWT_WM_NONREPARENTING,1
-
       monitor = DVI-D-1,1920x1080@60,0x0,1
       # monitor = DP-1,1920x1080@60,1920x0,1
       monitor = DP-1,disable # TODO
