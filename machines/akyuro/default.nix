@@ -30,7 +30,6 @@
   };
 
   boot = {
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     supportedFilesystems.zfs = true;
     zfs.package = pkgs.zfs_unstable;
@@ -72,6 +71,8 @@
       on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
       on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && ${pkgs.netcat}/bin/nc -dU /tmp/remo
     '';
+
+    services.syncthing.enable = true;
 
     systemd.user.tmpfiles.rules =
       let home = hm.config.home.homeDirectory; in [

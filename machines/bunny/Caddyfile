@@ -146,6 +146,12 @@ searx.{$DOMAIN} {
 	}
 }
 
+st.{$DOMAIN} {
+	import default
+	import auth
+	reverse_proxy syncthing:8080
+}
+
 vw.{$DOMAIN} {
 	import default
 	reverse_proxy vaultwarden:8080 {

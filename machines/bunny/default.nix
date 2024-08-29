@@ -238,6 +238,16 @@ in
       ];
     };
 
+    syncthing = {
+      cmd = [ (getExe pkgs.syncthing) "--home=/data" "--gui-address=http://0.0.0.0:8080" ];
+      environment.HOME = "/sync";
+      ssl = true;
+      volumes = [
+        "syncthing:/data"
+        "/persist/sync:/sync"
+      ];
+    };
+
     vaultwarden = {
       cmd = [ (getExe pkgs.vaultwarden) ];
       environment = {
