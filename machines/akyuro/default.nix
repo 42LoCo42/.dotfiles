@@ -33,6 +33,7 @@
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
     supportedFilesystems.zfs = true;
+    zfs.package = pkgs.zfs_unstable;
   };
 
   hardware = {
