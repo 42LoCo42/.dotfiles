@@ -37,3 +37,8 @@ access_control:
       subject:
         - "group:pin"
       policy: "two_factor"
+
+    - domain: "st.@domain@"
+      subject:
+        - "group:syncthing"
+      policy: "two_factor"
