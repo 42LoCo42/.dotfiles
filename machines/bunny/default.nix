@@ -3,6 +3,7 @@ let
   inherit (lib) concatMapStringsSep getExe getExe' pipe splitString;
 
   domain = "eleonora.gay";
+
   dn = pipe domain [
     (splitString ".")
     (concatMapStringsSep "," (x: "dc=" + x))
@@ -11,7 +12,7 @@ let
   subsDomain = file: aquaris.lib.subsF {
     inherit file;
     func = pkgs.writeText;
-    subs = { inherit domain; };
+    subs = { inherit domain dn; };
   };
 
   iosevka = pipe pkgs.nerdfonts [
