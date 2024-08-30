@@ -4,8 +4,17 @@ server:
   address: "tcp://0.0.0.0:8080"
 
 authentication_backend:
-  file:
-    path: /data/users.yaml
+  refresh_interval: "1m"
+  ldap:
+    implementation: "lldap"
+    address: "ldap://lldap:3890"
+    base_dn: "@dn@"
+    additional_users_dn: "ou=people"
+    additional_groups_dn: "ou=groups"
+    users_filter: "(&({username_attribute}={input})(objectClass=person))"
+    groups_filter: "(member={dn})"
+
+    user: "uid=authelia,ou=people,@dn@"
 
 storage:
   postgres:
@@ -30,15 +39,15 @@ access_control:
   rules:
     - domain: "avh.@domain@"
       subject:
-        - "group:avh"
+        - "group:auth_avh"
       policy: "two_factor"
 
     - domain: "pin.@domain@"
       subject:
-        - "group:pin"
+        - "group:auth_pin"
       policy: "two_factor"
 
     - domain: "st.@domain@"
       subject:
-        - "group:syncthing"
+        - "group:auth_syncthing"
       policy: "two_factor"
