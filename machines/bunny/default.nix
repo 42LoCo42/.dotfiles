@@ -1,8 +1,13 @@
 { self, pkgs, config, lib, aquaris, obscura, ... }:
 let
-  inherit (lib) getExe getExe' pipe;
+  inherit (lib) concatMapStringsSep getExe getExe' pipe splitString;
 
   domain = "eleonora.gay";
+  dn = pipe domain [
+    (splitString ".")
+    (concatMapStringsSep "," (x: "dc=" + x))
+  ];
+
   subsDomain = file: aquaris.lib.subsF {
     inherit file;
     func = pkgs.writeText;
@@ -295,6 +300,24 @@ in
       environmentFiles = [ config.aquaris.secrets."machine/authelia" ];
       ssl = true;
       volumes = [ "authelia:/data" ];
+    };
+
+    lldap = {
+      cmd = [ (getExe pkgs.lldap) "run" ];
+      environment = {
+        LLDAP_LDAP_BASE_DN = dn;
+
+        LLDAP_HTTP_PORT = "8080";
+        LLDAP_HTTP_URL = "https://ldap.${domain}";
+
+        LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET = "true";
+        LLDAP_SMTP_OPTIONS__FROM = "ldap@${domain}";
+        LLDAP_SMTP_OPTIONS__SERVER = "smtp.gmail.com";
+        LLDAP_SMTP_OPTIONS__PORT = "587";
+        LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION = "STARTTLS";
+      };
+      environmentFiles = [ config.aquaris.secrets."machine/lldap" ];
+      ssl = true;
     };
 
     postgres = {
