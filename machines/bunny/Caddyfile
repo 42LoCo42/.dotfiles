@@ -113,6 +113,11 @@ img.{$DOMAIN} {
 	reverse_proxy photoview:4001
 }
 
+ldap.{$DOMAIN} {
+	import default
+	reverse_proxy lldap:8080
+}
+
 matrix.{$DOMAIN} {
 	import default
 	reverse_proxy /_matrix/* synapse:8080
