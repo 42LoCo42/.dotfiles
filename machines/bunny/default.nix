@@ -1,4 +1,4 @@
-{ self, pkgs, config, lib, aquaris, obscura, ... }:
+{ self, pkgs, config, lib, aquaris, ... }:
 let
   inherit (lib) concatMapStringsSep getExe getExe' pipe splitString;
 
@@ -44,7 +44,7 @@ in
 
   nixpkgs.overlays = [
     (_: _: {
-      inherit (obscura.packages.${pkgs.system}) photoview pug;
+      inherit (self.inputs.obscura.packages.${pkgs.system}) photoview pug;
     })
   ];
 
