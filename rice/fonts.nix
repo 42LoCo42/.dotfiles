@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   fonts = {
     packages = with pkgs; [
-      emacs-all-the-icons-fonts
       nerdfonts
       noto-fonts
       noto-fonts-emoji

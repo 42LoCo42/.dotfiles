@@ -59,13 +59,6 @@
   services.auto-cpufreq.enable = true;
 
   home-manager.users.leonsch = hm: {
-    # TODO
-    aquaris.emacs.enable = lib.mkForce false;
-    programs.emacs = {
-      enable = true;
-      package = pkgs.emacs29-pgtk;
-    };
-
     services.mako.extraConfig = ''
       [app-name=remo]
       on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
