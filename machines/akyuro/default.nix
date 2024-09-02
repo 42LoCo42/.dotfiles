@@ -65,8 +65,6 @@
       on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && ${pkgs.netcat}/bin/nc -dU /tmp/remo
     '';
 
-    services.syncthing.enable = true;
-
     systemd.user.tmpfiles.rules =
       let home = hm.config.home.homeDirectory; in [
         "L+ ${home}/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."users/leonsch/secretKey"}"

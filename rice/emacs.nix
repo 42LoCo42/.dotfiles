@@ -76,7 +76,7 @@
             ("C-a" . my/smart-home)
           '';
 
-          bind' = ''
+          bind' = ''(
             ("C-M-<backspace>" . my/join-line)
             ("C-s"             . save-buffer)
 
@@ -108,7 +108,11 @@
             ("C-x C-2"      . my/split-switch-below)
             ("C-x C-3"      . my/split-switch-right)
             ("C-x C-4"      . kill-buffer-and-window)
-          '';
+
+            :map read--expression-map
+            ("C-n" . next-line-or-history-element)
+            ("C-p" . previous-line-or-history-element)
+          )'';
 
           hook = ''
             ; delete trailing whitespace on save
