@@ -40,7 +40,10 @@
     };
   };
 
-  boot.zfs.package = pkgs.zfs_unstable;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_zen;
+    zfs.package = pkgs.zfs_unstable;
+  };
 
   services.zfs = {
     autoScrub.enable = true;
