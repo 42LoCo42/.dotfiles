@@ -50,24 +50,54 @@
     autoSnapshot.enable = true;
   };
 
-  networking = {
-    hosts = {
-      "127.0.0.1" = [ "dc10.readers.lakd" ];
-    };
-
-    nameservers = [
-      "1.1.1.1#one.one.one.one"
-      "1.0.0.1#one.one.one.one"
-
-      "9.9.9.9#dns.quad9.net"
-      "149.112.112.112#dns.quad9.net"
-    ];
+  networking.hosts = {
+    "127.0.0.1" = [ "dc10.readers.lakd" ];
   };
 
-  services.resolved = {
-    dnsovertls = "true";
-    dnssec = "true";
-    fallbackDns = [ ];
+  systemd.services.dnsmasq = {
+    after = [ "network-online.target" ];
+    requires = [ "network-online.target" ];
+  };
+
+  services = {
+    dnsmasq = {
+      enable = true;
+      settings = {
+        interface = "enp6s0";
+        bind-interfaces = true;
+        listen-address = [ "127.0.0.1" ];
+
+        # forward to fritzbox and stubby
+        no-resolv = true;
+        server = [
+          "/fritz.box/192.168.178.1"
+          "127.0.0.1#53000"
+        ];
+
+        # misc
+        cache-size = 10000;
+        filter-AAAA = true;
+        log-queries = true;
+        proxy-dnssec = true;
+      };
+    };
+
+    stubby = {
+      enable = true;
+      logLevel = "info";
+      settings = pkgs.stubby.settingsExample // {
+        listen_addresses = [ "127.0.0.1@53000" ];
+        dnssec_return_status = "GETDNS_EXTENSION_TRUE";
+        upstream_recursive_servers = [
+          { address_data = "1.1.1.1"; tls_port = 853; tls_auth_name = "cloudflare-dns.com"; }
+          { address_data = "1.0.0.1"; tls_port = 853; tls_auth_name = "cloudflare-dns.com"; }
+          { address_data = "9.9.9.9"; tls_port = 853; tls_auth_name = "dns.quad9.net"; }
+          { address_data = "149.112.112.112"; tls_port = 853; tls_auth_name = "dns.quad9.net"; }
+        ];
+      };
+    };
+
+    resolved.enable = false;
   };
 
   rice = {
