@@ -155,6 +155,18 @@ in
     };
   };
 
+  systemd.services."mount-dcim" = {
+    script = ''
+      mkdir -p /home/admin/DCIM
+      ${getExe' pkgs.bindfs "bindfs"} \
+        -u admin -g users -f          \
+        --create-for-user=syncthing   \
+        --create-for-group=syncthing  \
+        /persist/sync/DCIM /home/admin/DCIM
+    '';
+    wantedBy = [ "default.target" ];
+  };
+
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
 
   virtualisation.pnoc = {
