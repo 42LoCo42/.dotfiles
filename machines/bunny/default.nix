@@ -167,6 +167,14 @@ in
     wantedBy = [ "default.target" ];
   };
 
+  environment.systemPackages = [
+    (pkgs.writeShellApplication {
+      name = "normalize";
+      runtimeInputs = with pkgs; [ exiftool parallel ];
+      text = builtins.readFile ./normalize.sh;
+    })
+  ];
+
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
 
   virtualisation.pnoc = {
