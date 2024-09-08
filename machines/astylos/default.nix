@@ -127,9 +127,6 @@
       "music"
       "work"
 
-      ".cache/mesa_shader_cache"
-      ".cache/nvidia"
-
       ".config/JetBrains"
       ".config/Yubico"
       ".config/dconf"
