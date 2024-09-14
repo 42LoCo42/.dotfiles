@@ -157,6 +157,11 @@ st.{$DOMAIN} {
 	reverse_proxy syncthing:8080
 }
 
+vencloud.{$DOMAIN} {
+	import default
+	reverse_proxy vencloud:8080
+}
+
 vw.{$DOMAIN} {
 	import default
 	reverse_proxy vaultwarden:8080 {
