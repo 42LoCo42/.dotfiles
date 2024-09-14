@@ -1,4 +1,4 @@
-{ pkgs, self, lib, aquaris, ... }:
+{ self, lib, aquaris, ... }:
 let
   inherit (lib) flip getExe pipe;
 in

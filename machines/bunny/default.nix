@@ -314,6 +314,25 @@ in
       volumes = [ "vaultwarden:/data" ];
     };
 
+    vencloud = {
+      cmd = [ (getExe self.inputs.obscura.packages.${pkgs.system}.vencloud) ];
+      environment = {
+        HOST = "0.0.0.0";
+        PORT = "8080";
+        REDIS_URI = "redis:6379";
+
+        ROOT_REDIRECT = "https://github.com/Vencord/Vencloud";
+
+        DISCORD_REDIRECT_URI = "https://vencloud.${domain}/v1/oauth/callback";
+
+        SIZE_LIMIT = "32000000";
+
+        PROXY_HEADER = "X-Forwarded-For";
+      };
+      environmentFiles = [ config.aquaris.secrets."machine/vencloud" ];
+      ssl = true;
+    };
+
     ##### support services #####
 
     authelia = {
