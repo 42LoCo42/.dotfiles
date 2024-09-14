@@ -472,6 +472,7 @@
             (go-mode      . lsp-deferred)
             (haskell-mode . lsp-deferred)
             (nix-mode     . lsp-deferred)
+            (rustic-mode  . lsp-deferred)
             (sh-mode      . lsp-deferred)
           '';
 
@@ -552,11 +553,19 @@
           ];
         };
 
+        rustic = {
+          mode = ''("\\.rs\\'" . rustic-mode)'';
+        };
+
         yaml-mode = {
           mode = ''
             "\\.yaml\\'"
             "\\.yml\\'"
           '';
+        };
+
+        typescript-mode = {
+          mode = ''"\\.ts\\'"'';
         };
 
         # Lisp
