@@ -127,6 +127,8 @@
       "music"
       "work"
 
+      ".cache/JetBrains"
+
       ".config/JetBrains"
       ".config/Yubico"
       ".config/dconf"
