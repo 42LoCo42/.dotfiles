@@ -1,8 +1,6 @@
 { self, pkgs, aquaris, ... }: {
   imports = [ "${self}/rice" ];
 
-  nix.package = pkgs.lib.mkForce pkgs.lix;
-
   aquaris = {
     users = aquaris.lib.merge [
       { inherit (aquaris.cfg.users) leonsch; }

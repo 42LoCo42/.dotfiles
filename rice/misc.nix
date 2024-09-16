@@ -1,4 +1,6 @@
 { pkgs, config, ... }: {
+  nix.package = pkgs.lib.mkForce pkgs.lix;
+
   security.pam = {
     services.sudo.u2fAuth = true;
     u2f.settings.cue = true;
