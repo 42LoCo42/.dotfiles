@@ -14,15 +14,19 @@
 
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/nvme-eui.8ce38e0400d8442a".partitions = [
+        fs.defaultBoot
         {
-          type = "uefi";
-          size = "512M";
-          content = fs.regular {
-            type = "vfat";
-            mountpoint = "/boot";
+          content = fs.luks {
+            content = fs.btrfs {
+              mountOpts = [ "compress-force=zstd" ];
+              subvols = {
+                home.mountpoint = "/home";
+                nix.mountpoint = "/nix";
+                root.mountpoint = "/";
+              };
+            };
           };
         }
-        # btrfs-on-LUKS partition, see hardware.nix
       ];
     };
 
