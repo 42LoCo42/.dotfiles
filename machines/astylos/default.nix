@@ -38,6 +38,12 @@
     };
   };
 
+  fileSystems."/proc" = {
+    device = "proc";
+    fsType = "proc";
+    options = [ "hidepid=2" "gid=wheel" ];
+  };
+
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
     zfs.package = pkgs.zfs_unstable;
@@ -56,6 +62,8 @@
     after = [ "network-online.target" ];
     requires = [ "network-online.target" ];
   };
+
+  programs.gamemode.enable = true;
 
   services = {
     dnsmasq = {
@@ -135,6 +143,7 @@
       ".config/vesktop"
 
       ".local/share/JetBrains"
+      ".local/share/PrismLauncher"
       ".local/share/direnv"
       ".local/share/flatpak"
 
@@ -142,6 +151,7 @@
     ];
 
     home.packages = with pkgs; [
+      prismlauncher
       rustdesk-flutter
     ];
   };
