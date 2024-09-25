@@ -131,6 +131,7 @@
       ".config/Yubico"
       ".config/dconf"
       ".config/emacs"
+      ".config/rustdesk"
       ".config/vesktop"
 
       ".local/share/JetBrains"
@@ -138,6 +139,10 @@
       ".local/share/flatpak"
 
       ".local/state/wireplumber"
+    ];
+
+    home.packages = with pkgs; [
+      rustdesk-flutter
     ];
   };
 }
