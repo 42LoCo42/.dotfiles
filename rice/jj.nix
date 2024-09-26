@@ -23,19 +23,19 @@
 
       home.shellAliases = {
         j = "jj";
-        jbl = "jj branch list --no-pager";
+        jbl = "jj branch list";
         jbs = "jj branch set";
         jd = "jj describe";
         jdm = "jj describe -m";
         je = "jj edit";
         jl = "jj log";
-        jlr = "jj log --no-pager --reversed";
+        jlr = "jj log --reversed";
         jn = "jj new";
         jnm = "jj new -m";
         jpl = "jj git fetch";
         jps = "jj git push";
         jr = "jj rebase";
-        js = "jj status --no-pager";
+        js = "jj status";
         jsp = "jj split";
         jspi = "jj split -i";
         jsq = "jj squash";
