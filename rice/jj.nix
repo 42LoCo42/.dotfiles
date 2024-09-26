@@ -18,7 +18,7 @@
       };
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
-        MAGIC_ENTER_GIT_COMMAND=' if test -d .jj; then js; else git status; fi'
+        MAGIC_ENTER_GIT_COMMAND=' if test -d .jj; then js; echo; jl; else git status; fi'
       '';
 
       home.shellAliases = {
@@ -29,6 +29,7 @@
         jdm = "jj describe -m";
         je = "jj edit";
         jl = "jj log";
+        jla = "jj log -r ::";
         jlr = "jj log --reversed";
         jn = "jj new";
         jnm = "jj new -m";
