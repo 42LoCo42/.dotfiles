@@ -18,14 +18,16 @@
       };
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
-        MAGIC_ENTER_GIT_COMMAND=' if test -d .jj; then js; echo; jl; else git status; fi'
+        jsl() { jj status --no-pager; echo; jj log --no-pager; }
+        MAGIC_ENTER_GIT_COMMAND='   if test -d .jj; then jsl; else git status; fi'
+        MAGIC_ENTER_OTHER_COMMAND=' if test -d .jj; then jsl; else l;          fi'
       '';
 
       home.shellAliases = {
         j = "jj";
         jbl = "jj branch list";
         jbs = "jj branch set";
-        jd = "jj describe";
+        jd = "jj diff";
         jdm = "jj describe -m";
         je = "jj edit";
         jl = "jj log";
