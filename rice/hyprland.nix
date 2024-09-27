@@ -1,6 +1,6 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) getExe;
+  inherit (lib) getExe getExe';
   inherit (aquaris.lib) subsF subsT;
 in
 {
@@ -13,6 +13,7 @@ in
         early-config = config.rice.hypr-early-config;
 
         fuzzel = getExe pkgs.fuzzel;
+        ipython = getExe' pkgs.python3Packages.ipython "ipython";
         pulsemixer = getExe pkgs.pulsemixer;
         qalc = getExe pkgs.libqalculate;
         vesktop = getExe pkgs.vesktop;
