@@ -555,6 +555,9 @@
 
         rustic = {
           mode = ''("\\.rs\\'" . rustic-mode)'';
+          custom = ''
+            (lsp-rust-analyzer-cargo-watch-command "clippy")
+          '';
         };
 
         yaml-mode = {
