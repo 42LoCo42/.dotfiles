@@ -6,7 +6,7 @@
     u2f.settings.cue = true;
   };
 
-  programs.less.envVariables.LESS = "-i -F -R";
+  environment.variables.LESS = "-i -F -R";
 
   services = {
     # persistent CPU temperature path
