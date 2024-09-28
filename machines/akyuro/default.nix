@@ -61,6 +61,7 @@
   };
 
   services.auto-cpufreq.enable = true;
+  services.tailscale.enable = true;
 
   home-manager.users.leonsch = hm: {
     services.mako.extraConfig = ''

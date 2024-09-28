@@ -1,0 +1,29 @@
+server_url: https://headscale.@domain@
+listen_addr: 0.0.0.0:8080
+
+private_key_path: "/data/private.key"
+
+noise:
+  private_key_path: "/data/noise.key"
+
+ip_prefixes:
+  - 100.64.0.0/10
+
+disable_check_updates: true
+
+db_type: sqlite3
+db_path: "/data/db.sqlite"
+
+dns_config:
+  magic_dns: true
+  base_domain: bunny.vpn
+  nameservers:
+    - 1.1.1.1
+    - 1.0.0.1
+    - 9.9.9.9
+
+derp:
+  urls:
+  - https://controlplane.tailscale.com/derpmap/default
+
+unix_socket: "/data/headscale.sock"

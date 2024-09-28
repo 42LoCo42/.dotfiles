@@ -220,6 +220,12 @@ in
       ];
     };
 
+    headscale = {
+      cmd = [ (getExe' pkgs.headscale "headscale") "serve" "-c" "${subsDomain ./headscale.yaml}" ];
+      ssl = true;
+      volumes = [ "headscale:/data" ];
+    };
+
     rustdesk =
       let
         pubkey = "Dh0lsYDLdL7GIb0BHWR2VS0mRCLSmyKIJHdtkzmWjdQ=";

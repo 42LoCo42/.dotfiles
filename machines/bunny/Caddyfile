@@ -113,6 +113,11 @@ img.{$DOMAIN} {
 	reverse_proxy photoview:4001
 }
 
+headscale.{$DOMAIN} {
+	import default
+	reverse_proxy headscale:8080
+}
+
 ldap.{$DOMAIN} {
 	import default
 	reverse_proxy lldap:8080
