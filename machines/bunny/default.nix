@@ -98,6 +98,7 @@ in
       "machine/rustdesk".user = "rustdesk";
       "machine/synapse/secrets".user = "synapse";
       "machine/synapse/signing-key".user = "synapse";
+      "machine/tailscaled".user = "tailscaled";
     };
   };
 
@@ -226,6 +227,25 @@ in
       volumes = [ "headscale:/data" ];
     };
 
+    photoview = {
+      cmd = [ (getExe pkgs.photoview) ];
+      environment = {
+        PHOTOVIEW_DATABASE_DRIVER = "postgres";
+        PHOTOVIEW_LISTEN_IP = "0.0.0.0";
+        PHOTOVIEW_MEDIA_CACHE = "/data";
+      };
+      environmentFiles = [ config.aquaris.secrets."machine/photoview" ];
+      volumes = [
+        "photoview:/data"
+        "/persist/home/admin/img:/media:ro"
+      ];
+    };
+
+    pinlist = {
+      cmd = [ (getExe self.inputs.pinlist.packages.${pkgs.system}.default) ];
+      volumes = [ "pinlist:/db" ];
+    };
+
     rustdesk =
       let
         pubkey = "Dh0lsYDLdL7GIb0BHWR2VS0mRCLSmyKIJHdtkzmWjdQ=";
@@ -251,25 +271,6 @@ in
         ];
         workdir = "/data";
       };
-
-    photoview = {
-      cmd = [ (getExe pkgs.photoview) ];
-      environment = {
-        PHOTOVIEW_DATABASE_DRIVER = "postgres";
-        PHOTOVIEW_LISTEN_IP = "0.0.0.0";
-        PHOTOVIEW_MEDIA_CACHE = "/data";
-      };
-      environmentFiles = [ config.aquaris.secrets."machine/photoview" ];
-      volumes = [
-        "photoview:/data"
-        "/persist/home/admin/img:/media:ro"
-      ];
-    };
-
-    pinlist = {
-      cmd = [ (getExe self.inputs.pinlist.packages.${pkgs.system}.default) ];
-      volumes = [ "pinlist:/db" ];
-    };
 
     searxng = {
       cmd = [ (getExe' pkgs.searxng "searxng-run") ];
@@ -304,6 +305,22 @@ in
       volumes = [
         "syncthing:/data"
         "/persist/sync:/sync"
+      ];
+    };
+
+    tailscaled = {
+      cmd = [
+        (getExe' pkgs.tailscale "tailscaled")
+        "-config=${subsDomain ./tailscaled.json}"
+        "-socket=/data/tailscaled.sock"
+        "-state=/data/tailscaled.state"
+        "-statedir=/data"
+      ];
+      extraOptions = [ "--cap-add=net_admin" "--device=/dev/net/tun" ];
+      ssl = true;
+      volumes = [
+        "tailscaled:/data"
+        "${config.aquaris.secrets."machine/tailscaled"}:/key:ro"
       ];
     };
 
