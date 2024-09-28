@@ -34,7 +34,7 @@
   };
 
   boot = {
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    kernelPackages = pkgs.linuxPackages_zen;
     supportedFilesystems.zfs = true;
     zfs.package = pkgs.zfs_unstable;
   };
@@ -61,7 +61,12 @@
   };
 
   services.auto-cpufreq.enable = true;
-  services.tailscale.enable = true;
+
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    useRoutingFeatures = "client";
+  };
 
   home-manager.users.leonsch = hm: {
     services.mako.extraConfig = ''
