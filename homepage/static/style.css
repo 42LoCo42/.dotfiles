@@ -22,7 +22,8 @@
 	font-stretch: normal;
 	src:
 		local("Iosevka Nerd Font"),
-		url(/iosevka.ttf) format("truetype");
+		url("iosevka.woff2") format("woff2"),
+		url("iosevka.ttf") format("truetype");
 }
 
 html {

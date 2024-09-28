@@ -27,11 +27,17 @@ let
       fileset = d;
     };
 
-    nativeBuildInputs = with pkgs; [ glibcLocales pug tree ];
+    nativeBuildInputs = with pkgs; [
+      glibcLocales
+      pug
+      tree
+      woff2
+    ];
 
     buildPhase = ''
       cp -r static $out
       cp "${iosevka}" $out/iosevka.ttf
+      woff2_compress $out/iosevka.ttf
       bash processStuff.sh
       pug3 -o $out .
     '';
