@@ -44,6 +44,12 @@ let
   };
 
   avh = self.inputs.avh.packages.${pkgs.system}.default;
+
+  invfork = pkgs.runCommandCC "invfork"
+    { nativeBuildInputs = with pkgs; [ musl ]; } ''
+    cc -Wall -Wextra -Werror -O3 -static -flto ${./invfork.c} -o $out
+    strip -s $out
+  '';
 in
 {
   imports = [ "${self}/rice/pnoc.nix" ];
@@ -310,13 +316,24 @@ in
 
     tailscaled = {
       cmd = [
+        invfork.outPath
+
+        # parent process: tailscaled in declarative mode
         (getExe' pkgs.tailscale "tailscaled")
         "-config=${subsDomain ./tailscaled.json}"
         "-socket=/data/tailscaled.sock"
         "-state=/data/tailscaled.state"
         "-statedir=/data"
+
+        "--" # child process: SSH forwarder
+        "${getExe pkgs.socat}"
+        "TCP-LISTEN:22,fork,reuseaddr"
+        "TCP-CONNECT:host.containers.internal:18213"
       ];
-      extraOptions = [ "--cap-add=net_admin" "--device=/dev/net/tun" ];
+      extraOptions = [
+        "--cap-add=net_admin,net_bind_service"
+        "--device=/dev/net/tun"
+      ];
       ssl = true;
       volumes = [
         "tailscaled:/data"
