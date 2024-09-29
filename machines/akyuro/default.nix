@@ -51,6 +51,8 @@
   };
 
   rice = {
+    tailscale = true;
+
     fuzzel-font-size = 14;
     temp-select = ''DRIVERS=="k10temp"'';
     temp-warn = 60;
@@ -61,12 +63,6 @@
   };
 
   services.auto-cpufreq.enable = true;
-
-  services.tailscale = {
-    enable = true;
-    openFirewall = true;
-    useRoutingFeatures = "client";
-  };
 
   home-manager.users.leonsch = hm: {
     services.mako.extraConfig = ''
