@@ -1,11 +1,9 @@
 { pkgs, lib, config, aquaris, ... }@top:
 let
   inherit (lib)
-    fileContents
     ifEnable
     mkOption
     pipe
-    splitString
     ;
 
   inherit (lib.types)
@@ -67,33 +65,59 @@ let
 
       _gen = mkOption {
         type = attrsOf anything;
-        default = rec {
-          inherit (config) cmd environmentFiles ports workdir;
+        default =
+          let
+            environment = config.environment // ifEnable config.ssl {
+              SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+            };
 
-          environment = config.environment // ifEnable config.ssl {
-            SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+            info = pipe { inherit (config) cmd; inherit environment; } [
+              builtins.toJSON
+              (pkgs.writeText "${name}-info")
+            ];
+
+            volumes = pkgs.runCommand "${name}-volumes"
+              {
+                __structuredAttrs = true;
+                exportReferencesGraph.graph = info;
+                nativeBuildInputs = with pkgs; [ jq ];
+              } ''
+              jq -r '
+                .graph
+                | map(.path)
+                | sort
+                | .[]
+              ' "$NIX_ATTRS_JSON_FILE" \
+              | grep -v "${info}" \
+              | sed -E 's|(.*)|\1:\1:ro|' > $out
+
+              jq -r '
+                .graph[]
+                | select(.path == "${info}")
+                | .references[]
+              ' "$NIX_ATTRS_JSON_FILE" \
+              | while read -r i; do
+                if test -d "$i/bin"; then
+                  find "$i/bin" -mindepth 1 -maxdepth 1 -type f -executable \
+                  | sed -E 's|(.+)/([^/]+)$|\1/\2:/bin/\2:ro|'
+                fi
+              done >> $out
+            '';
+          in
+          {
+            inherit (config) cmd environmentFiles ports workdir;
+            inherit environment;
+
+            extraOptions = config.extraOptions ++
+              [ "--hostuser" name "--tz" top.config.time.timeZone ];
+
+            image = "${empty.imageName}:${empty.imageTag}";
+            imageFile = empty;
+
+            user = name;
+
+            volumes = config.volumes ++ aquaris.lib.readLines volumes;
           };
-
-          extraOptions = config.extraOptions ++
-            [ "--hostuser" name "--tz" top.config.time.timeZone ];
-
-          image = "${empty.imageName}:${empty.imageTag}";
-          imageFile = empty;
-
-          user = name;
-
-          volumes = config.volumes ++ pipe { inherit cmd environment; } [
-            builtins.toJSON
-            (pkgs.writeText "${name}-cmd")
-            (x: pipe x [
-              pkgs.writeClosure
-              fileContents
-              (splitString "\n")
-              (builtins.filter (y: toString x != y))
-            ])
-            (map (x: "${x}:${x}"))
-          ];
-        };
       };
     };
   };
