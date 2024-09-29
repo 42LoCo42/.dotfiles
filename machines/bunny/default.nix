@@ -215,9 +215,12 @@ in
     ##### exposed services #####
 
     attic = {
-      cmd = [ (getExe pkgs.attic-server) "-f" "${subsDomain ./attic.toml}" ];
+      cmd = [ (getExe pkgs.attic-server) ];
       environmentFiles = [ config.aquaris.secrets."machine/attic" ];
-      volumes = [ "attic:/data" ];
+      volumes = [
+        "attic:/data"
+        "${subsDomain ./attic.toml}:/.config/attic/server.toml:ro"
+      ];
     };
 
     avh = {
@@ -228,9 +231,12 @@ in
     };
 
     headscale = {
-      cmd = [ (getExe' pkgs.headscale "headscale") "serve" "-c" "${subsDomain ./headscale.yaml}" ];
+      cmd = [ (getExe' pkgs.headscale "headscale") "serve" ];
       ssl = true;
-      volumes = [ "headscale:/data" ];
+      volumes = [
+        "headscale:/data"
+        "${subsDomain ./headscale.yaml}:/etc/headscale/config.yaml:ro"
+      ];
     };
 
     photoview = {
@@ -273,7 +279,7 @@ in
         ];
         volumes = [
           "rustdesk:/data"
-          "${config.aquaris.secrets."machine/rustdesk"}:/data/id_ed25519"
+          "${config.aquaris.secrets."machine/rustdesk"}:/data/id_ed25519:ro"
         ];
         workdir = "/data";
       };
@@ -286,7 +292,7 @@ in
       };
       environmentFiles = [ config.aquaris.secrets."machine/searxng" ];
       ssl = true;
-      volumes = [ "${./searxng.yaml}:/etc/searxng/settings.yml" ];
+      volumes = [ "${./searxng.yaml}:/etc/searxng/settings.yml:ro" ];
     };
 
     synapse = {
@@ -294,9 +300,9 @@ in
       ssl = true;
       volumes = [
         "synapse:/data"
-        "${subsDomain ./synapse.yaml}:/config/homeserver.yaml"
-        "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml"
-        "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key"
+        "${subsDomain ./synapse.yaml}:/config/homeserver.yaml:ro"
+        "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml:ro"
+        "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key:ro"
       ];
     };
 
@@ -411,8 +417,8 @@ in
       volumes = [
         "postgres:/data"
         "postgres:/run/postgresql"
-        "${./postgres/postgresql.conf}:/data/postgresql.conf"
-        "${./postgres/pg_hba.conf}:/data/pg_hba.conf"
+        "${./postgres/postgresql.conf}:/data/postgresql.conf:ro"
+        "${./postgres/pg_hba.conf}:/data/pg_hba.conf:ro"
       ];
     };
 
