@@ -73,11 +73,11 @@
         bind-interfaces = true;
         listen-address = [ "127.0.0.1" ];
 
-        # forward to fritzbox and stubby
-        no-resolv = true;
-        server = [
+        # forward to stubby, fritzbox & tailscale
+        server = [ "127.0.0.1#53000" ];
+        local = [
           "/fritz.box/192.168.178.1"
-          "127.0.0.1#53000"
+          "/bunny.vpn/100.100.100.100"
         ];
 
         # misc
@@ -107,6 +107,8 @@
   };
 
   rice = {
+    tailscale = true;
+
     fuzzel-font-size = 20;
     temp-select = ''KERNELS=="coretemp.0"'';
     temp-warn = 70;
