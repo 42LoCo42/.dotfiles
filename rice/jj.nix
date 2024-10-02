@@ -25,24 +25,32 @@
 
       home.shellAliases = {
         j = "jj";
+        ja = "jj abandon";
+        jbd = "jj branch delete";
         jbl = "jj branch list";
         jbs = "jj branch set";
         jd = "jj diff";
         jdm = "jj describe -m";
         je = "jj edit";
+        ji = "jj git init --colocate";
         jl = "jj log";
         jla = "jj log -r ::";
         jlr = "jj log --reversed";
         jn = "jj new";
         jnm = "jj new -m";
-        jpl = "jj git fetch";
+        jpl = "jj git fetch"; # "pull"
         jps = "jj git push";
         jr = "jj rebase";
-        js = "jj status";
+        jra = "jj git remote add";
+        jrd = "jj git remote remove"; # "delete"
+        jrl = "jj git remote list";
+        jrs = "jj git remote set-url";
+        js = "jj show";
         jsp = "jj split";
         jspi = "jj split -i";
         jsq = "jj squash";
         jsqi = "jj squash -i";
+        ju = "jj file untrack";
       };
     })
   ];
