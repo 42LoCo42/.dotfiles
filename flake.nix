@@ -9,6 +9,10 @@
     avh.inputs.flake-utils.follows = "aquaris/flake-utils";
     avh.inputs.nixpkgs.follows = "nixpkgs";
 
+    chronometer.url = "github:42loco42/chronometer";
+    chronometer.inputs.flake-utils.follows = "aquaris/flake-utils";
+    chronometer.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
