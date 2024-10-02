@@ -13,6 +13,9 @@ in
         '';
       };
 
+      firefox = pkgs.firefox.override
+        { cfg.speechSynthesisSupport = false; };
+
       foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
 
       glfw3-minecraft =

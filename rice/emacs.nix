@@ -558,6 +558,12 @@
           custom = ''
             (lsp-rust-analyzer-cargo-watch-command "clippy")
           '';
+          extraPackages = with pkgs; [
+            clippy
+            crate2nix
+            rust-analyzer
+            rustfmt
+          ];
         };
 
         yaml-mode = {
