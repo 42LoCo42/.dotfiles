@@ -469,11 +469,12 @@
           '';
 
           hook = ''
-            (go-mode      . lsp-deferred)
-            (haskell-mode . lsp-deferred)
-            (nix-mode     . lsp-deferred)
-            (rustic-mode  . lsp-deferred)
-            (sh-mode      . lsp-deferred)
+            (go-mode         . lsp-deferred)
+            (haskell-mode    . lsp-deferred)
+            (nix-mode        . lsp-deferred)
+            (rustic-mode     . lsp-deferred)
+            (sh-mode         . lsp-deferred)
+            (typescript-mode . lsp-deferred)
           '';
 
           custom = ''
@@ -575,6 +576,10 @@
 
         typescript-mode = {
           mode = ''"\\.ts\\'"'';
+          extraPackages = with pkgs.nodePackages; [
+            typescript
+            typescript-language-server
+          ];
         };
 
         # Lisp
