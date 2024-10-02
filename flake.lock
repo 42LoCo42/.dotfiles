@@ -62,11 +62,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1727858401,
-        "narHash": "sha256-0gnWz2ZpKJgvORxGzpR5HRuuX+Au7CZbeh0yWhzSnw0=",
+        "lastModified": 1727872321,
+        "narHash": "sha256-G8qOfKPKtU1ukPSPsH9z6cbsLqWHdha0l5Ymwx7m5Zk=",
         "owner": "42loco42",
         "repo": "chronometer",
-        "rev": "5667d90bbdb1ea7807809e13803213ee8f4a3935",
+        "rev": "dd49f3b7ec73fe7aeb790eb10b008232dfbc2466",
         "type": "github"
       },
       "original": {
