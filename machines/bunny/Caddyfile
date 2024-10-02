@@ -102,6 +102,11 @@ avh.{$DOMAIN} {
 	reverse_proxy avh:8080
 }
 
+chronometer.{$DOMAIN} {
+	import default
+	root * /srv/chronometer
+}
+
 element.{$DOMAIN} {
 	import default
 	root * /srv/element

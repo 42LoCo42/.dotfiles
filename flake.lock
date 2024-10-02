@@ -51,6 +51,30 @@
         "type": "github"
       }
     },
+    "chronometer": {
+      "inputs": {
+        "flake-utils": [
+          "aquaris",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1727857144,
+        "narHash": "sha256-p1hcVRhHrrkhVDc2QluKVHyeqXhiTa80tvyk9IPclgU=",
+        "owner": "42loco42",
+        "repo": "chronometer",
+        "rev": "bdf84e4277737cbe576c93794ddbffa9b4c29241",
+        "type": "github"
+      },
+      "original": {
+        "owner": "42loco42",
+        "repo": "chronometer",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -209,6 +233,7 @@
       "inputs": {
         "aquaris": "aquaris",
         "avh": "avh",
+        "chronometer": "chronometer",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",

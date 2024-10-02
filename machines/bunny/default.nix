@@ -15,6 +15,8 @@ let
     subs = { inherit domain dn; };
   };
 
+  chronometer = self.inputs.chronometer.packages.${pkgs.system}.default;
+
   iosevka = pipe pkgs.nerdfonts [
     (x: x.override { fonts = [ "Iosevka" ]; })
     (x: "${x}/share/fonts/truetype/NerdFonts/IosevkaNerdFont-Regular.ttf")
@@ -206,6 +208,7 @@ in
       volumes = [
         "caddy:/caddy"
         "${homepage}:/srv/homepage"
+        "${chronometer}:/srv/chronometer"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
         "${pkgs.element-web}:/srv/element"
         "${subsDomain ./element.json}:/srv/element/config.json"
