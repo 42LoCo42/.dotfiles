@@ -105,6 +105,7 @@ avh.{$DOMAIN} {
 chronometer.{$DOMAIN} {
 	import default
 	root * /srv/chronometer
+	file_server
 }
 
 element.{$DOMAIN} {
