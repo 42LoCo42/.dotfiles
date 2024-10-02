@@ -207,11 +207,11 @@ in
       ssl = true;
       volumes = [
         "caddy:/caddy"
-        "${homepage}:/srv/homepage"
-        "${chronometer}:/srv/chronometer"
+        "${homepage}:/srv/homepage:ro"
+        "${chronometer}:/srv/chronometer:ro"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
-        "${pkgs.element-web}:/srv/element"
-        "${subsDomain ./element.json}:/srv/element/config.json"
+        "${pkgs.element-web}:/srv/element:ro"
+        "${subsDomain ./element.json}:/srv/element/config.json:ro"
       ];
     };
 
