@@ -126,6 +126,7 @@ headscale.{$DOMAIN} {
 
 ldap.{$DOMAIN} {
 	import default
+	import auth
 	reverse_proxy lldap:8080
 }
 

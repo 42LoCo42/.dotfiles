@@ -42,6 +42,11 @@ access_control:
         - "group:auth_avh"
       policy: "two_factor"
 
+    - domain: "ldap.@domain@"
+      subject:
+        - "group:lldap_admin"
+      policy: "two_factor"
+
     - domain: "pin.@domain@"
       subject:
         - "group:auth_pin"
