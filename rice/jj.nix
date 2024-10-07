@@ -18,6 +18,7 @@
       };
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
+        jcg() { jj git clone --colocate "git@github.com:$1"; }
         jsl() { jj status --no-pager; echo; jj log --no-pager; }
         MAGIC_ENTER_GIT_COMMAND='   if test -d .jj; then jsl; else git status; fi'
         MAGIC_ENTER_OTHER_COMMAND=' if test -d .jj; then jsl; else l;          fi'
@@ -29,6 +30,7 @@
         jbd = "jj branch delete";
         jbl = "jj branch list";
         jbs = "jj branch set";
+        jc = "jj git clone --colocate";
         jd = "jj diff";
         jdm = "jj describe -m";
         je = "jj edit";
