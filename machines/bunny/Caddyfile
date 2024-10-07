@@ -57,7 +57,8 @@
 }
 
 (auth) {
-	forward_auth authelia:8080 {
+	# allow optional matcher
+	forward_auth {args[:]} authelia:8080 {
 		uri /api/authz/forward-auth
 		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
 	}
@@ -176,6 +177,7 @@ vencloud.{$DOMAIN} {
 
 vw.{$DOMAIN} {
 	import default
+	import auth /admin*
 	reverse_proxy vaultwarden:8080 {
 		header_up X-Real-IP {remote_host}
 	}
