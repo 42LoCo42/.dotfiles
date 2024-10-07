@@ -29,7 +29,9 @@
         ja = "jj abandon";
         jbd = "jj branch delete";
         jbl = "jj branch list";
+        jbla = "jj branch list --all";
         jbs = "jj branch set";
+        jbt = "jj branch track";
         jc = "jj git clone --colocate";
         jd = "jj diff";
         jdm = "jj describe -m";
