@@ -56,3 +56,8 @@ access_control:
       subject:
         - "group:auth_syncthing"
       policy: "two_factor"
+
+    - domain: "vw.@domain@"
+      subject:
+        - "group:auth_vw_admin"
+      policy: "two_factor"
