@@ -153,8 +153,22 @@
     ];
 
     home.packages = with pkgs; [
+      openvpn # for corporate VPN
+      p7zip
       prismlauncher
+      pwgen
+      python3
       rustdesk-flutter
+      wf-recorder
+
+      # for external backup SSD
+      btrfs-progs
+      cryptsetup
+
+      # for managing my music library
+      ffmpeg
+      kid3-cli
+      moreutils
     ];
   };
 }
