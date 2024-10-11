@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   systemd.services.dnsmasq = {
     after = [ "network-online.target" ];
     requires = [ "network-online.target" ];
@@ -8,7 +8,7 @@
     dnsmasq = {
       enable = true;
       settings = {
-        interface = "enp6s0";
+        interface = config.rice.dnsmasq-interface;
         bind-interfaces = true;
         listen-address = [ "127.0.0.1" ];
 

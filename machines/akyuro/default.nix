@@ -51,6 +51,8 @@
   };
 
   rice = {
+    dnsmasq-interface = "wlp2s0";
+
     tailscale = true;
 
     fuzzel-font-size = 14;
