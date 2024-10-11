@@ -207,7 +207,7 @@ in
       ssl = true;
       volumes = [
         "caddy:/caddy"
-        "${homepage}:/srv/homepage:ro"
+        "${homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
         "${chronometer}:/srv/chronometer:ro"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
         "${pkgs.element-web}:/srv/element:ro"
