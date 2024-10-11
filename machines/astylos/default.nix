@@ -61,6 +61,8 @@
   programs.gamemode.enable = true;
 
   rice = {
+    dnsmasq-interface = "enp6s0";
+
     tailscale = true;
 
     fuzzel-font-size = 20;
