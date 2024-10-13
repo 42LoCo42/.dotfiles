@@ -19,7 +19,9 @@
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
         jcg() { repo="git@github.com:$1"; shift; jj git clone --colocate "$repo" "$@"; }
+        jdn() { jj describe -m "$@"; jj new; } # jj describe-then-new
         jsl() { jj status --no-pager; echo; jj log --no-pager; }
+
         MAGIC_ENTER_GIT_COMMAND='   if test -d .jj; then jsl; else git status; fi'
         MAGIC_ENTER_OTHER_COMMAND=' if test -d .jj; then jsl; else l;          fi'
       '';
