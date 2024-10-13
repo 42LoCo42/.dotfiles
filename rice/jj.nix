@@ -27,11 +27,11 @@
       home.shellAliases = {
         j = "jj";
         ja = "jj abandon";
-        jbd = "jj branch delete";
-        jbl = "jj branch list";
-        jbla = "jj branch list --all";
-        jbs = "jj branch set";
-        jbt = "jj branch track";
+        jbd = "jj bookmark delete";
+        jbl = "jj bookmark list";
+        jbla = "jj bookmark list --all";
+        jbs = "jj bookmark set";
+        jbt = "jj bookmark track";
         jc = "jj git clone --colocate";
         jd = "jj diff";
         jdm = "jj describe -m";
