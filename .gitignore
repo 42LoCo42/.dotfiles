@@ -1,5 +1,6 @@
 *.key
 *.tar.gz
 /.direnv
+/.jj
 /old
 /result
