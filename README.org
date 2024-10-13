@@ -5,12 +5,12 @@ This config is based on my [[https://github.com/42LoCo42/aquaris/tree/rewrite][A
 which provides a wealth of default options, tools and functions.
 
 ** Machines
-| [[file:machines/akyuro/default.nix][akyuro]]        | Laptop       |
-| [[file:machines/astylos/default.nix][astylos]]       | Desktop      |
-| [[file:machines/bunny/default.nix][bunny]]         | Server       |
-| [[file:machines/guanyin/default.nix][guanyin]]       | Live ISO     |
-| TODO laniakea | Odroid M1    |
-| TODO rubicon  | Raspberry Pi |
+| [[file:machines/akyuro/default.nix][akyuro]]       | Laptop       |
+| [[file:machines/astylos/default.nix][astylos]]      | Desktop      |
+| [[file:machines/bunny/default.nix][bunny]]        | Server       |
+| [[file:machines/guanyin/default.nix][guanyin]]      | Live ISO     |
+| [[file:machines/laniakea/default.nix][laniakea]]     | Odroid M1    |
+| TODO rubicon | Raspberry Pi |
 
 ** Screenshots
 **** A lot of stuff happening on =astylos=
