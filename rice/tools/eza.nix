@@ -10,9 +10,9 @@
         "--group-directories-first"
         "--header"
         "--icons"
-        "--links"
         "--long"
         "--mounts"
+        "--no-filesize"
       ];
     };
 
