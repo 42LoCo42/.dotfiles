@@ -1,5 +1,12 @@
 { pkgs, config, ... }: {
-  nix.package = pkgs.lib.mkForce pkgs.lix;
+  nix = {
+    package = pkgs.lib.mkForce pkgs.lix;
+
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
+
+    settings.keep-going = true;
+  };
 
   security.pam = {
     services.sudo.u2fAuth = true;
