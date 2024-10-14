@@ -1,4 +1,4 @@
-{ self, pkgs, aquaris, ... }: {
+{ self, pkgs, config, aquaris, ... }: {
   imports = [ "${self}/rice" ];
 
   aquaris = {
@@ -82,14 +82,10 @@
     '';
   };
 
-  home-manager.users.leonsch = {
+  home-manager.users.leonsch = hm: {
     aquaris.persist = [
-      "IU"
       "config"
-      "dev"
-      "doc"
       "music"
-      "work"
 
       ".cache/JetBrains"
 
@@ -126,5 +122,18 @@
       kid3-cli
       moreutils
     ];
+
+    systemd.user.tmpfiles.rules =
+      let
+        home = hm.config.home.homeDirectory;
+        sync = "${config.aquaris.persist.root}/${home}/sync";
+      in
+      map (x: "L+ ${home}/${x} - - - - ${sync}/${x}") [
+        "IU"
+        "dev"
+        "doc"
+        "img"
+        "work"
+      ];
   };
 }
