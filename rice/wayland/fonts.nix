@@ -1,4 +1,10 @@
 { pkgs, ... }: {
+  nixpkgs.overlays = [
+    (_: pkgs: {
+      nerdfonts = pkgs.nerdfonts.override { fonts = [ "Iosevka" ]; };
+    })
+  ];
+
   fonts = {
     packages = with pkgs; [
       nerdfonts

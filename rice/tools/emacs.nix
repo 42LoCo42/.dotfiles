@@ -3,6 +3,8 @@
     services.emacs.enable = true;
     systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
 
+    aquaris.persist = [ ".config/emacs" ];
+
     aquaris.emacs = {
       enable = true;
       package = pkgs.emacs29-pgtk;

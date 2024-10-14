@@ -5,8 +5,8 @@ else
 	out="notify-send"
 fi
 
-src="/persist/$HOME/ARCH/trans/hrtrack"
-has="$(< "$src")"
+src="@hrtrack-file@"
+has="$(<"$src")"
 now="$(date "+%Y-%m-%d")"
 echo "Today is $now"
 if [ "$has" == "$now" ]; then
@@ -18,5 +18,5 @@ else
 	fi
 
 	"$out" "Take Estrogen$extra today!"
-	echo "$now" > "$src"
+	echo "$now" >"$src"
 fi

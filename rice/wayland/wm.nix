@@ -9,7 +9,7 @@ in
   home-manager.sharedModules = [{
     wayland.windowManager.hyprland = {
       enable = true;
-      extraConfig = subsT ./misc/hyprland.conf {
+      extraConfig = subsT ./files/hyprland.conf {
         early-config = config.rice.hypr-early-config;
 
         fuzzel = getExe pkgs.fuzzel;

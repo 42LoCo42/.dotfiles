@@ -1,8 +1,4 @@
-{ pkgs, config, lib, ... }:
-let
-  inherit (lib) getExe;
-in
-{
+{ pkgs, config, lib, ... }: {
   home-manager.sharedModules = [{
     # sometimes waybar starts before hyprland and then crashes
     # fix: just restart it until it works
@@ -15,7 +11,7 @@ in
       enable = true;
       systemd.enable = true;
       systemd.target = "hyprland-session.target";
-      style = ./misc/waybar.css;
+      style = ./files/waybar.css;
 
       settings.mainBar = {
         layer = "top";
@@ -69,7 +65,7 @@ in
           format = "{}°";
           tooltip = true;
           interval = 3600;
-          exec = "${getExe pkgs.wttrbar}";
+          exec = "${lib.getExe pkgs.wttrbar}";
           return-type = "json";
         };
 
