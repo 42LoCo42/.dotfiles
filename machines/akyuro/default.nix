@@ -51,6 +51,8 @@
   };
 
   rice = {
+    hrtrack-file = "$HOME/trans/hrtrack";
+
     dnsmasq-interface = "wlp2s0";
 
     tailscale = true;
