@@ -13,16 +13,8 @@ which provides a wealth of default options, tools and functions.
 | TODO rubicon  | Raspberry Pi |
 
 ** Screenshots
+**** A lot of stuff happening on =astylos=
+[[file:images/astylos.png]]
 
-Obligatory neofetch
-[[./images/akyuro-neofetch.png]]
-
-A little bit of demonstrative clutter on =akyuro=, featuring my [[https://github.com/42LoCo42/emacs-config/][Emacs config]]
-[[./images/akyuro-work.png]]
-
-My server =bunny= hard at work
-[[./images/bunny.png]]
-
-=guanyin=, a modernized NixOS live ISO w/ flakes and other goodies enabled,
-running inside a VM
-[[./images/guanyin.png]]
+**** More neofetch action on =akyuro=
+[[file:images/akyuro.png]]
