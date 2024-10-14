@@ -1,4 +1,6 @@
 { lib, ... }: {
+  environment.variables.LESS = "-i -F -R";
+
   home-manager.sharedModules = [
     ({ config, ... }: {
       programs.jujutsu = {

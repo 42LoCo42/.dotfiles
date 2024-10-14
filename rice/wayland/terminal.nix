@@ -1,4 +1,10 @@
-{ ... }: {
+{ self, ... }: {
+  nixpkgs.overlays = [
+    (_: pkgs: {
+      foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
+    })
+  ];
+
   home-manager.sharedModules = [{
     programs.foot = {
       enable = true;

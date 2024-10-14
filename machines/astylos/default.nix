@@ -14,10 +14,7 @@
 
     persist = {
       enable = true;
-      dirs = [
-        "/root/.android"
-        "/var/cache/tuigreet"
-      ];
+      dirs = [ "/root/.android" ];
     };
 
     filesystems = { fs, ... }: {
@@ -38,12 +35,6 @@
     };
   };
 
-  fileSystems."/proc" = {
-    device = "proc";
-    fsType = "proc";
-    options = [ "hidepid=2" "gid=wheel" ];
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
     zfs.package = pkgs.zfs_unstable;
@@ -61,6 +52,8 @@
   programs.gamemode.enable = true;
 
   rice = {
+    hrtrack-file = "/persist/$HOME/ARCH/trans/hrtrack";
+
     dnsmasq-interface = "enp6s0";
 
     tailscale = true;
@@ -90,24 +83,15 @@
       ".cache/JetBrains"
 
       ".config/JetBrains"
-      ".config/Yubico"
-      ".config/dconf"
-      ".config/emacs"
       ".config/rustdesk"
-      ".config/vesktop"
 
       ".local/share/JetBrains"
-      ".local/share/PrismLauncher"
       ".local/share/direnv"
-      ".local/share/flatpak"
-
-      ".local/state/wireplumber"
     ];
 
     home.packages = with pkgs; [
       openvpn # for corporate VPN
       p7zip
-      prismlauncher
       pwgen
       python3
       rustdesk-flutter

@@ -1,7 +1,25 @@
 { self, lib, config, aquaris, ... }:
 let
-  inherit (lib) mkOption;
+  inherit (lib) flatten mapAttrsToList mkOption pipe remove;
   inherit (lib.types) anything;
+
+  allNix =
+    let
+      helper = dir: pipe dir [
+        builtins.readDir
+        (mapAttrsToList (name: type:
+          if type == "directory"
+          then helper "${dir}/${name}"
+          else if builtins.match ".*\.nix" name != null
+          then [ "${dir}/${name}" ]
+          else [ ]))
+        flatten
+      ];
+    in
+    dir: pipe dir [
+      helper
+      (remove "${dir}/default.nix")
+    ];
 in
 {
   options.rice = mkOption {
@@ -14,5 +32,5 @@ in
     wallpaper = "${self}/machines/${aquaris.name}/wallpaper.png";
   };
 
-  imports = aquaris.lib.importDir' { dirs = false; } ./.;
+  imports = allNix ./.;
 }

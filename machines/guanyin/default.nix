@@ -1,13 +1,12 @@
 { pkgs, lib, modulesPath, aquaris, ... }:
-let
-  inherit (lib) mkForce;
-in
-{
+let inherit (lib) mkForce; in {
   nixpkgs.hostPlatform = "x86_64-linux";
 
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
   ];
+
+  system.stateVersion = mkForce "24.05";
 
   aquaris = {
     machine = {
