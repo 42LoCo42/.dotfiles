@@ -1,5 +1,5 @@
-{ self, pkgs, config, lib, aquaris, ... }: {
-  imports = [ "${self}/rice" ];
+{ pkgs, config, lib, aquaris, ... }: {
+  imports = [ ../../rice ];
 
   aquaris = {
     machine = {
@@ -61,11 +61,15 @@
   ];
 
   rice = {
-    hrtrack-file = "$HOME/trans/hrtrack";
+    desktop = true;
 
+    dns = true;
     dnsmasq-interface = "wlp2s0";
 
+    syncthing = true;
     tailscale = true;
+
+    hrtrack-file = "$HOME/trans/hrtrack";
 
     fuzzel-font-size = 14;
     temp-select = ''DRIVERS=="k10temp"'';

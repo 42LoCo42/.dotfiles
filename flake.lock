@@ -14,11 +14,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728806798,
-        "narHash": "sha256-yj8pcKIcQnMVg/q9edgsVIgo6v+scjh6yIEpS2x0wLM=",
+        "lastModified": 1729607886,
+        "narHash": "sha256-wgGKIdvjA3JH9GfSQI0/HBC0naUQw93v3W0N7YwghJQ=",
         "owner": "42loco42",
         "repo": "aquaris",
-        "rev": "1e3fd6723a5ad08c0117b5a824f874eba9be2313",
+        "rev": "f5efc0476a173c2554ecf409ac08b03dc4a88a30",
         "type": "github"
       },
       "original": {

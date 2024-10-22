@@ -1,5 +1,5 @@
-{ self, pkgs, config, aquaris, ... }: {
-  imports = [ "${self}/rice" ];
+{ pkgs, config, aquaris, ... }: {
+  imports = [ ../../rice ];
 
   aquaris = {
     users = aquaris.lib.merge [
@@ -40,11 +40,6 @@
     zfs.package = pkgs.zfs_unstable;
   };
 
-  services.zfs = {
-    autoScrub.enable = true;
-    autoSnapshot.enable = true;
-  };
-
   networking.hosts = {
     "127.0.0.1" = [ "dc10.readers.lakd" ];
   };
@@ -52,11 +47,15 @@
   programs.gamemode.enable = true;
 
   rice = {
-    hrtrack-file = "/persist/$HOME/ARCH/trans/hrtrack";
+    desktop = true;
 
+    dns = true;
     dnsmasq-interface = "enp6s0";
 
+    syncthing = true;
     tailscale = true;
+
+    hrtrack-file = "/persist/$HOME/ARCH/trans/hrtrack";
 
     fuzzel-font-size = 20;
     temp-select = ''KERNELS=="coretemp.0"'';
@@ -77,9 +76,6 @@
 
   home-manager.users.leonsch = hm: {
     aquaris.persist = [
-      "config"
-      "music"
-
       ".cache/JetBrains"
 
       ".config/JetBrains"
