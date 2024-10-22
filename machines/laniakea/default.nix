@@ -45,4 +45,10 @@
       autoSnapshot.enable = true;
     };
   };
+
+  home-manager.sharedModules = [{
+    aquaris.persist = [
+      "config"
+    ];
+  }];
 }
