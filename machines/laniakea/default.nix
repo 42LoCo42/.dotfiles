@@ -39,5 +39,10 @@
       openFirewall = true;
       useRoutingFeatures = "client";
     };
+
+    zfs = {
+      autoScrub.enable = true;
+      autoSnapshot.enable = true;
+    };
   };
 }
