@@ -1,5 +1,8 @@
 { pkgs, aquaris, ... }: {
-  imports = [ ./kboot-conf ];
+  imports = [
+    ../../rice
+    ./kboot-conf
+  ];
 
   aquaris = {
     machine = {
@@ -33,22 +36,5 @@
 
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
 
-  services = {
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      useRoutingFeatures = "client";
-    };
-
-    zfs = {
-      autoScrub.enable = true;
-      autoSnapshot.enable = true;
-    };
-  };
-
-  home-manager.sharedModules = [{
-    aquaris.persist = [
-      "config"
-    ];
-  }];
+  rice.tailscale = true;
 }

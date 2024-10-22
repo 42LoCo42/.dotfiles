@@ -54,7 +54,7 @@ let
   '';
 in
 {
-  imports = [ "${self}/rice/pnoc.nix" ];
+  imports = [ ../../rice ];
 
   nixpkgs.overlays = [
     (_: _: {
@@ -162,12 +162,6 @@ in
     };
 
     openssh.ports = lib.mkForce [ 18213 ];
-
-    zfs = {
-      autoScrub = { enable = true; interval = "weekly"; };
-      autoSnapshot.enable = true;
-      trim.enable = true;
-    };
   };
 
   systemd.services."mount-dcim" = {
