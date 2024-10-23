@@ -5,18 +5,22 @@
     ({ config, ... }: {
       programs.jujutsu = {
         enable = true;
-        settings = {
-          user = {
-            name = config.programs.git.userName;
-            email = config.programs.git.userEmail;
-          };
+        settings = lib.mkMerge [
+          # TODO rework all of this...?
+          (lib.mkIf (config.programs.git.userName != null)
+            { user.name = config.programs.git.userName; })
 
-          signing = {
-            sign-all = true;
-            backend = "ssh";
-            key = "~/.ssh/id_ed25519";
-          };
-        };
+          (lib.mkIf (config.programs.git.userEmail != null)
+            { user.email = config.programs.git.userEmail; })
+
+          (lib.mkIf (config.programs.git.signing.key != null) {
+            signing = {
+              sign-all = true;
+              backend = "ssh";
+              key = config.programs.git.signing.key;
+            };
+          })
+        ];
       };
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
