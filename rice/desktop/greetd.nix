@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, config, ... }: lib.mkIf config.rice.desktop {
   aquaris.persist.dirs = [ "/var/cache/tuigreet" ];
 
   services.greetd = {
