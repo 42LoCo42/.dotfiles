@@ -539,14 +539,21 @@
           '';
 
           config = ''
+            (advice-add 'haskell-mode :before (lambda ()
+              (require 'lsp-haskell)))
+
             (advice-add 'haskell-mode :after (lambda ()
               (add-hook 'after-save-hook 'my/haskell-reload)))
+          '';
+
+          custom = ''
+            (haskell-interactive-popup-errors nil)
           '';
         };
 
         json-mode = { mode = ''"\\.json\\'"''; };
 
-        lsp-haskell = { hook = "haskell-mode"; };
+        lsp-haskell = { defer = true; };
 
         nix-mode = {
           mode = ''"\\.nix\\'"'';
