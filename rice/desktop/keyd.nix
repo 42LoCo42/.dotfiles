@@ -1,4 +1,4 @@
-{
+{ lib, config, ... }: lib.mkIf config.rice.desktop {
   services.keyd = {
     enable = true;
     keyboards.default = {
