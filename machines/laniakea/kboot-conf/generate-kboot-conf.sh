@@ -24,7 +24,7 @@ addEntry() {
 		"$label" "$kernel" "$initrd" "$dtb" "$init" "$params"
 }
 
-exec >"/boot/kboot.conf"
+exec >"$BOOT/kboot.conf"
 
 addEntry "$1" "default"
 for i in /nix/var/nix/profiles/system-*-link; do
