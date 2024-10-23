@@ -52,6 +52,35 @@ let
     cc -Wall -Wextra -Werror -O3 -static -flto ${./invfork.c} -o $out
     strip -s $out
   '';
+
+  yae = (pkgs.buildGoModule.override {
+    go = pkgs.go // { GOARCH = "amd64"; };
+  }) rec {
+    pname = "yae";
+    version = "2024-10-19";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "fuwn";
+      repo = pname;
+      rev = "cb482154c1c9647d747cc15314f424d7be606569";
+      hash = "sha256-sT621IO5WOloodbOZ13PQm4C+VCThoD8QEJIcZGWLmw=";
+    };
+    vendorHash = "sha256-XQEB2vgiztbtLnc7BR4WTouPI+2NDQXXFUNidqmvbac=";
+
+    CGO_ENABLED = "0";
+
+    ldflags = [
+      "-s" # disable symbol table
+      "-w" # disable debug info
+    ];
+
+    postInstall = ''
+      mv $out/bin/linux_amd64/* $out/bin/
+      rmdir $out/bin/linux_amd64
+    '';
+
+    meta.mainProgram = pname;
+  };
 in
 {
   imports = [ ../../rice ];
@@ -201,11 +230,15 @@ in
       ssl = true;
       volumes = [
         "caddy:/caddy"
-        "${homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
+
         "${chronometer}:/srv/chronometer:ro"
-        "/persist/home/admin/hidden:/srv/homepage/foo:ro"
+
         "${pkgs.element-web}:/srv/element:ro"
         "${subsDomain ./element.json}:/srv/element/config.json:ro"
+
+        "${homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
+        "${getExe yae}:/srv/homepage/yae:ro"
+        "/persist/home/admin/hidden:/srv/homepage/foo:ro"
       ];
     };
 
