@@ -1,14 +1,17 @@
-{ pkgs, lib, aquaris, ... }: {
+{ pkgs, lib, config, ... }: {
   home-manager.sharedModules = [
     (hm:
       let
-        inherit (lib) mkForce;
+        inherit (lib) mkForce mkIf;
+
+        name = hm.config.home.username;
+        user = config.aquaris.users.${name}.git;
 
         allowedSigners = pkgs.writeText "allowedSigners" ''
-          ${hm.config.programs.git.userEmail} namespaces="git" ${aquaris.cfg.mainSSHKey}
+          ${user.email} namespaces="git" ${user.key}
         '';
       in
-      {
+      mkIf (user.key != null) {
         programs = {
           git = {
             extraConfig = {
@@ -22,8 +25,6 @@
 
             signing.key = mkForce "~/.ssh/id_ed25519";
           };
-
-          gpg.enable = mkForce false;
         };
       })
   ];

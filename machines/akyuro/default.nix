@@ -30,6 +30,7 @@
       ];
     };
 
+    # TODO secretKey handling should be part of aquaris
     secrets."users/leonsch/secretKey".user = "leonsch";
   };
 
@@ -89,9 +90,12 @@
       on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && ${pkgs.netcat}/bin/nc -dU /tmp/remo
     '';
 
+    # TODO secretKey handling should be part of aquaris
     systemd.user.tmpfiles.rules =
-      let home = hm.config.home.homeDirectory; in [
-        "L+ ${home}/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."users/leonsch/secretKey"}"
-      ];
+      let
+        name = hm.config.home.username;
+        home = hm.config.home.homeDirectory;
+      in
+      [ "L+ ${home}/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."users/${name}/secretKey"}" ];
   };
 }
