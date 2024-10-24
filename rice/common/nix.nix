@@ -5,6 +5,9 @@
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
 
-    settings.keep-going = true;
+    settings = {
+      keep-going = true;
+      use-xdg-base-directories = true;
+    };
   };
 }
