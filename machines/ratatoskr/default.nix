@@ -1,6 +1,6 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (aquaris.lib) merge subsT;
+  inherit (aquaris.lib) merge;
   inherit (lib) mkForce;
 
   wanIF = "TODO wan";
@@ -74,10 +74,9 @@ in
     })
   ];
 
-  boot.kernel.sysctl."net.ipv4.conf.all.forwarding" = true;
 
   networking = {
-    firewall.enable = false; # we use nftables
+    useDHCP = false;
     networkmanager.enable = mkForce false;
 
     interfaces = {
@@ -91,12 +90,29 @@ in
       };
     };
 
-    nftables = {
+    nftables.enable = true;
+
+    firewall = {
+      allowPing = false;
+      filterForward = true;
+      trustedInterfaces = [ lanIF ];
+
+      extraInputRules = ''
+        iifname "${wanIF}" ip saddr \
+        { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } \
+        drop comment "Block fake locals"
+      '';
+    };
+
+    nat = {
       enable = true;
-      ruleset = subsT ./firewall.nft {
-        wan = wanIF;
-        lan = lanIF;
-      };
+
+      externalInterface = wanIF;
+      internalInterfaces = [ lanIF ];
+
+      forwardPorts = [
+        { sourcePort = 37812; destination = "10.0.0.2:12345"; proto = "tcp"; }
+      ];
     };
   };
 
