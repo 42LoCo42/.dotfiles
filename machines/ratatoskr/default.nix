@@ -116,8 +116,7 @@ in
     };
   };
 
-  systemd.network.wait-online.enable = mkForce true;
-  systemd.services.dnsmasq.after = [ "network-online.target" ];
+  systemd.network.wait-online.enable = mkForce false;
 
   services = {
     ##### WLAN #####
