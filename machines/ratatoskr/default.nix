@@ -13,7 +13,7 @@ in
   aquaris = {
     machine = {
       id = "5965b9540d6ce5bb06e850ad671c840a";
-      key = "age1tpn9rgm7vm7jn03neak7lm55xxh5gqvcjvz6gqxj97tkfxl83e3s3mmdcv";
+      key = "age1592y83f2sd2n4y5cxq7zd68mwtx70kyrfq435ue6re3mnpwve30qn7e5xr";
     };
 
     users = merge [
