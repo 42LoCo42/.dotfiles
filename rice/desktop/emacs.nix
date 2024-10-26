@@ -555,6 +555,8 @@
 
         lsp-haskell = { defer = true; };
 
+        nftables-mode = { mode = ''"\\.nft\\'"''; };
+
         nix-mode = {
           mode = ''"\\.nix\\'"'';
           extraPackages = with pkgs; [
