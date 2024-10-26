@@ -69,31 +69,22 @@ in
       secureboot = false;
     };
 
-    users = {
-      admin = {
-        admin = true;
-        sshKeys = [ aquaris.cfg.mainSSHKey ];
-      };
-
-      coder = {
-        sshKeys = [
-          aquaris.cfg.mainSSHKey
-          # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPU1Mi6swudVo9JkJl8Og/fzr+gCJTQ2bK4qd652IOgz legacy"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILckymOuvsGYKZxW2EuTaBoQUBaamDNCoCygxIWz/3cF francisco"
-        ];
-      };
-    };
+    users = aquaris.lib.merge [
+      { inherit (aquaris.cfg.users) admin; }
+      { admin.admin = true; }
+      {
+        coder = {
+          sshKeys = [
+            aquaris.cfg.mainSSHKey
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILckymOuvsGYKZxW2EuTaBoQUBaamDNCoCygxIWz/3cF francisco"
+          ];
+        };
+      }
+    ];
 
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
-        {
-          type = "uefi";
-          size = "512M";
-          content = fs.regular {
-            type = "vfat";
-            mountpoint = "/boot";
-          };
-        }
+        fs.defaultBoot
         { content = fs.zpool (p: p.rpool); }
       ];
 

@@ -42,6 +42,11 @@
           key = mainSSHKey;
         };
       };
+
+      admin = {
+        description = "Server Admin Account";
+        sshKeys = [ mainSSHKey ];
+      };
     };
   };
 }

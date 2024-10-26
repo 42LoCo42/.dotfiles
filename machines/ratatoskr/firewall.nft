@@ -1,0 +1,56 @@
+# TODO allow all from tailscale0
+
+table ip filter {
+	chain input {
+		type filter hook input priority 0; policy drop;
+
+		iifname { "lo", "@lan@" } \
+		accept comment "Allow access from loopback and LAN"
+
+		iifname "@wan@" ip saddr \
+		{ 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } \
+		drop comment "Block fake locals"
+
+		ct state invalid drop comment "Block invalid connections"
+
+		iifname "@wan@" ct state { established, related } \
+		accept comment "Allow established traffic"
+
+		tcp dport ssh ct state new log prefix "new SSH connection: "
+		tcp dport ssh accept comment "Allow SSH access to the router"
+
+		log prefix "rejected input: "
+	}
+
+	chain forward {
+		type filter hook forward priority 0; policy drop;
+
+		iifname "@lan@" oifname "@wan@" \
+		accept comment "Allow LAN to WAN"
+
+		iifname "@wan@" oifname "@lan@" \
+		ct state { established, related } \
+		accept comment "Allow established WAN to LAN"
+
+		iifname "@wan@" oifname "@lan@" \
+		ct status dnat \
+		accept comment "Allow port forwarding"
+
+		log prefix "rejected forward: "
+	}
+}
+
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority -100; policy accept;
+
+		tcp dport 37812 dnat to 10.0.0.2:12345 \
+		comment "PF 37812->10.0.0.2:12345"
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority 100; policy accept;
+
+		oifname "@wan@" masquerade
+	}
+}
