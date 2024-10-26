@@ -57,7 +57,7 @@ in
         ''
           src="''${1-${src}}"
 
-          passwd="$(grep -oP 'sae_password=\K[^|]+' "$src")"
+          passwd="$(grep -oP '^[^|#]+' "$src")"
           seckey="$(grep -oP 'pk=[^:]+:\K[^|]+' "$src")"
 
           <<< "$seckey"             \
