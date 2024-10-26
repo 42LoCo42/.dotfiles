@@ -125,10 +125,14 @@ in
       enable = true;
       radios.${lanIF} = {
         channel = 6;
+
         networks.${lanIF} = {
           inherit ssid;
+
           authentication.saePasswordsFile =
             config.aquaris.secrets."machine/sae-password".outPath;
+
+          ignoreBroadcastSsid = "empty";
         };
       };
     };
