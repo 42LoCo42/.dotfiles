@@ -1,4 +1,4 @@
-{ lib, config, aquaris, ... }:
+{ pkgs, lib, config, aquaris, ... }:
 let
   inherit (aquaris.lib) merge subsT;
   inherit (lib) mkForce;
@@ -6,6 +6,7 @@ let
   wanIF = "TODO wan";
   lanIF = "TODO lan";
   lanIP = "10.0.0.1";
+  ssid = "Ratatoskr";
 in
 {
   imports = [ ../../rice ];
@@ -44,6 +45,35 @@ in
     dnsmasq-interface = lanIF;
   };
 
+  environment.systemPackages = [
+    (pkgs.writeShellApplication {
+      name = "qr";
+      runtimeInputs = with pkgs; [ openssl qrtool ];
+      text =
+        let
+          src = config.aquaris.secrets."machine/sae-password";
+          fmt = ''WIFI:T:WPA;R:3;S:${ssid};P:'"$passwd"';K:\1;;'';
+        in
+        ''
+          src="''${1-${src}}"
+
+          passwd="$(grep -oP 'sae_password=\K[^|]+' "$src")"
+          seckey="$(grep -oP 'pk=[^:]+:\K[^|]+' "$src")"
+
+          <<< "$seckey"             \
+          base64 -d                 \
+          | openssl ec              \
+            -inform der             \
+            -pubout                 \
+            -conv_form compressed   \
+            -outform der            \
+          | base64 -w0              \
+          | sed -E 's|(.*)|${fmt}|' \
+          | qrtool encode -t unicode
+        '';
+    })
+  ];
+
   boot.kernel.sysctl."net.ipv4.conf.all.forwarding" = true;
 
   networking = {
@@ -79,8 +109,9 @@ in
     hostapd = {
       enable = true;
       radios.${lanIF} = {
+        channel = 6;
         networks.${lanIF} = {
-          ssid = "Ratatoskr";
+          inherit ssid;
           authentication.saePasswordsFile =
             config.aquaris.secrets."machine/sae-password".outPath;
         };
