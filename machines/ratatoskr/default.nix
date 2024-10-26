@@ -1,10 +1,8 @@
 { pkgs, lib, config, aquaris, ... }:
 let
   inherit (aquaris.lib) merge;
-  inherit (lib) mkForce;
+  inherit (lib) mkDefault mkForce;
 
-  wanIF = "TODO wan";
-  lanIF = "TODO lan";
   lanIP = "10.0.0.1";
   ssid = "Ratatoskr";
 in
@@ -23,7 +21,7 @@ in
     ];
 
     filesystems = { fs, ... }: {
-      disks."/dev/disk/by-id/TODO".partitions = [
+      disks."/dev/disk/by-id/${config.rice.disk}".partitions = [
         fs.defaultBoot
         { content = fs.zpool (p: p.rpool); }
       ];
@@ -33,16 +31,22 @@ in
 
     persist = {
       enable = true;
-      dirs = [
-        "/var/lib/dnsmasq"
-        # TODO hostapd?
-      ];
+      dirs = [ "/var/lib/dnsmasq" ];
     };
   };
 
-  rice = {
+  rice = rec {
+    wanIF = mkDefault "TODO wan";
+    lanIF = mkDefault "TODO lan";
+    disk = mkDefault "TODO disk";
+
+    acceptLocals = mkDefault false;
+    hideSSID = mkDefault true;
+
     dns = true;
     dnsmasq-interface = lanIF;
+
+    tailscale = true;
   };
 
   environment.systemPackages = [
@@ -74,14 +78,13 @@ in
     })
   ];
 
-
   networking = {
     useDHCP = false;
     networkmanager.enable = mkForce false;
 
     interfaces = {
-      ${wanIF}.useDHCP = true;
-      ${lanIF} = {
+      ${config.rice.wanIF}.useDHCP = true;
+      ${config.rice.lanIF} = {
         useDHCP = false;
         ipv4.addresses = [{
           address = lanIP;
@@ -95,10 +98,10 @@ in
     firewall = {
       allowPing = false;
       filterForward = true;
-      trustedInterfaces = [ lanIF ];
+      trustedInterfaces = [ config.rice.lanIF ];
 
-      extraInputRules = ''
-        iifname "${wanIF}" ip saddr \
+      extraInputRules = if config.rice.acceptLocals then "" else ''
+        iifname "${config.rice.wanIF}" ip saddr \
         { 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } \
         drop comment "Block fake locals"
       '';
@@ -107,11 +110,11 @@ in
     nat = {
       enable = true;
 
-      externalInterface = wanIF;
-      internalInterfaces = [ lanIF ];
+      externalInterface = config.rice.wanIF;
+      internalInterfaces = [ config.rice.lanIF ];
 
       forwardPorts = [
-        { sourcePort = 37812; destination = "10.0.0.2:12345"; proto = "tcp"; }
+        { sourcePort = 37812; destination = "10.0.0.232:12345"; proto = "tcp"; }
       ];
     };
   };
@@ -123,16 +126,17 @@ in
 
     hostapd = {
       enable = true;
-      radios.${lanIF} = {
+      radios.${config.rice.lanIF} = {
         channel = 6;
 
-        networks.${lanIF} = {
+        networks.${config.rice.lanIF} = {
           inherit ssid;
 
           authentication.saePasswordsFile =
             config.aquaris.secrets."machine/sae-password".outPath;
 
-          ignoreBroadcastSsid = "empty";
+          ignoreBroadcastSsid =
+            if config.rice.hideSSID then "empty" else "disable";
         };
       };
     };
@@ -141,9 +145,6 @@ in
 
     dnsmasq.settings = {
       listen-address = [ lanIP ];
-
-      # misc
-      no-resolv = true; # TODO maybe conflicts with tailscale?
 
       # local domain
       local = mkForce "/lan/";
@@ -155,14 +156,6 @@ in
         "option:router,${lanIP}"
         "option:dns-server,${lanIP}"
       ];
-    };
-
-
-    ##### Tailscale #####
-
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "client";
     };
   };
 }

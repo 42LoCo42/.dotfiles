@@ -1,4 +1,5 @@
 *.key
+*.qcow2
 *.tar.gz
 /.direnv
 /.jj
