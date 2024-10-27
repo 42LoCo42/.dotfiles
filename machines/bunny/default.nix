@@ -95,8 +95,8 @@ in
 
     secrets = {
       "machine/rustdesk".user = "rustdesk";
-      "machine/synapse/secrets".user = "synapse";
-      "machine/synapse/signing-key".user = "synapse";
+      # "machine/synapse/secrets".user = "synapse";
+      # "machine/synapse/signing-key".user = "synapse";
       "machine/tailscaled".user = "tailscaled";
     };
   };
@@ -195,8 +195,8 @@ in
         "${homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
         "${chronometer}:/srv/chronometer:ro"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
-        "${pkgs.element-web}:/srv/element:ro"
-        "${subsDomain ./element.json}:/srv/element/config.json:ro"
+        # "${pkgs.element-web}:/srv/element:ro"
+        # "${subsDomain ./element.json}:/srv/element/config.json:ro"
       ];
     };
 
@@ -283,16 +283,16 @@ in
       volumes = [ "${./searxng.yaml}:/etc/searxng/settings.yml:ro" ];
     };
 
-    synapse = {
-      cmd = [ (getExe' pkgs.matrix-synapse "synapse_homeserver") "-c" "/config" ];
-      ssl = true;
-      volumes = [
-        "synapse:/data"
-        "${subsDomain ./synapse.yaml}:/config/homeserver.yaml:ro"
-        "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml:ro"
-        "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key:ro"
-      ];
-    };
+    # synapse = {
+    #   cmd = [ (getExe' pkgs.matrix-synapse "synapse_homeserver") "-c" "/config" ];
+    #   ssl = true;
+    #   volumes = [
+    #     "synapse:/data"
+    #     "${subsDomain ./synapse.yaml}:/config/homeserver.yaml:ro"
+    #     "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml:ro"
+    #     "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key:ro"
+    #   ];
+    # };
 
     syncthing = {
       cmd = [ (getExe pkgs.syncthing) "--home=/data" "--gui-address=http://0.0.0.0:8080" ];
