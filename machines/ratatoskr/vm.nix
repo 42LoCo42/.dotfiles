@@ -1,4 +1,9 @@
-{ self, pkgs, lib, config, modulesPath, ... }: {
+{ pkgs, lib, modulesPath, ... }:
+let
+  wanIF = "eth0";
+  lanIF = "wlan0";
+in
+{
   virtualisation.vmVariant = {
 
     ##### hardware #####
@@ -7,53 +12,66 @@
 
     virtualisation = {
       cores = 8;
-      # diskSize = 4096;
       graphics = false;
       memorySize = 8192;
-
-      qemu.networkingOptions = [
-        "-device vhost-vsock-pci,id=vwifi0,guest-cid=3"
-      ];
     };
 
     boot = {
-      initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
-
-      kernelModules = [ "kvm-amd" "mac80211_hwsim" ];
+      initrd = {
+        availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+        kernelModules = [ "kvm-amd" "mac80211_hwsim" ];
+      };
 
       extraModprobeConfig = ''
-        options mac80211_hwsim radios=0
+        options mac80211_hwsim radios=2
       '';
     };
 
     ##### main #####
 
-    systemd.services = {
-      hostapd = {
-        after = [ "vwifi-client.service" ];
-        requires = [ "vwifi-client.service" ];
-      };
-
-      vwifi-client = {
-        serviceConfig.ExecStart = "${self.inputs.obscura.packages.${pkgs.system}.vwifi}/bin/vwifi-client --number 1";
-        wantedBy = [ "network-pre.target" ];
-      };
-    };
-
     rice = rec {
-      wanIF = "eth0";
-      lanIF = "wlan0";
-      disk = "virtio-root";
-
+      inherit lanIF wanIF;
       acceptLocals = true;
-
       dnsmasq-interface = lanIF;
-
+      hideSSID = false;
       tailscale = lib.mkForce false;
     };
 
-    networking = {
-      networkmanager.unmanaged = [ config.rice.wanIF config.rice.lanIF ];
+    environment.systemPackages = with pkgs; [ iw ];
+
+    systemd.services.lan = {
+      serviceConfig = {
+        PrivateNetwork = true;
+
+        ExecStartPre = lib.getExe (pkgs.writeShellApplication {
+          name = "lan-pre";
+          runtimeInputs = with pkgs; [ iw util-linux ];
+          text = ''
+            nsenter -t 1 -m -n iw phy phy1 set netns $$
+          '';
+        });
+
+        ExecStart = lib.getExe (pkgs.writeShellApplication {
+          name = "lan";
+          runtimeInputs = with pkgs; [ gawk wpa_supplicant ];
+          text = ''
+            pass="$(awk -F '|' 'NR == 1 {print $1}' /run/aqs/machine/sae-password)"
+
+            ${pkgs.busybox}/bin/udhcpc -f -i wlan1 &
+
+            wpa_supplicant -i wlan1 -c /dev/stdin <<EOF
+              network={
+                ssid="Ratatoskr"
+                key_mgmt=SAE
+                sae_password="$pass"
+                ieee80211w=2
+              }
+            EOF
+          '';
+        });
+      };
+
+      wantedBy = [ "default.target" ];
     };
 
     users.users.admin.hashedPasswordFile = lib.mkForce "${pkgs.writeText "pw" ''

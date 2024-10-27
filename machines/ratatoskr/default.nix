@@ -121,7 +121,20 @@ in
     };
   };
 
-  systemd.network.wait-online.enable = mkForce false;
+  systemd = {
+    network.wait-online.enable = mkForce false;
+
+    ##### wlan0 fix #####
+    services = {
+      dnsmasq = {
+        after = [ "hostapd.service" ];
+        wants = [ "hostapd.service" ];
+      };
+
+      hostapd.serviceConfig.ExecStartPre =
+        "${pkgs.coreutils}/bin/sleep 10";
+    };
+  };
 
   services = {
     ##### WLAN #####
