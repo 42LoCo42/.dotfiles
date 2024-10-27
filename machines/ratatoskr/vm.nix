@@ -46,7 +46,6 @@
       disk = "virtio-root";
 
       acceptLocals = true;
-      hideSSID = false;
 
       dnsmasq-interface = lanIF;
 

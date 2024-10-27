@@ -49,6 +49,8 @@ in
     tailscale = true;
   };
 
+  specialisation.showSSID.configuration.rice.hideSSID = false;
+
   environment.systemPackages = [
     (pkgs.writeShellApplication {
       name = "qr";
@@ -136,7 +138,7 @@ in
             config.aquaris.secrets."machine/sae-password".outPath;
 
           ignoreBroadcastSsid =
-            if config.rice.hideSSID then "empty" else "disable";
+            if config.rice.hideSSID then "empty" else "disabled";
         };
       };
     };
