@@ -4,4 +4,9 @@
     openFirewall = true;
     useRoutingFeatures = "client";
   };
+
+  systemd = {
+    network.wait-online.ignoredInterfaces = [ "tailscale0" ];
+    services.NetworkManager-wait-online.enable = false;
+  };
 }
