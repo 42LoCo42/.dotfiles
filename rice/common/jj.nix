@@ -24,6 +24,15 @@
       };
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
+        # bookmark set: find first non-empty commit
+        jbs() {
+          commit="@"
+          while [ "$(jj show -r "$commit" -T 'self.empty()' --tool true)" = "true" ]; do
+            commit="$commit-"
+          done
+          jj bookmark set -r "$commit" "$@"
+        }
+
         # clone from github
         jcg() {
           repo="git@github.com:$1"
@@ -59,7 +68,6 @@
         jbd = "jj bookmark delete";
         jbl = "jj bookmark list";
         jbla = "jj bookmark list --all";
-        jbs = "jj bookmark set";
         jbt = "jj bookmark track";
         jc = "jj git clone --colocate";
         jd = "jj diff";
