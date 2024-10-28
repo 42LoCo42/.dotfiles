@@ -103,17 +103,19 @@
       moreutils
     ];
 
+    home.sessionVariables.NIXOS_CONFIG_DIR = "$(realpath $HOME/config)";
+
     systemd.user.tmpfiles.rules =
       let
         home = hm.config.home.homeDirectory;
         sync = "${config.aquaris.persist.root}/${home}/sync";
       in
-      map (x: "L+ ${home}/${x} - - - - ${sync}/${x}") [
+      (map (x: "L+ ${home}/${x} - - - - ${sync}/${x}") [
         "IU"
         "dev"
         "doc"
         "img"
         "work"
-      ];
+      ]) ++ [ "L+ ${home}/config - - - - ${sync}/dev/nix/dotfiles" ];
   };
 }
