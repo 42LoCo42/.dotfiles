@@ -477,6 +477,7 @@
             (rustic-mode     . lsp-deferred)
             (sh-mode         . lsp-deferred)
             (typescript-mode . lsp-deferred)
+            (web-mode        . lsp-deferred)
           '';
 
           custom = ''
@@ -590,6 +591,16 @@
           extraPackages = with pkgs.nodePackages; [
             typescript
             typescript-language-server
+          ];
+        };
+
+        web-mode = {
+          mode = ''
+            "\\.svelte\\'"
+          '';
+
+          extraPackages = with pkgs; [
+            svelte-language-server
           ];
         };
 
