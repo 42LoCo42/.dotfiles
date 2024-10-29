@@ -42,6 +42,11 @@ access_control:
         - "group:auth_avh"
       policy: "two_factor"
 
+    - domain: "img.@domain@"
+      subject:
+        - "group:auth_img"
+      policy: "two_factor"
+
     - domain: "ldap.@domain@"
       subject:
         - "group:lldap_admin"

@@ -117,6 +117,7 @@ chronometer.{$DOMAIN} {
 
 img.{$DOMAIN} {
 	import default
+	import auth
 	reverse_proxy photoview:4001
 }
 
