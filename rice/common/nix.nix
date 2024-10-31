@@ -27,6 +27,7 @@
       ncc = "nix flake check -L"; # nc is netcat
       ne = "nix eval -L";
       nej = "nix eval -L --raw --apply builtins.toJSON";
+      ner = "nix eval -L --raw";
       ng = "nix store gc -v";
       ni = "nix flake init";
       nm = "nix flake metadata";
