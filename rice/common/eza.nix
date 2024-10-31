@@ -12,7 +12,6 @@
         "--icons"
         "--long"
         "--mounts"
-        "--no-filesize"
       ];
     };
 
