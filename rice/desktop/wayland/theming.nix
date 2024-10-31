@@ -4,6 +4,10 @@
       gtk = let dark = { gtk-application-prefer-dark-theme = true; }; in {
         enable = true;
         theme.name = "Adwaita";
+        iconTheme = {
+          name = "Adwaita";
+          package = pkgs.adwaita-icon-theme;
+        };
 
         gtk2.configLocation = "${hm.config.xdg.configHome}/gtk-2.0/settings.ini";
         gtk3.extraConfig = dark;
