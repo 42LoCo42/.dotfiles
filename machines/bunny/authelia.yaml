@@ -43,6 +43,15 @@ access_control:
       policy: "two_factor"
 
     - domain: "img.@domain@"
+      resources:
+        - "^/api/graphql"
+        - "^/api/photo/.*"
+        - "^/assets/.*"
+        - "^/photoview-logo.svg"
+        - "^/share/.*"
+      policy: "bypass"
+
+    - domain: "img.@domain@"
       subject:
         - "group:auth_img"
       policy: "two_factor"
