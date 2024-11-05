@@ -110,15 +110,20 @@
         jbs = "jj bookmark set";
         jbt = "jj bookmark track";
         jc = "jj git clone --colocate";
-        jd = "jj diff";
-        jdm = "jj describe -m";
+        jd = "jj describe -m";
+        jdi = "jj diff";
         je = "jj edit";
+        jfs = "jj file show";
         ji = "jj git init --colocate";
         jl = "jj log";
         jla = "jj log -r ::";
         jlr = "jj log --reversed";
         jn = "jj new";
         jnm = "jj new -m";
+        jol = "jj op log";
+        jor = "jj op restore";
+        jos = "jj op show";
+        jou = "jj op undo";
         jpl = "jj git fetch"; # "pull"
         jpu = "jj git push"; # jps is intelligent push
         jr = "jj rebase";
@@ -132,6 +137,7 @@
         jsq = "jj squash";
         jsqi = "jj squash -i";
         ju = "jj file untrack";
+        jun = "jj undo";
       };
     })
   ];
