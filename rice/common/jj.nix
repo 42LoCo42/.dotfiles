@@ -24,13 +24,50 @@
       };
 
       programs.zsh.oh-my-zsh.extraConfig = lib.mkAfter ''
-        # bookmark set: find first non-empty commit
-        jbs() {
+        # show template
+        jst() {
+          jj log --limit 1 --no-graph --ignore-working-copy -T "$@"
+        }
+
+        # bookmark find
+        jbf() {
           commit="@"
-          while [ "$(jj show -r "$commit" -T 'self.empty()' --tool true)" = "true" ]; do
-            commit="$commit-"
+          while true; do
+            bookmarks=()
+
+            jst 'self.bookmarks().map(|x| x.name() ++ "\n").join("")' -r "$commit" \
+            | while read -r line; do bookmarks+=("$line"); done
+
+            case "''${#bookmarks[@]}" in
+              0) commit="$commit-" ;;
+
+              1)
+                echo "''${bookmarks[1]}"
+                return 0
+              ;;
+
+              *)
+                id="$(jst 'self.change_id().shortest(8) ++ "\n"' -r "$commit" --color always)"
+                echo "[1;31mMore than 1 bookmark at commit[m $id"
+
+                jst 'self.change_id().shortest(8)' -r "$commit" \
+                | xargs -I% jj log --ignore-working-copy -r "%-..@"
+
+                return 1
+              ;;
+            esac
           done
-          jj bookmark set -r "$commit" "$@"
+        }
+
+        # "intelligent" push - sets bookmark-find to first non-empty commit
+        jps() {
+          bookmark="$(jbf)" || return 1
+
+          commit="@"
+          while "$(jst 'self.empty()' -r "$commit")"; do commit="$commit-"; done
+
+          jj bookmark set "$bookmark" -r "$commit"
+          jj git push
         }
 
         # clone from github
@@ -40,15 +77,17 @@
           jj git clone --colocate "$repo" "$@"
         }
 
-        # check root
-        jcr() {
-          jj root >/dev/null 2>&1
-        }
-
         # describe-then-new
         jdn() {
           jj describe -m "$@"
           jj new
+        }
+
+        ##### functions for magic enter #####
+
+        # check root
+        jcr() {
+          jj root >/dev/null 2>&1
         }
 
         # status-then-log
@@ -68,6 +107,7 @@
         jbd = "jj bookmark delete";
         jbl = "jj bookmark list";
         jbla = "jj bookmark list --all";
+        jbs = "jj bookmark set";
         jbt = "jj bookmark track";
         jc = "jj git clone --colocate";
         jd = "jj diff";
@@ -80,7 +120,7 @@
         jn = "jj new";
         jnm = "jj new -m";
         jpl = "jj git fetch"; # "pull"
-        jps = "jj git push";
+        jpu = "jj git push"; # jps is intelligent push
         jr = "jj rebase";
         jra = "jj git remote add";
         jrd = "jj git remote remove"; # "delete"
