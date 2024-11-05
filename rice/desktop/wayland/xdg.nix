@@ -6,7 +6,7 @@
 
   home-manager.sharedModules = [{
     home.packages = with pkgs; [
-      xdg_utils
+      xdg-utils
     ];
 
     # used to store device access permissions
