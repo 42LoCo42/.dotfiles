@@ -48,10 +48,10 @@
 
               *)
                 id="$(jst 'self.change_id().shortest(8) ++ "\n"' -r "$commit" --color always)"
-                echo "[1;31mMore than 1 bookmark at commit[m $id"
+                echo "[1;31mMore than 1 bookmark at commit[m $id" >&2
 
                 jst 'self.change_id().shortest(8)' -r "$commit" \
-                | xargs -I% jj log --ignore-working-copy -r "%-..@"
+                | xargs -I% jj log --ignore-working-copy -r "%-..@" >&2
 
                 return 1
               ;;
@@ -61,7 +61,11 @@
 
         # "intelligent" push - sets bookmark-find to first non-empty commit
         jps() {
-          bookmark="$(jbf)" || return 1
+          if [ -n "$1" ]; then
+            bookmark="$1"
+          else
+            bookmark="$(jbf)" || return 1
+          fi
 
           commit="@"
           while "$(jst 'self.empty()' -r "$commit")"; do commit="$commit-"; done
