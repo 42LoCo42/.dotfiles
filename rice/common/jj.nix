@@ -32,7 +32,7 @@
         # bookmark find
         jbf() {
           commit="@"
-          while true; do
+          while "$(jst '!self.root()' -r "$commit")"; do
             bookmarks=()
 
             jst 'self.bookmarks().map(|x| x.name() ++ "\n").join("")' -r "$commit" \
@@ -57,6 +57,9 @@
               ;;
             esac
           done
+
+          echo "[1;31mReached root commit without finding a bookmark[m" >&2
+          return 1
         }
 
         # "intelligent" push - sets bookmark-find to first non-empty commit
