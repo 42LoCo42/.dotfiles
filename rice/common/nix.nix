@@ -1,13 +1,4 @@
 { pkgs, ... }: {
-  # TODO remove in next nixpkgs update
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      nix-output-monitor =
-        let url = "github:nixos/nixpkgs/18536bf04cd71abd345f9579158841376fdd0c5a"; in
-        (builtins.getFlake url).legacyPackages.${pkgs.system}.nix-output-monitor;
-    })
-  ];
-
   nix = {
     package = pkgs.lib.mkForce pkgs.lix;
 
