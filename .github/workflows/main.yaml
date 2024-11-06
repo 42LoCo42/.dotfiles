@@ -28,6 +28,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2.0.8
         with:
+          files: result/iso/nixos-guanyin-*.iso
           generate_release_notes: true
           make_latest: true
-          files: result/iso/nixos-guanyin-*.iso
+          tag_name: "guanyin"
