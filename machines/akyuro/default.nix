@@ -51,16 +51,6 @@
     ];
   };
 
-  programs = {
-    gamemode.enable = true;
-    steam.enable = true;
-  };
-
-  nixpkgs.config.allowUnfreePredicate = x: builtins.elem (lib.getName x) [
-    "steam"
-    "steam-original"
-  ];
-
   rice = {
     desktop = true;
 
