@@ -51,6 +51,11 @@
     ];
   };
 
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
+
   rice = {
     desktop = true;
 
