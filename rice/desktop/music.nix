@@ -16,7 +16,10 @@
 
       programs.ncmpcpp = {
         enable = true;
-        settings.startup_screen = "media_library";
+        settings = {
+          lyrics_directory = "~/.local/share/lyrics";
+          startup_screen = "media_library";
+        };
       };
     })
   ];
