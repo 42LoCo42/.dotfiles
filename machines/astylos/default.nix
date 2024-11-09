@@ -55,8 +55,6 @@
     syncthing = true;
     tailscale = true;
 
-    hrtrack-file = "/persist/$HOME/ARCH/trans/hrtrack";
-
     fuzzel-font-size = 20;
     temp-select = ''KERNELS=="coretemp.0"'';
     temp-warn = 70;

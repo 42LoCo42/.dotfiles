@@ -1,8 +1,8 @@
-{ pkgs, lib, config, aquaris, ... }: lib.mkIf config.rice.desktop {
+{ pkgs, lib, config, ... }: lib.mkIf config.rice.desktop {
   nixpkgs.overlays = [
     (_: pkgs: {
       hrtrack = lib.pipe ./main.sh [
-        (x: aquaris.lib.subsT x { inherit (config.rice) hrtrack-file; })
+        builtins.readFile
         (pkgs.writeShellScriptBin "hrtrack")
         (x: x.overrideAttrs (old: {
           nativeBuildInputs = with pkgs; [

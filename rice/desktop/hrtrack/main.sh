@@ -5,7 +5,7 @@ else
 	out="notify-send"
 fi
 
-src="@hrtrack-file@"
+src="$HOME/doc/trans/hrtrack"
 has="$(<"$src")"
 now="$(date "+%Y-%m-%d")"
 echo "Today is $now"

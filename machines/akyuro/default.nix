@@ -65,8 +65,6 @@
     syncthing = true;
     tailscale = true;
 
-    hrtrack-file = "$HOME/trans/hrtrack";
-
     fuzzel-font-size = 14;
     temp-select = ''DRIVERS=="k10temp"'';
     temp-warn = 60;
