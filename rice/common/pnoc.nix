@@ -143,6 +143,8 @@ in
       aquaris.lib.merge
     ];
 
+    virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+
     virtualisation.oci-containers.containers =
       builtins.mapAttrs (_: x: x._gen) cfg;
   };

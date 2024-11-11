@@ -175,8 +175,6 @@ in
     })
   ];
 
-  virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
-
   virtualisation.pnoc = {
     caddy = {
       cmd = [ (getExe pkgs.caddy) "run" "-a" "caddyfile" "-c" "${./Caddyfile}" ];
