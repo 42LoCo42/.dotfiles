@@ -59,6 +59,8 @@ in
   nixpkgs.overlays = [
     (_: _: {
       inherit (self.inputs.obscura.packages.${pkgs.system}) photoview pug;
+
+      jujutsu = (builtins.getFlake "github:nixos/nixpkgs/4aa36568d413aca0ea84a1684d2d46f55dbabad7").legacyPackages.${pkgs.system}.jujutsu;
     })
   ];
 
