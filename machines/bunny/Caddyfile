@@ -184,6 +184,11 @@ vw.{$DOMAIN} {
 	}
 }
 
+wiki.{$DOMAIN} {
+	import default
+	reverse_proxy mycorrhiza:8080
+}
+
 www.{$DOMAIN} {
 	redir https://{$DOMAIN}
 }

@@ -227,6 +227,15 @@ in
       ];
     };
 
+    mycorrhiza = {
+      cmd = [ (getExe pkgs.mycorrhiza) "/data" ];
+      volumes = [
+        "mycorrhiza:/data"
+        "${self}/homepage/static/favicon.ico:/data/static/favicon.ico:ro"
+        "${subsDomain ./mycorrhiza.ini}:/data/config.ini:ro"
+      ];
+    };
+
     photoview = {
       cmd = [ (getExe pkgs.photoview) ];
       environment = {
