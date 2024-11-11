@@ -1,16 +1,23 @@
 {
   nixpkgs.overlays = [
     (_: pkgs: {
-      # https://github.com/NixOS/nixpkgs/pull/353362/files
-      wf-recorder = pkgs.wf-recorder.overrideAttrs {
-        patches = [
-          # compile fixes from upstream, TODO remove when they stop applying
-          (pkgs.fetchpatch {
-            url = "https://github.com/ammen99/wf-recorder/commit/560bb92d3ddaeb31d7af77d22d01b0050b45bebe.diff";
-            sha256 = "sha256-7jbX5k8dh4dWfolMkZXiERuM72zVrkarsamXnd+1YoI=";
-          })
-        ];
-      };
+      # https://nixpk.gs/pr-tracker.html?pr=355129
+      vaultwarden = pkgs.vaultwarden.overrideAttrs (old: rec {
+        version = "1.32.4";
+
+        src = pkgs.fetchFromGitHub {
+          inherit (old.src) owner repo;
+          rev = version;
+          hash = "sha256-fT1o+nR7k1fLFS4TeoP1Gm1P0uLTu6Dai6hMGraAKjE=";
+        };
+
+        cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+          inherit src;
+          hash = "sha256-9PIl1VycDjwWL4ZcGRaO8tpG2DlwtJWYmq3R7SncQBE=";
+        };
+
+        env.VW_VERSION = version;
+      });
     })
   ];
 }
