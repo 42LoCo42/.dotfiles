@@ -41,7 +41,13 @@
   };
 
   networking.hosts = {
-    "127.0.0.1" = [ "dc10.readers.lakd" ];
+    "127.0.0.1" = [
+      "dc10.readers.lakd"
+
+      # einauth testing
+      "auth.local.host"
+      "main.local.host"
+    ];
   };
 
   programs.gamemode.enable = true;
