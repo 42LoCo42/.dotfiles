@@ -471,6 +471,7 @@
           '';
 
           hook = ''
+            (c-mode          . lsp-deferred)
             (go-mode         . lsp-deferred)
             (haskell-mode    . lsp-deferred)
             (nix-mode        . lsp-deferred)
@@ -491,6 +492,7 @@
 
           extraPackages = with pkgs; [
             bash-language-server
+            clang-tools
             shellcheck
           ];
         };

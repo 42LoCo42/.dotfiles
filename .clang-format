@@ -1,0 +1,16 @@
+# -*- mode: yaml; -*-
+IndentWidth: 4
+TabWidth: 4
+UseTab: AlignWithSpaces
+
+SpaceAfterCStyleCast: true
+SpaceBeforeParens: Never
+
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+PointerAlignment: Left
+
+AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: true
