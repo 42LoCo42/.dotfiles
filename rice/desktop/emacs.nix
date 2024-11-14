@@ -475,6 +475,7 @@
             (go-mode         . lsp-deferred)
             (haskell-mode    . lsp-deferred)
             (nix-mode        . lsp-deferred)
+            (python-mode     . lsp-deferred)
             (rustic-mode     . lsp-deferred)
             (sh-mode         . lsp-deferred)
             (typescript-mode . lsp-deferred)
@@ -491,8 +492,15 @@
           '';
 
           extraPackages = with pkgs; [
-            bash-language-server
+            # c-mode
             clang-tools
+
+            # python-mode
+            black
+            python3.pkgs.python-lsp-server
+
+            # sh-mode
+            bash-language-server
             shellcheck
           ];
         };

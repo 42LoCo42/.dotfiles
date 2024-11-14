@@ -136,6 +136,7 @@
         jr = "jj rebase";
         jra = "jj git remote add";
         jrd = "jj git remote remove"; # "delete"
+        jre = "jj restore";
         jrl = "jj git remote list";
         jrs = "jj git remote set-url";
         js = "jj show";
