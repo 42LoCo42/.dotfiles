@@ -19,6 +19,12 @@
           "/bunny.vpn/100.100.100.100"
         ];
 
+        # custom localhosts
+        address = [
+          "/local.host/127.0.0.1"
+          "/readers.lakd/127.0.0.1"
+        ];
+
         # misc
         cache-size = 10000;
         filter-AAAA = true;
