@@ -52,6 +52,8 @@ let
     cc -Wall -Wextra -Werror -O3 -static -flto ${./invfork.c} -o $out
     strip -s $out
   '';
+
+  lix = getExe self.inputs.nixpkgs.legacyPackages.x86_64-linux.lixStatic;
 in
 {
   imports = [ ../../rice ];
@@ -195,6 +197,7 @@ in
         "${homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
         "${chronometer}:/srv/chronometer:ro"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
+        "${lix}:/srv/homepage/foo/lix:ro"
         # "${pkgs.element-web}:/srv/element:ro"
         # "${subsDomain ./element.json}:/srv/element/config.json:ro"
       ];
