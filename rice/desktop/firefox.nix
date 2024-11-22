@@ -8,5 +8,10 @@
   # TODO build declarative ffox config
   home-manager.sharedModules = [{
     programs.firefox.enable = true;
+
+    systemd.user.tmpfiles.rules = [
+      "d %h/.local/share/pki       0700 - - - -"
+      "d %h/.local/share/pki/nssdb 0700 - - - -"
+    ];
   }];
 }
