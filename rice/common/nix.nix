@@ -11,6 +11,8 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [ nix-tree ];
+
   home-manager.sharedModules = [{
     home.shellAliases = {
       n = "nix repl"; # i use this often, so make it short!
@@ -25,6 +27,7 @@
       nn = "nix flake new";
       nr = "nix run -L";
       ns = "nix flake show";
+      nt = "nix-tree";
       nu = "nix flake update";
     };
   }];
