@@ -126,6 +126,9 @@
             ; indicate the 80th column on each line
             (display-fill-column-indicator-mode .
               (lambda () (set-fill-column 80)))
+
+            ; disable tabs in org-mode
+            (org-mode . (lambda () (indent-tabs-mode 0)))
           '';
 
           config = ''
@@ -134,10 +137,10 @@
             (scroll-bar-mode   0) ; no scroll bar
             (tool-bar-mode     0) ; no tool bar
 
-            (global-auto-revert-mode      1)              ; revert buffer when physical file changes
+            (global-auto-revert-mode                   1) ; revert buffer when physical file changes
             (global-display-fill-column-indicator-mode 1) ; display the fill column
-            (global-hl-line-mode          1)              ; highlight current line
-            (global-prettify-symbols-mode 1)              ; e.g display lambda as that character
+            (global-hl-line-mode                       1) ; highlight current line
+            (global-prettify-symbols-mode              1) ; e.g display lambda as that character
 
             ; automatic indents & pairing (braces, quotes, ...)
             (electric-indent-mode 1)
@@ -182,6 +185,10 @@
             (xref-show-definitions-function 'consult-xref)
             (xref-prompt-for-identifier     nil)
           '';
+
+          extraPackages = with pkgs; [
+            ghostscript # PDF rendering support
+          ];
         };
 
         server = {
