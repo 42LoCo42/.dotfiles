@@ -1,4 +1,4 @@
-{
+{ lib, config, ... }: lib.mkIf config.rice.desktop {
   programs.uwsm = {
     enable = true;
     waylandCompositors.hyprland = {
