@@ -291,8 +291,12 @@ in
         SEARXNG_URL = "https://searx.${domain}";
       };
       environmentFiles = [ config.aquaris.secrets."machine/searxng" ];
+      extraOptions = [ "--tmpfs=/tmp" ];
       ssl = true;
-      volumes = [ "${./searxng.yaml}:/etc/searxng/settings.yml:ro" ];
+      volumes = [
+        "${./searxng/limiter.toml}:/etc/searxng/limiter.toml:ro"
+        "${./searxng/settings.yaml}:/etc/searxng/settings.yml:ro"
+      ];
     };
 
     # synapse = {
