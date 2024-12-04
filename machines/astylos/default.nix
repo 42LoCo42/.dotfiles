@@ -7,10 +7,7 @@
       { leonsch.admin = true; }
     ];
 
-    machine = {
-      id = "c426b77d7a1940ba98f0cdcf669cd11c";
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICzX0UanYQszieQbwYaNa224Omx580f/Iq1g5AWN/2VU";
-    };
+    machine.id = "c426b77d7a1940ba98f0cdcf669cd11c";
 
     persist = {
       enable = true;

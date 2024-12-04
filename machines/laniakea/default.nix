@@ -7,7 +7,6 @@
   aquaris = {
     machine = {
       id = "97c93e7db21d05599c3e3c6c67177830";
-      key = "age1dj9wv3xzxcu4fsxh4u6ue03ctgwfjz2k06m2tzt8v2gcfclvweaqp6x9l7";
       secureboot = false;
     };
 

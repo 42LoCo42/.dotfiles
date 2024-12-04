@@ -10,7 +10,6 @@ which provides a wealth of default options, tools and functions.
 | [[file:machines/bunny/default.nix][bunny]]        | Server              |
 | [[file:machines/guanyin/default.nix][guanyin]]      | Live ISO            |
 | [[file:machines/laniakea/default.nix][laniakea]]     | Odroid M1           |
-| [[file:machines/ratatoskr/default.nix][ratatoskr]]    | [[https://github.com/42LoCo42/nixos-router][Router]] for a Friend |
 | TODO rubicon | Raspberry Pi        |
 
 ** Screenshots

@@ -69,7 +69,6 @@ in
   aquaris = {
     machine = {
       id = "488cb972c1ac70db8307933f65d5defc";
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbsL7HyOCM56ejtlWqEBG1YzQwX2KmZ3S5KzoGnWh/j";
       secureboot = false;
     };
 

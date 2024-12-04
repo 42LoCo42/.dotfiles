@@ -2,15 +2,12 @@
   imports = [ ../../rice ];
 
   aquaris = {
-    machine = {
-      id = "86b0e292e1fc27eb4168defa65cb41fd";
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBdZDuw+7O6+pV13ObPR/H4P8UCc1FzPmkufeaiJUc75";
-    };
-
     users = aquaris.lib.merge [
       { inherit (aquaris.cfg.users) leonsch; }
       { leonsch.admin = true; }
     ];
+
+    machine.id = "86b0e292e1fc27eb4168defa65cb41fd";
 
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/nvme-eui.8ce38e0400d8442a".partitions = [
@@ -31,7 +28,7 @@
     };
 
     # TODO secretKey handling should be part of aquaris
-    secrets."users/leonsch/secretKey".user = "leonsch";
+    secrets."user:leonsch.ssh-ed25519".user = "leonsch";
   };
 
   boot = {
@@ -84,11 +81,8 @@
     '';
 
     # TODO secretKey handling should be part of aquaris
-    systemd.user.tmpfiles.rules =
-      let
-        name = hm.config.home.username;
-        home = hm.config.home.homeDirectory;
-      in
-      [ "L+ ${home}/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."users/${name}/secretKey"}" ];
+    systemd.user.tmpfiles.rules = [
+      "L+ %h/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
+    ];
   };
 }

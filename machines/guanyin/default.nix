@@ -12,7 +12,6 @@ let inherit (lib) mkForce; in {
   aquaris = {
     machine = {
       id = "99f7c536ac386aeb32291d4e65f549dc";
-      key = "";
       secureboot = false;
     };
 
@@ -27,6 +26,7 @@ let inherit (lib) mkForce; in {
 
   boot.initrd.systemd.enable = false;
   networking.wireless.enable = false;
+  system.etc.overlay.enable = false;
   system.installer.channel.enable = false;
 
   services = {
