@@ -27,6 +27,8 @@ jobs:
 
       - name: Delete previous release
         uses: liudonghua123/delete-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_name: "guanyin"
 
