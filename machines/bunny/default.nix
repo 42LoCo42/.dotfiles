@@ -97,10 +97,10 @@ in
     persist.enable = true;
 
     secrets = {
-      "machine/rustdesk".user = "rustdesk";
-      # "machine/synapse/secrets".user = "synapse";
-      # "machine/synapse/signing-key".user = "synapse";
-      "machine/tailscaled".user = "tailscaled";
+      "machine:bunny.rustdesk".user = "rustdesk";
+      "machine:bunny.tailscaled".user = "tailscaled";
+      # "machine:bunny.synapse:secrets".user = "synapse";
+      # "machine:bunny.synapse:signing-key".user = "synapse";
     };
   };
 
