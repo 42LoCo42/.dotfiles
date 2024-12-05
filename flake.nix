@@ -33,8 +33,6 @@
   outputs = { aquaris, self, ... }: aquaris self rec {
     mainSSHKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdkJo7RMoxUkuQ55YT1q5KANHrR+OJZzeYejpJW4rty";
 
-    masterKeys = [ mainSSHKey ];
-
     users = {
       leonsch = {
         description = "Leon Schumacher";

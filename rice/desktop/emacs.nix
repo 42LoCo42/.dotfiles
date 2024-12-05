@@ -195,9 +195,10 @@
           custom = "(server-client-instructions nil)";
         };
 
-        straight = {
-          commands = "straight-use-package";
-        };
+        # TODO currently broken in aquaris
+        # straight = {
+        #   commands = "straight-use-package";
+        # };
 
         ##### Appearance #####
 

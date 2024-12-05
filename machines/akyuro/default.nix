@@ -1,4 +1,4 @@
-{ pkgs, config, lib, aquaris, ... }: {
+{ pkgs, config, aquaris, ... }: {
   imports = [ ../../rice ];
 
   aquaris = {
@@ -10,21 +10,21 @@
     machine.id = "86b0e292e1fc27eb4168defa65cb41fd";
 
     filesystems = { fs, ... }: {
+      zpools.rpool = fs.defaultPool;
+
       disks."/dev/disk/by-id/nvme-eui.8ce38e0400d8442a".partitions = [
         fs.defaultBoot
         {
           content = fs.luks {
-            content = fs.btrfs {
-              mountOpts = [ "compress-force=zstd" ];
-              subvols = {
-                home.mountpoint = "/home";
-                nix.mountpoint = "/nix";
-                root.mountpoint = "/";
-              };
-            };
+            content = fs.zpool (p: p.rpool);
           };
         }
       ];
+    };
+
+    persist = {
+      enable = true;
+      dirs = [ "/root/.android" ];
     };
 
     # TODO secretKey handling should be part of aquaris
@@ -33,25 +33,15 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
-    supportedFilesystems.zfs = true;
     zfs.package = pkgs.zfs_unstable;
   };
 
-  hardware = {
-    bluetooth = {
-      enable = true;
-      settings.General.Experimental = true;
-    };
-
-    firmware = with pkgs; lib.mkForce [
-      linux-firmware
-    ];
-  };
-
-  virtualisation.podman = {
+  hardware.bluetooth = {
     enable = true;
-    dockerCompat = true;
+    settings.General.Experimental = true;
   };
+
+  services.auto-cpufreq.enable = true;
 
   rice = {
     desktop = true;
@@ -71,18 +61,43 @@
     '';
   };
 
-  services.auto-cpufreq.enable = true;
-
   home-manager.users.leonsch = hm: {
-    services.mako.extraConfig = ''
-      [app-name=remo]
-      on-notify=exec ${pkgs.mpv}/bin/mpv --volume=125 ~/sounds/exclamation.wav
-      on-button-left=exec ${pkgs.mako}/bin/makoctl dismiss -n "$id" && ${pkgs.netcat}/bin/nc -dU /tmp/remo
-    '';
+    home.packages = with pkgs; [
+      openvpn # for corporate VPN
+      p7zip
+      pwgen
+      python3
+      rustdesk-flutter
+      wf-recorder
 
-    # TODO secretKey handling should be part of aquaris
-    systemd.user.tmpfiles.rules = [
-      "L+ %h/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
+      # for external backup SSD
+      btrfs-progs
+      cryptsetup
+
+      # for managing my music library
+      ffmpeg
+      kid3-cli
+      moreutils
     ];
+
+    home.sessionVariables.NIXOS_CONFIG_DIR = "$(realpath $HOME/config)";
+
+    systemd.user.tmpfiles.rules =
+      let
+        home = hm.config.home.homeDirectory;
+        sync = "${config.aquaris.persist.root}/${home}/sync";
+      in
+      (map (x: "L+ ${home}/${x} - - - - ${sync}/${x}") [
+        "IU"
+        "dev"
+        "doc"
+        "img"
+        "work"
+      ]) ++ [
+        "L+ ${home}/config - - - - ${sync}/dev/nix/dotfiles"
+
+        # TODO secretKey handling should be part of aquaris
+        # "L+ %h/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
+      ];
   };
 }

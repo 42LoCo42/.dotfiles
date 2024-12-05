@@ -9,11 +9,6 @@
 
     machine.id = "c426b77d7a1940ba98f0cdcf669cd11c";
 
-    persist = {
-      enable = true;
-      dirs = [ "/root/.android" ];
-    };
-
     filesystems = { fs, ... }: {
       zpools.rpool = fs.defaultPool;
 
@@ -29,6 +24,11 @@
         { content = fs.zpool (p: p.rpool); }
         { content = fs.zpool (p: p.rpool); }
       ];
+    };
+
+    persist = {
+      enable = true;
+      dirs = [ "/root/.android" ];
     };
   };
 

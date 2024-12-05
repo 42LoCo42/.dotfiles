@@ -10,16 +10,16 @@ mkIf config.rice.desktop {
           withSystemVencord = false;
           withTTS = false;
         })
-        (x: x.overrideAttrs (old: {
-          postFixup = old.postFixup + ''
-            mv $out/bin/{vesktop,.vesktop-wrapped}
-            makeWrapper                                                \
-              ${getExe pkgs.boxxy}                                     \
-              $out/bin/vesktop                                         \
-              --add-flags --rule='~/.pki:~/.local/share/pki:directory' \
-              --add-flags $out/bin/.vesktop-wrapped
-          '';
-        }))
+        # (x: x.overrideAttrs (old: {
+        #   postFixup = old.postFixup + ''
+        #     mv $out/bin/{vesktop,.vesktop-wrapped}
+        #     makeWrapper                                                \
+        #       ${getExe pkgs.boxxy}                                     \
+        #       $out/bin/vesktop                                         \
+        #       --add-flags --rule='~/.pki:~/.local/share/pki:directory' \
+        #       --add-flags $out/bin/.vesktop-wrapped
+        #   '';
+        # }))
       ];
     })
   ];
