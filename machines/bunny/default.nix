@@ -75,14 +75,6 @@ in
     users = aquaris.lib.merge [
       { inherit (aquaris.cfg.users) admin; }
       { admin.admin = true; }
-      {
-        coder = {
-          sshKeys = [
-            aquaris.cfg.mainSSHKey
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILckymOuvsGYKZxW2EuTaBoQUBaamDNCoCygxIWz/3cF francisco"
-          ];
-        };
-      }
     ];
 
     filesystems = { fs, ... }: {
