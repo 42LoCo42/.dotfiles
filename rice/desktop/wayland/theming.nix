@@ -1,9 +1,20 @@
 { pkgs, lib, config, ... }: lib.mkIf config.rice.desktop {
   home-manager.sharedModules = [
     (hm: {
+      dconf.settings = {
+        "org/gnome/desktop/interface" = {
+          "color-scheme" = "prefer-dark";
+        };
+      };
+
       gtk = let dark = { gtk-application-prefer-dark-theme = true; }; in {
         enable = true;
-        theme.name = "Adwaita";
+
+        theme = {
+          name = "Adwaita-dark";
+          package = pkgs.gnome-themes-extra;
+        };
+
         iconTheme = {
           name = "Adwaita";
           package = pkgs.adwaita-icon-theme;
