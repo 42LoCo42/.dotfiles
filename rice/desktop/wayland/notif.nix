@@ -16,10 +16,16 @@
       '';
     };
 
-    xdg.dataFile."dbus-1/services/mako-path-fix.service".text =
-      aquaris.lib.subsT ./files/mako-path-fix.service {
-        mako = lib.getExe pkgs.mako;
-      };
+    xdg = {
+      configFile."mako/config".onChange = ''
+        export XDG_RUNTIME_DIR=''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}
+      '';
+
+      dataFile."dbus-1/services/mako-path-fix.service".text =
+        aquaris.lib.subsT ./files/mako-path-fix.service {
+          mako = lib.getExe pkgs.mako;
+        };
+    };
 
     home.packages = with pkgs; [
       libnotify
