@@ -29,6 +29,7 @@
 
     # TODO secretKey handling should be part of aquaris
     secrets."user:leonsch.ssh-ed25519".user = "leonsch";
+    secrets."user:leonsch.u2f-keys".user = "leonsch";
   };
 
   boot = {
@@ -97,7 +98,10 @@
         "L+ ${home}/config - - - - ${sync}/dev/nix/dotfiles"
 
         # TODO secretKey handling should be part of aquaris
-        # "L+ %h/.ssh/id_ed25519 - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
+        "L+ %h/.config/Yubico/u2f_keys - - - - ${config.aquaris.secrets."user:leonsch.u2f-keys"}"
+        # "L+ %h/.ssh/id_ed25519         - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
       ];
   };
+
+  home-manager.verbose = true;
 }
