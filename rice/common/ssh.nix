@@ -63,7 +63,7 @@
             user = "git";
           };
         };
-      }.${hm.config.home.username};
+      }.${hm.config.home.username} or { };
     })
   ];
 }
