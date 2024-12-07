@@ -102,6 +102,4 @@
         # "L+ %h/.ssh/id_ed25519         - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
       ];
   };
-
-  home-manager.verbose = true;
 }

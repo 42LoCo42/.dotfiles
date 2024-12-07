@@ -12,7 +12,9 @@ in
 
   config.rice = {
     disk-path = config.aquaris.persist.root;
-    wallpaper = "${self}/machines/${aquaris.name}/wallpaper.png";
+    wallpaper =
+      let path = "${self}/machines/${aquaris.name}/wallpaper.png"; in
+      if builtins.pathExists path then builtins.path { inherit path; } else null;
 
     desktop = mkDefault false;
 
