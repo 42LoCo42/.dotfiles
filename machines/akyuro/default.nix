@@ -63,6 +63,10 @@
   };
 
   home-manager.users.leonsch = hm: {
+    aquaris.persist = [
+      ".config/rustdesk"
+    ];
+
     home.packages = with pkgs; [
       openvpn # for corporate VPN
       p7zip

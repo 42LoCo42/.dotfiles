@@ -73,7 +73,6 @@
       ".config/rustdesk"
 
       ".local/share/JetBrains"
-      ".local/share/direnv"
     ];
 
     home.packages = with pkgs; [
