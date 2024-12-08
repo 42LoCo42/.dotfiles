@@ -15,7 +15,7 @@ let
     subs = { inherit domain dn; };
   };
 
-  chronometer = self.inputs.chronometer.packages.${pkgs.system}.default;
+  obscura = self.inputs.obscura.packages.${pkgs.system};
 
   iosevka = pipe pkgs.nerdfonts [
     (x: x.override { fonts = [ "Iosevka" ]; })
@@ -30,8 +30,9 @@ let
     };
 
     nativeBuildInputs = with pkgs; [
+      obscura.pug
+
       glibcLocales
-      pug
       tree
       woff2
     ];
@@ -45,26 +46,14 @@ let
     '';
   };
 
-  avh = self.inputs.avh.packages.${pkgs.system}.default;
-
   invfork = pkgs.runCommandCC "invfork"
     { nativeBuildInputs = with pkgs; [ musl ]; } ''
     cc -Wall -Wextra -Werror -O3 -static -flto ${./invfork.c} -o $out
     strip -s $out
   '';
-
-  lix = getExe self.inputs.nixpkgs.legacyPackages.x86_64-linux.lixStatic;
 in
 {
   imports = [ ../../rice ];
-
-  nixpkgs.overlays = [
-    (_: _: {
-      inherit (self.inputs.obscura.packages.${pkgs.system}) photoview pug;
-
-      jujutsu = (builtins.getFlake "github:nixos/nixpkgs/4aa36568d413aca0ea84a1684d2d46f55dbabad7").legacyPackages.${pkgs.system}.jujutsu;
-    })
-  ];
 
   aquaris = {
     machine = {
@@ -109,8 +98,6 @@ in
       flake = "github:42loco42/.dotfiles";
       flags = [ "--refresh" "-L" ];
     };
-
-    extraDependencies = with pkgs; [ avh homepage photoview pug ];
   };
 
   networking = {
@@ -186,9 +173,8 @@ in
       volumes = [
         "caddy:/caddy"
         "${homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
-        "${chronometer}:/srv/chronometer:ro"
+        "${obscura.chronometer}:/srv/chronometer:ro"
         "/persist/home/admin/hidden:/srv/homepage/foo:ro"
-        "${lix}:/srv/homepage/foo/lix:ro"
         # "${pkgs.element-web}:/srv/element:ro"
         # "${subsDomain ./element.json}:/srv/element/config.json:ro"
       ];
@@ -206,7 +192,7 @@ in
     };
 
     avh = {
-      cmd = [ (getExe avh) ];
+      cmd = [ (getExe obscura.avh) ];
       volumes = [
         "/persist/home/admin/avh/videos:/videos:ro"
       ];
@@ -231,7 +217,7 @@ in
     };
 
     photoview = {
-      cmd = [ (getExe pkgs.photoview) ];
+      cmd = [ (getExe obscura.photoview) ];
       environment = {
         PHOTOVIEW_DATABASE_DRIVER = "postgres";
         PHOTOVIEW_LISTEN_IP = "0.0.0.0";
@@ -245,7 +231,7 @@ in
     };
 
     pinlist = {
-      cmd = [ (getExe self.inputs.pinlist.packages.${pkgs.system}.default) ];
+      cmd = [ (getExe obscura.pinlist) ];
       volumes = [ "pinlist:/db" ];
     };
 
@@ -362,7 +348,7 @@ in
     };
 
     vencloud = {
-      cmd = [ (getExe self.inputs.obscura.packages.${pkgs.system}.vencloud) ];
+      cmd = [ (getExe obscura.vencloud) ];
       environment = {
         HOST = "0.0.0.0";
         PORT = "8080";

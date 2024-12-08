@@ -5,14 +5,6 @@
     aquaris.inputs.nixpkgs.follows = "nixpkgs";
     aquaris.inputs.obscura.follows = "obscura";
 
-    avh.url = "github:42loco42/avh";
-    avh.inputs.flake-utils.follows = "aquaris/flake-utils";
-    avh.inputs.nixpkgs.follows = "nixpkgs";
-
-    chronometer.url = "github:42loco42/chronometer";
-    chronometer.inputs.flake-utils.follows = "aquaris/flake-utils";
-    chronometer.inputs.nixpkgs.follows = "nixpkgs";
-
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -24,10 +16,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     obscura.url = "github:42loco42/obscura";
-
-    pinlist.url = "github:42loco42/pinlist";
-    pinlist.inputs.flake-utils.follows = "aquaris/flake-utils";
-    pinlist.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { aquaris, self, ... }: aquaris self rec {

@@ -14,64 +14,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1733660169,
-        "narHash": "sha256-zU4eKzpqCsPsG4yXSa4TG2V2jsuD+jC5tlWjSeKPpu4=",
+        "lastModified": 1733664823,
+        "narHash": "sha256-ecxO4De7HriuwBqKqqJYFlIMtf2z2pEcV0bKiQ8vmzs=",
         "owner": "42loco42",
         "repo": "aquaris",
-        "rev": "252e991cbbfe49466d13a3e2d960ea75718204c4",
+        "rev": "73ab1cd95f08e386e1987167febea216f013580c",
         "type": "github"
       },
       "original": {
         "owner": "42loco42",
         "repo": "aquaris",
-        "type": "github"
-      }
-    },
-    "avh": {
-      "inputs": {
-        "flake-utils": [
-          "aquaris",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1724583483,
-        "narHash": "sha256-9SKtyqpOgzW/ymAvmuPhaCx1YKgcUmWkopguQV7qg3A=",
-        "owner": "42loco42",
-        "repo": "avh",
-        "rev": "06ddda68e5cd7ff3b6ff1bddf0c3be86caf6a0b6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "42loco42",
-        "repo": "avh",
-        "type": "github"
-      }
-    },
-    "chronometer": {
-      "inputs": {
-        "flake-utils": [
-          "aquaris",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1727872321,
-        "narHash": "sha256-G8qOfKPKtU1ukPSPsH9z6cbsLqWHdha0l5Ymwx7m5Zk=",
-        "owner": "42loco42",
-        "repo": "chronometer",
-        "rev": "dd49f3b7ec73fe7aeb790eb10b008232dfbc2466",
-        "type": "github"
-      },
-      "original": {
-        "owner": "42loco42",
-        "repo": "chronometer",
         "type": "github"
       }
     },
@@ -187,11 +139,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1733097829,
-        "narHash": "sha256-9hbb1rqGelllb4kVUCZ307G2k3/UhmA8PPGBoyuWaSw=",
+        "lastModified": 1733376361,
+        "narHash": "sha256-aLJxoTDDSqB+/3orsulE6/qdlX6MzDLIITLZqdgMpqo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2c15aa59df0017ca140d9ba302412298ab4bf22a",
+        "rev": "929116e316068c7318c54eb4d827f7d9756d5e9c",
         "type": "github"
       },
       "original": {
@@ -207,54 +159,27 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1733322226,
-        "narHash": "sha256-eMVwFFyG4odSmOXoRbOmiwNGbJmwenQ3MUCQSI4we2A=",
+        "lastModified": 1733664063,
+        "narHash": "sha256-oGMgJAoBZ+fQQZKRquU+IIerAB5Xvb6p2U4QvIxudU0=",
         "owner": "42loco42",
         "repo": "obscura",
-        "rev": "dda90c86e379074d89e11701bcabea6606523b51",
+        "rev": "4450824398729f824499d12f5c678cb4889b51d3",
         "type": "github"
       },
       "original": {
         "owner": "42loco42",
         "repo": "obscura",
-        "type": "github"
-      }
-    },
-    "pinlist": {
-      "inputs": {
-        "flake-utils": [
-          "aquaris",
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1724580250,
-        "narHash": "sha256-LDc3P5wKeHKEgisLO6h7OvXzzjtcscotHNp4TRWBQUs=",
-        "owner": "42loco42",
-        "repo": "pinlist",
-        "rev": "4cb28595176e7c9b4a04192ee57641a41cd03b32",
-        "type": "github"
-      },
-      "original": {
-        "owner": "42loco42",
-        "repo": "pinlist",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
         "aquaris": "aquaris",
-        "avh": "avh",
-        "chronometer": "chronometer",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
         "nixos-router": "nixos-router",
         "nixpkgs": "nixpkgs",
-        "obscura": "obscura",
-        "pinlist": "pinlist"
+        "obscura": "obscura"
       }
     },
     "systems": {
