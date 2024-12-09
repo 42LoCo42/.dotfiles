@@ -92,6 +92,14 @@ attic.{$DOMAIN} {
 	reverse_proxy attic:8080
 }
 
+attic-default.{$DOMAIN} {
+	import default
+	reverse_proxy {
+		to attic:8080
+		rewrite /default{path}
+	}
+}
+
 auth.{$DOMAIN} {
 	import default
 	reverse_proxy authelia:8080

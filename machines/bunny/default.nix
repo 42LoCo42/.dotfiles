@@ -15,6 +15,8 @@ let
     subs = { inherit domain dn; };
   };
 
+  path = path: builtins.path { inherit path; };
+
   obscura = self.inputs.obscura.packages.${pkgs.system};
 
   iosevka = pipe pkgs.nerdfonts [
@@ -211,7 +213,7 @@ in
       cmd = [ (getExe pkgs.tini) "--" (getExe pkgs.mycorrhiza) "/data" ];
       volumes = [
         "mycorrhiza:/data"
-        "${self}/homepage/static/favicon.ico:/data/static/favicon.ico:ro"
+        "${path "${self}/homepage/static/favicon.ico"}:/data/static/favicon.ico:ro"
         "${subsDomain ./mycorrhiza.ini}:/data/config.ini:ro"
       ];
     };

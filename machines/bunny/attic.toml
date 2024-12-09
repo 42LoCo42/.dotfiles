@@ -1,5 +1,5 @@
 listen        = "0.0.0.0:8080"
-allowed-hosts = [ "attic.@domain@" ]
+allowed-hosts = [ "attic.@domain@", "attic-default.@domain@" ]
 api-endpoint  = "https://attic.@domain@/"
 
 [database]
