@@ -13,7 +13,7 @@ if [ "$has" == "$now" ]; then
 	"$out" "HRT already taken!"
 else
 	extra=""
-	if (($(date +%s) / 86400 % 2 == 1)); then
+	if (($(date +%s) / 86400 % 3 == 0)); then
 		extra=" and Cypro"
 	fi
 
