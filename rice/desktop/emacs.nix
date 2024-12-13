@@ -3,6 +3,29 @@
     services.emacs.enable = true;
     systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
 
+    xdg.configFile."fourmolu.yaml".text = ''
+      indentation: 2
+      column-limit: none
+      function-arrows: trailing
+      comma-style: leading
+      import-export-style: leading
+      indent-wheres: false
+      record-brace-space: true
+      newlines-between-decls: 1
+      haddock-style: single-line
+      haddock-style-module: null
+      let-style: auto
+      in-style: left-align
+      single-constraint-parens: always
+      single-deriving-parens: always
+      unicode: never
+      respectful: false
+      import-grouping: by-scope-then-qualified
+      sort-constraints: true
+      sort-derived-classes: true
+      sort-deriving-clauses: true
+    '';
+
     aquaris.persist = [ ".config/emacs" ];
 
     aquaris.emacs = {
@@ -264,6 +287,11 @@
           custom = "(highlight-indent-guides-responsive 'stack)";
         };
 
+        hl-todo = {
+          hook = "prog-mode text-mode";
+          config = "(global-hl-todo-mode 1)";
+        };
+
         display-line-numbers = {
           config = ''
             (set-face-foreground 'line-number "#ebdbb2")
@@ -333,27 +361,16 @@
           custom = "(flycheck-display-errors-delay 0)";
         };
 
-        format-all = {
+        apheleia = {
           bind' = ''
-            ("C-<tab>" . format-all-buffer)
+            ("C-<tab>" . apheleia-format-buffer)
           '';
 
-          hook = ''
-            prog-mode
-            (format-all-mode . format-all-ensure-formatter)
-          '';
-
-          config = ''
-            (setq-default
-             format-all-formatters
-             '(("Haskell" stylish-haskell)
-               ("HTML"    prettier)))
-          '';
+          hook = "prog-mode";
 
           extraPackages = with pkgs; [
             nodePackages.prettier
             shfmt
-            stylish-haskell
           ];
         };
 
@@ -368,11 +385,6 @@
               (number-sequence ?a ?z)
               (number-sequence ?0 ?9)))
           '';
-        };
-
-        hl-todo = {
-          hook = "prog-mode text-mode";
-          config = "(global-hl-todo-mode 1)";
         };
 
         multiple-cursors = {
@@ -570,11 +582,17 @@
 
             (advice-add 'haskell-mode :after (lambda ()
               (add-hook 'after-save-hook 'my/haskell-reload)))
+
+            (require 'apheleia)
+            (add-to-list 'apheleia-mode-alist '(haskell-mode . fourmolu))
+            (add-to-list 'apheleia-formatters '(fourmolu "fourmolu" "--no-cabal"))
           '';
 
           custom = ''
             (haskell-interactive-popup-errors nil)
           '';
+
+          extraPackages = with pkgs; [ haskellPackages.fourmolu ];
         };
 
         json-mode = { mode = ''"\\.json\\'"''; };
@@ -589,6 +607,12 @@
             nil
             nixpkgs-fmt
           ];
+
+          config = ''
+            (require 'apheleia)
+            (add-to-list 'apheleia-mode-alist '(nix-mode . nixpkgs-fmt))
+            (add-to-list 'apheleia-formatters '(nixpkgs-fmt "nixpkgs-fmt"))
+          '';
         };
 
         rustic = {
@@ -642,7 +666,8 @@
           config = ''
             ; disable things that break Lisp editing
             (advice-add 'parinfer-rust-mode :before (lambda ()
-              (format-all-mode 0)
+              ; (format-all-mode 0)
+              (apheleia-mode 0 )
               (indent-tabs-mode 0)
               (electric-indent-local-mode 0)
               (electric-pair-local-mode 0)))
@@ -666,6 +691,7 @@
 
           extraPackages = with pkgs; [
             typst
+            prettypst # formatter
             tinymist # LSP
           ];
 
@@ -679,6 +705,10 @@
               :new-connection (lsp-stdio-connection "tinymist")
               :major-modes '(typst-ts-mode)
               :server-id 'tinymist))
+
+            (require 'apheleia)
+            (add-to-list 'apheleia-mode-alist '(typst-ts-mode . prettypst))
+            (add-to-list 'apheleia-formatters '(prettypst "prettypst" "--use-std-in" "--use-std-out"))
           '';
         };
 
