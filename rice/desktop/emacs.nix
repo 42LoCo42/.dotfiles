@@ -9,9 +9,15 @@
       enable = true;
       package = pkgs.emacs29-pgtk;
 
-      usePackage = {
-        statistics = true;
-      };
+      extraPackages = epkgs: with epkgs; [
+        websocket # required by typst-preview
+
+        (treesit-grammars.with-grammars (g: with g; [
+          tree-sitter-typst
+        ]))
+      ];
+
+      usePackage.statistics = true;
 
       prelude = ''
         (defvar my/temp-dir (concat user-emacs-directory "temp"))
@@ -487,6 +493,7 @@
             (rustic-mode     . lsp-deferred)
             (sh-mode         . lsp-deferred)
             (typescript-mode . lsp-deferred)
+            (typst-ts-mode   . lsp-deferred)
             (web-mode        . lsp-deferred)
           '';
 
@@ -639,6 +646,62 @@
               (indent-tabs-mode 0)
               (electric-indent-local-mode 0)
               (electric-pair-local-mode 0)))
+          '';
+        };
+
+        # Typst
+
+        typst-ts-mode = {
+          package = epkgs: epkgs.trivialBuild {
+            pname = "typst-ts-mode";
+            version = "2024-12-07";
+
+            src = pkgs.fetchFromSourcehut {
+              owner = "~meow_king";
+              repo = "typst-ts-mode";
+              rev = "1367003e2ad55a2f6f9e43178584683028ab56e9";
+              hash = "sha256-0RAJ/Td3G7FDvzf7t8csNs/uc07WUPGvMo8ako5iyl0=";
+            };
+          };
+
+          extraPackages = with pkgs; [
+            typst
+            tinymist # LSP
+          ];
+
+          mode = ''"\\.typ\\'"'';
+
+          config = ''
+            (require 'lsp-mode)
+            (add-to-list 'lsp-language-id-configuration '(typst-ts-mode . "typst"))
+            (lsp-register-client
+             (make-lsp-client
+              :new-connection (lsp-stdio-connection "tinymist")
+              :major-modes '(typst-ts-mode)
+              :server-id 'tinymist))
+          '';
+        };
+
+        typst-preview = {
+          package = epkgs: epkgs.trivialBuild {
+            pname = "typst-preview";
+            version = "2024-10-26";
+
+            src = pkgs.fetchFromGitHub {
+              owner = "havarddj";
+              repo = "typst-preview.el";
+              rev = "4091dc5bbb281335ce03e4cecaae26495275f7e3";
+              hash = "sha256-AJRWw8c13C6hfwO28hXERN4cIc6cFTbNBcz2EzqqScg=";
+            };
+
+            buildInputs = with epkgs; [ websocket ];
+          };
+
+          hook = "typst-ts-mode";
+
+          custom = ''
+            (typst-preview-invert-colors "never")
+            (typst-preview-open-browser-automatically t)
           '';
         };
       };
