@@ -282,11 +282,6 @@
           extraPackages = with pkgs; [ emacs-all-the-icons-fonts ];
         };
 
-        highlight-indent-guides = {
-          hook = "prog-mode";
-          custom = "(highlight-indent-guides-responsive 'stack)";
-        };
-
         hl-todo = {
           hook = "prog-mode text-mode";
           config = "(global-hl-todo-mode 1)";
