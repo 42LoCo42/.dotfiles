@@ -17,6 +17,10 @@ else
 		extra=" and Cypro"
 	fi
 
+	if (($(date +%u) == 6)); then
+		extra="$extra and Vitamin D"
+	fi
+
 	"$out" "Take Estrogen$extra today!"
 	echo "$now" >"$src"
 fi
