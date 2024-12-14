@@ -363,6 +363,10 @@
 
           hook = "prog-mode";
 
+          config = ''
+            (add-to-list 'apheleia-mode-alist '(sh-mode . shfmt))
+          '';
+
           extraPackages = with pkgs; [
             nodePackages.prettier
             shfmt
