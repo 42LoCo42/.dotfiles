@@ -497,6 +497,7 @@
 
           hook = ''
             (c-mode          . lsp-deferred)
+            (c++-mode        . lsp-deferred)
             (go-mode         . lsp-deferred)
             (haskell-mode    . lsp-deferred)
             (nix-mode        . lsp-deferred)
@@ -515,6 +516,9 @@
             (lsp-inlay-hint-enable t)
             (lsp-log-io nil)
             (read-process-output-max (* 1024 1024))
+
+            (lsp-clients-clangd-args '("--header-insertion=never"))
+            ; custom client args
           '';
 
           extraPackages = with pkgs; [
