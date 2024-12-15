@@ -496,8 +496,9 @@
           '';
 
           hook = ''
-            (c-mode          . lsp-deferred)
             (c++-mode        . lsp-deferred)
+            (c-mode          . lsp-deferred)
+            (glsl-mode       . lsp-deferred)
             (go-mode         . lsp-deferred)
             (haskell-mode    . lsp-deferred)
             (nix-mode        . lsp-deferred)
@@ -555,6 +556,24 @@
             (caddyfile-mode . (lambda ()
               (setq-local tab-width 4)))
           '';
+        };
+
+        glsl-mode = {
+          mode = ''
+            "\\.frag\\'"
+            "\\.glsl\\'"
+            "\\.vert\\'"
+          '';
+
+          config = ''
+            (require 'lsp-mode)
+            (setq lsp-glsl-executable '("glsl_analyzer"))
+
+            (require 'apheleia)
+            (add-to-list 'apheleia-mode-alist '(glsl-mode . clang-format))
+          '';
+
+          extraPackages = with pkgs; [ glsl_analyzer ];
         };
 
         go-mode = {
