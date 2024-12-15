@@ -353,7 +353,10 @@
 
         flycheck = {
           hook = "prog-mode";
-          custom = "(flycheck-display-errors-delay 0)";
+          custom = ''
+            (flycheck-check-syntax-automatically '(mode-enabled save))
+            (flycheck-display-errors-delay 0)
+          '';
         };
 
         apheleia = {
