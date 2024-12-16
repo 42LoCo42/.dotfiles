@@ -224,10 +224,9 @@
           custom = "(server-client-instructions nil)";
         };
 
-        # TODO currently broken in aquaris
-        # straight = {
-        #   commands = "straight-use-package";
-        # };
+        straight = {
+          commands = "straight-use-package";
+        };
 
         ##### Appearance #####
 
@@ -434,6 +433,15 @@
           custom = ''
             (undo-tree-history-directory-alist `(("." . ,my/temp-dir)))
           '';
+        };
+
+        org-drill = {
+          package = epkgs: epkgs.org-drill.overrideAttrs (old: {
+            # org is part of emacs
+            packageRequires = lib.remove epkgs.org old.packageRequires;
+          });
+
+          defer = true;
         };
 
         ##### Completion #####
