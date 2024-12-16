@@ -65,6 +65,8 @@
   home-manager.users.leonsch = hm: {
     aquaris.persist = [
       ".config/rustdesk"
+
+      ".local/share/typst/packages/local"
     ];
 
     home.packages = with pkgs; [

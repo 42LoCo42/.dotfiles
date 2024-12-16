@@ -77,6 +77,7 @@
       ".config/rustdesk"
 
       ".local/share/JetBrains"
+      ".local/share/typst/packages/local"
     ];
 
     home.packages = with pkgs; [
