@@ -297,13 +297,21 @@
         };
 
         telephone-line = {
-          config = "(telephone-line-mode 1)";
+          config = ''
+            (telephone-line-defsegment my/telephone-line-project-cached-segment ()
+              (if (boundp 'my/project-cached) my/project-cached
+                (let ((result (funcall (funcall #'telephone-line-project-segment) face)))
+                  (setq-local my/project-cached result)
+                  result)))
+
+            (telephone-line-mode 1)
+          '';
 
           custom = ''
             (telephone-line-lhs
              '((accent . (telephone-line-vc-segment
                           telephone-line-process-segment))
-               (nil    . (telephone-line-project-segment
+               (nil    . (my/telephone-line-project-cached-segment
                           telephone-line-buffer-segment))))
           '';
         };
