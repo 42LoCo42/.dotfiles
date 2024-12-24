@@ -654,6 +654,17 @@
           '';
         };
 
+        pug-mode = {
+          mode = ''"\\.pug\\'"'';
+
+          hook = "(pug-mode . (lambda () (indent-tabs-mode 0)))";
+
+          config = ''
+            (require 'apheleia)
+            (add-to-list 'apheleia-mode-alist '(pug-mode . prettier))
+          '';
+        };
+
         rustic = {
           mode = ''("\\.rs\\'" . rustic-mode)'';
           custom = ''
