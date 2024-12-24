@@ -33,8 +33,6 @@
       package = pkgs.emacs29-pgtk;
 
       extraPackages = epkgs: with epkgs; [
-        websocket # required by typst-preview
-
         (treesit-grammars.with-grammars (g: with g; [
           tree-sitter-typst
         ]))
@@ -765,7 +763,7 @@
               hash = "sha256-AJRWw8c13C6hfwO28hXERN4cIc6cFTbNBcz2EzqqScg=";
             };
 
-            buildInputs = with epkgs; [ websocket ];
+            packageRequires = with epkgs; [ websocket ];
           };
 
           hook = "typst-ts-mode";
