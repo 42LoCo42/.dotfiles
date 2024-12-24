@@ -106,21 +106,6 @@
         "type": "github"
       }
     },
-    "nixos-router": {
-      "locked": {
-        "lastModified": 1730117087,
-        "narHash": "sha256-A3FNoLkrsN5PL7WGYYfHex96ffuxOGmINzilKZfz2Nk=",
-        "owner": "42LoCo42",
-        "repo": "nixos-router",
-        "rev": "47f2d478aae135c0318a88e3b0ed1addd5099ebd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "42LoCo42",
-        "repo": "nixos-router",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1732521221,
@@ -177,7 +162,6 @@
         "aquaris": "aquaris",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
-        "nixos-router": "nixos-router",
         "nixpkgs": "nixpkgs",
         "obscura": "obscura"
       }
