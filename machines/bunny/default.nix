@@ -95,10 +95,18 @@ in
     };
   };
 
-  home-manager.users.admin.aquaris.persist = [
-    "hidden"
-    "img"
-  ];
+  home-manager.users.admin = {
+    aquaris.persist = [
+      "hidden"
+      "img"
+    ];
+
+    home.file.".ssh/rc".source = ./ssh-rc.sh;
+
+    programs.zsh.envExtra = ''
+      if [ -v TMUX ]; then export SSH_AUTH_SOCK="$HOME/.ssh/auth"; fi
+    '';
+  };
 
   nix.gc.automatic = true;
 
