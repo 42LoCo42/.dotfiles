@@ -32,7 +32,7 @@
     };
 
     # TODO secretKey handling should be part of aquaris
-    secrets."user:leonsch.ssh-ed25519".user = "leonsch";
+    secrets."user:leonsch.ssh-bunny".user = "leonsch";
     secrets."user:leonsch.u2f-keys".user = "leonsch";
   };
 

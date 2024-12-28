@@ -1,6 +1,6 @@
 { self, pkgs, config, lib, aquaris, ... }:
 let
-  inherit (lib) concatMapStringsSep getExe getExe' pipe splitString;
+  inherit (lib) concatMapStringsSep getExe getExe' mkForce pipe splitString;
 
   domain = "eleonora.gay";
 
@@ -65,7 +65,15 @@ in
 
     users = aquaris.lib.merge [
       { inherit (aquaris.cfg.users) admin; }
-      { admin.admin = true; }
+
+      {
+        admin = {
+          admin = true;
+          sshKeys = mkForce [
+            "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo="
+          ];
+        };
+      }
     ];
 
     filesystems = { fs, ... }: {
@@ -102,6 +110,15 @@ in
     };
   };
 
+  security.pam = {
+    rssh = {
+      enable = true;
+      settings.cue = true;
+    };
+
+    services.sudo.rssh = true;
+  };
+
   networking = {
     firewall = {
       allowedTCPPorts = [
@@ -136,7 +153,7 @@ in
       extraOptions = [ "-v" ];
     };
 
-    openssh.ports = lib.mkForce [ 18213 ];
+    openssh.ports = mkForce [ 18213 ];
   };
 
   systemd.services."mount-dcim" = {
