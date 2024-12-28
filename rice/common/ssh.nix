@@ -1,10 +1,25 @@
-{ config, ... }: {
-  home-manager.sharedModules = [
-    (hm:
-      let user = hm.config.home.username; in {
+{ lib, config, ... }:
+let inherit (lib) flip mapNullable mkIf mkMerge pipe singleton; in
+mkMerge [
+  {
+    home-manager.sharedModules = singleton (hm:
+      let
+        user = hm.config.home.username;
+        key = flip pipe [
+          (name: config.aquaris.secrets."user/${user}/ssh/${name}" or null)
+          (mapNullable toString)
+        ];
+      in
+      {
         programs.ssh = {
           enable = true;
           addKeysToAgent = "yes";
+
+          extraConfig =
+            let main = key "main"; in
+            mkIf (main != null) ''
+              IdentityFile ${main}
+            '';
 
           matchBlocks = {
             leonsch = rec {
@@ -14,7 +29,7 @@
               bunny = {
                 hostname = "exit.bunny.vpn";
                 user = "admin";
-                identityFile = "${config.aquaris.secrets."user/${user}/ssh-bunny"}";
+                identityFile = key "fido";
                 forwardAgent = true;
                 setEnv.TERM = "xterm-256color";
               };
@@ -29,6 +44,7 @@
                 hostname = "owo-ercanar-senpai.duckdns.org";
                 port = 18213;
                 user = "ercanar";
+                identityFile = key "old/ed25519";
               };
 
               hapi = hannes // { port = 12345; };
@@ -42,7 +58,7 @@
               ##### work - PIC #####
 
               lbmvweb = {
-                hostname = "193.175.55.110";
+                hostname = "www1.d11121.lbmv.de";
                 user = "www-data";
               };
 
@@ -55,6 +71,7 @@
               freepbx = {
                 hostname = "195.98.195.10";
                 user = "root";
+                identityFile = key "old/rsa";
                 setEnv.TERM = "xterm-256color";
                 extraOptions = {
                   HostKeyAlgorithms = "+ssh-rsa";
@@ -71,6 +88,20 @@
             };
           }.${user} or { };
         };
-      })
-  ];
-}
+      });
+  }
+
+  # TODO secretKey handling should be part of aquaris
+  (mkIf (builtins.hasAttr "leonsch" config.aquaris.users) {
+    aquaris.secrets = pipe [ "main" "fido" "old:ed25519" "old:rsa" ] [
+      (map (x: {
+        name = "user:leonsch.ssh:${x}";
+        value.user = "leonsch";
+      }))
+      builtins.listToAttrs
+    ];
+
+    home-manager.users.leonsch.aquaris.git.sshKeyFile =
+      _: "${config.aquaris.secrets."user/leonsch/ssh/main"}";
+  })
+]

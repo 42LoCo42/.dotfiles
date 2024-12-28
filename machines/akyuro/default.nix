@@ -27,8 +27,6 @@
       dirs = [ "/root/.android" ];
     };
 
-    # TODO secretKey handling should be part of aquaris
-    secrets."user:leonsch.ssh-bunny".user = "leonsch";
     secrets."user:leonsch.u2f-keys".user = "leonsch";
   };
 
@@ -103,9 +101,7 @@
       ]) ++ [
         "L+ ${home}/config - - - - ${sync}/dev/nix/dotfiles"
 
-        # TODO secretKey handling should be part of aquaris
         "L+ %h/.config/Yubico/u2f_keys - - - - ${config.aquaris.secrets."user:leonsch.u2f-keys"}"
-        # "L+ %h/.ssh/id_ed25519         - - - - ${config.aquaris.secrets."user:leonsch.ssh-ed25519"}"
       ];
   };
 }
