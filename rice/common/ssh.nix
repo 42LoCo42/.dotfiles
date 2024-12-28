@@ -1,5 +1,13 @@
 { lib, config, ... }:
-let inherit (lib) flip mapNullable mkIf mkMerge pipe singleton; in
+let
+  inherit (lib) flip mapNullable mkIf mkMerge pipe singleton;
+
+  knownHosts = user: builtins.concatStringsSep "" [
+    config.aquaris.persist.root
+    config.users.users.${user}.home
+    "/.cache/ssh-known-hosts"
+  ];
+in
 mkMerge [
   {
     home-manager.sharedModules = singleton (hm:
@@ -17,9 +25,13 @@ mkMerge [
 
           extraConfig =
             let main = key "main"; in
-            mkIf (main != null) ''
-              IdentityFile ${main}
-            '';
+            mkMerge [
+              "UserKnownHostsFile ${knownHosts user}"
+
+              (mkIf (main != null) ''
+                IdentityFile ${main}
+              '')
+            ];
 
           matchBlocks = {
             leonsch = rec {
@@ -101,7 +113,15 @@ mkMerge [
       builtins.listToAttrs
     ];
 
-    home-manager.users.leonsch.aquaris.git.sshKeyFile =
-      _: "${config.aquaris.secrets."user/leonsch/ssh/main"}";
+    home-manager.users.leonsch =
+      let main = config.aquaris.secrets."user/leonsch/ssh/main"; in {
+        aquaris.git.sshKeyFile = _: "${main}";
+
+        systemd.user.tmpfiles.rules = [
+          "L+ %h/.ssh/id_ed25519      - - - - ${main}"
+          "L+ %h/.ssh/known_hosts     - - - - ${knownHosts "leonsch"}"
+          "L+ %h/.ssh/known_hosts.old - - - - ${knownHosts "leonsch"}"
+        ];
+      };
   })
 ]
