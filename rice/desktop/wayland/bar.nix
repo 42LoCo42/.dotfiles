@@ -70,8 +70,8 @@
         };
 
         mpd = {
-          format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{album}: {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%  ";
-          format-stopped = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped 󰝛 ";
+          format = "{stateIcon}{consumeIcon}{randomIcon}{repeatIcon}{singleIcon} {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩  ";
+          format-stopped = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon} Stopped 󰝛 ";
           format-disconnected = "Disconnected 󰀦 ";
           unknown-tag = "";
           interval = 2;
@@ -79,7 +79,7 @@
             on = " ";
           };
           random-icons = {
-            on = " ";
+            on = "  ";
           };
           repeat-icons = {
             on = "󰑖 ";
@@ -103,13 +103,8 @@
           format-source = "{volume}% ";
           format-source-muted = "";
           format-icons = {
-            headphone = "";
-            hands-free = "󰜟";
-            headset = "󰋎";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [ "" "" "󰕾" "" ];
+            headphone = " ";
+            default = [ " " " " "󰕾 " " " ];
           };
         };
 
