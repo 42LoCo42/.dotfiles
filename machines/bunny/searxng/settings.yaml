@@ -9,3 +9,10 @@ ui:
 
 redis:
   url: redis://redis:6379/0
+
+enabled_plugins:
+  - 'Hostnames plugin' # https://docs.searxng.org/src/searx.plugins.hostnames.html
+
+hostnames:
+  remove:
+    - '(.*\.)?nixos\.wiki$'
