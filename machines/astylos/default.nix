@@ -42,29 +42,42 @@
   programs.gamemode.enable = true;
 
   rice = {
-    desktop = true;
+    desktop = {
+      enable = true;
 
-    dns = true;
-    dnsmasq-interface = "enp6s0";
+      udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';
 
-    syncthing = true;
-    tailscale = true;
+      wayland = {
+        fuzzel.fontSize = 20;
 
-    fuzzel-font-size = 20;
-    temp-select = ''KERNELS=="coretemp.0"'';
-    temp-warn = 70;
+        hyprland.preConfig = ''
+          env = AQ_DRM_DEVICES,/persist/gpu/nvidia
 
-    hypr-early-config = ''
-      env = AQ_DRM_DEVICES,/persist/gpu/nvidia
+          env = GBM_BACKEND,nvidia-drm
+          env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+          env = LIBVA_DRIVER_NAME,nvidia
 
-      env = GBM_BACKEND,nvidia-drm
-      env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-      env = LIBVA_DRIVER_NAME,nvidia
+          monitor = DVI-D-1,1920x1080@60,0x0,1
+          # monitor = DP-1,1920x1080@60,1920x0,1
+          monitor = DP-1,disable # TODO
+        '';
 
-      monitor = DVI-D-1,1920x1080@60,0x0,1
-      # monitor = DP-1,1920x1080@60,1920x0,1
-      monitor = DP-1,disable # TODO
-    '';
+        waybar.temperatureWarn = 70;
+
+        wlsunset = {
+          lat = "54.31";
+          lon = "13.09";
+        };
+      };
+    };
+
+    dns = {
+      enable = true;
+      interface = "enp6s0";
+    };
+
+    syncthing.enable = true;
+    tailscale.enable = true;
   };
 
   home-manager.users.leonsch = hm: {

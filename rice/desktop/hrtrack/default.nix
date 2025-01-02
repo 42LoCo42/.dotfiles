@@ -1,39 +1,46 @@
-{ pkgs, lib, config, ... }: lib.mkIf config.rice.desktop {
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      hrtrack = lib.pipe ./main.sh [
-        builtins.readFile
-        (pkgs.writeShellScriptBin "hrtrack")
-        (x: x.overrideAttrs (old: {
-          nativeBuildInputs = with pkgs; [
-            copyDesktopItems
-            shellcheck-minimal
-          ];
+{ pkgs, lib, config, ... }: {
+  options.rice.desktop.hrtrack.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
 
-          doCheck = true;
-          checkPhase = ''
-            shellcheck "$target"
-          '';
+  config = lib.mkIf config.rice.desktop.hrtrack.enable {
+    nixpkgs.overlays = [
+      (_: pkgs: {
+        hrtrack = lib.pipe ./main.sh [
+          builtins.readFile
+          (pkgs.writeShellScriptBin "hrtrack")
+          (x: x.overrideAttrs (old: {
+            nativeBuildInputs = with pkgs; [
+              copyDesktopItems
+              shellcheck-minimal
+            ];
 
-          buildCommand = old.buildCommand + ''
-            runHook postInstall
-          '';
+            doCheck = true;
+            checkPhase = ''
+              shellcheck "$target"
+            '';
 
-          desktopItems = [
-            (pkgs.makeDesktopItem rec {
-              inherit (old) name;
-              desktopName = name;
-              exec = name;
-              icon = ./icon.png;
-              terminal = false;
-            })
-          ];
-        }))
-      ];
-    })
-  ];
+            buildCommand = old.buildCommand + ''
+              runHook postInstall
+            '';
 
-  home-manager.sharedModules = [{
-    home.packages = with pkgs; [ hrtrack ];
-  }];
+            desktopItems = [
+              (pkgs.makeDesktopItem rec {
+                inherit (old) name;
+                desktopName = name;
+                exec = name;
+                icon = ./icon.png;
+                terminal = false;
+              })
+            ];
+          }))
+        ];
+      })
+    ];
+
+    home-manager.sharedModules = [{
+      home.packages = with pkgs; [ hrtrack ];
+    }];
+  };
 }

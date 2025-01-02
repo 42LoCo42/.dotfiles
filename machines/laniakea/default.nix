@@ -35,5 +35,5 @@
 
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
 
-  rice.tailscale = true;
+  rice.tailscale.enable = true;
 }

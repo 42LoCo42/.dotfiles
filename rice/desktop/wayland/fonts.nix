@@ -1,22 +1,29 @@
-{ pkgs, lib, config, ... }: lib.mkIf config.rice.desktop {
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      nerdfonts = pkgs.nerdfonts.override { fonts = [ "Iosevka" ]; };
-    })
-  ];
+{ pkgs, lib, config, ... }: {
+  options.rice.desktop.wayland.fonts.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
 
-  fonts = {
-    packages = with pkgs; [
-      nerdfonts
-      noto-fonts
-      noto-fonts-emoji
+  config = lib.mkIf config.rice.desktop.wayland.fonts.enable {
+    nixpkgs.overlays = [
+      (_: pkgs: {
+        nerdfonts = pkgs.nerdfonts.override { fonts = [ "Iosevka" ]; };
+      })
     ];
 
-    fontconfig.defaultFonts = {
-      emoji = [ "Noto Color Emoji" ];
-      monospace = [ "IosevkaNerdFont" ];
-      sansSerif = [ "Noto Sans" ];
-      serif = [ "Noto Serif" ];
+    fonts = {
+      packages = with pkgs; [
+        nerdfonts
+        noto-fonts
+        noto-fonts-emoji
+      ];
+
+      fontconfig.defaultFonts = {
+        emoji = [ "Noto Color Emoji" ];
+        monospace = [ "IosevkaNerdFont" ];
+        sansSerif = [ "Noto Sans" ];
+        serif = [ "Noto Serif" ];
+      };
     };
   };
 }

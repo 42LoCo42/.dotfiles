@@ -43,21 +43,34 @@
   services.auto-cpufreq.enable = true;
 
   rice = {
-    desktop = true;
+    desktop = {
+      enable = true;
 
-    dns = true;
-    dnsmasq-interface = "wlp2s0";
+      udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 
-    syncthing = true;
-    tailscale = true;
+      wayland = {
+        fuzzel.fontSize = 14;
 
-    fuzzel-font-size = 14;
-    temp-select = ''DRIVERS=="k10temp"'';
-    temp-warn = 60;
+        hyprland.preConfig = ''
+          monitor = eDP-1,1920x1080@60,0x0,1
+        '';
 
-    hypr-early-config = ''
-      monitor = eDP-1,1920x1080@60,0x0,1
-    '';
+        waybar.temperatureWarn = 60;
+
+        wlsunset = {
+          lat = "54.31";
+          lon = "13.09";
+        };
+      };
+    };
+
+    dns = {
+      enable = true;
+      interface = "wlp2s0";
+    };
+
+    syncthing.enable = true;
+    tailscale.enable = true;
   };
 
   home-manager.users.leonsch = hm: {

@@ -1,0 +1,44 @@
+{ lib, config, ... }: {
+  options.rice.desktop.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+  };
+
+  config = lib.mkIf config.rice.desktop.enable {
+    rice.desktop = {
+      alarm.enable = true;
+      emacs.enable = true;
+      firefox.enable = true;
+      greetd.enable = true;
+      hrtrack.enable = true;
+      keyd.enable = true;
+      libvirt.enable = true;
+      minecraft.enable = true;
+      misc.enable = true;
+      mpd.enable = true;
+      pipewire.enable = true;
+      sudo-u2f.enable = true;
+      udev.enable = true;
+      vesktop.enable = true;
+      wayland.enable = true;
+    };
+  };
+
+  imports = [
+    ./alarm
+    ./emacs.nix
+    ./firefox.nix
+    ./greetd.nix
+    ./hrtrack
+    ./keyd.nix
+    ./libvirt.nix
+    ./minecraft.nix
+    ./misc.nix
+    ./mpd.nix
+    ./pipewire.nix
+    ./sudo-u2f.nix
+    ./udev.nix
+    ./vesktop.nix
+    ./wayland
+  ];
+}

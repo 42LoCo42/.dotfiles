@@ -1,15 +1,22 @@
-{ pkgs, lib, config, ... }: lib.mkIf config.rice.desktop {
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+{ pkgs, lib, config, ... }: {
+  options.rice.desktop.wayland.xdg.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
   };
 
-  home-manager.sharedModules = [{
-    home.packages = with pkgs; [
-      xdg-utils
-    ];
+  config = lib.mkIf config.rice.desktop.wayland.xdg.enable {
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    };
 
-    # used to store device access permissions
-    aquaris.persist = [ ".local/share/flatpak" ];
-  }];
+    home-manager.sharedModules = [{
+      home.packages = with pkgs; [
+        xdg-utils
+      ];
+
+      # used to store device access permissions
+      aquaris.persist = [ ".local/share/flatpak" ];
+    }];
+  };
 }
