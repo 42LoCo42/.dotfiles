@@ -1,3 +1,5 @@
+# -*- mode: yaml; truncate-lines: t; -*- vi: nowrap
+
 admin:leonsch:
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdkJo7RMoxUkuQ55YT1q5KANHrR+OJZzeYejpJW4rty"
     contains:
