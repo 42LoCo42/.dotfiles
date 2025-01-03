@@ -43,7 +43,7 @@
         };
 
         # virt-manager stores stuff in dconf
-        aquaris.persist = [ ".config/dconf" ];
+        aquaris.persist = { ".config/dconf" = { }; };
       })
     ];
   };

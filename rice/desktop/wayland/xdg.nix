@@ -16,7 +16,7 @@
       ];
 
       # used to store device access permissions
-      aquaris.persist = [ ".local/share/flatpak" ];
+      aquaris.persist = { ".local/share/flatpak" = { }; };
     }];
   };
 }

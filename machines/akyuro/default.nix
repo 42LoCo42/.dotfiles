@@ -24,7 +24,7 @@
 
     persist = {
       enable = true;
-      dirs = [ "/root/.android" ];
+      dirs = { "/root/.android" = { }; };
     };
 
     secrets."user:leonsch.u2f-keys".user = "leonsch";
@@ -74,11 +74,11 @@
   };
 
   home-manager.users.leonsch = hm: {
-    aquaris.persist = [
-      ".config/rustdesk"
+    aquaris.persist = {
+      ".config/rustdesk" = { };
 
-      ".local/share/typst/packages/local"
-    ];
+      ".local/share/typst/packages/local" = { };
+    };
 
     home.packages = with pkgs; [
       openvpn # for corporate VPN

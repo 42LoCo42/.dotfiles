@@ -28,7 +28,7 @@
 
     persist = {
       enable = true;
-      dirs = [ "/root/.android" ];
+      dirs = { "/root/.android" = { }; };
     };
 
     secrets."user:leonsch.u2f-keys".user = "leonsch";
@@ -81,15 +81,15 @@
   };
 
   home-manager.users.leonsch = hm: {
-    aquaris.persist = [
-      ".cache/JetBrains"
+    aquaris.persist = {
+      ".cache/JetBrains" = { };
 
-      ".config/JetBrains"
-      ".config/rustdesk"
+      ".config/JetBrains" = { };
+      ".config/rustdesk" = { };
 
-      ".local/share/JetBrains"
-      ".local/share/typst/packages/local"
-    ];
+      ".local/share/JetBrains" = { };
+      ".local/share/typst/packages/local" = { };
+    };
 
     home.packages = with pkgs; [
       openvpn # for corporate VPN

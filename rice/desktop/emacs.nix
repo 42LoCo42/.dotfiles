@@ -32,7 +32,7 @@
         sort-deriving-clauses: true
       '';
 
-      aquaris.persist = [ ".config/emacs" ];
+      aquaris.persist = { ".config/emacs" = { }; };
 
       aquaris.emacs = {
         enable = true;

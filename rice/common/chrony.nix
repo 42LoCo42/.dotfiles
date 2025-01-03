@@ -12,7 +12,11 @@
     ];
   };
 
-  aquaris.persist.dirs = [
-    { d = "/var/lib/chrony"; u = "chrony"; g = "chrony"; m = "0750"; }
-  ];
+  aquaris.persist.dirs = {
+    "/var/lib/chrony" = {
+      m = "0750";
+      u = "chrony";
+      g = "chrony";
+    };
+  };
 }

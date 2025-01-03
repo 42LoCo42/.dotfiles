@@ -5,7 +5,7 @@
   };
 
   config = lib.mkIf config.rice.desktop.greetd.enable {
-    aquaris.persist.dirs = [ "/var/cache/tuigreet" ];
+    aquaris.persist.dirs = { "/var/cache/tuigreet" = { }; };
 
     services.greetd = {
       enable = true;

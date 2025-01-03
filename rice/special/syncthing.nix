@@ -6,7 +6,7 @@
 
   config = lib.mkIf config.rice.syncthing.enable {
     home-manager.sharedModules = [{
-      aquaris.persist = [ ".local/state/syncthing" ];
+      aquaris.persist = { ".local/state/syncthing" = { }; };
       services.syncthing.enable = true;
     }];
   };

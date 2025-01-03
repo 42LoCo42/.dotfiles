@@ -15,7 +15,7 @@
     ];
 
     home-manager.sharedModules = [{
-      aquaris.persist = [ ".config/vesktop" ];
+      aquaris.persist = { ".config/vesktop" = { }; };
     }];
   };
 }

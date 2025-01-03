@@ -24,7 +24,7 @@
     };
 
     home-manager.sharedModules = [{
-      aquaris.persist = [ ".local/state/wireplumber" ];
+      aquaris.persist = { ".local/state/wireplumber" = { }; };
     }];
   };
 }

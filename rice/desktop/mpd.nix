@@ -7,7 +7,7 @@
   config = lib.mkIf config.rice.desktop.mpd.enable {
     home-manager.sharedModules = [
       (hm: {
-        aquaris.persist = [ "music" ];
+        aquaris.persist = { "music" = { }; };
 
         services.mpd = {
           enable = true;

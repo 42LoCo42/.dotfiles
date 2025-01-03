@@ -30,7 +30,7 @@
 
     home-manager.sharedModules = [{
       home.packages = with pkgs; [ prismlauncher ];
-      aquaris.persist = [ ".local/share/PrismLauncher" ];
+      aquaris.persist = { ".local/share/PrismLauncher" = { }; };
     }];
   };
 }
