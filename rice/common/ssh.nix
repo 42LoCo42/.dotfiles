@@ -48,6 +48,7 @@ mkMerge [
 
               laniakea = {
                 hostname = "laniakea.bunny.vpn";
+                forwardAgent = true;
               };
 
               ##### people #####

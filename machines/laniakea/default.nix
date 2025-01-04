@@ -49,7 +49,10 @@ in
     server pool.ntp.org iburst
   '';
 
-  rice.tailscale.enable = true;
+  rice = {
+    pam-rssh.enable = true;
+    tailscale.enable = true;
+  };
 
   networking.firewall.allowedTCPPorts = [
     8501 # ncps

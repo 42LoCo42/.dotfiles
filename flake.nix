@@ -17,7 +17,7 @@
   };
 
   outputs = { aquaris, self, ... }: aquaris self rec {
-    mainSSHKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdkJo7RMoxUkuQ55YT1q5KANHrR+OJZzeYejpJW4rty";
+    mainSSHKey = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
 
     users = {
       leonsch = {
