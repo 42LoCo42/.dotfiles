@@ -30,8 +30,6 @@
       enable = true;
       dirs = { "/root/.android" = { }; };
     };
-
-    secrets."user:leonsch.u2f-keys".user = "leonsch";
   };
 
   boot = {
@@ -125,8 +123,6 @@
         "work"
       ]) ++ [
         "L+ ${home}/config - - - - ${sync}/dev/nix/dotfiles"
-
-        "L+ %h/.config/Yubico/u2f_keys - - - - ${config.aquaris.secrets."user:leonsch.u2f-keys"}"
       ];
   };
 }

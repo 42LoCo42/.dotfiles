@@ -111,23 +111,16 @@ mkMerge [
       });
   }
 
-  # TODO secretKey handling should be part of aquaris
   (mkIf (builtins.hasAttr "leonsch" config.aquaris.users) {
-    aquaris.secrets = pipe [ "main" "fido" "old:ed25519" "old:rsa" ] [
-      (map (x: {
-        name = "user:leonsch.ssh:${x}";
-        value.user = "leonsch";
-      }))
-      builtins.listToAttrs
-    ];
-
     home-manager.users.leonsch =
       let main = config.aquaris.secrets."user/leonsch/ssh/main"; in {
+        # default key is fido, but we don't want it for git signing
         aquaris.git.sshKeyFile = _: "${main}";
 
+        # required for jj (it ignores ~/.ssh/config)
         systemd.user.tmpfiles.rules = [
-          "L+ %h/.ssh/id_ed25519      - - - - ${main}"
-          "L+ %h/.ssh/known_hosts     - - - - ${knownHosts "leonsch"}"
+          "L+ %h/.ssh/id_ed25519  - - - - ${main}"
+          "L+ %h/.ssh/known_hosts - - - - ${knownHosts "leonsch"}"
         ];
       };
   })
