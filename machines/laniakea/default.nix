@@ -1,4 +1,9 @@
-{ pkgs, aquaris, ... }: {
+{ self, pkgs, config, aquaris, ... }:
+let
+  inherit (pkgs.lib) getExe';
+  obscura = self.inputs.obscura.packages.${pkgs.system};
+in
+{
   imports = [
     ../../rice
     ./kboot-conf
@@ -25,6 +30,10 @@
     };
 
     persist.enable = true;
+
+    secrets = {
+      "machine:${aquaris.name}.ncps".user = "ncps";
+    };
   };
 
   boot = rec {
@@ -41,4 +50,43 @@
   '';
 
   rice.tailscale.enable = true;
+
+  networking.firewall.allowedTCPPorts = [
+    8501 # ncps
+  ];
+
+  virtualisation.pnoc = {
+    ncps = {
+      cmd = [ (getExe' obscura.ncps "ncps-db-helper") "serve" ];
+
+      environment = {
+        CACHE_DATA_PATH = "/data";
+        CACHE_HOSTNAME = aquaris.name;
+        CACHE_LRU_SCHEDULE = "0 0 * * *";
+        CACHE_MAX_SIZE = "250G";
+        CACHE_SECRET_KEY_PATH = "/key";
+
+        UPSTREAM_CACHES = builtins.concatStringsSep ","
+          config.nix.settings.substituters;
+
+        UPSTREAM_PUBLIC_KEYS = builtins.concatStringsSep ","
+          config.nix.settings.trusted-public-keys;
+      };
+
+      # for some reason, /etc/passwd gets mode 600
+      # if the container image is not read-only
+      # otherwise, it gets 644
+      # ncps tries to lookup its user here, so it needs read access
+      extraOptions = [ "--read-only" ];
+
+      ports = [ "8501:8501" ];
+
+      ssl = true;
+
+      volumes = [
+        "ncps:/data"
+        "${config.aquaris.secrets."machine/ncps"}:/key:ro"
+      ];
+    };
+  };
 }
