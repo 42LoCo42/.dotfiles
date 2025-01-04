@@ -78,6 +78,7 @@
 
     syncthing.enable = true;
     tailscale.enable = true;
+    use-ncps.enable = true;
   };
 
   home-manager.users.leonsch = hm: {
