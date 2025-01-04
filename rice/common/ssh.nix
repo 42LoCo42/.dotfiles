@@ -1,6 +1,15 @@
 { lib, config, ... }:
 let
-  inherit (lib) flip mapNullable mkIf mkMerge pipe singleton;
+  inherit (lib)
+    filterAttrs
+    flip
+    mapAttrsToList
+    mapNullable
+    mkIf
+    mkMerge
+    pipe
+    singleton
+    ;
 
   knownHosts = user: builtins.concatStringsSep "" [
     config.aquaris.persist.root
@@ -19,88 +28,88 @@ mkMerge [
         ];
       in
       {
-        programs.ssh = {
-          enable = true;
-          addKeysToAgent = "yes";
+        programs.ssh = mkMerge [
+          {
+            enable = true;
+            addKeysToAgent = "yes";
 
-          extraConfig =
-            let main = key "main"; in
-            mkMerge [
-              "UserKnownHostsFile ${knownHosts user}"
-
-              (mkIf (main != null) ''
-                IdentityFile ${main}
+            extraConfig = pipe config.aquaris.secrets [
+              (filterAttrs (n: _:
+                (builtins.match "user/${user}/ssh/[^/]+" n) != null))
+              (mapAttrsToList (_: x: "IdentityFile ${x}\n"))
+              (builtins.concatStringsSep "")
+              (x: x + ''
+                UserKnownHostsFile ${knownHosts user}
               '')
             ];
 
-          matchBlocks = {
-            leonsch = rec {
+            matchBlocks.github = {
+              hostname = "github.com";
+              user = "git";
+            };
+          }
 
-              ##### private machines #####
+          {
+            matchBlocks = {
+              leonsch = rec {
+                ##### private machines #####
 
-              bunny = {
-                hostname = "exit.bunny.vpn";
-                user = "admin";
-                identityFile = key "fido";
-                forwardAgent = true;
-                setEnv.TERM = "xterm-256color";
-              };
+                bunny = {
+                  hostname = "exit.bunny.vpn";
+                  user = "admin";
+                  forwardAgent = true;
+                  setEnv.TERM = "xterm-256color";
+                };
 
-              laniakea = {
-                hostname = "laniakea.bunny.vpn";
-                forwardAgent = true;
-              };
+                laniakea = {
+                  hostname = "laniakea.bunny.vpn";
+                  forwardAgent = true;
+                };
 
-              ##### people #####
+                ##### people #####
 
-              hannes = {
-                hostname = "owo-ercanar-senpai.duckdns.org";
-                port = 18213;
-                user = "ercanar";
-                identityFile = key "old/ed25519";
-              };
+                hannes = {
+                  hostname = "owo-ercanar-senpai.duckdns.org";
+                  port = 18213;
+                  user = "ercanar";
+                  identityFile = key "old/ed25519";
+                };
 
-              hapi = hannes // { port = 12345; };
+                hapi = hannes // { port = 12345; };
 
-              jana = {
-                hostname = "primula25.duckdns.org";
-                port = 22000;
-                user = "jana";
-              };
+                jana = {
+                  hostname = "primula25.duckdns.org";
+                  port = 22000;
+                  user = "jana";
+                };
 
-              ##### work - PIC #####
+                ##### work - PIC #####
 
-              lbmvweb = {
-                hostname = "www1.d11121.lbmv.de";
-                user = "www-data";
-              };
+                lbmvweb = {
+                  hostname = "www1.d11121.lbmv.de";
+                  user = "www-data";
+                };
 
-              meeting2 = {
-                hostname = "meeting2.planet-ic.de";
-                user = "root";
-                setEnv.TERM = "xterm-256color";
-              };
+                meeting2 = {
+                  hostname = "meeting2.planet-ic.de";
+                  user = "root";
+                  setEnv.TERM = "xterm-256color";
+                };
 
-              freepbx = {
-                hostname = "195.98.195.10";
-                user = "root";
-                identityFile = key "old/rsa";
-                setEnv.TERM = "xterm-256color";
-                extraOptions = {
-                  HostKeyAlgorithms = "+ssh-rsa";
-                  PubkeyAcceptedKeyTypes = "+ssh-rsa";
+                freepbx = {
+                  hostname = "195.98.195.10";
+                  user = "root";
+                  identityFile = key "old/rsa";
+                  setEnv.TERM = "xterm-256color";
+                  extraOptions = {
+                    HostKeyAlgorithms = "+ssh-rsa";
+                    PubkeyAcceptedKeyTypes = "+ssh-rsa";
+                  };
                 };
               };
-
-              ##### utils #####
-
-              github = {
-                hostname = "github.com";
-                user = "git";
-              };
-            };
-          }.${user} or { };
-        };
+            }.${user} or { };
+          }
+        ];
       });
   }
 
