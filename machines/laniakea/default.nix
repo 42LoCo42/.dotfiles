@@ -35,5 +35,10 @@
 
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
 
+  services.chrony.extraConfig = ''
+    # NTP fallback
+    server pool.ntp.org iburst
+  '';
+
   rice.tailscale.enable = true;
 }
