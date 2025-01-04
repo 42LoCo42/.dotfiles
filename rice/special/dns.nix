@@ -24,11 +24,12 @@
           bind-interfaces = true;
           listen-address = [ "127.0.0.1" ];
 
-          # forward to stubby, fritzbox & tailscale
+          # forward to stubby & local resolvers
           server = [ "127.0.0.1#53000" ];
           local = [
-            "/fritz.box/192.168.178.1"
             "/bunny.vpn/100.100.100.100"
+            "/fritz.box/192.168.178.1"
+            "/vm/192.168.122.1"
           ];
 
           # custom localhosts
