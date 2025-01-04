@@ -31,16 +31,16 @@ mkMerge [
         programs.ssh = mkMerge [
           {
             enable = true;
+
             addKeysToAgent = "yes";
+            forwardAgent = true;
+            userKnownHostsFile = knownHosts user;
 
             extraConfig = pipe config.aquaris.secrets [
               (filterAttrs (n: _:
                 (builtins.match "user/${user}/ssh/[^/]+" n) != null))
               (mapAttrsToList (_: x: "IdentityFile ${x}\n"))
               (builtins.concatStringsSep "")
-              (x: x + ''
-                UserKnownHostsFile ${knownHosts user}
-              '')
             ];
 
             matchBlocks.github = {
@@ -57,13 +57,11 @@ mkMerge [
                 bunny = {
                   hostname = "exit.bunny.vpn";
                   user = "admin";
-                  forwardAgent = true;
                   setEnv.TERM = "xterm-256color";
                 };
 
                 laniakea = {
                   hostname = "laniakea.bunny.vpn";
-                  forwardAgent = true;
                 };
 
                 ##### people #####
@@ -130,7 +128,6 @@ mkMerge [
         systemd.user.tmpfiles.rules = [
           "L+ %h/.ssh/id_ed25519      - - - - ${main}"
           "L+ %h/.ssh/known_hosts     - - - - ${knownHosts "leonsch"}"
-          "L+ %h/.ssh/known_hosts.old - - - - ${knownHosts "leonsch"}"
         ];
       };
   })
