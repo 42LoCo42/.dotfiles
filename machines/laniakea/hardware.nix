@@ -5,6 +5,7 @@
 
   networking.interfaces.end0.useDHCP = true;
   networking.interfaces.wlu1.useDHCP = true;
+  systemd.network.wait-online.anyInterface = true;
 
   nixpkgs.hostPlatform = "aarch64-linux";
 }
