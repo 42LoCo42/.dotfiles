@@ -18,7 +18,10 @@ in
   };
 
   config = mkIf config.rice.desktop.wayland.hyprland.enable {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
 
     home-manager.sharedModules = [{
       wayland.windowManager.hyprland = {

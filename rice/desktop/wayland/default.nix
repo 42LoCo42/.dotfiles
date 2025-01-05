@@ -16,7 +16,6 @@
       swaybg.enable = true;
       swaylock.enable = true;
       theming.enable = true;
-      uwsm.enable = true;
       waybar.enable = true;
       wlsunset.enable = true;
       xdg.enable = true;
@@ -34,7 +33,6 @@
     ./swaybg.nix
     ./swaylock
     ./theming.nix
-    ./uwsm.nix
     ./waybar
     ./wlsunset.nix
     ./xdg.nix
