@@ -19,9 +19,9 @@ let
 
   obscura = self.inputs.obscura.packages.${pkgs.system};
 
-  iosevka = pipe pkgs.nerdfonts [
-    (x: x.override { fonts = [ "Iosevka" ]; })
-    (x: "${x}/share/fonts/truetype/NerdFonts/IosevkaNerdFont-Regular.ttf")
+  iosevka = pipe pkgs.nerd-fonts [
+    (x: x.iosevka)
+    (x: "${x}/share/fonts/truetype/NerdFonts/Iosevka/IosevkaNerdFont-Regular.ttf")
   ];
 
   homepage = pkgs.stdenvNoCC.mkDerivation {
@@ -88,16 +88,10 @@ in
   };
 
   home-manager.users.admin = {
-    aquaris.persist = [
-      "hidden"
-      "img"
-    ];
-
-    home.file.".ssh/rc".source = ./ssh-rc.sh;
-
-    programs.zsh.envExtra = ''
-      if [ -v TMUX ]; then export SSH_AUTH_SOCK="$HOME/.ssh/auth"; fi
-    '';
+    aquaris.persist = {
+      "hidden" = { };
+      "img" = { };
+    };
   };
 
   nix.gc.automatic = true;
