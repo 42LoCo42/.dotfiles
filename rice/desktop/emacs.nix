@@ -545,6 +545,11 @@
               ; custom client args
             '';
 
+            config = ''
+              (advice-add 'lsp-mode :before
+                #'lsp-inline-completion-company-integration-mode)
+            '';
+
             extraPackages = with pkgs; [
               # c-mode
               clang-tools

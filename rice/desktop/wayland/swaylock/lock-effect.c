@@ -6,5 +6,5 @@ static int cmp(uint32_t* a, uint32_t* b) {
 }
 
 void swaylock_effect(uint32_t* data, int w, int h) {
-	qsort(data, w * h, sizeof(*data), cmp);
+	qsort(data, w * h, sizeof(*data), (int (*)(const void*, const void*)) cmp);
 }

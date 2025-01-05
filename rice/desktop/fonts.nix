@@ -1,19 +1,13 @@
 { pkgs, lib, config, ... }: {
-  options.rice.desktop.wayland.fonts.enable = lib.mkOption {
+  options.rice.desktop.fonts.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
 
-  config = lib.mkIf config.rice.desktop.wayland.fonts.enable {
-    nixpkgs.overlays = [
-      (_: pkgs: {
-        nerdfonts = pkgs.nerdfonts.override { fonts = [ "Iosevka" ]; };
-      })
-    ];
-
+  config = lib.mkIf config.rice.desktop.fonts.enable {
     fonts = {
       packages = with pkgs; [
-        nerdfonts
+        nerd-fonts.iosevka
         noto-fonts
         noto-fonts-emoji
       ];

@@ -7,7 +7,6 @@
   config = lib.mkIf config.rice.desktop.wayland.enable {
     rice.desktop.wayland = {
       flameshot.enable = true;
-      fonts.enable = true;
       foot.enable = true;
       fuzzel.enable = true;
       hypridle.enable = true;
@@ -26,7 +25,6 @@
 
   imports = [
     ./flameshot.nix
-    ./fonts.nix
     ./foot.nix
     ./fuzzel
     ./hypridle.nix

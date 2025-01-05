@@ -9,6 +9,7 @@
       alarm.enable = true;
       emacs.enable = true;
       firefox.enable = true;
+      fonts.enable = true;
       greetd.enable = true;
       hrtrack.enable = true;
       keyd.enable = true;
@@ -28,6 +29,7 @@
     ./alarm
     ./emacs.nix
     ./firefox.nix
+    ./fonts.nix
     ./greetd.nix
     ./hrtrack
     ./keyd.nix
