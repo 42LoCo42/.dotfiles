@@ -52,6 +52,7 @@ in
   rice = {
     pam-rssh.enable = true;
     tailscale.enable = true;
+    use-ncps.enable = true;
   };
 
   networking.firewall.allowedTCPPorts = [
