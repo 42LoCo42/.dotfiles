@@ -1,7 +1,19 @@
 { self, pkgs, config, aquaris, ... }:
 let
-  inherit (pkgs.lib) getExe';
+  inherit (pkgs.lib) flip getExe' pipe remove;
+
   obscura = self.inputs.obscura.packages.${pkgs.system};
+
+  ncps-caches = pipe config.nix.settings [
+    (x: with x; with config.rice.use-ncps; {
+      urls = { val = substituters; rem = url; };
+      keys = { val = trusted-public-keys; rem = key; };
+    })
+    (builtins.mapAttrs (_: flip pipe [
+      (x: remove x.rem x.val)
+      (builtins.concatStringsSep ",")
+    ]))
+  ];
 in
 {
   imports = [
@@ -70,11 +82,8 @@ in
         CACHE_MAX_SIZE = "250G";
         CACHE_SECRET_KEY_PATH = "/key";
 
-        UPSTREAM_CACHES = builtins.concatStringsSep ","
-          config.nix.settings.substituters;
-
-        UPSTREAM_PUBLIC_KEYS = builtins.concatStringsSep ","
-          config.nix.settings.trusted-public-keys;
+        UPSTREAM_CACHES = ncps-caches.urls;
+        UPSTREAM_PUBLIC_KEYS = ncps-caches.keys;
       };
 
       # for some reason, /etc/passwd gets mode 600
