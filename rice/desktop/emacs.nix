@@ -531,6 +531,7 @@
               (typescript-mode . lsp-deferred)
               (typst-ts-mode   . lsp-deferred)
               (web-mode        . lsp-deferred)
+              (zig-mode        . lsp-deferred)
             '';
 
             custom = ''
@@ -794,6 +795,29 @@
               (typst-preview-invert-colors "never")
               (typst-preview-open-browser-automatically t)
             '';
+          };
+
+          zig-mode = {
+            package = epkgs: epkgs.zig-mode.overrideAttrs {
+              # stub out reformatter (zig-mode wants it, but we use apheleia)
+              packageRequires = [
+                (epkgs.trivialBuild {
+                  pname = "reformatter";
+                  version = "0";
+
+                  src = pkgs.writeText "reformatter.el" ''
+                    (defmacro reformatter-define (&rest args)
+                      '(defun zig-format-on-save-mode (&rest args)))
+
+                    (provide 'reformatter)
+                  '';
+                })
+              ];
+            };
+
+            mode = ''"\\.zig\\'"'';
+
+            extraPackages = with pkgs; [ zls ];
           };
         };
       };
