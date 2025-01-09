@@ -400,6 +400,20 @@
             '';
           };
 
+          link-hint = {
+            autoload = "link-hint--get-links";
+
+            init = ''
+              (defun my/open-link ()
+                (interactive)
+                (when (link-hint--get-links)
+                 (message "Links found!")
+                 (link-hint-open-link)))
+
+              (bind-key* "C-M-l" #'my/open-link)
+            '';
+          };
+
           multiple-cursors = {
             bind' = ''
               ("C-," . mc/mark-previous-like-this)
