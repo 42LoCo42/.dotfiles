@@ -18,6 +18,7 @@
       misc.enable = true;
       mpd.enable = true;
       pipewire.enable = true;
+      scx.enable = true;
       sudo-u2f.enable = true;
       udev.enable = true;
       vesktop.enable = true;
@@ -38,6 +39,7 @@
     ./misc.nix
     ./mpd.nix
     ./pipewire.nix
+    ./scx.nix
     ./sudo-u2f.nix
     ./udev.nix
     ./vesktop.nix
