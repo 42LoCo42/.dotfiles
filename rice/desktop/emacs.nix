@@ -147,6 +147,10 @@
             :map read--expression-map
             ("C-n" . next-line-or-history-element)
             ("C-p" . previous-line-or-history-element)
+
+            :map minibuffer-local-shell-command-map
+            ("C-n" . next-line-or-history-element)
+            ("C-p" . previous-line-or-history-element)
           )'';
 
             hook = ''
@@ -229,7 +233,10 @@
           };
 
           straight = {
-            commands = "straight-use-package";
+            commands = ''
+              straight-remove-unused-repos
+              straight-use-package
+            '';
           };
 
           ##### Appearance #####
@@ -382,6 +389,7 @@
             '';
 
             extraPackages = with pkgs; [
+              black # python-mode
               nodePackages.prettier
               shfmt
             ];
@@ -405,11 +413,10 @@
             '';
 
             config = ''
-              (progn
-                (set-face-attribute 'avy-lead-face   nil :foreground "#fb4934" :background "#282828" :bold t)  ; first
-                (set-face-attribute 'avy-lead-face-0 nil :foreground "#b8bb26" :background "#282828" :bold t)  ; second
-                (set-face-attribute 'avy-lead-face-1 nil :foreground "#282828" :background "#282828" :bold t)  ; matched
-                (set-face-attribute 'avy-lead-face-2 nil :foreground "#83a598" :background "#282828" :bold t)) ; third
+              (set-face-attribute 'avy-lead-face   nil :foreground "#fb4934" :background "#282828" :bold t) ; first
+              (set-face-attribute 'avy-lead-face-0 nil :foreground "#b8bb26" :background "#282828" :bold t) ; second
+              (set-face-attribute 'avy-lead-face-1 nil :foreground "#282828" :background "#282828" :bold t) ; matched
+              (set-face-attribute 'avy-lead-face-2 nil :foreground "#83a598" :background "#282828" :bold t) ; third
             '';
           };
 
@@ -569,8 +576,8 @@
               (lsp-log-io nil)
               (read-process-output-max (* 1024 1024))
 
-              (lsp-clients-clangd-args '("--header-insertion=never"))
               ; custom client args
+              (lsp-clients-clangd-args '("--header-insertion=never"))
             '';
 
             config = ''
@@ -579,11 +586,8 @@
             '';
 
             extraPackages = with pkgs; [
-              # c-mode
-              clang-tools
+              clang-tools # c-mode
 
-              # python-mode
-              black
               python3.pkgs.python-lsp-server
 
               # sh-mode
@@ -742,6 +746,29 @@
             ];
           };
 
+          zig-mode = {
+            package = epkgs: epkgs.zig-mode.overrideAttrs {
+              # stub out reformatter (zig-mode wants it, but we use apheleia)
+              packageRequires = [
+                (epkgs.trivialBuild {
+                  pname = "reformatter";
+                  version = "0";
+
+                  src = pkgs.writeText "reformatter.el" ''
+                    (defmacro reformatter-define (&rest args)
+                      '(defun zig-format-on-save-mode (&rest args)))
+
+                    (provide 'reformatter)
+                  '';
+                })
+              ];
+            };
+
+            mode = ''"\\.zig\\'"'';
+
+            extraPackages = with pkgs; [ zls ];
+          };
+
           # Lisp
 
           lisp-extra-font-lock = {
@@ -822,29 +849,6 @@
               (typst-preview-invert-colors "never")
               (typst-preview-open-browser-automatically t)
             '';
-          };
-
-          zig-mode = {
-            package = epkgs: epkgs.zig-mode.overrideAttrs {
-              # stub out reformatter (zig-mode wants it, but we use apheleia)
-              packageRequires = [
-                (epkgs.trivialBuild {
-                  pname = "reformatter";
-                  version = "0";
-
-                  src = pkgs.writeText "reformatter.el" ''
-                    (defmacro reformatter-define (&rest args)
-                      '(defun zig-format-on-save-mode (&rest args)))
-
-                    (provide 'reformatter)
-                  '';
-                })
-              ];
-            };
-
-            mode = ''"\\.zig\\'"'';
-
-            extraPackages = with pkgs; [ zls ];
           };
         };
       };
