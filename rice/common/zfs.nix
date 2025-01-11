@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, config, ... }: lib.mkIf config.boot.zfs.enabled {
   services.zfs = {
     autoScrub.enable = true;
     autoSnapshot.enable = true;
