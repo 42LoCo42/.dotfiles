@@ -1,4 +1,4 @@
-{ pkgs, config, aquaris, ... }: {
+{ pkgs, aquaris, ... }: {
   imports = [ ../../rice ];
 
   aquaris = {
@@ -79,7 +79,7 @@
     use-ncps.enable = true;
   };
 
-  home-manager.users.leonsch = hm: {
+  home-manager.users.leonsch = {
     aquaris.persist = {
       ".cache/JetBrains" = { };
 
