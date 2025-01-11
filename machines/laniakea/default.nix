@@ -68,6 +68,19 @@ in
   ];
 
   virtualisation.pnoc = {
+    mympd = {
+      cmd = [ (getExe pkgs.mympd) "-a" "/data/cache" "-w" "/data/work" ];
+
+      ports = [ "80:8080" ];
+
+      volumes = [
+        "mympd:/data"
+
+        "${./mympd/http_port}:/data/work/config/http_port:ro"
+        "${./mympd/ssl}:/data/work/config/ssl:ro"
+      ];
+    };
+
     ncps = {
       cmd = [ (getExe obscura.ncps-db-helper) "serve" ];
 
