@@ -10,6 +10,11 @@
       "ptbtime4.ptb.de"
       "time.cloudflare.com"
     ];
+
+    extraConfig = ''
+      # NTP fallback
+      server pool.ntp.org iburst
+    '';
   };
 
   aquaris.persist.dirs = {
