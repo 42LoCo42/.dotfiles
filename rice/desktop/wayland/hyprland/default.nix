@@ -24,6 +24,8 @@ in
     };
 
     home-manager.sharedModules = [{
+      aquaris.persist = { ".config/qalculate" = { }; };
+
       wayland.windowManager.hyprland = {
         enable = true;
         extraConfig = subsT ./hyprland.conf {
