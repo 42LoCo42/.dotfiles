@@ -3,6 +3,8 @@ let
   inherit (lib) getExe getExe' mkIf mkOption;
   inherit (lib.types) bool str;
   inherit (aquaris.lib) subsF subsT;
+
+  script = x: subsF (x // { func = pkgs.writeScript; });
 in
 {
   options.rice.desktop.wayland.hyprland = {
@@ -37,39 +39,38 @@ in
           qalc = getExe pkgs.libqalculate;
           vesktop = getExe pkgs.vesktop;
 
-          audio-helper = subsF {
+          audio-helper = script {
             file = ./scripts/audio-helper.sh;
-            func = pkgs.writeScript;
             subs = {
               pulsemixer = getExe pkgs.pulsemixer;
               mpc = getExe pkgs.mpc-cli;
             };
           };
 
-          brightness-helper = subsF {
+          brightness-helper = script {
             file = ./scripts/brightness-helper.sh;
-            func = pkgs.writeScript;
             subs = {
               brightnessctl = getExe pkgs.brightnessctl;
             };
           };
 
-          dropdown = subsF {
+          dropdown = script {
             file = ./scripts/dropdown.sh;
-            func = pkgs.writeScript;
           };
 
-          prompt = subsF {
+          idle-toggle = script {
+            file = ./scripts/idle-toggle.sh;
+          };
+
+          prompt = script {
             file = ./scripts/prompt.sh;
-            func = pkgs.writeScript;
             subs = {
               fuzzel = getExe pkgs.fuzzel;
             };
           };
 
-          terminal = subsF {
+          terminal = script {
             file = ./scripts/terminal.sh;
-            func = pkgs.writeScript;
           };
         };
       };
