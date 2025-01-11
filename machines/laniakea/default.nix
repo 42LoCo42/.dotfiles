@@ -58,6 +58,7 @@ in
 
   rice = {
     pam-rssh.enable = true;
+    syncthing.enable = true;
     tailscale.enable = true;
     use-ncps.enable = true;
   };
