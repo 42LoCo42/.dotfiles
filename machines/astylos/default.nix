@@ -74,6 +74,7 @@
       interface = "enp6s0";
     };
 
+    nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
     use-ncps.enable = true;
