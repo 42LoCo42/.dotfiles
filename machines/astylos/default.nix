@@ -91,7 +91,6 @@
       ".local/share/typst/packages/local" = { };
 
       "IU" = { };
-      "config" = { };
       "dev" = { };
       "doc" = { };
       "img" = { };
@@ -115,7 +114,5 @@
       kid3-cli
       moreutils
     ];
-
-    home.sessionVariables.NIXOS_CONFIG_DIR = "$(realpath $HOME/config)";
   };
 }
