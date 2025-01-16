@@ -487,7 +487,7 @@
               packageRequires = lib.remove epkgs.org old.packageRequires;
             });
 
-            defer = true;
+            commands = "org-drill-strip-all-data";
           };
 
           ##### Completion #####
