@@ -821,7 +821,20 @@
             extraPackages = with pkgs; [
               typst
               prettypst # formatter
-              tinymist # LSP
+
+              # tinymist (LSP) patched to remove partial-rendering
+              # (which breaks the live preview)
+              (pkgs.writeShellApplication {
+                name = "tinymist";
+                runtimeInputs = with pkgs; [ tinymist ];
+                text = ''
+                  args=()
+                  for i in "$@"; do
+                    [ "$i" != "--partial-rendering" ] && args+=("$i")
+                  done
+                  exec tinymist "''${args[@]}"
+                '';
+              })
             ];
 
             mode = ''"\\.typ\\'"'';
