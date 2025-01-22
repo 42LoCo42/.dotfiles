@@ -1,6 +1,6 @@
 { self, pkgs, config, aquaris, ... }:
 let
-  inherit (pkgs.lib) flip getExe' pipe remove;
+  inherit (pkgs.lib) flip getExe pipe remove;
 
   obscura = self.inputs.obscura.packages.${pkgs.system};
 
@@ -69,7 +69,7 @@ in
 
   virtualisation.pnoc = {
     ncps = {
-      cmd = [ (getExe' obscura.ncps "ncps-db-helper") "serve" ];
+      cmd = [ (getExe obscura.ncps-db-helper) "serve" ];
 
       environment = {
         CACHE_DATA_PATH = "/data";
