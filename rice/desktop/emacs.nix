@@ -382,7 +382,7 @@
               ("C-<tab>" . apheleia-format-buffer)
             '';
 
-            hook = "prog-mode";
+            hook = "prog-mode typst-ts-mode";
 
             config = ''
               (add-to-list 'apheleia-mode-alist '(sh-mode . shfmt))
@@ -559,7 +559,6 @@
               (go-mode         . lsp-deferred)
               (haskell-mode    . lsp-deferred)
               (nix-mode        . lsp-deferred)
-              (python-mode     . lsp-deferred)
               (rustic-mode     . lsp-deferred)
               (sh-mode         . lsp-deferred)
               (typescript-mode . lsp-deferred)
@@ -587,8 +586,6 @@
 
             extraPackages = with pkgs; [
               clang-tools # c-mode
-
-              python3.pkgs.python-lsp-server
 
               # sh-mode
               bash-language-server
@@ -680,6 +677,22 @@
           json-mode = { mode = ''"\\.json\\'"''; };
 
           lsp-haskell = { defer = true; };
+
+          lsp-pyright = {
+            defer = true;
+
+            hook = ''
+              (python-mode . (lambda ()
+                (require 'lsp-pyright)
+                (lsp-deferred)))
+            '';
+
+            custom = ''
+              (lsp-pyright-langserver-command "basedpyright")
+            '';
+
+            extraPackages = with pkgs; [ basedpyright ];
+          };
 
           nftables-mode = { mode = ''"\\.nft\\'"''; };
 
