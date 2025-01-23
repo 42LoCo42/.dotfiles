@@ -9,28 +9,7 @@
       services.emacs.enable = true;
       systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
 
-      xdg.configFile."fourmolu.yaml".text = ''
-        indentation: 2
-        column-limit: none
-        function-arrows: trailing
-        comma-style: leading
-        import-export-style: leading
-        indent-wheres: false
-        record-brace-space: true
-        newlines-between-decls: 1
-        haddock-style: single-line
-        haddock-style-module: null
-        let-style: auto
-        in-style: left-align
-        single-constraint-parens: always
-        single-deriving-parens: always
-        unicode: never
-        respectful: false
-        import-grouping: by-scope-then-qualified
-        sort-constraints: true
-        sort-derived-classes: true
-        sort-deriving-clauses: true
-      '';
+      xdg.configFile."fourmolu.yaml".source = ./fourmolu.yaml;
 
       aquaris.persist = { ".config/emacs" = { }; };
 
@@ -876,6 +855,28 @@
               (typst-preview-open-browser-automatically t)
             '';
           };
+
+          # tip = {
+          #   package = epkgs: epkgs.trivialBuild {
+          #     pname = "tip";
+          #     version = "2024-09-07";
+
+          #     src = pkgs.fetchFromSourcehut {
+          #       owner = "~mafty";
+          #       repo = "tip";
+          #       rev = "2ccfe1e7f9675ed612275d88f046fead0bb9dc6d";
+          #       hash = "sha256-G2GxnvSFz35Ay8FNdAfUF+Nvhf25xlEm6vKJQtN/350=";
+          #     };
+
+          #     patches = [
+          #       ./patches/tip/0001-use-cl-sort-instead-of-builtin-sort.patch
+          #     ];
+          #   };
+
+          #   hook = "typst-ts-mode";
+
+          #   extraPackages = [ (import ./tip-server.nix pkgs) ];
+          # };
         };
       };
     }];

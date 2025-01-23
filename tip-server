@@ -1,0 +1,169 @@
+#!/nix/store/3s9wqw6jii0val9h7wypd3jq9w8njwmr-python3-3.12.8-env/bin/python3.12
+import re
+import os
+import time
+import typst
+import argparse
+from jsonrpcserver import method, serve, Success, Error
+import tempfile
+
+# Path to the .typ file
+file = tempfile.NamedTemporaryFile(suffix=".typ")
+file_path = file.name
+print(file_path)
+input("pause")
+compiler = typst.Compiler(file_path)
+default_preamble = ""
+
+# TODO: allow customization here
+default_extra = '#set page(width: auto, height: auto)\n#set page(margin: (x: 0cm, y: 0.2cm))\n'
+
+template_mgt = '''
+#set page(height: auto, width: auto, margin: 0pt)
+
+{preamble}
+
+#let s = state("t", (:))
+
+#let pin(t) = locate(loc => {{
+  style(styles => s.update(it => it.insert(t, measure(line(length: loc.position().y + 0.25em), styles).width) + it))
+}})
+
+#show math.equation: it => {{
+  box(it, inset: (top: 0.5em, bottom: 0.5em))
+}}
+
+$pin("l1"){code}$
+
+#locate(loc => [
+  #metadata(s.final(loc).at("l1")) <label>
+])
+'''
+
+@method
+def set_default_preamble(preamble):
+    default_preamble = preamble
+    print(f"default preamble set to {default_preamble}")
+    return Success(f"default preamble set to {default_preamble}")
+
+
+@method
+def compile_typst_document_batch(color, width, preamble, batch):
+    """
+    color: foreground color of math
+    preamble: preamble
+    batch: should be a list of [content, hashval]
+    """
+    print(f"received batch request of length {len(batch)}")
+    print(batch)
+    count = 0
+    start = time.time()
+    print(f"Setting color {color}")
+    color_config = f'#show math.equation: set text(rgb("{color}"))\n'
+
+    for content, hashval in batch:
+        # Update the content of the .typ file
+        if re.match(r'\$\s', content):
+            print(f"got blocked content {content}")
+            blocked_color_config = f'#set page(width: {width}cm, height: auto)\n#set page(margin: (x: 0cm, y: 0.2cm))\n'
+            color_config += blocked_color_config
+            with open(file_path, 'w') as f:
+                f.write(color_config)
+                f.write(preamble)
+                f.write(content)
+        else:
+            print(f"got content {content}")
+            stuff = template_mgt.format(code=content.strip('$'), preamble=preamble)
+            with open(file_path, 'w') as f:
+                f.write(color_config+stuff)
+
+        svg_path = os.path.abspath(os.path.join('output', f'{hashval}.svg'))
+
+        # Compile the .typ file to SVG format
+        svg = compiler.compile(format='svg')
+
+        # Return the result
+        if svg:
+            with open(svg_path, 'wb') as f:
+                f.write(svg)
+            count += 1
+            print(f"finised processing {count}-th fragment")
+        else:
+            return Error(f"failed to create {count}-th svg.")
+    end = time.time()
+    return Success(f"All {count} fragments compiled after {end-start} seconds.")
+
+
+@method
+def compile_fragment_live(color, width, preamble, content, hashval):
+    """
+    color: foreground color of math
+    preamble: preamble
+    batch: should be a list of [content, hashval]
+    """
+    print(f"trying to live compile {content}")
+    start = time.time()
+    print(f"Setting color {color}")
+    extra = f'#show math.equation: set text(rgb("{color}"))\n'
+
+    # Update the content of the .typ file
+    if re.match(r'\$\s', content):
+        print(f"got blocked content {content}")
+        blocked_extra = f'#set page(width: {width}cm, height: auto)\n#set page(margin: (x: 0cm, y: 0.2cm))\n'
+        extra += blocked_extra
+    else:
+        print(f"got content {content}")
+        extra += default_extra
+
+    with open(file_path, 'w') as f:
+        f.write(extra)
+        f.write(preamble)
+        f.write(content)
+        svg_path = os.path.abspath(os.path.join('output', f'live-{hashval}.svg'))
+
+    # Compile the .typ file to SVG format
+    svg = compiler.compile(format='svg')
+
+    # Return the result
+    if svg:
+        with open(svg_path, 'wb') as f:
+            f.write(svg)
+            print(f"wrote svg to {svg_path}")
+    else:
+        return Error(f"failed to create {count}-th svg.")
+    end = time.time()
+    print(f"fragment live-compiled after {end-start} seconds.")
+    return Success(f"fragments compiled after {end-start} seconds.")
+
+
+@method
+def delete_svg_files(batch):
+    """
+    batch should be a list of hashval
+    """
+    print(f"received batch request of length {len(batch)}")
+    print(batch)
+    count = 0
+    for hashval in batch:
+        svg_path = os.path.join('output', f'{hashval}.svg')
+        if os.path.exists(svg_path):
+            os.remove(svg_path)
+            count += 1
+    return Success(f"Removed {count}/{len(set(batch))} svg files for {len(batch)} fragments.")
+
+
+@method
+def trivial(name):
+    return Success(f"Hi {name}")
+
+
+# Run the JSON-RPC server
+if __name__ == "__main__":
+    os.makedirs(os.path.abspath('output'), exist_ok=True)
+    parser = argparse.ArgumentParser(description='JSON-RPC Server')
+    parser.add_argument('--port', type=int, default=5000, help='Specify the port for the JSON-RPC server')
+    args = parser.parse_args()
+    if args.port:
+        serve(port=args.port)
+    else:
+        serve()

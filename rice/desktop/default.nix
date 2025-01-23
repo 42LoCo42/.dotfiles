@@ -28,7 +28,7 @@
 
   imports = [
     ./alarm
-    ./emacs.nix
+    ./emacs
     ./firefox.nix
     ./fonts.nix
     ./greetd.nix
