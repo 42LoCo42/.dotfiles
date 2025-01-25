@@ -38,8 +38,6 @@
     settings.General.Experimental = true;
   };
 
-  services.auto-cpufreq.enable = true;
-
   rice = {
     desktop = {
       enable = true;
@@ -67,6 +65,7 @@
       interface = "wlp2s0";
     };
 
+    nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
     use-ncps.enable = true;
