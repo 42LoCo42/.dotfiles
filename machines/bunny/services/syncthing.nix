@@ -11,7 +11,6 @@
       "22000:22000"
       "22000:22000/udp"
     ];
-    ssl = true;
     volumes = [
       "syncthing:/data"
       "/persist/sync:/sync"

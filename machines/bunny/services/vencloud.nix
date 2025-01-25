@@ -15,6 +15,5 @@
       PROXY_HEADER = "X-Forwarded-For";
     };
     environmentFiles = [ config.aquaris.secrets."machine/vencloud" ];
-    ssl = true;
   };
 }

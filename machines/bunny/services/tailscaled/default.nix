@@ -21,7 +21,6 @@
       "--cap-add=net_admin,net_bind_service"
       "--device=/dev/net/tun"
     ];
-    ssl = true;
     volumes = [
       "tailscaled:/data"
       "${config.aquaris.secrets."machine/tailscaled"}:/key:ro"

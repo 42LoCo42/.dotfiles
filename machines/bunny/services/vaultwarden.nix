@@ -14,7 +14,6 @@
       WEB_VAULT_FOLDER = "${pkgs.vaultwarden.webvault}/share/vaultwarden/vault";
     };
     environmentFiles = [ config.aquaris.secrets."machine/vaultwarden" ];
-    ssl = true;
     volumes = [ "vaultwarden:/data" ];
   };
 }

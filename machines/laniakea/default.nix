@@ -90,8 +90,6 @@ in
 
       ports = [ "8501:8501" ];
 
-      ssl = true;
-
       volumes = [
         "ncps:/data"
         "${config.aquaris.secrets."machine/ncps"}:/key:ro"

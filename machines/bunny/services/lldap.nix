@@ -14,6 +14,5 @@
       LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION = "STARTTLS";
     };
     environmentFiles = [ config.aquaris.secrets."machine/lldap" ];
-    ssl = true;
   };
 }

@@ -1,15 +1,9 @@
 { pkgs, lib, config, aquaris, ... }@top:
 let
-  inherit (lib)
-    ifEnable
-    mkOption
-    pipe
-    ;
+  inherit (lib) flip mkOption pipe;
 
   inherit (lib.types)
-    anything
     attrsOf
-    bool
     listOf
     nullOr
     path
@@ -46,11 +40,6 @@ let
         default = [ ];
       };
 
-      ssl = mkOption {
-        type = bool;
-        default = false;
-      };
-
       volumes = mkOption {
         type = listOf str;
         default = [ ];
@@ -60,67 +49,50 @@ let
         type = nullOr str;
         default = null;
       };
+    };
 
-      ####################
-
-      _gen = mkOption {
-        type = attrsOf anything;
-        default =
-          let
-            environment = config.environment // ifEnable config.ssl {
-              SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
-            };
-
-            info = pipe { inherit (config) cmd; inherit environment; } [
-              builtins.toJSON
-              (pkgs.writeText "${name}-info")
-            ];
-
-            volumes = pkgs.runCommand "${name}-volumes"
-              {
-                __structuredAttrs = true;
-                exportReferencesGraph.graph = info;
-                nativeBuildInputs = with pkgs; [ jq ];
-              } ''
-              jq -r '
-                .graph
-                | map(.path)
-                | sort
-                | .[]
-              ' "$NIX_ATTRS_JSON_FILE" \
-              | grep -v "${info}" \
-              | sed -E 's|(.*)|\1:\1:ro|' > $out
-
-              jq -r '
-                .graph[]
-                | select(.path == "${info}")
-                | .references[]
-              ' "$NIX_ATTRS_JSON_FILE" \
-              | while read -r i; do
-                if test -d "$i/bin"; then
-                  find "$i/bin" -mindepth 1 -maxdepth 1 -type f -executable \
-                  | sed -E 's|(.+)/([^/]+)$|\1/\2:/bin/\2:ro|'
-                fi
-              done >> $out
-            '';
-          in
-          {
-            inherit (config) cmd environmentFiles ports workdir;
-            inherit environment;
-
-            extraOptions = config.extraOptions ++
-              [ "--hostuser" name "--tz" top.config.time.timeZone ];
-
-            image = "${empty.imageName}:${empty.imageTag}";
-            imageFile = empty;
-
-            user = name;
-
-            volumes = config.volumes ++ aquaris.lib.readLines volumes;
-          };
+    config = {
+      environment = {
+        SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       };
+
+      extraOptions = [ "--hostuser" name "--tz" top.config.time.timeZone ];
     };
   };
+
+  deps = name: cfg:
+    let
+      info = pipe { inherit (cfg) cmd environment; } [
+        builtins.toJSON
+        (pkgs.writeText "${name}-info")
+      ];
+    in
+    (pkgs.runCommand "${name}-volumes" {
+      __structuredAttrs = true;
+      exportReferencesGraph.graph = info;
+      nativeBuildInputs = with pkgs; [ jq ];
+    }) ''
+      jq -r '
+        .graph
+        | map(.path)
+        | sort
+        | .[]
+      ' "$NIX_ATTRS_JSON_FILE" \
+      | grep -v "${info}" \
+      | sed -E 's|(.*)|-v \1:\1:ro|' > $out
+
+      jq -r '
+        .graph[]
+        | select(.path == "${info}")
+        | .references[]
+      ' "$NIX_ATTRS_JSON_FILE" \
+      | while read -r i; do
+        if test -d "$i/bin"; then
+          find "$i/bin" -mindepth 1 -maxdepth 1 -type f -executable \
+          | sed -E 's|(.+)/([^/]+)$|-v \1/\2:/bin/\2:ro|'
+        fi
+      done >> $out
+    '';
 
   cfg = config.virtualisation.pnoc;
 in
@@ -150,8 +122,13 @@ in
         defaultNetwork.settings.dns_enabled = true;
       };
 
-      oci-containers.containers =
-        builtins.mapAttrs (_: x: x._gen) cfg;
+      oci-containers.containers = flip builtins.mapAttrs cfg
+        (name: cfg: cfg // {
+          image = "$(< ${deps name cfg}) ${empty.imageName}:${empty.imageTag}";
+          imageFile = empty;
+
+          user = name;
+        });
     };
   };
 }

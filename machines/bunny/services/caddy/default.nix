@@ -6,16 +6,18 @@
 
   virtualisation.pnoc.caddy = {
     cmd = [ (lib.getExe pkgs.caddy) "run" "-a" "caddyfile" "-c" "${./Caddyfile}" ];
+
     environment = {
       DOMAIN = config.rice.domain;
       XDG_DATA_HOME = "/";
     };
+
     ports = [
       "80:8000"
       "443:4430"
       "443:4430/udp"
     ];
-    ssl = true;
+
     volumes = [
       "caddy:/caddy"
       "${config.rice.homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir

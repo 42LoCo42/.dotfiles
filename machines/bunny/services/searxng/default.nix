@@ -7,7 +7,6 @@
     };
     environmentFiles = [ config.aquaris.secrets."machine/searxng" ];
     extraOptions = [ "--tmpfs=/tmp" ];
-    ssl = true;
     volumes = [
       "${./limiter.toml}:/etc/searxng/limiter.toml:ro"
       "${./settings.yaml}:/etc/searxng/settings.yml:ro"
