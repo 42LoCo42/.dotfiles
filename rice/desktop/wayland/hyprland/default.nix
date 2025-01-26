@@ -69,6 +69,10 @@ in
             };
           };
 
+          safekill = script {
+            file = ./scripts/safekill.sh;
+          };
+
           terminal = script {
             file = ./scripts/terminal.sh;
           };
