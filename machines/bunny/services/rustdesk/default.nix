@@ -1,5 +1,5 @@
 { pkgs, lib, config, aquaris, ... }: {
-  aquaris.secrets."machine:bunny.rustdesk".user = "rustdesk";
+  aquaris.secrets.rules."machine:bunny.rustdesk".user = "rustdesk";
 
   networking.firewall = {
     allowedTCPPorts = [
@@ -35,7 +35,7 @@
       ];
       volumes = [
         "rustdesk:/data"
-        "${config.aquaris.secrets."machine/rustdesk"}:/data/id_ed25519:ro"
+        "${config.aquaris.secret "machine/rustdesk"}:/data/id_ed25519:ro"
       ];
       workdir = "/data";
     };

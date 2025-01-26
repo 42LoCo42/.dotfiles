@@ -15,7 +15,7 @@
         hostName = "exit.bunny.vpn";
 
         publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJic0w3SHlPQ001NmVqdGxXcUVCRzFZelF3WDJLbVozUzVLem9HbldoL2oK";
-        sshKey = "${config.aquaris.secrets."nixremote/key"}";
+        sshKey = "${config.aquaris.secret "nixremote/key"}";
 
         system = "aarch64-linux";
         supportedFeatures = [

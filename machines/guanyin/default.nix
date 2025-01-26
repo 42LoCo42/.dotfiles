@@ -20,6 +20,8 @@ let inherit (lib) mkForce; in {
       home = "/root";
       sshKeys = [ aquaris.cfg.mainSSHKey ];
     };
+
+    secrets.enable = false;
   };
 
   isoImage.isoBaseName = mkForce "nixos-guanyin";

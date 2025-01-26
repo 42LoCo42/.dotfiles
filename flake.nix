@@ -1,6 +1,6 @@
 {
   inputs = {
-    aquaris.url = "github:42loco42/aquaris";
+    aquaris.url = "github:42loco42/aquaris/secrets-no-ifd";
     aquaris.inputs.home-manager.follows = "home-manager";
     aquaris.inputs.nixpkgs.follows = "nixpkgs";
     aquaris.inputs.obscura.follows = "obscura";

@@ -6,7 +6,7 @@
       PHOTOVIEW_LISTEN_IP = "0.0.0.0";
       PHOTOVIEW_MEDIA_CACHE = "/data";
     };
-    environmentFiles = [ config.aquaris.secrets."machine/photoview" ];
+    environmentFiles = [ (config.aquaris.secret "machine/photoview") ];
     volumes = [
       "photoview:/data"
       "/persist/home/admin/img:/media:ro"

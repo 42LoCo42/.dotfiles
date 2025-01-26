@@ -13,6 +13,6 @@
       LLDAP_SMTP_OPTIONS__PORT = "587";
       LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION = "STARTTLS";
     };
-    environmentFiles = [ config.aquaris.secrets."machine/lldap" ];
+    environmentFiles = [ (config.aquaris.secret "machine/lldap") ];
   };
 }

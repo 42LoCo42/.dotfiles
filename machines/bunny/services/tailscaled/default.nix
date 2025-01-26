@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-  aquaris.secrets."machine:bunny.tailscaled".user = "tailscaled";
+  aquaris.secrets.rules."machine:bunny.tailscaled".user = "tailscaled";
 
   virtualisation.pnoc.tailscaled = {
     cmd = [
@@ -23,7 +23,7 @@
     ];
     volumes = [
       "tailscaled:/data"
-      "${config.aquaris.secrets."machine/tailscaled"}:/key:ro"
+      "${config.aquaris.secret "machine/tailscaled"}:/key:ro"
     ];
   };
 }

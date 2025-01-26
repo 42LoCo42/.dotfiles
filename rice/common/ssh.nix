@@ -36,10 +36,12 @@ mkMerge [
             forwardAgent = true;
             userKnownHostsFile = knownHosts user;
 
-            extraConfig = pipe config.aquaris.secrets [
-              (filterAttrs (n: _:
-                (builtins.match "user/${user}/ssh/[^/]+" n) != null))
-              (mapAttrsToList (_: x: "IdentityFile ${x}\n"))
+            extraConfig = pipe [ "main" "fido" ] [
+              (map (flip pipe [
+                (x: "user/${user}/ssh/${x}")
+                config.aquaris.secret
+                (x: "IdentityFile ${x}\n")
+              ]))
               (builtins.concatStringsSep "")
             ];
 
@@ -113,7 +115,7 @@ mkMerge [
 
   (mkIf (builtins.hasAttr "leonsch" config.aquaris.users) {
     home-manager.users.leonsch =
-      let main = config.aquaris.secrets."user/leonsch/ssh/main"; in {
+      let main = config.aquaris.secret "user/leonsch/ssh/main"; in {
         # default key is fido, but we don't want it for git signing
         aquaris.git.sshKeyFile = _: "${main}";
 

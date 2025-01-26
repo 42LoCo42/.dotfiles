@@ -43,7 +43,7 @@ in
 
     persist.enable = true;
 
-    secrets = {
+    secrets.rules = {
       "machine:${aquaris.name}.ncps".user = "ncps";
     };
   };
@@ -92,7 +92,7 @@ in
 
       volumes = [
         "ncps:/data"
-        "${config.aquaris.secrets."machine/ncps"}:/key:ro"
+        "${config.aquaris.secret "machine/ncps"}:/key:ro"
       ];
     };
   };

@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: lib.mkIf false {
-  aquaris.secrets = {
+  aquaris.secrets.rules = {
     "machine:bunny.synapse:secrets".user = "synapse";
     "machine:bunny.synapse:signing-key".user = "synapse";
   };
@@ -9,8 +9,8 @@
     volumes = [
       "synapse:/data"
       "${config.rice.subsDomain ./config.yaml}:/config/homeserver.yaml:ro"
-      "${config.aquaris.secrets."machine/synapse/secrets"}:/config/secrets.yaml:ro"
-      "${config.aquaris.secrets."machine/synapse/signing-key"}:/config/signing.key:ro"
+      "${config.aquaris.secret "machine/synapse/secrets"}:/config/secrets.yaml:ro"
+      "${config.aquaris.secret "machine/synapse/signing-key"}:/config/signing.key:ro"
     ];
   };
 }
