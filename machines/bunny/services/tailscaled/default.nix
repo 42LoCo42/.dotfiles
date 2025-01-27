@@ -1,5 +1,5 @@
 { pkgs, lib, config, ... }: {
-  aquaris.secrets.rules."machine:bunny.tailscaled".user = "tailscaled";
+  aquaris.secrets.rules."machine/tailscaled".user = "tailscaled";
 
   virtualisation.pnoc.tailscaled = {
     cmd = [

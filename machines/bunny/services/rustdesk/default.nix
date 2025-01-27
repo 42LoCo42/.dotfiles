@@ -1,5 +1,5 @@
 { pkgs, lib, config, aquaris, ... }: {
-  aquaris.secrets.rules."machine:bunny.rustdesk".user = "rustdesk";
+  aquaris.secrets.rules."machine/rustdesk".user = "rustdesk";
 
   networking.firewall = {
     allowedTCPPorts = [

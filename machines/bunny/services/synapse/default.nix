@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }: lib.mkIf false {
   aquaris.secrets.rules = {
-    "machine:bunny.synapse:secrets".user = "synapse";
-    "machine:bunny.synapse:signing-key".user = "synapse";
+    "machine/synapse:secrets".user = "synapse";
+    "machine/synapse:signing-key".user = "synapse";
   };
 
   virtualisation.pnoc.synapse = {

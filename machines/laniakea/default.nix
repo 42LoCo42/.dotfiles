@@ -44,7 +44,7 @@ in
     persist.enable = true;
 
     secrets.rules = {
-      "machine:${aquaris.name}.ncps".user = "ncps";
+      "machine/ncps".user = "ncps";
     };
   };
 
