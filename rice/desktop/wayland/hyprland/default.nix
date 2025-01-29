@@ -20,9 +20,15 @@ in
   };
 
   config = mkIf config.rice.desktop.wayland.hyprland.enable {
-    programs.hyprland = {
-      enable = true;
-      withUWSM = true;
+    programs = {
+      hyprland = {
+        enable = true;
+        withUWSM = true;
+      };
+
+      uwsm.package = pkgs.uwsm.override {
+        uuctlSupport = false; # would pull in dmenu
+      };
     };
 
     home-manager.sharedModules = [{
