@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: lib.mkIf false {
+{ pkgs, lib, config, ... }: {
   aquaris.secrets.rules = {
     "machine/synapse:secrets".user = "synapse";
     "machine/synapse:signing-key".user = "synapse";

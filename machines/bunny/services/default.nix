@@ -1,14 +1,16 @@
 {
   imports = [
+    # ./firefox-sync
+    # ./mariadb
+    # ./synapse
+
     ./attic
     ./authelia
     ./auto-upgrade.nix
     ./avh.nix
     ./caddy
-    ./firefox-sync
     ./headscale
     ./lldap.nix
-    ./mariadb
     ./mount-dcim.nix
     ./mycorrhiza
     ./photoview.nix
@@ -18,7 +20,6 @@
     ./rustdesk
     ./searxng
     ./ssh.nix
-    ./synapse
     ./syncthing.nix
     ./tailscaled
     ./vaultwarden.nix
