@@ -5,6 +5,7 @@
     ./auto-upgrade.nix
     ./avh.nix
     ./caddy
+    ./firefox-sync
     ./headscale
     ./lldap.nix
     ./mariadb

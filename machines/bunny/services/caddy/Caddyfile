@@ -123,6 +123,11 @@ chronometer.{$DOMAIN} {
 # 	file_server
 # }
 
+firefox-sync.{$DOMAIN} {
+	import default
+	reverse_proxy firefox-sync:8080
+}
+
 img.{$DOMAIN} {
 	import default
 	import auth
