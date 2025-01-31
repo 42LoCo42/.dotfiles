@@ -7,6 +7,7 @@
     ./caddy
     ./headscale
     ./lldap.nix
+    ./mariadb
     ./mount-dcim.nix
     ./mycorrhiza
     ./photoview.nix

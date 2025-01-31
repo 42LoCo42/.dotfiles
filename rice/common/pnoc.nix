@@ -80,17 +80,19 @@ let
         | sort
         | .[]
       ' "$NIX_ATTRS_JSON_FILE" \
-      | grep -v "${info}" \
+      | grep -v "${info}"      \
       | sed -E 's|(.*)|-v \1:\1:ro|' > $out
 
       jq -r '
         .graph[]
         | select(.path == "${info}")
         | .references[]
-      ' "$NIX_ATTRS_JSON_FILE" \
+      ' "$NIX_ATTRS_JSON_FILE"       \
       | while read -r i; do
         if test -d "$i/bin"; then
-          find "$i/bin" -mindepth 1 -maxdepth 1 -type f -executable \
+          find "$i/bin"              \
+            -mindepth 1 -maxdepth 1  \
+            -not -type d -executable \
           | sed -E 's|(.+)/([^/]+)$|-v \1/\2:/bin/\2:ro|'
         fi
       done >> $out
