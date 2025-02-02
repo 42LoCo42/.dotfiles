@@ -1,6 +1,6 @@
 { self, pkgs, config, aquaris, ... }:
 let
-  inherit (pkgs.lib) flip getExe pipe remove;
+  inherit (pkgs.lib) flip getExe mkMerge pipe remove;
 
   obscura = self.inputs.obscura.packages.${pkgs.system};
 
@@ -27,9 +27,16 @@ in
       secureboot = false;
     };
 
-    users = aquaris.lib.merge [
+    users = mkMerge [
       { inherit (aquaris.cfg.users) leonsch; }
-      { leonsch.admin = true; }
+      {
+        leonsch = {
+          admin = true;
+          sshKeys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKx249VBeDWNvrsJBOM467C51FUmZ5oNbiIv9GhZt9M6 music@rubicon"
+          ];
+        };
+      }
     ];
 
     filesystems = { fs, ... }: {
@@ -66,9 +73,16 @@ in
     use-ncps.enable = true;
   };
 
-  networking.firewall.allowedTCPPorts = [
-    8501 # ncps
-  ];
+  networking.firewall = {
+    trustedInterfaces = [ "podman0" ];
+    allowedTCPPorts = [
+      8501 # ncps
+    ];
+  };
+
+  # rubicon needs to forward MPD to our 0.0.0.0
+  # so that mympd can connect to it from the podman network
+  services.openssh.settings.GatewayPorts = "yes";
 
   virtualisation.pnoc = {
     mympd = {
@@ -81,6 +95,9 @@ in
 
         "${./mympd/http_port}:/data/work/config/http_port:ro"
         "${./mympd/ssl}:/data/work/config/ssl:ro"
+
+        "/persist/home/leonsch/music:/music:ro"
+        "/persist/home/leonsch/music/ARTIST_COVERS:/data/work/pics/Artist:ro"
       ];
     };
 
