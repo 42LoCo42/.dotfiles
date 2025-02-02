@@ -51,7 +51,10 @@ in
   boot = rec {
     loader.kboot-conf.enable = true;
     kernelPackages = pkgs.linuxPackages;
-    extraModulePackages = with kernelPackages; [ rtl8821au ];
+    extraModulePackages = with kernelPackages; [
+      # rtl8821au # currenctly broken
+      rtw88 # replacement?
+    ];
   };
 
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
