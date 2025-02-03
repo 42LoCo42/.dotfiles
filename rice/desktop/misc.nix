@@ -14,17 +14,43 @@
           zathura
         ];
 
-        shellAliases = {
-          webcam = builtins.concatStringsSep " " [
-            "mpv"
-            "av://v4l2:/dev/video0"
-            "--profile=low-latency"
-            "--untimed=yes"
-            "--video-latency-hacks=yes"
-            "--wayland-disable-vsync=yes"
-            "--video-sync=display-desync"
-          ];
-        };
+        shellAliases =
+          let join = builtins.concatStringsSep " "; in {
+            ytb = join [
+              "yt-dlp"
+              "--force-ipv4"
+              "--cookies-from-browser=firefox"
+            ];
+
+            ytm = join [
+              "ytb"
+              "--extract-audio"
+              "--embed-metadata"
+            ];
+
+            ytc = join [
+              "ytm"
+              "--write-thumbnail"
+              "--split-chapters"
+              "--output='chapter:%(section_number)02d - %(section_title)s.%(ext)s'"
+            ];
+
+            ytl = join [
+              "ytm"
+              "--embed-thumbnail"
+              "--output='%(autonumber)02d - %(titles)s.%(ext)s'"
+            ];
+
+            webcam = join [
+              "mpv"
+              "av://v4l2:/dev/video0"
+              "--profile=low-latency"
+              "--untimed=yes"
+              "--video-latency-hacks=yes"
+              "--wayland-disable-vsync=yes"
+              "--video-sync=display-desync"
+            ];
+          };
       };
 
       services.ssh-agent.enable = true;
