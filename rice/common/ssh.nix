@@ -1,9 +1,7 @@
 { lib, config, ... }:
 let
   inherit (lib)
-    filterAttrs
     flip
-    mapAttrsToList
     mapNullable
     mkIf
     mkMerge

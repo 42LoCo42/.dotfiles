@@ -2,16 +2,31 @@
 
 { pkgs, lib, config, aquaris, ... }@top:
 let
-  inherit (lib) flip mkOption pipe;
+  inherit (lib)
+    flip
+    hasPrefix
+    mapAttrs'
+    mkBefore
+    mkIf
+    mkOption
+    pipe
+    splitString
+    zipAttrs
+    ;
 
   inherit (lib.types)
     attrsOf
+    coercedTo
     listOf
     nullOr
     path
     str
     submodule
     ;
+
+  inherit (config.aquaris) secret;
+
+  join = builtins.concatStringsSep " ";
 
   empty = pkgs.dockerTools.buildImage {
     name = "empty";
@@ -51,6 +66,45 @@ let
         type = nullOr str;
         default = null;
       };
+
+      ##### special args #####
+
+      extraOptionsRaw = mkOption {
+        description = "Unescaped arguments to podman";
+        type = listOf str;
+        default = [ ];
+      };
+
+      secrets = mkOption {
+        description = ''
+          List of <host path>:<container path> of secrets to mount
+
+          Instead of the host path (which must be absolute),
+          the name of an Aquaris-managed secret can also be given.
+        '';
+        type = coercedTo
+          (listOf str)
+          (map (x:
+            let parts = splitString ":" x; in
+            assert builtins.length parts == 2; rec {
+              host = pipe parts [
+                (flip builtins.elemAt 0)
+                (x: if hasPrefix "/" x then x else secret x)
+              ];
+
+              cont = builtins.elemAt parts 1;
+
+              name = builtins.hashString "sha256" host;
+            }))
+          (listOf (submodule ({
+            options = {
+              host = mkOption { type = path; };
+              cont = mkOption { type = path; };
+              name = mkOption { type = str; };
+            };
+          })));
+        default = [ ];
+      };
     };
 
     config = {
@@ -59,17 +113,16 @@ let
       };
 
       extraOptions = [ "--hostuser" name "--tz" top.config.time.timeZone ];
+
+      extraOptionsRaw = (flip map config.secrets)
+        (x: ''-v "''${CREDENTIALS_DIRECTORY}/${x.name}:${x.cont}:ro"'');
     };
   };
 
-  deps = name: cfg:
-    let
-      info = pipe { inherit (cfg) cmd environment; } [
-        builtins.toJSON
-        (pkgs.writeText "${name}-info")
-      ];
-    in
-    (pkgs.runCommand "${name}-volumes" {
+  deps = name: cfg: pipe { inherit (cfg) cmd environment; } [
+    builtins.toJSON
+    (pkgs.writeText "${name}-info")
+    (info: (pkgs.runCommand "${name}-volumes" {
       __structuredAttrs = true;
       exportReferencesGraph.graph = info;
       nativeBuildInputs = with pkgs; [ jq ];
@@ -96,7 +149,8 @@ let
           | sed -E 's|(.+)/([^/]+)$|-v \1/\2:/bin/\2:ro|'
         fi
       done >> $out
-    '';
+    '')
+  ];
 
   cfg = config.virtualisation.pnoc;
 in
@@ -119,6 +173,25 @@ in
       aquaris.lib.merge
     ];
 
+    systemd.services = flip mapAttrs' cfg (name: cfg: {
+      name = "podman-${name}";
+      value = mkIf (cfg.secrets != [ ]) {
+        serviceConfig = pipe cfg.secrets [
+          (map (x: { LoadCredential = "${x.name}:${x.host}"; }))
+          zipAttrs
+        ];
+
+        script = mkBefore ''
+          ${pkgs.util-linux}/bin/mount -v -o remount,rw "''${CREDENTIALS_DIRECTORY}"
+
+          ${join (map (x: ''
+            ${pkgs.coreutils}/bin/chown -v ${name} "''${CREDENTIALS_DIRECTORY}/${x.name}"
+          '') cfg.secrets)}
+
+          ${pkgs.util-linux}/bin/mount -v -o remount,ro "''${CREDENTIALS_DIRECTORY}"
+        '';
+      };
+    });
 
     virtualisation = {
       podman = {
@@ -126,13 +199,27 @@ in
         defaultNetwork.settings.dns_enabled = true;
       };
 
-      oci-containers.containers = flip builtins.mapAttrs cfg
-        (name: cfg: cfg // {
-          image = "$(< ${deps name cfg}) ${empty.imageName}:${empty.imageTag}";
-          imageFile = empty;
+      oci-containers.containers = flip builtins.mapAttrs cfg (name: cfg: {
+        inherit (cfg)
+          cmd
+          environment
+          environmentFiles
+          extraOptions
+          ports
+          volumes
+          workdir
+          ;
 
-          user = name;
-        });
+        image = join [
+          (join cfg.extraOptionsRaw)
+          "$(< ${deps name cfg})"
+          "${empty.imageName}:${empty.imageTag}"
+        ];
+
+        imageFile = empty;
+
+        user = name;
+      });
     };
   };
 }
