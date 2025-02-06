@@ -1,6 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }: {
-  aquaris.secrets.rules."machine/rustdesk".user = "rustdesk";
-
+{ pkgs, lib, aquaris, ... }: {
   networking.firewall = {
     allowedTCPPorts = [
       21115
@@ -25,6 +23,7 @@
     in
     {
       cmd = [ (lib.getExe app) ];
+
       ports = [
         "21115:21115"
         "21116:21116"
@@ -33,10 +32,11 @@
         "21118:21118"
         "21119:21119"
       ];
-      volumes = [
-        "rustdesk:/data"
-        "${config.aquaris.secret "machine/rustdesk"}:/data/id_ed25519:ro"
-      ];
+
+      secrets = [ "machine/rustdesk:/data/id_ed25519" ];
+
+      volumes = [ "rustdesk:/data" ];
+
       workdir = "/data";
     };
 }

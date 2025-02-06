@@ -49,10 +49,6 @@ in
     };
 
     persist.enable = true;
-
-    secrets.rules = {
-      "machine/ncps".user = "ncps";
-    };
   };
 
   boot = rec {
@@ -123,10 +119,9 @@ in
 
       ports = [ "8501:8501" ];
 
-      volumes = [
-        "ncps:/data"
-        "${config.aquaris.secret "machine/ncps"}:/key:ro"
-      ];
+      secrets = [ "machine/ncps:/key" ];
+
+      volumes = [ "ncps:/data" ];
     };
   };
 }
