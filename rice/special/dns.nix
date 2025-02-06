@@ -40,7 +40,6 @@
 
           # misc
           cache-size = 10000;
-          filter-AAAA = true;
           log-queries = true;
           proxy-dnssec = true;
         };
