@@ -106,6 +106,13 @@ mkMerge [
                     PubkeyAcceptedKeyTypes = "+ssh-rsa";
                   };
                 };
+
+                greifswald = {
+                  hostname = "web03270.pvm.imv.de";
+                  user = "root";
+                  identityFile = key "old/rsa";
+                  setEnv.TERM = "xterm-256color";
+                };
               };
             }.${user} or { };
           }
