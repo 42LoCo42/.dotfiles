@@ -108,6 +108,20 @@ in
 
     networking.networkmanager.enable = false;
 
+    virtualisation.podman.defaultNetwork.settings = {
+      ipv6_enabled = true;
+      subnets = [
+        {
+          subnet = "10.88.0.0/16";
+          gateway = "10.88.0.1";
+        }
+        {
+          subnet = "fd00::/80";
+          gateway = "fd00::1";
+        }
+      ];
+    };
+
     environment.systemPackages = [
       (pkgs.writeShellApplication {
         name = "normalize";
