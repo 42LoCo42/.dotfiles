@@ -2,7 +2,6 @@
 let
   inherit (lib)
     flip
-    mapNullable
     mkIf
     mkMerge
     pipe
@@ -20,10 +19,7 @@ mkMerge [
     home-manager.sharedModules = singleton (hm:
       let
         user = hm.config.home.username;
-        key = flip pipe [
-          (name: config.aquaris.secrets."user/${user}/ssh/${name}" or null)
-          (mapNullable toString)
-        ];
+        key = name: config.aquaris.secret "user/${user}/ssh/${name}";
       in
       {
         programs.ssh = mkMerge [
