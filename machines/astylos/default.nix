@@ -108,4 +108,31 @@
       moreutils
     ];
   };
+
+  virtualisation.pnoc-v2 = {
+    enable = true;
+    containers = {
+      foobar = {
+        script = ''
+          exec socat -d2                     \
+            TCP6-LISTEN:37812,fork,reuseaddr \
+            EXEC:"sh -i",stderr,pty
+        '';
+
+        datadir = true;
+
+        path = with pkgs; [
+          curl
+          libcap
+          socat
+
+          busybox
+        ];
+
+        ports = [ 37812 ];
+
+        secrets = [ "/persist/foo:/secrets/test" ];
+      };
+    };
+  };
 }
