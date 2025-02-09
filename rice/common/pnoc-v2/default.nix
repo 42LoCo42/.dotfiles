@@ -254,55 +254,52 @@ in
             default = [ ];
           };
 
-          ports = mkOption {
-            description = ''
-              Port forwardings of this container.
+          ports =
+            let regex = "((tcp|udp)(4|6)?/)?([0-9]+)(:([0-9]+))?"; in
+            mkOption {
+              description = ''
+                Port forwardings of this container.
+                All entries must match the regex ${regex}
 
-              Format: [(tcp|udp)[4|6]/]<host>[:<cont>] where
-                - []:  optional part
-                - <>:  placeholder
-                - ():  general grouping
-                - x|y: either x or y
+                So all of these would be valid:
+                  | input        | protocol | IP type | container port | parsed as                   |
+                  |--------------+----------+---------+----------------+-----------------------------|
+                  | 123          | no       | no      | no             | tcp4/123:123 & tcp6/123:123 |
+                  | 123:456      | no       | no      | yes            | tcp4/123:456 & tcp6/123:456 |
+                  | udp/123      | yes      | no      | no             | udp4/123:123 & udp6/123:123 |
+                  | udp/123:456  | yes      | no      | yes            | udp4/123:456 & udp6/123:456 |
+                  | udp6/123     | yes      | yes     | no             | udp6/123:123                |
+                  | udp6/123:456 | yes      | yes     | yes            | udp6/123:456                |
 
-              So all of these would be valid:
-                | input        | protocol | IP type | container port | parsed as                   |
-                |--------------+----------+---------+----------------+-----------------------------|
-                | 123          | no       | no      | no             | tcp4/123:123 & tcp6/123:123 |
-                | 123:456      | no       | no      | yes            | tcp4/123:456 & tcp6/123:456 |
-                | udp/123      | yes      | no      | no             | udp4/123:123 & udp6/123:123 |
-                | udp/123:456  | yes      | no      | yes            | udp4/123:456 & udp6/123:456 |
-                | udp6/123     | yes      | yes     | no             | udp6/123:123                |
-                | udp6/123:456 | yes      | yes     | yes            | udp6/123:456                |
+                Note that you cannot specify *just* an IP type without a protocol.
+              '';
 
-              Note that you cannot specify *just* an IP type without a protocol.
-            '';
+              type = coercedTo (listOf (either port str))
+                (builtins.concatMap (x:
+                  let
+                    parts =
+                      if builtins.typeOf x == builtins.typeOf 0
+                      then [ null null null (toString x) null null ]
+                      else builtins.match regex x;
 
-            type = coercedTo (listOf (either port str))
-              (builtins.concatMap (x:
-                let
-                  parts =
-                    if builtins.typeOf x == builtins.typeOf 0
-                    then [ null null null (toString x) null null ]
-                    else builtins.match "((tcp|udp)(4|6)?/)?([0-9]+)(:([0-9]+))?" x;
+                    typ = defaultTo "tcp" (elemAt parts 1);
+                    ipv = mapNullable toInt (elemAt parts 2);
+                    src = toInt (elemAt parts 3);
+                    dst = pipe (elemAt parts 5) [ (mapNullable toInt) (defaultTo src) ];
 
-                  typ = defaultTo "tcp" (elemAt parts 1);
-                  ipv = mapNullable toInt (elemAt parts 2);
-                  src = toInt (elemAt parts 3);
-                  dst = pipe (elemAt parts 5) [ (mapNullable toInt) (defaultTo src) ];
-
-                  mk = ipv: { inherit ipv typ src dst; };
-                in
-                if ipv == null then [ (mk 4) (mk 6) ] else [ (mk ipv) ]))
-              (listOf (submodule ({
-                options = {
-                  ipv = mkOption { type = enum [ 4 6 ]; };
-                  typ = mkOption { type = enum [ "tcp" "udp" ]; };
-                  src = mkOption { type = port; };
-                  dst = mkOption { type = port; };
-                };
-              })));
-            default = [ ];
-          };
+                    mk = ipv: { inherit ipv typ src dst; };
+                  in
+                  if ipv == null then [ (mk 4) (mk 6) ] else [ (mk ipv) ]))
+                (listOf (submodule ({
+                  options = {
+                    ipv = mkOption { type = enum [ 4 6 ]; };
+                    typ = mkOption { type = enum [ "tcp" "udp" ]; };
+                    src = mkOption { type = port; };
+                    dst = mkOption { type = port; };
+                  };
+                })));
+              default = [ ];
+            };
 
           secrets = mkOption {
             description = ''
