@@ -119,7 +119,7 @@
             EXEC:"sh -i",stderr,pty
         '';
 
-        datadir = true;
+        datadir = false;
 
         path = with pkgs; [
           curl

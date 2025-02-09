@@ -225,8 +225,11 @@ in
           };
 
           datadir = mkOption {
-            description = "Where to mount the persistent data directory";
-            type = nullOr (coercedTo bool (x: if x then "/data" else null) path);
+            description = ''
+              Where to mount the persistent data directory.
+              null or false to disable.
+            '';
+            type = coercedTo bool (x: if x then "/data" else null) (nullOr path);
             default = null;
           };
 
