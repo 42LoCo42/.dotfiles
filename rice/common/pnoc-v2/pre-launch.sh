@@ -19,7 +19,7 @@ ip netns exec "$cid" ip link set eth0 up
 # local IP
 ipv4="$(ipadd "10.42.0.1" "$i")"
 ipv6="$(ipadd "fd42::1  " "$i")"
-ip netns exec "$cid" ip addr add "$ipv4/24" dev eth0
+ip netns exec "$cid" ip addr add "$ipv4/16" dev eth0
 ip netns exec "$cid" ip addr add "$ipv6/80" dev eth0
 
 # host resolution
