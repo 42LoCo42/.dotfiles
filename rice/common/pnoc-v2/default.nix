@@ -258,7 +258,7 @@ in
             description = ''
               Port forwardings of this container.
 
-              Format: [(tcp|udp)[4|6]/]<host>[/<cont>] where
+              Format: [(tcp|udp)[4|6]/]<host>[:<cont>] where
                 - []:  optional part
                 - <>:  placeholder
                 - ():  general grouping
