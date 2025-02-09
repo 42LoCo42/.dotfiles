@@ -670,7 +670,7 @@
               (lsp-pyright-langserver-command "basedpyright")
             '';
 
-            extraPackages = with pkgs; [ basedpyright ];
+            extraPackages = with config.rice.desktop.zenkernel.pkgs; [ basedpyright ];
           };
 
           nftables-mode = { mode = ''"\\.nft\\'"''; };

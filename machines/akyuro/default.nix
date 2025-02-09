@@ -28,11 +28,6 @@
     };
   };
 
-  boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
-    zfs.package = pkgs.zfs_unstable;
-  };
-
   hardware.bluetooth = {
     enable = true;
     settings.General.Experimental = true;

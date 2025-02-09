@@ -32,16 +32,13 @@
     };
   };
 
-  boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
-    zfs.package = pkgs.zfs_unstable;
-  };
-
   programs.gamemode.enable = true;
 
   rice = {
     desktop = {
       enable = true;
+
+      nvidia.enable = true;
 
       udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';
 
@@ -49,11 +46,7 @@
         fuzzel.fontSize = 20;
 
         hyprland.preConfig = ''
-          env = AQ_DRM_DEVICES,/persist/gpu/nvidia
-
-          env = GBM_BACKEND,nvidia-drm
-          env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-          env = LIBVA_DRIVER_NAME,nvidia
+          # env = AQ_DRM_DEVICES,/persist/gpu/nvidia
 
           monitor = DVI-D-1,1920x1080@60,0x0,1
           # monitor = DP-1,1920x1080@60,1920x0,1

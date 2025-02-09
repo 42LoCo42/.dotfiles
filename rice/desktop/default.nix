@@ -24,6 +24,7 @@
       udev.enable = true;
       vesktop.enable = true;
       wayland.enable = true;
+      zenkernel.enable = true;
     };
   };
 
@@ -40,11 +41,13 @@
     ./minecraft.nix
     ./misc.nix
     ./mpd.nix
+    ./nvidia.nix
     ./pipewire.nix
     ./scx.nix
     ./sudo-u2f.nix
     ./udev.nix
     ./vesktop.nix
     ./wayland
+    ./zenkernel.nix
   ];
 }

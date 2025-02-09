@@ -1,7 +1,7 @@
 { pkgs, lib, config, aquaris, ... }:
 let
   inherit (lib) getExe getExe' mkIf mkOption;
-  inherit (lib.types) bool str;
+  inherit (lib.types) bool lines;
   inherit (aquaris.lib) subsF subsT;
 
   script = x: subsF (x // { func = pkgs.writeScript; });
@@ -14,7 +14,7 @@ in
     };
 
     preConfig = mkOption {
-      type = str;
+      type = lines;
       default = "";
     };
   };
