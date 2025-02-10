@@ -144,11 +144,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1739063575,
-        "narHash": "sha256-82FWgd4QPrgc1BNKyMymdmpPan6p1l0sWZ7IrxyXI9k=",
+        "lastModified": 1739177061,
+        "narHash": "sha256-713Yc26AAB2TRSVGJwUNCT09m/Pgz70ytrwPqMQ0r1c=",
         "owner": "42loco42",
         "repo": "obscura",
-        "rev": "0a884d5c3df69817630f1dcdd6442075ff5f390a",
+        "rev": "d84f01ed6c418bb7fdbb2d1283f9e5a60f95eb9b",
         "type": "github"
       },
       "original": {
