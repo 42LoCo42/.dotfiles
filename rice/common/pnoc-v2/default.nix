@@ -445,7 +445,7 @@ in
           };
 
           "pnoc_pre_launch@" = {
-            after = [ "sys-subsystem-net-devices-pnoc0.device" ];
+            after = [ "sys-subsystem-net-devices-pnoc0.device" "pnoc_clean@%i.service" ];
             bindsTo = [ "sys-subsystem-net-devices-pnoc0.device" ];
 
             # trigger pnoc-clean early to (at least) remove container registration
@@ -474,9 +474,6 @@ in
           };
 
           "pnoc_clean@" = {
-            # wait for post-launch to write its stuff before removing it
-            after = [ "pnoc_post_launch@%i.service" ];
-
             serviceConfig = {
               Type = "oneshot";
               ExecStart = "${getExe pnoc-clean} %i";

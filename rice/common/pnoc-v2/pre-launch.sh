@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 set -eEuo pipefail
 
+nam="$1"
+
 # find next available container ID
 # 10.42.0.1 (pnoc0) + 65533 = 10.42.255.254 = highest non-broadcast
-for i in {1..65533}; do [ ! -e "/run/netns/pnoc$i" ] && break; done
-nam="$1"
-cid="pnoc$i"
+for i in {1..65533}; do
+	cid="pnoc$i"
+	if ip netns add "$cid" 2>/dev/null; then break; else true; fi
+done
 
-# create container entry
+# create container registration
 mkdir -p /run/pnoc/netns
 ln -sfT "/run/netns/$cid" "/run/pnoc/netns/$nam"
 
 # create ethernet bond
-ip netns add "$cid"
 ip link add "$cid" up master pnoc0 type veth peer eth0 netns "$cid"
 ip netns exec "$cid" ip link set eth0 up
 
@@ -53,10 +55,12 @@ if [ -e "$ports" ]; then
 			ipa="$ipv6"
 			;;
 		*)
-			echo "port forward: invalid IP type $ipv!" >&2
+			echo "port forward: invalid IP type '$ipv'!" >&2
 			continue
 			;;
 		esac
+
+		nft delete element "$tbl" io.systemd.nat map_port_ipport "{ $typ . $src }" 2>/dev/null || true
 		nft add element "$tbl" io.systemd.nat map_port_ipport "{ $typ . $src : $ipa . $dst }"
 	done <"$ports"
 fi
