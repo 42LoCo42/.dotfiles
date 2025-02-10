@@ -16,6 +16,8 @@ ip netns add "$cid"
 ip link add "$cid" up master pnoc0 type veth peer eth0 netns "$cid"
 ip netns exec "$cid" ip link set eth0 up
 
+# networkctl should now create the io.systemd.nat tables
+
 # local IP
 ipv4="$(ipadd "10.42.0.1" "$i")"
 ipv6="$(ipadd "fd42::1  " "$i")"
@@ -35,6 +37,11 @@ ip netns exec "$cid" ip route add default via fd42::1 dev eth0
 # port forward
 ports="/etc/pnoc/ports/$nam"
 if [ -e "$ports" ]; then
+	while true; do
+		if nft list tables | grep -q io.systemd.nat; then break; fi
+		sleep 1
+	done
+
 	while read -r ipv typ src dst; do
 		case "$ipv" in
 		4)
