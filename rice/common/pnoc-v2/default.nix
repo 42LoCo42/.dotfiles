@@ -41,6 +41,11 @@ let
 
   cfg = config.virtualisation.pnoc-v2;
 
+  hosts = pkgs.writeText "hosts" ''
+    10.42.0.1 host.docker.internal host.containers.internal host.pnoc.internal
+    fd42::1   host.docker.internal host.containers.internal host.pnoc.internal
+  '';
+
   resolvconf = pkgs.writeText "resolv.conf" ''
     nameserver 10.42.0.1
     nameserver fd42::1
@@ -144,6 +149,7 @@ let
         BindReadOnlyPaths = [
           "/etc/localtime"
           "/etc/os-release"
+          "${hosts}:/etc/hosts"
           "${resolvconf}:/etc/resolv.conf"
         ];
 
