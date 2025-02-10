@@ -452,6 +452,11 @@ in
             # and any resource that we might have created already
             onFailure = [ "pnoc_clean@%i.service" ];
 
+            unitConfig = {
+              RefuseManualStart = true;
+              RefuseManualStop = true;
+            };
+
             serviceConfig = {
               Type = "oneshot";
               ExecStart = "${getExe pnoc-pre-launch} %i";
@@ -462,6 +467,11 @@ in
             # post-launch always has to be started alongside the main service
             # so make it stop alongside it too
             bindsTo = [ "pnoc-%i.service" ];
+
+            unitConfig = {
+              RefuseManualStart = true;
+              RefuseManualStop = true;
+            };
 
             serviceConfig = {
               Type = "oneshot";
@@ -474,6 +484,11 @@ in
           };
 
           "pnoc_clean@" = {
+            unitConfig = {
+              RefuseManualStart = true;
+              RefuseManualStop = true;
+            };
+
             serviceConfig = {
               Type = "oneshot";
               ExecStart = "${getExe pnoc-clean} %i";
