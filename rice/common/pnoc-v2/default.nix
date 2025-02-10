@@ -426,6 +426,9 @@ in
 
         services = {
           "pnoc_dns" = {
+            after = [ "sys-subsystem-net-devices-pnoc0.device" ];
+            bindsTo = [ "sys-subsystem-net-devices-pnoc0.device" ];
+
             serviceConfig = {
               Type = "simple";
               ExecStartPre = [ "${getExe' pkgs.coreutils "mkdir"} -p /run/pnoc/hosts" ];
@@ -436,6 +439,9 @@ in
           };
 
           "pnoc_pre_launch@" = {
+            after = [ "sys-subsystem-net-devices-pnoc0.device" ];
+            bindsTo = [ "sys-subsystem-net-devices-pnoc0.device" ];
+
             # trigger pnoc-clean early to (at least) remove container registration
             # and any resource that we might have created already
             onFailure = [ "pnoc_clean@%i.service" ];
