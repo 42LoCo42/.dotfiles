@@ -55,11 +55,7 @@
       };
     };
 
-    dns = {
-      enable = true;
-      interface = "wlp2s0";
-    };
-
+    dns.enable = true;
     nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;

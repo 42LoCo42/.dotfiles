@@ -62,11 +62,7 @@
       };
     };
 
-    dns = {
-      enable = true;
-      interface = "enp6s0";
-    };
-
+    dns.enable = true;
     nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
