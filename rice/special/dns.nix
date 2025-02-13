@@ -36,7 +36,10 @@
 
           http3 = true;
 
-          bootstrap_resolvers = [ "9.9.9.11:53" ];
+          lb_strategy = "p2";
+          lb_estimator = true;
+
+          bootstrap_resolvers = [ "9.9.9.9:53" ];
 
           block_unqualified = true;
           block_undelegated = true;
