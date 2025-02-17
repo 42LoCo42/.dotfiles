@@ -15,7 +15,10 @@
 
       aquaris.emacs = {
         enable = true;
-        package = pkgs.emacs29-pgtk;
+
+        # successful hydra build of emacs30-pgtk with gtk 3.24.48 (https://hydra.nixos.org/build/289961095)
+        # TODO remove once https://nixpk.gs/pr-tracker.html?pr=377676 clears
+        package = (builtins.getFlake "github:nixos/nixpkgs/6956fe0ec67163d5b80f38c2fbf2c82555a3a743").legacyPackages.${pkgs.system}.emacs30-pgtk;
 
         extraPackages = epkgs: with epkgs; [
           (treesit-grammars.with-grammars (g: with g; [
@@ -91,46 +94,46 @@
             '';
 
             bind' = ''(
-            ("C-M-<backspace>" . my/join-line)
-            ("C-s"             . save-buffer)
+              ("C-M-<backspace>" . my/join-line)
+              ("C-s"             . save-buffer)
 
-            ("C-h C-b" . describe-personal-keybindings)
-            ("C-h C-f" . describe-function)
-            ("C-h C-k" . describe-key)
-            ("C-h C-v" . describe-variable)
+              ("C-h C-b" . describe-personal-keybindings)
+              ("C-h C-f" . describe-function)
+              ("C-h C-k" . describe-key)
+              ("C-h C-v" . describe-variable)
 
-            ("C-x C-f" . find-file)
+              ("C-x C-f" . find-file)
 
-            ("C-#"   . (lambda () (interactive) (select-window (next-window))))
-            ("C-M-#" . (lambda () (interactive) (select-window (previous-window))))
-            ("M-e"   . forward-word)
-            ("M-f"   . forward-to-word)
-            ("M-n"   . scroll-up-command)
-            ("M-p"   . scroll-down-command)
+              ("C-#"   . (lambda () (interactive) (select-window (next-window))))
+              ("C-M-#" . (lambda () (interactive) (select-window (previous-window))))
+              ("M-e"   . forward-word)
+              ("M-f"   . forward-to-word)
+              ("M-n"   . scroll-up-command)
+              ("M-p"   . scroll-down-command)
 
-            ("C-M-i"   . ispell-buffer)
-            ("C-x C-a" . mark-whole-buffer)
-            ("C-x C-k" . (lambda () (interactive) (kill-buffer (current-buffer))))
+              ("C-M-i"   . ispell-buffer)
+              ("C-x C-a" . mark-whole-buffer)
+              ("C-x C-k" . (lambda () (interactive) (kill-buffer (current-buffer))))
 
-            ("C-+" . text-scale-increase)
-            ("C--" . text-scale-decrease)
-            ("C-=" . text-scale-mode)
+              ("C-+" . text-scale-increase)
+              ("C--" . text-scale-decrease)
+              ("C-=" . text-scale-mode)
 
-            ("C-M-<return>" . my/autosplit)
-            ("C-x C-0"      . delete-window)
-            ("C-x C-1"      . delete-other-windows)
-            ("C-x C-2"      . my/split-switch-below)
-            ("C-x C-3"      . my/split-switch-right)
-            ("C-x C-4"      . kill-buffer-and-window)
+              ("C-M-<return>" . my/autosplit)
+              ("C-x C-0"      . delete-window)
+              ("C-x C-1"      . delete-other-windows)
+              ("C-x C-2"      . my/split-switch-below)
+              ("C-x C-3"      . my/split-switch-right)
+              ("C-x C-4"      . kill-buffer-and-window)
 
-            :map read--expression-map
-            ("C-n" . next-line-or-history-element)
-            ("C-p" . previous-line-or-history-element)
+              :map read--expression-map
+              ("C-n" . next-line-or-history-element)
+              ("C-p" . previous-line-or-history-element)
 
-            :map minibuffer-local-shell-command-map
-            ("C-n" . next-line-or-history-element)
-            ("C-p" . previous-line-or-history-element)
-          )'';
+              :map minibuffer-local-shell-command-map
+              ("C-n" . next-line-or-history-element)
+              ("C-p" . previous-line-or-history-element)
+            )'';
 
             hook = ''
               ; delete trailing whitespace on save
@@ -173,6 +176,10 @@
 
               ; indent elisp "if" normally
               (put 'if 'lisp-indent-function 'defun)
+
+              ; show possible keybind continuations
+              (which-key-mode 1)
+              (which-key-setup-side-window-bottom)
             '';
 
             custom = ''
@@ -200,6 +207,9 @@
               (xref-show-xrefs-function       'consult-xref)
               (xref-show-definitions-function 'consult-xref)
               (xref-prompt-for-identifier     nil)
+
+              (which-key-idle-delay 0.5)
+              (which-key-idle-secondary-delay 0)
             '';
 
             extraPackages = with pkgs; [
@@ -424,18 +434,6 @@
             config = ''
               (push '("^[*]" :regex t) popwin:special-display-config)
               (popwin-mode 1)
-            '';
-          };
-
-          which-key = {
-            config = ''
-              (which-key-mode 1)
-              (which-key-setup-side-window-bottom)
-            '';
-
-            custom = ''
-              (which-key-idle-delay 0.5)
-              (which-key-idle-secondary-delay 0)
             '';
           };
 
