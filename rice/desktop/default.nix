@@ -15,6 +15,7 @@
       hrtrack.enable = true;
       keyd.enable = true;
       libvirt.enable = true;
+      mail.enable = true;
       minecraft.enable = true;
       misc.enable = true;
       mpd.enable = true;
@@ -38,6 +39,7 @@
     ./hrtrack
     ./keyd.nix
     ./libvirt.nix
+    ./mail.nix
     ./minecraft.nix
     ./misc.nix
     ./mpd.nix

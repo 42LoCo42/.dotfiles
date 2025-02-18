@@ -64,11 +64,6 @@
 
   home-manager.users.leonsch = {
     aquaris.persist = {
-      ".thunderbird" = { };
-
-      ".cache/thunderbird" = { };
-
-      ".config/hydroxide" = { };
       ".config/rustdesk" = { };
 
       ".local/share/typst/packages/local" = { };
@@ -96,23 +91,6 @@
       ffmpeg
       kid3-cli
       moreutils
-
-      # experimental
-      thunderbird
     ];
-
-    systemd.user.services.hydroxide = {
-      Unit = {
-        After = [ "network-online.target" ];
-        Wants = [ "network-online.target" ];
-      };
-
-      Install.WantedBy = [ "default.target" ];
-
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.lib.getExe pkgs.hydroxide} serve";
-      };
-    };
   };
 }
