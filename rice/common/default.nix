@@ -9,6 +9,6 @@
     ./pnoc.nix
     ./procfs.nix
     ./ssh.nix
-    ./zfs.nix
+    ./zfs
   ];
 }
