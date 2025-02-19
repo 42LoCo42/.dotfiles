@@ -24,7 +24,7 @@ let inherit (lib) mkForce; in {
     secrets.enable = false;
   };
 
-  isoImage.isoBaseName = mkForce "nixos-guanyin";
+  isoImage.edition = "guanyin";
 
   boot.initrd.systemd.enable = false;
   networking.wireless.enable = false;
