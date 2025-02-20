@@ -1,4 +1,6 @@
-{ lib, config, ... }: {
+# TODO upstream this to Aquaris
+
+{ pkgs, lib, config, ... }: {
   options.rice.desktop.firefox.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -9,6 +11,14 @@
       aquaris.firefox = {
         enable = true;
         cleanHome = false;
+      };
+
+      programs.firefox = {
+        package = lib.mkForce (pkgs.firefox.override {
+          extraPrefs = builtins.readFile ./prefs.js;
+        });
+
+        policies = import ./policies.nix;
       };
     }];
   };
