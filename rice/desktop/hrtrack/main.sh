@@ -1,16 +1,10 @@
 #!/usr/bin/env bash
-if tty >/dev/null; then
-	out="echo"
-else
-	out="notify-send"
-fi
-
 src="$HOME/doc/trans/hrtrack"
 has="$(<"$src")"
 now="$(date "+%Y-%m-%d")"
-echo "Today is $now"
-if [ "$has" == "$now" ]; then
-	"$out" "HRT already taken!"
+
+if [ "$has" = "$now" ]; then
+	notify-send "HRT already taken!"
 else
 	extra=""
 	if (($(date +%s) / 86400 % 3 == 0)); then
@@ -21,6 +15,6 @@ else
 		extra="$extra and Vitamin D"
 	fi
 
-	"$out" "Take Estrogen$extra today!"
+	notify-send -u critical -t 5000 "Take Estrogen$extra today!"
 	echo "$now" >"$src"
 fi

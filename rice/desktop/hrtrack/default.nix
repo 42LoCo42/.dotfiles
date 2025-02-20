@@ -41,6 +41,24 @@
 
     home-manager.sharedModules = [{
       home.packages = with pkgs; [ hrtrack ];
+
+      systemd.user = {
+        services.hrtrack = {
+          Service = {
+            Type = "oneshot";
+            ExecStart = "${lib.getExe pkgs.hrtrack}";
+          };
+        };
+
+        timers.hrtrack = {
+          Timer = {
+            OnBootSec = "1min";
+            Unit = "hrtrack.service";
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+      };
     }];
   };
 }
