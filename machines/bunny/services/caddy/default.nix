@@ -21,7 +21,7 @@
     volumes = [
       "caddy:/caddy"
       "${config.rice.homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
-      "${config.rice.obscura.chronometer}:/srv/chronometer:ro"
+      "${pkgs.chronometer}:/srv/chronometer:ro"
       "/persist/home/admin/hidden:/srv/homepage/foo:ro"
       # "${pkgs.element-web}:/srv/element:ro"
       # "${subsDomain ./element.json}:/srv/element/config.json:ro"

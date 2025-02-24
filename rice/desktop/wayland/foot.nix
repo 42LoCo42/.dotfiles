@@ -1,16 +1,10 @@
-{ self, lib, config, ... }: {
+{ lib, config, ... }: {
   options.rice.desktop.wayland.foot.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
 
   config = lib.mkIf config.rice.desktop.wayland.foot.enable {
-    nixpkgs.overlays = [
-      (_: pkgs: {
-        foot = self.inputs.obscura.packages.${pkgs.system}.foot-transparent;
-      })
-    ];
-
     home-manager.sharedModules = [{
       programs.foot = {
         enable = true;

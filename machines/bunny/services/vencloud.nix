@@ -1,6 +1,6 @@
-{ lib, config, ... }: {
+{ pkgs, lib, config, ... }: {
   virtualisation.pnoc.vencloud = {
-    cmd = [ (lib.getExe config.rice.obscura.vencloud) ];
+    cmd = [ (lib.getExe pkgs.vencloud) ];
     environment = {
       HOST = "0.0.0.0";
       PORT = "8080";

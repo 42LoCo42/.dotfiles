@@ -1,8 +1,6 @@
-{ self, pkgs, config, aquaris, ... }:
+{ pkgs, config, aquaris, ... }:
 let
   inherit (pkgs.lib) flip getExe mkMerge pipe remove;
-
-  obscura = self.inputs.obscura.packages.${pkgs.system};
 
   ncps-caches = pipe config.nix.settings [
     (x: with x; with config.rice.use-ncps; {
@@ -98,7 +96,7 @@ in
     };
 
     ncps = {
-      cmd = [ (getExe obscura.ncps-db-helper) "serve" ];
+      cmd = [ (getExe pkgs.ncps-db-helper) "serve" ];
 
       environment = {
         CACHE_DATA_PATH = "/data";

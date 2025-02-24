@@ -15,10 +15,7 @@
 
       aquaris.emacs = {
         enable = true;
-
-        # successful hydra build of emacs30-pgtk with gtk 3.24.48 (https://hydra.nixos.org/build/289961095)
-        # TODO remove once https://nixpk.gs/pr-tracker.html?pr=377676 clears
-        package = (builtins.getFlake "github:nixos/nixpkgs/6956fe0ec67163d5b80f38c2fbf2c82555a3a743").legacyPackages.${pkgs.system}.emacs30-pgtk;
+        package = pkgs.emacs30-pgtk;
 
         extraPackages = epkgs: with epkgs; [
           (treesit-grammars.with-grammars (g: with g; [

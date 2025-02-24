@@ -1,6 +1,6 @@
-{ lib, config, ... }: {
+{ pkgs, lib, config, ... }: {
   virtualisation.pnoc.photoview = {
-    cmd = [ (lib.getExe config.rice.obscura.photoview) ];
+    cmd = [ (lib.getExe pkgs.photoview) ];
     environment = {
       PHOTOVIEW_DATABASE_DRIVER = "postgres";
       PHOTOVIEW_LISTEN_IP = "0.0.0.0";

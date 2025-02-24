@@ -1,6 +1,6 @@
-{ lib, config, ... }: {
+{ pkgs, lib, ... }: {
   virtualisation.pnoc.pinlist = {
-    cmd = [ (lib.getExe config.rice.obscura.pinlist) ];
+    cmd = [ (lib.getExe pkgs.pinlist) ];
     volumes = [ "pinlist:/db" ];
   };
 }

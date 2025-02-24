@@ -1,17 +1,12 @@
-{ self, pkgs, config, lib, aquaris, ... }:
+{ pkgs, config, lib, aquaris, ... }:
 let
   inherit (lib) concatMapStringsSep mkOption pipe splitString;
-  inherit (lib.types) attrsOf functionTo package str;
+  inherit (lib.types) functionTo package str;
 in
 {
   imports = [ ../../rice ./services ];
 
   options.rice = {
-    obscura = mkOption {
-      type = attrsOf package;
-      default = self.inputs.obscura.packages.${pkgs.system};
-    };
-
     domain = mkOption {
       type = str;
       default = "eleonora.gay";
@@ -60,9 +55,8 @@ in
           };
 
           nativeBuildInputs = with pkgs; [
-            config.rice.obscura.pug
-
             glibcLocales
+            pug
             tree
             woff2
           ];
