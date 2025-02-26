@@ -1,4 +1,6 @@
 { pkgs, lib, config, ... }: lib.mkIf config.boot.zfs.enabled {
+  rice.desktop.wayland.waybar.zfullfs = "rpool";
+
   services.zfs = {
     autoScrub.enable = true;
     autoSnapshot.enable = true;

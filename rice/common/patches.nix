@@ -20,6 +20,7 @@
           pinlist
           pug
           vencloud
+          zfullfs
           ;
 
         foot = obscura.foot-transparent;

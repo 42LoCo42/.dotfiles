@@ -1,16 +1,37 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, ... }:
+let
+  inherit (lib) getExe getExe' mkIf mkOption;
+  inherit (lib.types) bool int nullOr str;
+
+  cfg = config.rice.desktop.wayland.waybar;
+in
+{
   options.rice.desktop.wayland.waybar = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
+    enable = mkOption {
+      type = bool;
       default = false;
     };
 
-    temperatureWarn = lib.mkOption {
-      type = lib.types.int;
+    temperatureWarn = mkOption {
+      type = int;
+    };
+
+    zfullfs = mkOption {
+      type = nullOr str;
+      default = null;
     };
   };
 
-  config = lib.mkIf config.rice.desktop.wayland.waybar.enable {
+  config = mkIf cfg.enable {
+    systemd.services.zfullfs = mkIf (cfg.zfullfs != null) {
+      serviceConfig = {
+        ExecStartPre = [ "${getExe' pkgs.coreutils "mkdir"} -p /full" ];
+        ExecStart = "${getExe pkgs.zfullfs} ${cfg.zfullfs} /full";
+      };
+
+      wantedBy = [ "multi-user.target" ];
+    };
+
     home-manager.sharedModules = [{
       # sometimes waybar starts before hyprland and then crashes
       # fix: just restart it until it works
@@ -77,7 +98,7 @@
             format = "{}°";
             tooltip = true;
             interval = 3600;
-            exec = "${lib.getExe pkgs.wttrbar}";
+            exec = "${getExe pkgs.wttrbar}";
             return-type = "json";
           };
 
@@ -140,11 +161,13 @@
 
           disk = {
             format = "{percentage_used}% 󰋊 ";
-            path = config.aquaris.persist.root;
+            path =
+              if cfg.zfullfs != null then "/full"
+              else config.aquaris.persist.root;
           };
 
           temperature = {
-            critical-threshold = config.rice.desktop.wayland.waybar.temperatureWarn;
+            critical-threshold = cfg.temperatureWarn;
             format = "{temperatureC}°C {icon}";
             format-critical = "{temperatureC}°C {icon}";
             format-icons = [ "" "" "" "" "" ];
