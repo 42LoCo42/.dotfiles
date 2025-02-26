@@ -33,7 +33,7 @@
     ./alarm
     ./emacs
     ./eww
-    ./firefox
+    ./firefox.nix
     ./fonts.nix
     ./greetd.nix
     ./hrtrack
