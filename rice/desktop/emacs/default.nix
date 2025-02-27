@@ -532,6 +532,7 @@
               (glsl-mode       . lsp-deferred)
               (go-mode         . lsp-deferred)
               (haskell-mode    . lsp-deferred)
+              (js-mode         . lsp-deferred)
               (nix-mode        . lsp-deferred)
               (rustic-mode     . lsp-deferred)
               (sh-mode         . lsp-deferred)
@@ -836,8 +837,8 @@
               src = pkgs.fetchFromGitHub {
                 owner = "havarddj";
                 repo = "typst-preview.el";
-                rev = "4091dc5bbb281335ce03e4cecaae26495275f7e3";
-                hash = "sha256-AJRWw8c13C6hfwO28hXERN4cIc6cFTbNBcz2EzqqScg=";
+                rev = "7443e227462f6563559fde45dc500cb03ee253bb";
+                hash = "sha256-7YWPWLRNgF9N91xW0QpMPhwZ57iCsgkDY4rNY/6lf6c=";
               };
 
               packageRequires = with epkgs; [ websocket ];
