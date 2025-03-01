@@ -1,4 +1,4 @@
-{ pkgs, aquaris, ... }: {
+{ pkgs, config, aquaris, ... }: {
   imports = [ ../../rice ];
 
   aquaris = {
@@ -62,7 +62,16 @@
       };
     };
 
-    dns.enable = true;
+    dns = {
+      enable = true;
+
+      local-doh = {
+        enable = true;
+        crt = ./dnscrypt-doh.crt;
+        key = config.aquaris.secret "machine/dnscrypt-doh";
+      };
+    };
+
     nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
