@@ -9,6 +9,11 @@
 
     virtualisation.libvirtd = {
       enable = true;
+
+      # libvirt 11.0.0 - fixes virt-manager crash on VM creation
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=375888
+      package = (builtins.getFlake "github:nixos/nixpkgs/1cce2a1a306c2755885d4ab0b87ac10ffae96e09").legacyPackages.${pkgs.system}.libvirt;
+
       qemu = {
         package = pkgs.qemu_kvm;
         ovmf.packages = with pkgs; [ OVMFFull.fd ];
