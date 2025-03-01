@@ -2,7 +2,7 @@
 
 { config, pkgs, lib, ... }:
 let
-  inherit (lib) mkForce mkIf mkMerge mkOption;
+  inherit (lib) mkIf mkMerge mkOption;
   inherit (lib.types) bool path;
 
   cfg = config.rice.dns;
@@ -185,21 +185,6 @@ in
       systemd.services.dnscrypt-proxy2 = {
         serviceConfig.LoadCredential = "key:${cfg.local-doh.key}";
       };
-
-      # make this part of aquaris:module/home/firefox
-      home-manager.sharedModules = [{
-        aquaris.firefox.policies = {
-          Certificates.Install = [ cfg.local-doh.crt ];
-
-          DNSOverHTTPS = mkForce {
-            Enabled = true;
-            Locked = true;
-
-            ProviderURL = "https://localhost:5353/dns-query";
-            Fallback = false;
-          };
-        };
-      }];
     })
   ]);
 }

@@ -5,19 +5,28 @@
   };
 
   config = lib.mkIf config.rice.desktop.firefox.enable {
-    home-manager.sharedModules = [
-      ({ config, osConfig, ... }: {
-        aquaris.firefox = {
-          enable = true;
+    home-manager.sharedModules = [{
+      aquaris.firefox = {
+        enable = true;
 
-          policies = {
-            DNSOverHTTPS = lib.mkIf osConfig.rice.dns.enable {
-              Enabled = false; # use local dnscrypt-proxy
-              Locked = true;
-            };
-          };
+        # TODO upstream this to Aquaris
+        policies = {
+          Certificates.Install = lib.mkIf
+            (config.rice.dns.local-doh.enable)
+            [ config.rice.dns.local-doh.crt ];
+
+          DNSOverHTTPS = {
+            Locked = true;
+            Fallback = false;
+          } //
+          (if config.rice.dns.enable then
+            (if config.rice.dns.local-doh.enable then {
+              Enabled = true;
+              ProviderURL = "https://localhost:5353/dns-query";
+            } else { Enabled = false; })
+          else { Enabled = true; });
         };
-      })
-    ];
+      };
+    }];
   };
 }

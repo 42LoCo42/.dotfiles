@@ -67,7 +67,7 @@
 
       local-doh = {
         enable = true;
-        crt = ./dnscrypt-doh.crt;
+        crt = builtins.path { path = ./dnscrypt-doh.crt; };
         key = config.aquaris.secret "machine/dnscrypt-doh";
       };
     };
