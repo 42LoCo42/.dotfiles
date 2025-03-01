@@ -850,6 +850,11 @@
               (typst-preview-invert-colors "never")
               (typst-preview-open-browser-automatically t)
             '';
+
+            config = ''
+              (advice-add 'typst-preview-start :before (lambda (&rest r)
+                (setq tp--master-file buffer-file-name)))
+            '';
           };
 
           # tip = {
