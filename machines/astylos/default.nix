@@ -62,16 +62,7 @@
       };
     };
 
-    dns = {
-      enable = true;
-
-      local-doh = {
-        enable = true;
-        crt = builtins.path { path = ./dnscrypt-doh.crt; };
-        key = config.aquaris.secret "machine/dnscrypt-doh";
-      };
-    };
-
+    dns.enable = true;
     nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
