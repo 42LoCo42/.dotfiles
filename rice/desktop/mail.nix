@@ -41,7 +41,14 @@
 
           Service = {
             Type = "simple";
-            ExecStart = "${lib.getExe pkgs.ferroxide} serve";
+            ExecStart = builtins.replaceStrings [ "\n" ] [ "" ] ''
+              ${lib.getExe pkgs.ferroxide}
+                --disable-caldav
+                --disable-carddav
+                --imap-port 65143
+                --smtp-port 65025
+                serve
+            '';
           };
         };
       }];
