@@ -18,6 +18,11 @@
           DNSOverHTTPS = {
             Locked = true;
             Fallback = false;
+
+            ExcludedDomains = lib.pipe config.rice.dns.rules [
+              (x: x.cloaking // x.forwarding)
+              (builtins.attrNames)
+            ];
           } //
           (if config.rice.dns.enable then
             (if config.rice.dns.local-doh.enable then {

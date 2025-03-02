@@ -2,8 +2,21 @@
 
 { config, pkgs, lib, ... }:
 let
-  inherit (lib) mkIf mkMerge mkOption;
-  inherit (lib.types) bool path;
+  inherit (lib)
+    concatLines
+    mapAttrsToList
+    mkIf
+    mkMerge
+    mkOption
+    pipe
+    ;
+  inherit (lib.types)
+    attrsOf
+    bool
+    listOf
+    path
+    str
+    ;
 
   cfg = config.rice.dns;
 in
@@ -32,9 +45,73 @@ in
         description = "Path to the private key used for the local DoH server";
       };
     };
+
+    rules = {
+      blocking = mkOption {
+        type = listOf str;
+        description = "List of IPs to block";
+        default = [ ];
+      };
+
+      cloaking = mkOption {
+        type = attrsOf str;
+        description = "Set of cloaking rules (domain -> IP)";
+        default = { };
+      };
+
+      forwarding = mkOption {
+        type = attrsOf str;
+        description = "Set of forwarding rules (domain -> IP)";
+        default = { };
+      };
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
+    {
+      rice.dns = {
+        rules = {
+          blocking = [
+            # Localhost rebinding protection
+            "0.0.0.0"
+            "127.0.0.*"
+
+            # RFC1918 rebinding protection
+            "10.*"
+            "172.16.*"
+            "172.17.*"
+            "172.18.*"
+            "172.19.*"
+            "172.20.*"
+            "172.21.*"
+            "172.22.*"
+            "172.23.*"
+            "172.24.*"
+            "172.25.*"
+            "172.26.*"
+            "172.27.*"
+            "172.28.*"
+            "172.29.*"
+            "172.30.*"
+            "172.31.*"
+            "192.168.*"
+          ];
+
+          cloaking = {
+            "local.host" = "127.0.0.1";
+            "readers.lakd" = "127.0.0.1"; # personal
+          };
+
+          # personal
+          forwarding = {
+            "bunny.vpn" = "100.100.100.100";
+            "fritz.box" = "192.168.178.1";
+            "vm" = "192.168.122.1";
+          };
+        };
+      };
+    }
+
     {
       aquaris.persist.dirs."/var/cache/private/dnscrypt-proxy" = { };
 
@@ -116,6 +193,7 @@ in
               "digitalprivacy.diy-dnscrypt-ipv4"
             ];
 
+            # TODO make configurable
             anonymized_dns = {
               routes = [{
                 server_name = "*";
@@ -130,42 +208,22 @@ in
               skip_incompatible = true;
             };
 
-            forwarding_rules = pkgs.writeText "forwarding-rules.txt" ''
-              bunny.vpn    100.100.100.100
-              fritz.box    192.168.178.1
-              vm           192.168.122.1
-            '';
+            blocked_ips.blocked_ips_file = pipe cfg.rules.blocking [
+              concatLines
+              (pkgs.writeText "blocking-rules.txt")
+            ];
 
-            cloaking_rules = pkgs.writeText "cloaking-rules.txt" ''
-              local.host      127.0.0.1
-              readers.lakd    127.0.0.1
-            '';
+            cloaking_rules = pipe cfg.rules.cloaking [
+              (mapAttrsToList (k: v: "${k} ${v}"))
+              concatLines
+              (pkgs.writeText "cloaking-rules.txt")
+            ];
 
-            blocked_ips.blocked_ips_file = pkgs.writeText "blocked-ips.txt" ''
-              # Localhost rebinding protection
-              0.0.0.0
-              127.0.0.*
-
-              # RFC1918 rebinding protection
-              10.*
-              172.16.*
-              172.17.*
-              172.18.*
-              172.19.*
-              172.20.*
-              172.21.*
-              172.22.*
-              172.23.*
-              172.24.*
-              172.25.*
-              172.26.*
-              172.27.*
-              172.28.*
-              172.29.*
-              172.30.*
-              172.31.*
-              192.168.*
-            '';
+            forwarding_rules = pipe cfg.rules.forwarding [
+              (mapAttrsToList (k: v: "${k} ${v}"))
+              concatLines
+              (pkgs.writeText "forwarding-rules.txt")
+            ];
           };
         };
       };
