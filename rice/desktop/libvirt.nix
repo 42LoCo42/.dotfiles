@@ -10,11 +10,6 @@
     virtualisation.libvirtd = {
       enable = true;
 
-      # libvirt 11.0.0 - fixes virt-manager crash on VM creation
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=375888
-      # hydra build https://hydra.nixos.org/build/291274205
-      package = (builtins.getFlake "github:nixos/nixpkgs/8b24638d4d411cb0a8e2df082a212e4c5d5e5f98").legacyPackages.${pkgs.system}.libvirt;
-
       qemu = {
         package = pkgs.qemu_kvm;
         ovmf.packages = with pkgs; [ OVMFFull.fd ];
