@@ -38,7 +38,7 @@
             ytl = join [
               "ytm"
               "--embed-thumbnail"
-              "--output='%(autonumber)02d - %(titles)s.%(ext)s'"
+              "--output='%(autonumber)02d - %(title)s.%(ext)s'"
             ];
 
             webcam = join [
