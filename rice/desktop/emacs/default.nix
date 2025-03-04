@@ -6,7 +6,11 @@
 
   config = lib.mkIf config.rice.desktop.emacs.enable {
     home-manager.sharedModules = [{
-      services.emacs.enable = true;
+      services.emacs = {
+        enable = true;
+        startWithUserSession = "graphical";
+      };
+
       systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
 
       xdg.configFile."fourmolu.yaml".source = ./fourmolu.yaml;
