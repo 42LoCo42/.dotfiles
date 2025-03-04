@@ -48,6 +48,7 @@
       env = LIBVA_DRIVER_NAME,nvidia
       env = MOZ_DISABLE_RDD_SANDBOX,1
       env = NVD_BACKEND,direct
+      env = VDPAU_DRIVER,nvidia
       env = __GLX_VENDOR_LIBRARY_NAME,nvidia
     '';
   };
