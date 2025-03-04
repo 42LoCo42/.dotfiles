@@ -10,6 +10,8 @@
           };
         });
 
+        waybar = obscura.waybar-ipfix;
+
         inherit (obscura)
           avh
           chronometer
