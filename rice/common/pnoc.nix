@@ -96,13 +96,13 @@ let
 
               name = builtins.hashString "sha256" host;
             }))
-          (listOf (submodule ({
+          (listOf (submodule {
             options = {
               host = mkOption { type = path; };
               cont = mkOption { type = path; };
               name = mkOption { type = str; };
             };
-          })));
+          }));
         default = [ ];
       };
     };

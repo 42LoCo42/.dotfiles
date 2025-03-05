@@ -7,7 +7,11 @@ let inherit (lib) mkForce; in {
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
   ];
 
-  system.stateVersion = mkForce "24.05";
+  system = {
+    etc.overlay.enable = false;
+    installer.channel.enable = false;
+    stateVersion = mkForce "24.05";
+  };
 
   aquaris = {
     machine = {
@@ -28,8 +32,6 @@ let inherit (lib) mkForce; in {
 
   boot.initrd.systemd.enable = false;
   networking.wireless.enable = false;
-  system.etc.overlay.enable = false;
-  system.installer.channel.enable = false;
 
   services = {
     getty.autologinUser = mkForce "root";

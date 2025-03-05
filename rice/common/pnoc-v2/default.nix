@@ -296,14 +296,14 @@ in
                     mk = ipv: { inherit ipv typ src dst; };
                   in
                   if ipv == null then [ (mk 4) (mk 6) ] else [ (mk ipv) ]))
-                (listOf (submodule ({
+                (listOf (submodule {
                   options = {
                     ipv = mkOption { type = enum [ 4 6 ]; };
                     typ = mkOption { type = enum [ "tcp" "udp" ]; };
                     src = mkOption { type = port; };
                     dst = mkOption { type = port; };
                   };
-                })));
+                }));
               default = [ ];
             };
 
@@ -327,13 +327,13 @@ in
 
                   name = builtins.hashString "sha256" host;
                 })
-              (submodule ({
+              (submodule {
                 options = {
                   host = mkOption { type = path; };
                   cont = mkOption { type = path; };
                   name = mkOption { type = str; };
                 };
-              })));
+              }));
             default = [ ];
           };
         };
