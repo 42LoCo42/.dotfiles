@@ -45,8 +45,10 @@
 
     rice.desktop.wayland.hyprland.preConfig = ''
       env = GBM_BACKEND,nvidia-drm
-      env = __GLX_VENDOR_LIBRARY_NAME,nvidia
       env = LIBVA_DRIVER_NAME,nvidia
+      env = MOZ_DISABLE_RDD_SANDBOX,1
+      env = NVD_BACKEND,direct
+      env = __GLX_VENDOR_LIBRARY_NAME,nvidia
     '';
   };
 }
