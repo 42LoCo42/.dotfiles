@@ -5,6 +5,8 @@
   };
 
   config = lib.mkIf config.rice.desktop.misc.enable {
+    nix.package = pkgs.lix-fix-help;
+
     home-manager.sharedModules = [{
       home = {
         packages = with pkgs; [

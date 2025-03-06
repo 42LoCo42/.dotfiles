@@ -17,6 +17,7 @@
           chronometer
           ferroxide
           flameshot-grim
+          lix-fix-help
           ncps-db-helper
           photoview
           pinlist
