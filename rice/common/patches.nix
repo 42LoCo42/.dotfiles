@@ -21,6 +21,7 @@
           photoview
           pinlist
           pug
+          socket-activate
           vencloud
           zfullfs
           ;

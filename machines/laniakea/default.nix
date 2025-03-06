@@ -70,6 +70,7 @@ in
   networking.firewall = {
     trustedInterfaces = [ "podman0" ];
     allowedTCPPorts = [
+      80 # mympd
       8501 # ncps
     ];
   };
@@ -78,11 +79,41 @@ in
   # so that mympd can connect to it from the podman network
   services.openssh.settings.GatewayPorts = "yes";
 
+  systemd = {
+    services = {
+      mympd = {
+        serviceConfig = {
+          ExecStart = builtins.concatStringsSep " " [
+            (getExe pkgs.socket-activate)
+            "-u podman-mympd.service"
+            "-a 127.0.0.1:8080"
+            "-t 5m"
+          ];
+
+          NonBlocking = true;
+        };
+      };
+    };
+
+    sockets = {
+      mympd = {
+        socketConfig = {
+          ListenStream = "80";
+          NoDelay = true;
+        };
+
+        wantedBy = [ "sockets.target" ];
+      };
+    };
+  };
+
+  virtualisation.oci-containers.containers.mympd.autoStart = false;
+
   virtualisation.pnoc = {
     mympd = {
       cmd = [ (getExe pkgs.mympd) "-a" "/data/cache" "-w" "/data/work" ];
 
-      ports = [ "80:8080" ];
+      ports = [ "8080:8080" ];
 
       volumes = [
         "mympd:/data"
