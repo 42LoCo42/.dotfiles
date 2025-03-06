@@ -17,6 +17,9 @@
         publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJic0w3SHlPQ001NmVqdGxXcUVCRzFZelF3WDJLbVozUzVLem9HbldoL2oK";
         sshKey = "${config.aquaris.secret "nixremote/key"}";
 
+        maxJobs = 4;
+        speedFactor = 4;
+
         system = "aarch64-linux";
         supportedFeatures = [
           "benchmark"

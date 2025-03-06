@@ -49,6 +49,12 @@ in
     persist.enable = true;
   };
 
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:42loco42/.dotfiles";
+    flags = [ "--refresh" "-L" ];
+  };
+
   boot = rec {
     loader.kboot-conf.enable = true;
     kernelPackages = pkgs.linuxPackages;
@@ -61,6 +67,7 @@ in
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
 
   rice = {
+    nixremote.enable = true;
     pam-rssh.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
