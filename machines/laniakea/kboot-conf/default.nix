@@ -43,7 +43,11 @@ in
             DTB = config.hardware.deviceTree.name;
           };
 
-          runtimeInputs = with pkgs; [ rsync ];
+          runtimeInputs = with pkgs; [
+            coreutils
+            gnused
+            rsync
+          ];
 
           text = builtins.readFile ./generate-kboot-conf.sh;
         });
