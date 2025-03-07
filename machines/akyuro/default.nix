@@ -55,6 +55,7 @@
       };
     };
 
+    ca.enable = true;
     dns.enable = true;
     nixremote.enable = true;
     syncthing.enable = true;

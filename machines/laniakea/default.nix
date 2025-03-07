@@ -67,6 +67,7 @@ in
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
 
   rice = {
+    ca.enable = true;
     nixremote.enable = true;
     pam-rssh.enable = true;
     syncthing.enable = true;
