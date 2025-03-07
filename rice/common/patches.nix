@@ -14,6 +14,7 @@
 
         inherit (obscura)
           avh
+          caddyfile-language-server
           chronometer
           ferroxide
           flameshot-grim
