@@ -1,7 +1,11 @@
 # -*- mode: caddyfile; -*-
 
 @domain@ {
-	reverse_proxy mympd:8080
+	reverse_proxy mympd:8080 {
+		transport http {
+			dial_timeout 10s
+		}
+	}
 }
 
 @domain@:8501 {
