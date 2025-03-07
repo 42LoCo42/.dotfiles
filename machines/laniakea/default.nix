@@ -1,22 +1,8 @@
-{ pkgs, config, aquaris, ... }:
-let
-  inherit (pkgs.lib) flip getExe mkMerge pipe remove;
-
-  ncps-caches = pipe config.nix.settings [
-    (x: with x; with config.rice.use-ncps; {
-      urls = { val = substituters; rem = url; };
-      keys = { val = trusted-public-keys; rem = key; };
-    })
-    (builtins.mapAttrs (_: flip pipe [
-      (x: remove x.rem x.val)
-      (builtins.concatStringsSep ",")
-    ]))
-  ];
-in
-{
+{ pkgs, lib, aquaris, ... }: {
   imports = [
     ../../rice
     ./kboot-conf
+    ./services
   ];
 
   aquaris = {
@@ -25,7 +11,7 @@ in
       secureboot = false;
     };
 
-    users = mkMerge [
+    users = lib.mkMerge [
       { inherit (aquaris.cfg.users) leonsch; }
       {
         leonsch = {
@@ -75,91 +61,5 @@ in
     use-ncps.enable = true;
   };
 
-  networking.firewall = {
-    trustedInterfaces = [ "podman0" ];
-    allowedTCPPorts = [
-      80 # mympd
-      8501 # ncps
-    ];
-  };
-
-  # rubicon needs to forward MPD to our 0.0.0.0
-  # so that mympd can connect to it from the podman network
-  services.openssh.settings.GatewayPorts = "yes";
-
-  systemd = {
-    services = {
-      mympd = {
-        serviceConfig = {
-          ExecStart = builtins.concatStringsSep " " [
-            (getExe pkgs.socket-activate)
-            "-u podman-mympd.service" # activate this unit
-            "-a 127.0.0.1:8080" # connect here
-            "-d 2000" # delay attempts by 2 seconds to account for mympd startup
-            "-t 5m" # stop unit after 5 minutes of inactivity
-          ];
-
-          NonBlocking = true;
-        };
-      };
-    };
-
-    sockets = {
-      mympd = {
-        socketConfig = {
-          ListenStream = "80";
-          NoDelay = true;
-        };
-
-        wantedBy = [ "sockets.target" ];
-      };
-    };
-  };
-
-  virtualisation.oci-containers.containers.mympd.autoStart = false;
-
-  virtualisation.pnoc = {
-    mympd = {
-      cmd = [ (getExe pkgs.mympd) "-a" "/data/cache" "-w" "/data/work" ];
-
-      ports = [ "8080:8080" ];
-
-      volumes = [
-        "mympd:/data"
-
-        "${./mympd/http_port}:/data/work/config/http_port:ro"
-        "${./mympd/ssl}:/data/work/config/ssl:ro"
-
-        "/persist/home/leonsch/music:/music:ro"
-        "/persist/home/leonsch/music/ARTIST_COVERS:/data/work/pics/Artist:ro"
-      ];
-    };
-
-    ncps = {
-      cmd = [ (getExe pkgs.ncps-db-helper) "serve" ];
-
-      environment = {
-        CACHE_DATA_PATH = "/data";
-        CACHE_HOSTNAME = aquaris.name;
-        CACHE_LRU_SCHEDULE = "0 0 * * *";
-        CACHE_MAX_SIZE = "250G";
-        CACHE_SECRET_KEY_PATH = "/key";
-
-        UPSTREAM_CACHES = ncps-caches.urls;
-        UPSTREAM_PUBLIC_KEYS = ncps-caches.keys;
-      };
-
-      # for some reason, /etc/passwd gets mode 600
-      # if the container image is not read-only
-      # otherwise, it gets 644
-      # ncps tries to lookup its user here, so it needs read access
-      extraOptions = [ "--read-only" ];
-
-      ports = [ "8501:8501" ];
-
-      secrets = [ "machine/ncps:/key" ];
-
-      volumes = [ "ncps:/data" ];
-    };
-  };
+  networking.firewall.trustedInterfaces = [ "podman0" ];
 }

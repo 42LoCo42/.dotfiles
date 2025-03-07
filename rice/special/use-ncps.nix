@@ -14,7 +14,7 @@ in
 
     url = mkOption {
       type = str;
-      default = "http://laniakea.fritz.box:8501";
+      default = "https://laniakea.fritz.box:8501";
     };
 
     key = mkOption {
@@ -24,9 +24,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    aquaris.caches = [{
-      inherit (cfg) url key;
-    }];
+    aquaris.caches = [{ inherit (cfg) url key; }];
 
     nix.settings.connect-timeout = 3;
   };

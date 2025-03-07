@@ -1,0 +1,9 @@
+# -*- mode: caddyfile; -*-
+
+@domain@ {
+	reverse_proxy mympd:8080
+}
+
+@domain@:8501 {
+	reverse_proxy ncps:8501
+}

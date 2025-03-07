@@ -7,6 +7,9 @@ admin:leonsch:
         - "machine:astylos"
         - "machine:bunny"
         - "machine:laniakea"
+ca:main:
+    secrets:
+        key: "vp%d6wO#0#D2N>tz/dgCA+v4Gf:YG@aAIQqeOeDFh8N9Gatu$/heCM3pC::UizIzfp^V{Nyb6Q8v[Z0xm]KQZsv1]?f)M+#gbSGKixqj%fJZdsgdB-Kr+DOlgJ[7ixlmi[l]^gVw{e6kfFV6+hD:9}i8@{It1J<qm0Q:0eJ$pVgbQ{ziuS0WgG)$5n{C5Ns2UsRm}C*Usxn6GB4yR3fL9Qdst9f&hc9m^ia(/uq3]=)x>f4Jiw(57o>WmuhHdeSv@j2zvOG@[v%6+Lt2[x&BV0#et68-HfBxx-eG^YfgI!)RADBGXyE*iGpe1tpCU-lroJj}Jwm/yRgGOp7l2[$vn?-.Vo:VMkmW}YtaP1}+I{k5QHqCR:c/!V&f:TC&l#G=xzC=A!PS!{?LNCG4v})>@?!Q3u=.G89D(5x.mluI<M)SB7at%dBVL2/*HH^1>5/j{ZDk8wK>%eTt!3t33EW3^a]0^0TQowx*:7Kz$299Qw0feM{7?J@Tr!jy-?r]c<SWbYsqTxC![e4>uX}ofBb@AE{1VnSsV7?N]-e*{X>*O1nEwMyFrPmk/vcMbd[})}?-)lIq2v=HAC@Z&(QoDp9g%siCzIHA7UrsZU.x!l^Q6{yrjbj&7^mdj3!hEW}SGO1%9M<-4)yZNf{P5^8s^N{NjO@^bQ*pWQ2dwU@T?FE+gs6)iV]:A=]E@={Ec2DAxc4My2B>SSro7TEYl{u5dH!d9Dd7Qv@U%X5:#*$tt2L*F?[]umsY@!xf&3k>D0#05o%J}43%V2R{3$6pL?p8**aLYP/cn)g+ON(b>zKmWbg<hb6[oxDr9XAItrri?5-WlYGE)gIMsXlTeW<e::0q<99ydyVyok1K0n36VCO6#U2"
 machine:akyuro:
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBdZDuw+7O6+pV13ObPR/H4P8UCc1FzPmkufeaiJUc75"
     contains:
@@ -44,8 +47,9 @@ machine:guanyin: {}
 machine:laniakea:
     key: "age1dj9wv3xzxcu4fsxh4u6ue03ctgwfjz2k06m2tzt8v2gcfclvweaqp6x9l7"
     contains:
-        - "user:leonsch"
+        - "ca:main"
         - "nixremote"
+        - "user:leonsch"
     secrets:
         key: "vp%d6wO#0#D2N>tz/dgCA+v4Gf:YG@aAIQqeOeDFh8N9Gatu$/heCM3iD[Chwoz-Clrl]shzwcIh:HqMmSIg9zd#^uo)gb!q+xw%iyX9RnKmz8DpxLxfLt3sfl.8unh<dgCx3!VqdK@&C5RdZoIx2bqC.vbln7ogwOC]!eJ$pVgbQ{ziuQ<yC@di)f>To{sVwYyhD>h@C5]PeB-qtpia(fimRkT<B4**)DnGC8q3}tRzDoXFqD4gws$})6t6iXBmmpf>g*kcsgbJ9PB-PAwgJN8cl$58ErsgrfeG=YpnodGVw[%}8z*jf=xLxbiC%LRCo&(KfqdTJCAXy{jA->htl#Wi+v*V@4YIa^b+=S<b58B7-q1JtaQO%4T7kKHBcEDtQ=o2D.wQQmp:1tY0}E0cCZE@B5dzU}]6y.+!]>z48=59e+YADEL]UlkP4]5bdCf:mL&Y9StH8{m:o)![tLz^e5?dg?j+iZh>FvuC:>1]Kd-h+Li/%jK*1Dcqai8P&spHzM[k%DrJsGA$n1?DR(u?YRhytQ^8(=-Uo2#tDoaLIp%kjLPYtYH@fi#fGy!I=KCFVgy)R]UZ6F*C/yhGC.T{*{]G6?EFqvx00r-uzJWZK9C0>DwE#1"
         ncps: "vp%d6wO#0#D2N>tz/dgCA+v4Gf:YG@aAIQqeOeDFh8N9Gatu$/heCM3B.C+(ze:D7yc+^ug/4j)m[+:=yhV4dxkhrRic3&+w(0hXrbDY4o&J!Nhzxn!f)NOdiwT&col+zOsvtRMt5cFWpJwv8Ac+}}p?jVvoI)Y^l1UrFeJ$pVgbQ{ziuR{OiD5B#xHlYZm[V=IvqP4sxjiVaAy<k1oefdnoHzVLq.{{gzbCm/A%^aUyC/iKC4#a)BWPs>heb#UmMkp0B#83Qy<6w/xlv@ZgiE[ws8{kSrsgrfeG^+SfeE]BoL^A?B:w7whA2kUxI0b*lVbQ&rB/(DvL-fXnkqDNm[EX/nExDV[>4&*5y*5b[w0Npr*&}%I3#rzz{Xlxrub{.QjQ(c]g!gkN?#PVmF#-qn0R].[/L?@GO!+/S82grpoGndKU/nIfDXf2&BV/N{oB&4MnA>aOq+m]Xs-BecBIa[UerV5-M?0{n<UA*9r2-&X!P#J9/R2Nlr=ZmFU5Ah"
