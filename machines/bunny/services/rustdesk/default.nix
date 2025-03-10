@@ -33,7 +33,7 @@
         "21119:21119"
       ];
 
-      secrets = [ "machine/rustdesk:/data/id_ed25519" ];
+      secrets = [ "@machine/rustdesk:/data/id_ed25519" ];
 
       volumes = [ "rustdesk:/data" ];
 

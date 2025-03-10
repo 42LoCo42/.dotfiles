@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
   inherit (lib)
+    concatLines
     flip
     mkIf
     mkMerge
@@ -31,12 +32,13 @@ mkMerge [
             userKnownHostsFile = knownHosts user;
 
             extraConfig = pipe [ "main" "fido" ] [
+              (map (x: "user/${user}/ssh/${x}"))
+              (builtins.filter (flip builtins.elem config.aquaris.secrets.all))
               (map (flip pipe [
-                (x: "user/${user}/ssh/${x}")
                 config.aquaris.secret
-                (x: "IdentityFile ${x}\n")
+                (x: "IdentityFile ${x}")
               ]))
-              (builtins.concatStringsSep "")
+              concatLines
             ];
 
             matchBlocks.github = {

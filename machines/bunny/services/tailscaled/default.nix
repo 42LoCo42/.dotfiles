@@ -21,7 +21,7 @@
       "--device=/dev/net/tun"
     ];
 
-    secrets = [ "machine/tailscaled:/key" ];
+    secrets = [ "@machine/tailscaled:/key" ];
 
     volumes = [ "tailscaled:/data" ];
   };

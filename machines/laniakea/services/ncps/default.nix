@@ -34,7 +34,7 @@ in
     # ncps tries to lookup its user here, so it needs read access
     extraOptions = [ "--read-only" ];
 
-    secrets = [ "machine/ncps:/key" ];
+    secrets = [ "@machine/ncps:/key" ];
 
     volumes = [ "ncps:/data" ];
   };

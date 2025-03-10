@@ -5,7 +5,7 @@
       SEARXNG_BIND_ADDRESS = "0.0.0.0";
       SEARXNG_URL = "https://searx.${config.rice.domain}";
     };
-    environmentFiles = [ (config.aquaris.secret "machine/searxng") ];
+    environmentFiles = [ (config.aquaris.secret "@machine/searxng") ];
     extraOptions = [ "--tmpfs=/tmp" ];
     volumes = [
       "${./limiter.toml}:/etc/searxng/limiter.toml:ro"

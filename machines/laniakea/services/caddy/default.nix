@@ -32,7 +32,7 @@ in
       "8501:8501"
     ];
 
-    secrets = [ "ca/main/key:/ca.key" ];
+    secrets = [ "svc/ca:/ca.key" ];
 
     volumes = [
       "caddy:/caddy"
