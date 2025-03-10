@@ -14,3 +14,8 @@ sudo() {
 
 	command sudo "$cmd" "${args[@]}"
 }
+
+# help for builtins
+unalias run-help
+autoload run-help
+alias help=run-help
