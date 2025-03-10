@@ -10,5 +10,6 @@
     ./procfs.nix
     ./ssh.nix
     ./zfs
+    ./zsh
   ];
 }
