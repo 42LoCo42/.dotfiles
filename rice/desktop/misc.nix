@@ -21,7 +21,7 @@
             ytb = join [
               "yt-dlp"
               "--force-ipv4"
-              "--cookies-from-browser=firefox"
+              "--cookies-from-browser=firefox:~/.librewolf/default"
             ];
 
             ytm = join [
