@@ -78,6 +78,13 @@
           (defun my/startup-notify ()
             "Notify about startup time."
             (my/notify (format "Startup took %s!" (emacs-init-time))))
+
+          (defun my/consult-imenu-or-outline ()
+            "Run consult-imenu or consult-outline depending on major-mode"
+            (interactive)
+            (pcase major-mode
+              ('org-mode (consult-outline))
+              (_ (consult-imenu))))
         '';
 
         postlude = ''
@@ -482,9 +489,8 @@
             bind' = ''
               ("C-h C-m" . consult-man)
               ("C-x C-b" . consult-bookmark)
-              ("C-x C-i" . consult-imenu)
+              ("C-x C-i" . my/consult-imenu-or-outline)
               ("C-x C-m" . consult-minor-mode-menu)
-              ("C-x C-o" . consult-outline)
               ("C-x C-r" . consult-ripgrep)
               ("C-x C-s" . consult-buffer)
               ("M-l"     . consult-goto-line)
