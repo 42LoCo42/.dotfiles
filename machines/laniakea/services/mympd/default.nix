@@ -11,6 +11,7 @@
             (lib.getExe pkgs.socket-activate)
             "-u podman-mympd.service" # activate this unit
             "-a 127.0.0.1:8443" # connect here
+            "-t 5m" # stop unit after 5 minutes of inactivity
           ];
 
           NonBlocking = true;
