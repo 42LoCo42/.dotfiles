@@ -24,7 +24,10 @@
 
     persist = {
       enable = true;
-      dirs = { "/root/.android" = { }; };
+      dirs = {
+        "/root/.android" = { };
+        "/var/lib/bluetooth" = { m = "0700"; };
+      };
     };
   };
 
