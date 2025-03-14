@@ -37,10 +37,14 @@
           style.name = "adwaita-dark";
         };
 
-        home.packages = with pkgs; [
-          kdePackages.qtwayland # qt6
-          qt5.qtwayland
-        ];
+        home = {
+          sessionVariables.GTK_THEME = "Adwaita-dark";
+
+          packages = with pkgs; [
+            kdePackages.qtwayland # qt6
+            qt5.qtwayland
+          ];
+        };
       })
     ];
   };
