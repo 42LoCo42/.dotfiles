@@ -5,7 +5,7 @@
   };
 
   config = lib.mkIf config.rice.desktop.nvidia.enable {
-    rice.desktop.zenkernel.config.allowUnfreePredicate = p: builtins.elem (lib.getName p) [
+    rice.unfreeNames = [
       "cuda-merged"
       "cuda_cccl"
       "cuda_cudart"
@@ -32,7 +32,7 @@
     ];
 
     hardware.nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.stable; # 560.35.03
+      package = config.boot.kernelPackages.nvidiaPackages.stable; # 570.124.04
       open = false;
       modesetting.enable = true;
       nvidiaSettings = false;
