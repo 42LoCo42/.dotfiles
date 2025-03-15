@@ -672,7 +672,7 @@
               (haskell-interactive-popup-errors nil)
             '';
 
-            extraPackages = with pkgs; [ haskellPackages.fourmolu ];
+            extraPackages = with pkgs; [ fourmolu ];
           };
 
           json-mode = { mode = ''"\\.json\\'"''; };
@@ -680,8 +680,6 @@
           lsp-haskell = { defer = true; };
 
           lsp-pyright = {
-            defer = true;
-
             hook = ''
               (python-mode . (lambda ()
                 (require 'lsp-pyright)
@@ -692,7 +690,7 @@
               (lsp-pyright-langserver-command "basedpyright")
             '';
 
-            extraPackages = with config.rice.desktop.zenkernel.pkgs; [ basedpyright ];
+            extraPackages = with pkgs; [ basedpyright ];
           };
 
           nftables-mode = { mode = ''"\\.nft\\'"''; };
@@ -729,7 +727,6 @@
             '';
             extraPackages = with pkgs; [
               clippy
-              crate2nix
               rust-analyzer
               rustfmt
             ];
