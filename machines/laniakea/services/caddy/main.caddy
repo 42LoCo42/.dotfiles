@@ -27,3 +27,7 @@
 music.laniakea {
 	import mympd
 }
+
+qbit.laniakea {
+	reverse_proxy qbittorrent:8080
+}

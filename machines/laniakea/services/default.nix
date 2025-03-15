@@ -3,5 +3,6 @@
     ./caddy
     ./mympd
     ./ncps
+    ./qbittorrent
   ];
 }
