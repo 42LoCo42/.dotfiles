@@ -22,6 +22,7 @@
           chronometer
           ferroxide
           flameshot-grim
+          glfw3-minecraft-extra
           lix-fix-help
           ncps-db-helper
           photoview
