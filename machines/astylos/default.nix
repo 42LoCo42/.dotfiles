@@ -1,4 +1,4 @@
-{ pkgs, config, aquaris, ... }: {
+{ pkgs, aquaris, ... }: {
   imports = [ ../../rice ];
 
   aquaris = {

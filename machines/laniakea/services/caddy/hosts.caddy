@@ -1,11 +1,7 @@
 # -*- mode: caddyfile; -*-
 
 @domain@ {
-	reverse_proxy mympd:8080 {
-		transport http {
-			dial_timeout 10s
-		}
-	}
+	import mympd
 }
 
 @domain@:8501 {

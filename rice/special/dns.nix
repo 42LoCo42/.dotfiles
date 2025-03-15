@@ -29,6 +29,9 @@
       rules = {
         cloaking = {
           "readers.lakd" = "127.0.0.1";
+
+          # support multiple subdomains on laniakea
+          "laniakea" = "laniakea.bunny.vpn";
         };
 
         forwarding = {

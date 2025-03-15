@@ -1,5 +1,4 @@
 # -*- mode: caddyfile; -*-
-
 {
 	http_port 8080
 	https_port 8443
@@ -15,4 +14,16 @@
 			}
 		}
 	}
+}
+
+(mympd) {
+	reverse_proxy mympd:8080 {
+		transport http {
+			dial_timeout 10s
+		}
+	}
+}
+
+music.laniakea {
+	import mympd
 }
