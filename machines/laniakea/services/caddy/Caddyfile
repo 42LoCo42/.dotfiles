@@ -1,0 +1,47 @@
+{
+	http_port 8080
+	https_port 8443
+
+	local_certs
+	skip_install_trust
+
+	pki {
+		ca local {
+			root {
+				cert /ca.crt
+				key /ca.key
+			}
+		}
+	}
+}
+
+##### mympd #####
+
+(mympd) {
+	# connect to socket activation proxy on host
+	reverse_proxy host.containers.internal:8080
+}
+
+# reachable from LAN
+laniakea.fritz.box {
+	import mympd
+}
+
+# reachable from VPN
+music.laniakea {
+	import mympd
+}
+
+##### ncps #####
+
+# reachable from LAN
+laniakea.fritz.box:8501 {
+	reverse_proxy ncps:8501
+}
+
+##### qbittorrent #####
+
+# reachable from VPN
+qbit.laniakea {
+	reverse_proxy qbittorrent:8080
+}

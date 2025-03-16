@@ -10,7 +10,8 @@
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe pkgs.socket-activate)
             "-u podman-mympd.service" # activate this unit
-            "-a 127.0.0.1:8443" # connect here
+            "-a 127.0.0.1:8081" # connect here
+            "-d 2000" # delay attempts by 2 seconds to account for mympd startup
             "-t 5m" # stop unit after 5 minutes of inactivity
           ];
 
@@ -22,7 +23,7 @@
     sockets = {
       mympd = {
         socketConfig = {
-          ListenStream = "443";
+          ListenStream = "8080";
           NoDelay = true;
         };
 
@@ -34,6 +35,8 @@
   virtualisation = {
     pnoc.mympd = {
       cmd = [ (lib.getExe pkgs.mympd) "-a" "/data/cache" "-w" "/data/work" ];
+
+      ports = [ "8081:8080" ];
 
       volumes = [
         "mympd:/data"

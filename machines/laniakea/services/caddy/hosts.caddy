@@ -1,9 +1,0 @@
-# -*- mode: caddyfile; -*-
-
-@domain@ {
-	import mympd
-}
-
-@domain@:8501 {
-	reverse_proxy ncps:8501
-}
