@@ -16,14 +16,14 @@
       ACTION=="add", SUBSYSTEM=="hwmon", ${config.rice.desktop.udev.cpuTemperatureSelector}, \
       RUN+="${pkgs.coreutils}/bin/ln -sf /sys$devpath/temp1_input /dev/cpu_temp"
 
-      ACTION=="add", KERNEL=="card*", SUBSYSTEM=="drm", DRIVERS=="amdgpu", \
-      RUN+="${pkgs.coreutils}/bin/ln -sf $devnode /dev/dri/amd"
+      KERNEL=="card*", SUBSYSTEM=="drm", \
+      DRIVERS=="amdgpu", SYMLINK+="dri/by-type/amd"
 
-      ACTION=="add", KERNEL=="card*", SUBSYSTEM=="drm", DRIVERS=="i915", \
-      RUN+="${pkgs.coreutils}/bin/ln -sf $devnode /dev/dri/intel"
+      KERNEL=="card*", SUBSYSTEM=="drm", \
+      DRIVERS=="i915", SYMLINK+="dri/by-type/intel"
 
-      ACTION=="add", KERNEL=="card*", SUBSYSTEM=="drm", DRIVERS=="nvidia", \
-      RUN+="${pkgs.coreutils}/bin/ln -sf $devnode /dev/dri/nvidia"
+      KERNEL=="card*", SUBSYSTEM=="drm", \
+      DRIVERS=="nvidia", SYMLINK+="dri/by-type/nvidia"
     '';
   };
 }

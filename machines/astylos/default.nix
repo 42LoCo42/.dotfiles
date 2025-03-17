@@ -46,7 +46,7 @@
         fuzzel.fontSize = 20;
 
         hyprland.preConfig = ''
-          env = AQ_DRM_DEVICES,/dev/dri/nvidia
+          env = AQ_DRM_DEVICES,/dev/dri/by-type/nvidia
 
           monitor = DVI-D-1,1920x1080@60,0x0,1
           # monitor = DP-1,1920x1080@60,1920x0,1
