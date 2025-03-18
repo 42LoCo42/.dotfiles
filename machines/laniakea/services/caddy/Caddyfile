@@ -45,3 +45,10 @@ laniakea.fritz.box:8501 {
 qbit.laniakea {
 	reverse_proxy qbittorrent:8080
 }
+
+##### syncthing #####
+
+# reachable from VPN
+sync.laniakea {
+	reverse_proxy host.containers.internal:8384
+}

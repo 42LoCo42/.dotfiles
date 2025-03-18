@@ -4,5 +4,6 @@
     ./mympd
     ./ncps
     ./qbittorrent
+    ./syncthing
   ];
 }
