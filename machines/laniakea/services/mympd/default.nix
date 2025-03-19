@@ -44,8 +44,8 @@
         "${./config/http_port}:/data/work/config/http_port:ro"
         "${./config/ssl}:/data/work/config/ssl:ro"
 
-        "/persist/home/leonsch/music:/music:ro"
-        "/persist/home/leonsch/music/ARTIST_COVERS:/data/work/pics/Artist:ro"
+        "/persist/home/admin/music:/music:ro"
+        "/persist/home/admin/music/ARTIST_COVERS:/data/work/pics/Artist:ro"
       ];
     };
 

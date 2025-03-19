@@ -27,14 +27,14 @@
   systemd.services."mount-qbit-save" = {
     path = with pkgs; [ bindfs ];
     script = ''
-      mkdir -p /home/leonsch/qbit
+      mkdir -p /home/admin/qbit
 
       exec bindfs                                                  \
-        -u leonsch -g users -f                                     \
+        -u admin -g users -f                                       \
         --create-for-user=qbittorrent                              \
         --create-for-group=qbittorrent                             \
         /var/lib/containers/storage/volumes/qbittorrent/_data/save \
-        /home/leonsch/qbit
+        /home/admin/qbit
     '';
     wantedBy = [ "default.target" ];
   };

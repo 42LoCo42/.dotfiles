@@ -55,11 +55,11 @@ mkMerge [
                 bunny = {
                   hostname = "exit.bunny.vpn";
                   user = "admin";
-                  setEnv.TERM = "xterm-256color";
                 };
 
                 laniakea = {
                   hostname = "laniakea.bunny.vpn";
+                  user = "admin";
                 };
 
                 ##### people #####

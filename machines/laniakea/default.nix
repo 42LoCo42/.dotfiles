@@ -12,9 +12,9 @@
     };
 
     users = lib.mkMerge [
-      { inherit (aquaris.cfg.users) leonsch; }
+      { inherit (aquaris.cfg.users) admin; }
       {
-        leonsch = {
+        admin = {
           admin = true;
           sshKeys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKx249VBeDWNvrsJBOM467C51FUmZ5oNbiIv9GhZt9M6 music@rubicon"
