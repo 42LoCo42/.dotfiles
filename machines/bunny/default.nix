@@ -4,7 +4,10 @@ let
   inherit (lib.types) functionTo package str;
 in
 {
-  imports = [ ../../rice ./services ];
+  imports = [
+    ../../profiles/server
+    ./services
+  ];
 
   options.rice = {
     domain = mkOption {
@@ -79,42 +82,15 @@ in
         secureboot = false;
       };
 
-      users = aquaris.lib.merge [
-        { inherit (aquaris.cfg.users) admin; }
-        { admin.admin = true; }
-      ];
-
       filesystems = { fs, ... }: {
         disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
           fs.defaultBoot
           { content = fs.zpool (p: p.rpool); }
         ];
-
-        zpools.rpool = fs.defaultPool;
       };
-
-      persist.enable = true;
     };
-
-    rice.pam-rssh.enable = true;
-
-    nix.gc.automatic = true;
 
     networking.networkmanager.enable = false;
-
-    virtualisation.podman.defaultNetwork.settings = {
-      ipv6_enabled = true;
-      subnets = [
-        {
-          subnet = "10.88.0.0/16";
-          gateway = "10.88.0.1";
-        }
-        {
-          subnet = "fd00::/80";
-          gateway = "fd00::1";
-        }
-      ];
-    };
 
     environment.systemPackages = [
       (pkgs.writeShellApplication {
@@ -124,11 +100,11 @@ in
       })
     ];
 
-    home-manager.users.admin = {
+    home-manager.sharedModules = [{
       aquaris.persist = {
         "hidden" = { };
         "img" = { };
       };
-    };
+    }];
   };
 }

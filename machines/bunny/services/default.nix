@@ -6,7 +6,6 @@
 
     ./attic
     ./authelia
-    ./auto-upgrade.nix
     ./avh.nix
     ./caddy
     ./headscale

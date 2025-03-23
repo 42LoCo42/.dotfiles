@@ -3,6 +3,7 @@ let
   inherit (lib)
     concatLines
     flip
+    hasPrefix
     mkIf
     mkMerge
     pipe
@@ -15,118 +16,39 @@ let
     "/.cache/ssh-known-hosts"
   ];
 in
-mkMerge [
-  {
-    home-manager.sharedModules = singleton (hm:
-      let
-        user = hm.config.home.username;
-        key = name: config.aquaris.secret "user/${user}/ssh/${name}";
-      in
-      {
-        programs.ssh = mkMerge [
-          {
-            enable = true;
+{
+  home-manager.sharedModules = singleton (hm:
+    let
+      user = hm.config.home.username;
+      key = hm.config.aquaris.git.sshKeyFile;
+      kh = knownHosts user;
+    in
+    {
+      programs.ssh = {
+        enable = true;
 
-            addKeysToAgent = "yes";
-            forwardAgent = true;
-            userKnownHostsFile = knownHosts user;
+        addKeysToAgent = "yes";
+        forwardAgent = true;
+        userKnownHostsFile = kh;
 
-            extraConfig = pipe [ "main" "fido" ] [
-              (map (x: "user/${user}/ssh/${x}"))
-              (builtins.filter (flip builtins.elem config.aquaris.secrets.all))
-              (map (flip pipe [
-                config.aquaris.secret
-                (x: "IdentityFile ${x}")
-              ]))
-              concatLines
-            ];
-
-            matchBlocks.github = {
-              hostname = "github.com";
-              user = "git";
-            };
-          }
-
-          {
-            matchBlocks = {
-              leonsch = rec {
-                ##### private machines #####
-
-                bunny = {
-                  hostname = "exit.bunny.vpn";
-                  user = "admin";
-                };
-
-                laniakea = {
-                  hostname = "laniakea.bunny.vpn";
-                  user = "admin";
-                };
-
-                ##### people #####
-
-                hannes = {
-                  hostname = "owo-ercanar-senpai.duckdns.org";
-                  port = 18213;
-                  user = "ercanar";
-                  identityFile = key "old/ed25519";
-                };
-
-                hapi = hannes // { port = 12345; };
-
-                jana = {
-                  hostname = "primula25.duckdns.org";
-                  port = 22000;
-                  user = "jana";
-                };
-
-                ##### work - PIC #####
-
-                lbmvweb = {
-                  hostname = "www1.d11121.lbmv.de";
-                  user = "www-data";
-                };
-
-                meeting2 = {
-                  hostname = "meeting2.planet-ic.de";
-                  user = "root";
-                  setEnv.TERM = "xterm-256color";
-                };
-
-                freepbx = {
-                  hostname = "195.98.195.10";
-                  user = "root";
-                  identityFile = key "old/rsa";
-                  setEnv.TERM = "xterm-256color";
-                  extraOptions = {
-                    HostKeyAlgorithms = "+ssh-rsa";
-                    PubkeyAcceptedKeyTypes = "+ssh-rsa";
-                  };
-                };
-
-                greifswald = {
-                  hostname = "web03270.pvm.imv.de";
-                  user = "root";
-                  identityFile = key "old/rsa";
-                  setEnv.TERM = "xterm-256color";
-                };
-              };
-            }.${user} or { };
-          }
+        extraConfig = pipe config.aquaris.secrets.all [
+          (builtins.filter (hasPrefix "user/${user}/ssh/"))
+          (map (flip pipe [
+            config.aquaris.secret
+            (x: "IdentityFile ${x}")
+          ]))
+          concatLines
         ];
-      });
-  }
 
-  (mkIf (builtins.hasAttr "leonsch" config.aquaris.users) {
-    home-manager.users.leonsch =
-      let main = config.aquaris.secret "user/leonsch/ssh/main"; in {
-        # default key is fido, but we don't want it for git signing
-        aquaris.git.sshKeyFile = _: "${main}";
-
-        # required for jj (it ignores ~/.ssh/config)
-        systemd.user.tmpfiles.rules = [
-          "L+ %h/.ssh/id_ed25519  - - - - ${main}"
-          "L+ %h/.ssh/known_hosts - - - - ${knownHosts "leonsch"}"
-        ];
+        matchBlocks.github = {
+          hostname = "github.com";
+          user = "git";
+        };
       };
-  })
-]
+
+      systemd.user.tmpfiles.rules = mkMerge [
+        [ "L+ %h/.ssh/known_hosts - - - - ${kh}" ]
+        (mkIf (key != null) [ "L+ %h/.ssh/id_ed25519 - - - - ${key}" ])
+      ];
+    });
+}

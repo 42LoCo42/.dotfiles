@@ -1,44 +1,26 @@
-{ pkgs, lib, aquaris, ... }: {
+{ pkgs, ... }: {
   imports = [
-    ../../rice
+    ../../profiles/server
     ./kboot-conf
     ./services
   ];
 
   aquaris = {
+    users.admin.sshKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKx249VBeDWNvrsJBOM467C51FUmZ5oNbiIv9GhZt9M6 music@rubicon"
+    ];
+
     machine = {
       id = "97c93e7db21d05599c3e3c6c67177830";
       secureboot = false;
     };
-
-    users = lib.mkMerge [
-      { inherit (aquaris.cfg.users) admin; }
-      {
-        admin = {
-          admin = true;
-          sshKeys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKx249VBeDWNvrsJBOM467C51FUmZ5oNbiIv9GhZt9M6 music@rubicon"
-          ];
-        };
-      }
-    ];
 
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/nvme-CT1000P3SSD8_2320E6D694B5_1".partitions = [
         fs.defaultBoot
         { content = fs.zpool (p: p.rpool); }
       ];
-
-      zpools.rpool = fs.defaultPool;
     };
-
-    persist.enable = true;
-  };
-
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:42loco42/.dotfiles";
-    flags = [ "--refresh" "-L" ];
   };
 
   boot = rec {
@@ -55,7 +37,6 @@
   rice = {
     ca.enable = true;
     nixremote.enable = true;
-    pam-rssh.enable = true;
     tailscale.enable = true;
     use-ncps.enable = true;
   };
