@@ -1,0 +1,40 @@
+{
+	admin off
+
+	tailscale {
+		control_url https://headscale.eleonora.gay
+		ephemeral true
+	}
+
+	pki {
+		ca local {
+			root {
+				cert /ca.crt
+				key /ca.key
+			}
+		}
+	}
+
+	local_certs
+	skip_install_trust
+}
+
+(bind) {
+	bind tailscale/bunny
+}
+
+pin.bunny {
+	import bind
+	reverse_proxy pinlist:8080
+}
+
+st.bunny {
+	import bind
+	reverse_proxy syncthing:8080
+}
+
+vencloud.bunny {
+	import bind
+	header ?Access-Control-Allow-Origin *
+	reverse_proxy vencloud:8080
+}

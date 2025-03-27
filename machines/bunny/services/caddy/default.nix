@@ -5,11 +5,13 @@
   };
 
   virtualisation.pnoc.caddy = {
-    cmd = [ (lib.getExe pkgs.caddy) "run" "-a" "caddyfile" "-c" "${./Caddyfile}" ];
+    cmd = [ (lib.getExe pkgs.caddy) "run" ];
 
     environment = {
       DOMAIN = config.rice.domain;
-      XDG_DATA_HOME = "/";
+
+      XDG_CONFIG_HOME = "/data/config";
+      XDG_DATA_HOME = "/data/data";
     };
 
     ports = [
@@ -19,10 +21,14 @@
     ];
 
     volumes = [
-      "caddy:/caddy"
+      "caddy:/data"
+      "${./Caddyfile}:/Caddyfile:ro"
+
       "${config.rice.homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
-      "${pkgs.chronometer}:/srv/chronometer:ro"
       "/persist/home/admin/hidden:/srv/homepage/foo:ro"
+
+      "${pkgs.chronometer}:/srv/chronometer:ro"
+
       # "${pkgs.element-web}:/srv/element:ro"
       # "${subsDomain ./element.json}:/srv/element/config.json:ro"
     ];

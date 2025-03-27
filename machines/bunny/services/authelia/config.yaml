@@ -40,7 +40,7 @@ access_control:
     - domain: "avh.@domain@"
       subject:
         - "group:auth_avh"
-      policy: "two_factor"
+      policy: "one_factor"
 
     - domain: "img.@domain@"
       resources:
@@ -59,16 +59,6 @@ access_control:
     - domain: "ldap.@domain@"
       subject:
         - "group:lldap_admin"
-      policy: "two_factor"
-
-    - domain: "pin.@domain@"
-      subject:
-        - "group:auth_pin"
-      policy: "two_factor"
-
-    - domain: "st.@domain@"
-      subject:
-        - "group:auth_syncthing"
       policy: "two_factor"
 
     - domain: "vw.@domain@"

@@ -123,10 +123,10 @@ chronometer.{$DOMAIN} {
 # 	file_server
 # }
 
-firefox-sync.{$DOMAIN} {
-	import default
-	reverse_proxy firefox-sync:8080
-}
+# firefox-sync.{$DOMAIN} {
+# 	import default
+# 	reverse_proxy firefox-sync:8080
+# }
 
 img.{$DOMAIN} {
 	import default
@@ -151,12 +151,6 @@ ldap.{$DOMAIN} {
 # 	reverse_proxy /_synapse/client/* synapse:8080
 # }
 
-pin.{$DOMAIN} {
-	import default
-	import auth
-	reverse_proxy pinlist:8080
-}
-
 rd.{$DOMAIN} {
 	import default
 	header Content-Type text/html
@@ -178,15 +172,9 @@ searx.{$DOMAIN} {
 	}
 }
 
-st.{$DOMAIN} {
-	import default
-	import auth
-	reverse_proxy syncthing:8080
-}
-
 vencloud.{$DOMAIN} {
-	import default
-	reverse_proxy vencloud:8080
+	header ?Access-Control-Allow-Origin *
+	redir https://vencloud.bunny{uri}
 }
 
 vw.{$DOMAIN} {

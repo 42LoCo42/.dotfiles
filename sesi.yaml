@@ -28,6 +28,7 @@ machine:
   bunny:
     :key: XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs
     :import:
+      - svc/ca
       - user/admin
 
     key:
@@ -43,6 +44,7 @@ machine:
       secrets:
       signing-key:
     tailscaled:
+    tscaddy:
     vaultwarden:
     vencloud:
 

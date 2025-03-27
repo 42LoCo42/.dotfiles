@@ -30,7 +30,8 @@
         cloaking = {
           "readers.lakd" = "127.0.0.1";
 
-          # support multiple subdomains on laniakea
+          # support multiple subdomains for VPN services
+          "bunny" = "bunny.bunny.vpn";
           "laniakea" = "laniakea.bunny.vpn";
         };
 

@@ -21,6 +21,7 @@
     ./ssh.nix
     ./syncthing.nix
     ./tailscaled
+    ./tscaddy
     ./vaultwarden.nix
     ./vencloud.nix
   ];
