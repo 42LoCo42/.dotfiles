@@ -2,6 +2,7 @@
   imports = [
     # ./firefox-sync
     # ./mariadb
+    # ./photoview.nix
     # ./synapse
 
     ./attic
@@ -14,7 +15,6 @@
     ./lldap.nix
     ./mount-dcim.nix
     ./mycorrhiza
-    ./photoview.nix
     ./pinlist.nix
     ./postgres
     ./redis.nix
