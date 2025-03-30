@@ -9,6 +9,8 @@
     ./avh.nix
     ./caddy
     ./headscale
+    ./immich
+    ./immich-public-proxy
     ./lldap.nix
     ./mount-dcim.nix
     ./mycorrhiza

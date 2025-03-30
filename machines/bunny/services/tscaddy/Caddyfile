@@ -23,6 +23,11 @@
 	bind tailscale/bunny
 }
 
+img.bunny {
+	import bind
+	reverse_proxy immich:8080
+}
+
 pin.bunny {
 	import bind
 	reverse_proxy pinlist:8080

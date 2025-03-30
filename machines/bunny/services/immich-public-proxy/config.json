@@ -1,0 +1,24 @@
+{
+	"ipp": {
+		"responseHeaders": {
+			"Cache-Control": "public, max-age=2592000",
+			"Access-Control-Allow-Origin": "*"
+		},
+		"singleImageGallery": false,
+		"singleItemAutoOpen": true,
+		"downloadOriginalPhoto": true,
+		"showGalleryTitle": true,
+		"allowDownloadAll": true,
+		"showHomePage": true,
+		"customInvalidResponse": false
+	},
+	"lightGallery": {
+		"controls": true,
+		"download": true,
+		"mobileSettings": {
+			"controls": false,
+			"showCloseIcon": true,
+			"download": true
+		}
+	}
+}

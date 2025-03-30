@@ -36,6 +36,7 @@ machine:
     attic:
     authelia:
     firefox-sync:
+    immich:
     lldap:
     photoview:
     rustdesk:

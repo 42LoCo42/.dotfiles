@@ -129,9 +129,11 @@ chronometer.{$DOMAIN} {
 # }
 
 img.{$DOMAIN} {
+	# import default
+	# import auth
+	# reverse_proxy photoview:4001
 	import default
-	import auth
-	reverse_proxy photoview:4001
+	reverse_proxy immich-public-proxy:8080
 }
 
 headscale.{$DOMAIN} {
