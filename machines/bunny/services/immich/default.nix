@@ -18,27 +18,42 @@
     })
   ];
 
-  virtualisation.pnoc.immich = {
-    cmd = [ (lib.getExe pkgs.immich) ];
+  virtualisation.pnoc = {
+    immich = {
+      cmd = [ (lib.getExe pkgs.immich) ];
 
-    environment = {
-      IMMICH_PORT = "8080";
-      IMMICH_MEDIA_LOCATION = "/data";
+      environment = {
+        IMMICH_PORT = "8080";
+        IMMICH_MEDIA_LOCATION = "/data";
 
-      DB_HOSTNAME = "postgres";
-      DB_USERNAME = "immich";
-      DB_DATABASE_NAME = "immich";
+        DB_HOSTNAME = "postgres";
+        DB_USERNAME = "immich";
+        DB_DATABASE_NAME = "immich";
 
-      PATH = lib.makeBinPath (with pkgs; [
-        coreutils # immich start ffmpeg with "nice 10"
-      ]);
+        PATH = lib.makeBinPath (with pkgs; [
+          coreutils # immich start ffmpeg with "nice 10"
+        ]);
+      };
+
+      environmentFiles = [ (config.aquaris.secret "@machine/immich") ];
+
+      volumes = [
+        "immich:/data"
+        "/persist/home/admin/img:/media:ro"
+      ];
     };
 
-    environmentFiles = [ (config.aquaris.secret "@machine/immich") ];
+    immich-machine-learning = {
+      cmd = [ (lib.getExe pkgs.immich-machine-learning) ];
 
-    volumes = [
-      "immich:/data"
-      "/persist/home/admin/img:/media:ro"
-    ];
+      environment = {
+        MACHINE_LEARNING_CACHE_FOLDER = "/data";
+        MPLCONFIGDIR = "/data/matplotlib";
+      };
+
+      extraOptions = [ "--tmpfs=/tmp" ];
+
+      volumes = [ "immich-machine-learning:/data" ];
+    };
   };
 }
