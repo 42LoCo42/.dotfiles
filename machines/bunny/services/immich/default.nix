@@ -1,4 +1,23 @@
 { pkgs, lib, config, ... }: {
+  nixpkgs.overlays = [
+    (_: pkgs: {
+      immich = pkgs.immich.overrideAttrs (new: _: {
+        patches = [
+          ./0001-fluent-ffmpeg-fix-stdoutRing-stderrRing-crash.patch
+        ];
+
+        patchFlags = [ "-p2" ];
+
+        npmDeps = pkgs.fetchNpmDeps {
+          name = "${new.pname}-${new.version}-npm-deps";
+          inherit (new) src patches patchFlags;
+
+          hash = "sha256-7rn1C1mJAO/TZibxkhg14syn9jQUf6N6DAlnWl5iqQQ=";
+        };
+      });
+    })
+  ];
+
   virtualisation.pnoc.immich = {
     cmd = [ (lib.getExe pkgs.immich) ];
 
@@ -9,6 +28,10 @@
       DB_HOSTNAME = "postgres";
       DB_USERNAME = "immich";
       DB_DATABASE_NAME = "immich";
+
+      PATH = lib.makeBinPath (with pkgs; [
+        coreutils # immich start ffmpeg with "nice 10"
+      ]);
     };
 
     environmentFiles = [ (config.aquaris.secret "@machine/immich") ];
