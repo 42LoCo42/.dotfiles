@@ -39,7 +39,10 @@
       powerManagement.enable = true;
     };
 
-    environment.systemPackages = with config.rice.desktop.zenkernel.pkgs; [ nvtopPackages.nvidia ];
+    environment.systemPackages =
+      with config.rice.desktop.zenkernel.pkgs; [
+        nvtopPackages.nvidia
+      ];
 
     services.xserver.videoDrivers = [ "nvidia" ];
 

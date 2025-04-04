@@ -240,10 +240,7 @@
 
           "00-theme" = {
             package = "gruvbox-theme";
-            config = "(load-theme 'gruvbox-dark-medium)";
-            custom = ''
-              (custom-safe-themes '("046a2b81d13afddae309930ef85d458c4f5d278a69448e5a5261a5c78598e012" default))
-            '';
+            config = "(load-theme 'gruvbox-dark-medium t)";
           };
 
           rainbow-delimiters = {
