@@ -169,10 +169,6 @@
               (global-hl-line-mode                       1) ; highlight current line
               (global-prettify-symbols-mode              1) ; e.g display lambda as that character
 
-              ; automatic indents & pairing (braces, quotes, ...)
-              (electric-indent-mode 1)
-              (electric-pair-mode   1)
-
               ; disable verbose yes-or-no questions
               (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -470,6 +466,13 @@
             });
 
             commands = "org-drill-strip-all-data";
+          };
+
+          smartparens = {
+            hook = "prog-mode text-mode";
+            config = ''
+              (require 'smartparens-config)
+            '';
           };
 
           ##### Completion #####
@@ -790,11 +793,7 @@
             config = ''
               ; disable things that break Lisp editing
               (advice-add 'parinfer-rust-mode :before (lambda ()
-                ; (format-all-mode 0)
-                (apheleia-mode 0 )
-                (indent-tabs-mode 0)
-                (electric-indent-local-mode 0)
-                (electric-pair-local-mode 0)))
+                (indent-tabs-mode 0)))
             '';
           };
 
