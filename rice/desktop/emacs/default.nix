@@ -472,6 +472,16 @@
             hook = "prog-mode text-mode";
             config = ''
               (require 'smartparens-config)
+
+              (defun indent-between-pair (&rest _ignored)
+                (newline)
+                (indent-according-to-mode)
+                (forward-line -1)
+                (indent-according-to-mode))
+
+              (sp-local-pair 'prog-mode "(" nil :post-handlers '((indent-between-pair "RET")))
+              (sp-local-pair 'prog-mode "[" nil :post-handlers '((indent-between-pair "RET")))
+              (sp-local-pair 'prog-mode "{" nil :post-handlers '((indent-between-pair "RET")))
             '';
           };
 
