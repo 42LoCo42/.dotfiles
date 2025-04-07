@@ -12,7 +12,7 @@
           name = "${new.pname}-${new.version}-npm-deps";
           inherit (new) src patches patchFlags;
 
-          hash = "sha256-7rn1C1mJAO/TZibxkhg14syn9jQUf6N6DAlnWl5iqQQ=";
+          hash = "sha256-o/mkdxRhg4KVnNX/iRQIarwOWZHxifY8fJNa96BjGao=";
         };
       });
     })
