@@ -28,6 +28,7 @@
 
       rules = {
         cloaking = {
+          "lbswis.gbv.de" = "127.0.0.1";
           "readers.lakd" = "127.0.0.1";
 
           # support multiple subdomains for VPN services

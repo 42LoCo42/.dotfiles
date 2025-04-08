@@ -25,6 +25,8 @@
     settings.General.Experimental = true;
   };
 
+  boot.kernelParams = [ "foo=bar" ];
+
   rice.desktop = {
     udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 

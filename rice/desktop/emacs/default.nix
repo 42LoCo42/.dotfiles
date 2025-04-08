@@ -469,7 +469,7 @@
           };
 
           smartparens = {
-            hook = "prog-mode text-mode";
+            hook = "prog-mode text-mode conf-mode";
             config = ''
               (require 'smartparens-config)
 

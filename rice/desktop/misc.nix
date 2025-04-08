@@ -49,8 +49,8 @@
               "--profile=low-latency"
               "--untimed=yes"
               "--video-latency-hacks=yes"
-              "--wayland-disable-vsync=yes"
               "--video-sync=display-desync"
+              "--wayland-internal-vsync=no"
             ];
           };
       };
