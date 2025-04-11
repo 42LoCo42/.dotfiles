@@ -24,6 +24,8 @@
           enable = true;
           settings = {
             lyrics_directory = "~/.local/share/lyrics";
+            media_library_albums_split_by_date = "no";
+            media_library_primary_tag = "album_artist";
             startup_screen = "media_library";
           };
         };
