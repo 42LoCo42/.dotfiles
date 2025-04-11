@@ -1,15 +1,30 @@
-async function wait(delay) {
-	await new Promise((r) => setTimeout(r, delay));
+function waitForLoad() {
+	return new Promise((resolve) => {
+		if (document.readyState === "complete") {
+			resolve();
+		} else {
+			window.addEventListener("load", resolve);
+		}
+	});
 }
 
-async function typewriter(element, delay) {
-	const cloned = element.cloneNode(true);
-	element.innerHTML = "";
+async function wait(delay) {
+	return new Promise((r) => setTimeout(r, delay));
+}
+
+async function typewriter(target, delay, initialPause) {
+	const source = target.cloneNode(true);
+	target.innerHTML = "";
+	target.style.removeProperty("display");
+
+	await waitForLoad();
 
 	const cursor = document.createElement("cursor");
 	cursor.textContent = "|";
+	target.appendChild(cursor);
 
-	await run(cloned, element);
+	await wait(initialPause);
+	await run(source, target);
 
 	async function run(source, target) {
 		for (let c of source.childNodes) {
@@ -55,10 +70,15 @@ async function typewriter(element, delay) {
 	}
 }
 
-const SKIP_KEY = "skipAnimation" + location.pathname;
-if (sessionStorage.getItem(SKIP_KEY) === null) {
-	(async () => {
-		await typewriter(document.getElementById("terminal"), 5);
+(async () => {
+	const SKIP_KEY = "skipAnimation" + location.pathname;
+	const terminal = document.getElementById("terminal");
+
+	if (sessionStorage.getItem(SKIP_KEY) === null) {
+		await typewriter(terminal, 5, 500);
 		sessionStorage.setItem(SKIP_KEY, 1);
-	})();
-}
+	} else {
+		await waitForLoad();
+		terminal.style.removeProperty("display");
+	}
+})();

@@ -16,7 +16,7 @@ html(lang = "en")
     link(href = "/style.css" rel = "stylesheet")
 
   body
-    div(id = "terminal" class = "mobile-vbox")
+    div(id = "terminal" class = "mobile-vbox", style = "display: none")
       mixin prompt(dir, cmd)
         x-prompt
           span eleonora@bunny
