@@ -9,6 +9,7 @@
     ./authelia
     ./avh.nix
     ./caddy
+    ./forgejo
     ./headscale
     ./immich
     ./immich-public-proxy

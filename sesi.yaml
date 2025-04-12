@@ -36,6 +36,7 @@ machine:
     attic:
     authelia:
     firefox-sync:
+    forgejo:
     immich:
     lldap:
     photoview:

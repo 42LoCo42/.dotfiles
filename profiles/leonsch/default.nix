@@ -88,6 +88,10 @@ in
         user = "admin";
       };
 
+      forgejo = proxy "git.bunny:22" {
+        user = "forgejo";
+      };
+
       laniakea = {
         hostname = "laniakea.bunny.vpn";
         user = "admin";

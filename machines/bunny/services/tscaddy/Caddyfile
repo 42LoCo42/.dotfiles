@@ -29,6 +29,16 @@
 	}
 }
 
+git.bunny:22 {
+	import bind
+	import connect forgejo:2222
+}
+
+git.bunny {
+	import bind
+	reverse_proxy forgejo:8080
+}
+
 img.bunny {
 	import bind
 	reverse_proxy immich:8080
