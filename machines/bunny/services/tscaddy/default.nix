@@ -15,7 +15,7 @@
       "--header-to-env=to"
       "ws-listen:127.0.0.1:12345"
       "exec:${pkgs.writeShellScript "connect" ''
-        exec ${lib.getExe pkgs.netcat} "''${H_to%:*}" "''${H_to#*:}"
+        exec ${lib.getExe pkgs.netcat} -N "''${H_to%:*}" "''${H_to#*:}"
       ''}"
     ];
 
