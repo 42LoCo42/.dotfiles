@@ -7,6 +7,7 @@
           bash
           coreutils
           forgejo
+          tini
         ];
         text = builtins.readFile ./start.sh;
       }))
