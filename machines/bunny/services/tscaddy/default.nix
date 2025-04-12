@@ -1,6 +1,23 @@
 { pkgs, lib, config, ... }: {
   virtualisation.pnoc.tscaddy = {
-    cmd = [ (lib.getExe pkgs.tscaddy) "run" ];
+    cmd = [
+      config.rice.invfork.outPath
+
+      # parent process: caddy
+      (lib.getExe pkgs.tscaddy)
+      "run"
+
+      "--" # child process: TCP proxy
+      (lib.getExe pkgs.websocat)
+      "--exit-on-eof"
+      "--binary"
+      "--set-environment"
+      "--header-to-env=to"
+      "ws-listen:127.0.0.1:12345"
+      "exec:${pkgs.writeShellScript "connect" ''
+        exec ${lib.getExe pkgs.netcat} "''${H_to%:*}" "''${H_to#*:}"
+      ''}"
+    ];
 
     environment = {
       XDG_CONFIG_HOME = "/data/config";

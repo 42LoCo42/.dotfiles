@@ -23,6 +23,12 @@
 	bind tailscale/bunny
 }
 
+(connect) {
+	reverse_proxy localhost:12345 {
+		header_up +to {args[0]}
+	}
+}
+
 img.bunny {
 	import bind
 	reverse_proxy immich:8080
@@ -31,6 +37,11 @@ img.bunny {
 pin.bunny {
 	import bind
 	reverse_proxy pinlist:8080
+}
+
+ssh.bunny {
+	import bind
+	import connect host.containers.internal:18213
 }
 
 sync.bunny {

@@ -1,4 +1,10 @@
-{ pkgs, config, aquaris, ... }: {
+{ pkgs, config, aquaris, ... }:
+let
+  proxy = to: x: {
+    proxyCommand = "${pkgs.lib.getExe pkgs.websocat} --binary wss://${to}";
+  } // x;
+in
+{
   imports = [ ../../rice ];
 
   aquaris = {
@@ -78,8 +84,7 @@
     programs.ssh.matchBlocks = rec {
       ##### private machines #####
 
-      bunny = {
-        hostname = "exit.bunny.vpn";
+      bunny = proxy "ssh.bunny" {
         user = "admin";
       };
 
