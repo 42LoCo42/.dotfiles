@@ -22,7 +22,7 @@ let inherit (lib) mkForce; in {
     users.root = {
       description = "System administrator";
       home = "/root";
-      sshKeys = [ aquaris.cfg.mainSSHKey ];
+      sshKeys = builtins.attrValues aquaris.cfg.ssh;
     };
 
     secrets.enable = false;

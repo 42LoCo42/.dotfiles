@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 let
-  inherit (lib) getExe getExe' mkIf mkOption;
-  inherit (lib.types) bool int nullOr str;
+  inherit (lib) getExe getExe' mkDefault mkIf mkOption;
+  inherit (lib.types) attrsOf bool int nullOr str;
 
   cfg = config.rice.desktop.wayland.waybar;
 in
@@ -10,6 +10,10 @@ in
     enable = mkOption {
       type = bool;
       default = false;
+    };
+
+    icons = mkOption {
+      type = attrsOf str;
     };
 
     temperatureWarn = mkOption {
@@ -23,6 +27,21 @@ in
   };
 
   config = mkIf cfg.enable {
+    rice.desktop.wayland.waybar = {
+      icons = {
+        "1" = mkDefault "0";
+        "2" = mkDefault "1";
+        "3" = mkDefault "2";
+        "4" = mkDefault "3";
+        "5" = mkDefault "4";
+        "6" = mkDefault "5";
+        "7" = mkDefault "6";
+        "8" = mkDefault "7";
+        "9" = mkDefault "8";
+        "10" = mkDefault "9";
+      };
+    };
+
     systemd.services.zfullfs = mkIf (cfg.zfullfs != null) {
       serviceConfig = {
         ExecStartPre = [ "${getExe' pkgs.coreutils "mkdir"} -p /full" ];
@@ -80,18 +99,7 @@ in
             all-outputs = true;
             sort-by-number = true;
             format = "{icon}";
-            format-icons = {
-              "1" = "";
-              "2" = "";
-              "3" = "󰙯";
-              "4" = "";
-              "5" = "4";
-              "6" = "5";
-              "7" = "6";
-              "8" = "7";
-              "9" = "8";
-              "10" = "󰌆";
-            };
+            format-icons = cfg.icons;
           };
 
           "custom/weather" = {

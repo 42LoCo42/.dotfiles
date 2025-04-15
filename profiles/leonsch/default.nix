@@ -31,9 +31,22 @@ in
     desktop = {
       enable = true;
 
-      wayland.wlsunset = {
-        lat = "54.31";
-        lon = "13.09";
+      wayland = {
+        hyprland.windowRules = ''
+          windowrulev2 = workspace 3, class:(vesktop)
+        '';
+
+        waybar.icons = {
+          "1" = "";
+          "2" = "";
+          "3" = "󰙯";
+          "4" = "";
+        };
+
+        wlsunset = {
+          lat = "54.31";
+          lon = "13.09";
+        };
       };
     };
 
@@ -81,7 +94,7 @@ in
       moreutils
     ];
 
-    programs.ssh.matchBlocks = rec {
+    programs.ssh.matchBlocks = {
       ##### private machines #####
 
       bunny = proxy "ssh.bunny" {
@@ -100,12 +113,15 @@ in
       ##### people #####
 
       hannes = {
-        hostname = "owo-ercanar-senpai.duckdns.org";
-        port = 18213;
+        hostname = "satinor.bunny.vpn";
         user = "ercanar";
       };
 
-      hapi = hannes // { port = 12345; };
+      hapi = {
+        hostname = "owo-ercanar-senpai.duckdns.org";
+        port = 12345;
+        user = "ercanar";
+      };
 
       jana = {
         hostname = "primula25.duckdns.org";

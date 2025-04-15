@@ -1,5 +1,9 @@
 {
   inputs = {
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+    };
+
     aquaris = {
       url = "github:42loco42/aquaris";
       inputs = {
@@ -25,21 +29,33 @@
   };
 
   outputs = { aquaris, self, ... }: aquaris self rec {
-    mainSSHKey = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
+    ssh = {
+      ercanar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvIf8izKUWon2BIHuzmGxqzt4duidgP2yEpSUcRu3rA";
+      leonsch = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
+    };
 
     users = {
-      leonsch = {
-        description = "Leon Schumacher";
-        sshKeys = [ mainSSHKey ];
+      admin = {
+        description = "Server Admin Account";
+        sshKeys = [ ssh.leonsch ];
+      };
+
+      ercanar = {
+        description = "Hannes Wendt";
+        sshKeys = [ ssh.ercanar ssh.leonsch ];
         git = {
-          email = "leonsch@protonmail.com";
-          key = mainSSHKey;
+          email = "hanneswendt22@gmail.com";
+          key = ssh.ercanar;
         };
       };
 
-      admin = {
-        description = "Server Admin Account";
-        sshKeys = [ mainSSHKey ];
+      leonsch = {
+        description = "Leon Schumacher";
+        sshKeys = [ ssh.leonsch ];
+        git = {
+          email = "leonsch@protonmail.com";
+          key = ssh.leonsch;
+        };
       };
     };
   };

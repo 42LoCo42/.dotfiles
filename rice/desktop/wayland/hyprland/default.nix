@@ -1,10 +1,12 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) getExe getExe' mkIf mkOption;
+  inherit (lib) getExe getExe' mkIf mkOption pipe;
   inherit (lib.types) bool lines;
   inherit (aquaris.lib) subsF subsT;
 
   script = x: subsF (x // { func = pkgs.writeScript; });
+
+  cfg = config.rice.desktop.wayland.hyprland;
 in
 {
   options.rice.desktop.wayland.hyprland = {
@@ -17,9 +19,19 @@ in
       type = lines;
       default = "";
     };
+
+    postConfig = mkOption {
+      type = lines;
+      default = "";
+    };
+
+    windowRules = mkOption {
+      type = lines;
+      default = "";
+    };
   };
 
-  config = mkIf config.rice.desktop.wayland.hyprland.enable {
+  config = mkIf cfg.enable {
     programs = {
       hyprland = {
         enable = true;
@@ -36,53 +48,61 @@ in
 
       wayland.windowManager.hyprland = {
         enable = true;
-        extraConfig = subsT ./hyprland.conf {
-          inherit (config.rice.desktop.wayland.hyprland) preConfig;
+        extraConfig = pipe ./hyprland.conf [
+          builtins.readFile
+          (x: builtins.concatStringsSep "\n" [
+            cfg.preConfig
+            x
+            cfg.windowRules
+            cfg.postConfig
+          ])
+          (pkgs.writeText "hyprland-all.conf")
+          (x: subsT x {
+            fuzzel = getExe pkgs.fuzzel;
+            ipython = getExe' pkgs.python3Packages.ipython "ipython";
+            pulsemixer = getExe pkgs.pulsemixer;
+            qalc = getExe pkgs.libqalculate;
+            vesktop = getExe pkgs.vesktop;
 
-          fuzzel = getExe pkgs.fuzzel;
-          ipython = getExe' pkgs.python3Packages.ipython "ipython";
-          pulsemixer = getExe pkgs.pulsemixer;
-          qalc = getExe pkgs.libqalculate;
-          vesktop = getExe pkgs.vesktop;
-
-          audio-helper = script {
-            file = ./scripts/audio-helper.sh;
-            subs = {
-              pulsemixer = getExe pkgs.pulsemixer;
-              mpc = getExe pkgs.mpc-cli;
+            audio-helper = script {
+              file = ./scripts/audio-helper.sh;
+              subs = {
+                pulsemixer = getExe pkgs.pulsemixer;
+                mpc = getExe pkgs.mpc-cli;
+              };
             };
-          };
 
-          brightness-helper = script {
-            file = ./scripts/brightness-helper.sh;
-            subs = {
-              brightnessctl = getExe pkgs.brightnessctl;
+            brightness-helper = script {
+              file = ./scripts/brightness-helper.sh;
+              subs = {
+                brightnessctl = getExe pkgs.brightnessctl;
+              };
             };
-          };
 
-          dropdown = script {
-            file = ./scripts/dropdown.sh;
-          };
-
-          idle-toggle = script {
-            file = ./scripts/idle-toggle.sh;
-          };
-
-          prompt = script {
-            file = ./scripts/prompt.sh;
-            subs = {
-              fuzzel = getExe pkgs.fuzzel;
+            dropdown = script {
+              file = ./scripts/dropdown.sh;
             };
-          };
 
-          safekill = script {
-            file = ./scripts/safekill.sh;
-          };
+            idle-toggle = script {
+              file = ./scripts/idle-toggle.sh;
+            };
 
-          terminal = script {
-            file = ./scripts/terminal.sh;
-          };
-        };
+            prompt = script {
+              file = ./scripts/prompt.sh;
+              subs = {
+                fuzzel = getExe pkgs.fuzzel;
+              };
+            };
+
+            safekill = script {
+              file = ./scripts/safekill.sh;
+            };
+
+            terminal = script {
+              file = ./scripts/terminal.sh;
+            };
+          })
+        ];
       };
     }];
   };

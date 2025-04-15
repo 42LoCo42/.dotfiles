@@ -1,7 +1,14 @@
 { lib, config, ... }: {
-  options.rice.desktop.wayland.foot.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+  options.rice.desktop.wayland.foot = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+
+    alpha = lib.mkOption {
+      type = lib.types.str;
+      default = "0.5";
+    };
   };
 
   config = lib.mkIf config.rice.desktop.wayland.foot.enable {
@@ -11,7 +18,7 @@
         settings = {
           main.font = "monospace:size=10.5";
           colors = {
-            alpha = "0.5";
+            inherit (config.rice.desktop.wayland.foot) alpha;
             foreground = "ebdbb2";
             background = "282828";
             regular0 = "282828";

@@ -7,6 +7,11 @@ admin:
       - machine/bunny
       - machine/laniakea
 
+  ercanar:
+    :key: j60WZLTyJYEVNQB3RGqSXW8sbrM3Wpy0nFPAe4lx6yc
+    :import:
+      - machine/satinor
+
 machine:
   akyuro:
     :key: IIZ7WIULG2jlmL9zKJogbfjVysqd4iPDh9cLoU2lAHI
@@ -60,6 +65,14 @@ machine:
     key:
     ncps:
 
+  satinor:
+    :key: ow1SvzI5RFVro8k71KpKMtt-TCnQun4FMy6l0Bt-dSg
+    :import:
+      - svc/nixremote
+      - user/ercanar
+
+    key:
+
 svc:
   ca:
   nixremote:
@@ -67,6 +80,13 @@ svc:
 user:
   admin:
     password:
+
+  ercanar:
+    password:
+    wallpaper:
+
+    ssh:
+      main:
 
   leonsch:
     password:
