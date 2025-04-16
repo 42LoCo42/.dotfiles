@@ -7,11 +7,19 @@
   config = lib.mkIf config.rice.desktop.misc.enable {
     nix.package = pkgs.lix-fix-help;
 
+    programs.gamemode.enable = true;
+
     home-manager.sharedModules = [{
       home = {
         packages = with pkgs; [
+          btrfs-progs
+          cryptsetup
           feh
           mpv
+          p7zip
+          pwgen
+          python3
+          wf-recorder
           yt-dlp
           zathura
         ];

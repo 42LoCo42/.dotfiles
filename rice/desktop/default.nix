@@ -22,9 +22,11 @@
       pipewire.enable = true;
       scx.enable = true;
       sudo-u2f.enable = true;
+      theming.enable = true;
       udev.enable = true;
       vesktop.enable = true;
       wayland.enable = true;
+      xdg.enable = true;
       zenkernel.enable = true;
     };
   };
@@ -47,9 +49,11 @@
     ./pipewire.nix
     ./scx.nix
     ./sudo-u2f.nix
+    ./theming.nix
     ./udev.nix
     ./vesktop.nix
     ./wayland
+    ./xdg.nix
     ./zenkernel.nix
   ];
 }

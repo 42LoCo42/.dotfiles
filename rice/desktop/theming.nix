@@ -1,10 +1,10 @@
 { pkgs, lib, config, ... }: {
-  options.rice.desktop.wayland.theming.enable = lib.mkOption {
+  options.rice.desktop.theming.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
 
-  config = lib.mkIf config.rice.desktop.wayland.theming.enable {
+  config = lib.mkIf config.rice.desktop.theming.enable {
     home-manager.sharedModules = [
       (hm: {
         dconf.settings = {

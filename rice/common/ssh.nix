@@ -1,14 +1,18 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   inherit (lib)
     concatLines
     flip
+    getExe
     hasPrefix
     mkIf
     mkMerge
+    mkOption
     pipe
     singleton
     ;
+
+  inherit (lib.types) anything;
 
   knownHosts = user: builtins.concatStringsSep "" [
     config.aquaris.persist.root
@@ -17,7 +21,14 @@ let
   ];
 in
 {
-  home-manager.sharedModules = singleton (hm:
+  options.rice.ssh.proxy = mkOption {
+    type = anything;
+    default = to: x: {
+      proxyCommand = "${getExe pkgs.websocat} --binary wss://${to}";
+    } // x;
+  };
+
+  config.home-manager.sharedModules = singleton (hm:
     let
       user = hm.config.home.username;
       key = hm.config.aquaris.git.sshKeyFile;

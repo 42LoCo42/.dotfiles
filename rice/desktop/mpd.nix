@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ pkgs, lib, config, ... }: {
   options.rice.desktop.mpd.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -8,6 +8,12 @@
     home-manager.sharedModules = [
       (hm: {
         aquaris.persist = { "music" = { }; };
+
+        home.packages = with pkgs; [
+          ffmpeg # conversions, ffprobe, ...
+          kid3-cli # setting tags manually
+          moreutils # vidir the GOAT
+        ];
 
         services.mpd = {
           enable = true;

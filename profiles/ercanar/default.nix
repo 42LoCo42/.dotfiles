@@ -1,9 +1,5 @@
 { pkgs, config, aquaris, ... }:
-let
-  proxy = to: x: {
-    proxyCommand = "${pkgs.lib.getExe pkgs.websocat} --binary wss://${to}";
-  } // x;
-in
+let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../../rice ./aliases.nix ];
 
@@ -21,8 +17,6 @@ in
       enable = true;
     };
   };
-
-  programs.gamemode.enable = true;
 
   rice = {
     desktop = {
@@ -114,21 +108,6 @@ in
       gimp
       libreoffice
       musescore
-
-      # misc
-      p7zip
-      pwgen
-      python3
-      wf-recorder
-
-      # for external backup SSD
-      btrfs-progs
-      cryptsetup
-
-      # for managing my music library
-      ffmpeg
-      kid3-cli
-      moreutils
     ];
 
     programs.ssh.matchBlocks = {

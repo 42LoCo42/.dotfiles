@@ -15,10 +15,8 @@
       sway-audio-idle-inhibit.enable = true;
       swaybg.enable = true;
       swaylock.enable = true;
-      theming.enable = true;
       waybar.enable = true;
       wlsunset.enable = true;
-      xdg.enable = true;
     };
   };
 
@@ -32,9 +30,7 @@
     ./sway-audio-idle-inhibit.nix
     ./swaybg.nix
     ./swaylock
-    ./theming.nix
     ./waybar
     ./wlsunset.nix
-    ./xdg.nix
   ];
 }
