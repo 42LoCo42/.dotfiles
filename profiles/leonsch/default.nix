@@ -30,11 +30,19 @@ let inherit (config.rice.ssh) proxy; in
           windowrulev2 = workspace 3, class:(vesktop)
         '';
 
-        waybar.icons = {
-          "1" = "";
-          "2" = "";
-          "3" = "󰙯";
-          "4" = "";
+        waybar = {
+          icons = {
+            "1" = "";
+            "2" = "";
+            "3" = "󰙯";
+            "4" = "";
+          };
+
+          syncstat = {
+            enable = true;
+            folder = "cw6hv-bpaei"; # main
+            keyFile = config.aquaris.secret "user/leonsch/syncstat";
+          };
         };
 
         wlsunset = {

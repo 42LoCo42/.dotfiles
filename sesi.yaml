@@ -97,3 +97,4 @@ user:
         ed25519:
         rsa:
     u2f-keys:
+    syncstat:
