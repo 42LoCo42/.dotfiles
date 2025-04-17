@@ -225,12 +225,12 @@
             custom = "(server-client-instructions nil)";
           };
 
-          # straight = {
-          #   commands = ''
-          #     straight-remove-unused-repos
-          #     straight-use-package
-          #   '';
-          # };
+          straight = {
+            commands = ''
+              straight-remove-unused-repos
+              straight-use-package
+            '';
+          };
 
           ##### Appearance #####
 
