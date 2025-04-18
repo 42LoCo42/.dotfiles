@@ -10,10 +10,6 @@
           };
         });
 
-        # TODO 2025-03-14: latest rustdest-flutter is broken (https://hydra.nixos.org/build/292246311)
-        # monitor https://hydra.nixos.org/job/nixpkgs/trunk/rustdesk-flutter.x86_64-linux
-        inherit ((builtins.getFlake "github:nixos/nixpkgs/e05f8bda630a0836d777d84de14b3c16eb758514").legacyPackages.${pkgs.system}) rustdesk-flutter;
-
         waybar = obscura.waybar-ipfix;
 
         inherit (obscura)
