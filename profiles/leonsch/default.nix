@@ -19,6 +19,8 @@ let inherit (config.rice.ssh) proxy; in
         "/root/.android" = { };
       };
     };
+
+    secrets.rules."@machine/syncstat".user = "leonsch";
   };
 
   rice = {
@@ -41,7 +43,7 @@ let inherit (config.rice.ssh) proxy; in
           syncstat = {
             enable = true;
             folder = "cw6hv-bpaei"; # main
-            keyFile = config.aquaris.secret "user/leonsch/syncstat";
+            keyFile = config.aquaris.secret "@machine/syncstat";
           };
         };
 
