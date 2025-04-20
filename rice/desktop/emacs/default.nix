@@ -105,11 +105,6 @@
               ("C-M-<backspace>" . my/join-line)
               ("C-s"             . save-buffer)
 
-              ("C-h C-b" . describe-personal-keybindings)
-              ("C-h C-f" . describe-function)
-              ("C-h C-k" . describe-key)
-              ("C-h C-v" . describe-variable)
-
               ("C-x C-f" . find-file)
 
               ("C-#"   . (lambda () (interactive) (select-window (next-window))))
@@ -407,6 +402,14 @@
               (set-face-attribute 'avy-lead-face-0 nil :foreground "#b8bb26" :background "#282828" :bold t) ; second
               (set-face-attribute 'avy-lead-face-1 nil :foreground "#282828" :background "#282828" :bold t) ; matched
               (set-face-attribute 'avy-lead-face-2 nil :foreground "#83a598" :background "#282828" :bold t) ; third
+            '';
+          };
+
+          helpful = {
+            bind' = ''
+              ("C-h C-f" . helpful-callable)
+              ("C-h C-k" . helpful-key)
+              ("C-h C-v" . helpful-variable)
             '';
           };
 
