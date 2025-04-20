@@ -1,9 +1,10 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) getExe getExe' mkIf mkOption pipe;
+  inherit (lib) flip getExe getExe' mkIf mkOption pipe;
   inherit (lib.types) bool lines;
-  inherit (aquaris.lib) subsF subsT;
+  inherit (aquaris.lib) subsF;
 
+  subs = x: s: aquaris.lib.subs { text = x; subs = s; };
   script = x: subsF (x // { func = pkgs.writeScript; });
 
   cfg = config.rice.desktop.wayland.hyprland;
@@ -56,8 +57,7 @@ in
             cfg.windowRules
             cfg.postConfig
           ])
-          (pkgs.writeText "hyprland-all.conf")
-          (x: subsT x {
+          (flip subs {
             fuzzel = getExe pkgs.fuzzel;
             ipython = getExe' pkgs.python3Packages.ipython "ipython";
             pulsemixer = getExe pkgs.pulsemixer;
