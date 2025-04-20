@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ lib, config, ... }: {
   options.rice.desktop.wayland.hypridle.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -10,7 +10,6 @@
         enable = true;
         settings = {
           general = {
-            lock_cmd = "pidof swaylock || ${lib.getExe pkgs.swaylock-effects}";
             before_sleep_cmd = "loginctl lock-session";
             after_sleep_cmd = "hyprctl dispatch dpms on";
           };

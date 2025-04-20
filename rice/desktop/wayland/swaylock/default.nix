@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let
-  inherit (lib) mkIf mkOption;
+  inherit (lib) getExe mkIf mkOption;
   inherit (lib.types) bool;
 
   effect = pkgs.runCommandCC "effect.so" { } ''
@@ -16,6 +16,8 @@ in
   config = mkIf config.rice.desktop.wayland.swaylock.enable {
     security.pam.services.swaylock = { };
 
+    services.systemd-lock-handler.enable = true;
+
     home-manager.sharedModules = [{
       xdg.configFile."swaylock/config".text = ''
         screenshots
@@ -27,6 +29,30 @@ in
         clock
         fade-in=0.5
       '';
+
+      systemd.user.services.swaylock = {
+        Unit = {
+          Before = [ "lock.target" "sleep.target" ];
+          PartOf = [ "lock.target" "sleep.target" ];
+          OnSuccess = [ "unlock.target" ];
+        };
+
+        Service = {
+          Type = "forking";
+          ExecStart = getExe (pkgs.writeShellApplication {
+            name = "swaylock";
+            runtimeInputs = with pkgs; [ coreutils swaylock-effects ];
+            text = ''
+              swaylock -f
+              sleep 0.5
+            '';
+          });
+          Restart = "on-failure";
+          RestartSec = 0;
+        };
+
+        Install.WantedBy = [ "lock.target" "sleep.target" ];
+      };
     }];
   };
 }
