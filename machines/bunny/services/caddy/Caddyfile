@@ -153,6 +153,7 @@ ldap.{$DOMAIN} {
 # 	reverse_proxy /_synapse/client/* synapse:8080
 # }
 
+
 rd.{$DOMAIN} {
 	import default
 	header Content-Type text/html

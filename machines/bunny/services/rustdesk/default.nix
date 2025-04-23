@@ -14,11 +14,30 @@
   virtualisation.pnoc.rustdesk =
     let
       pubkey = "Dh0lsYDLdL7GIb0BHWR2VS0mRCLSmyKIJHdtkzmWjdQ=";
+      resources = "${pkgs.rustdesk-api}/resources";
 
       app = pkgs.writeShellApplication {
         name = "rustdesk";
-        text = aquaris.lib.subsT ./start.sh { inherit pubkey; };
-        runtimeInputs = with pkgs; [ rustdesk-server ];
+
+        runtimeInputs = with pkgs; [
+          coreutils
+          rustdesk-server
+          rustdesk-api
+        ];
+
+        text = aquaris.lib.subsT ./start.sh {
+          inherit pubkey resources;
+
+          config = pkgs.writeText "config.yaml" ''
+            lang: en
+            app:
+              token-expire: 24h
+            gin:
+              mode: release
+              api-addr: 0.0.0.0:21114
+              resources-path: ${resources}
+          '';
+        };
       };
     in
     {

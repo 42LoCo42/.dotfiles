@@ -24,6 +24,7 @@
           photoview
           pinlist
           pug
+          rustdesk-api
           socket-activate
           vencloud
           zfullfs

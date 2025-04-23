@@ -49,6 +49,11 @@ pin.bunny {
 	reverse_proxy pinlist:8080
 }
 
+rd.bunny {
+	import bind
+	reverse_proxy rustdesk:21114
+}
+
 ssh.bunny {
 	import bind
 	import connect host.containers.internal:18213
