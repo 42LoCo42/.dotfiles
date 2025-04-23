@@ -99,6 +99,7 @@ let inherit (config.rice.ssh) proxy; in
 
         ".config/GIMP" = { };
         ".config/MuseScore" = { };
+        ".config/rustdesk" = { };
 
         ".local/share/Steam" = { };
       };
@@ -108,6 +109,7 @@ let inherit (config.rice.ssh) proxy; in
       gimp
       libreoffice
       musescore
+      rustdesk-flutter
     ];
 
     programs.ssh.matchBlocks = {
