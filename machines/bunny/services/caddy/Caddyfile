@@ -86,11 +86,10 @@ attic-default.{$DOMAIN} {
 	}
 }
 
-# TODO build better UI
-# avh.{$DOMAIN} {
-# 	import default
-# 	reverse_proxy avh:8080
-# }
+# password-protected immich share
+avh.{$DOMAIN} {
+	redir https://img.eleonora.gay/share/WRRh4tVvPvLC4k6rmcZRlKQiZ_B5R9P0xFV9-HG5WGWyuQxKENLSf8oAacjR8Lp3zio
+}
 
 chronometer.{$DOMAIN} {
 	import default

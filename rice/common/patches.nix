@@ -13,7 +13,6 @@
         waybar = obscura.waybar-ipfix;
 
         inherit (obscura)
-          avh
           caddyfile-language-server
           chronometer
           email-oauth2-proxy

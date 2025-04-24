@@ -1,6 +1,5 @@
 {
   imports = [
-    ./avh.nix
     ./attic
     ./caddy
     ./email-oauth2-proxy
