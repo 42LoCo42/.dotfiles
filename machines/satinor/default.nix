@@ -28,6 +28,7 @@
         preConfig = ''
           monitor   = DP-1,     2560x1440@60,    0x0, 1
           monitor   = HDMI-A-1, 1920x1080@60, 2560x0, 1
+          monitor   = HDMI-A-1, disable
           workspace = 9, monitor:HDMI-A-1, default:true
         '';
 
