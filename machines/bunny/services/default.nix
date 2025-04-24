@@ -1,20 +1,13 @@
 {
   imports = [
-    # ./firefox-sync
-    # ./mariadb
-    # ./photoview.nix
-    # ./synapse
-
-    ./attic
-    ./authelia
     ./avh.nix
+    ./attic
     ./caddy
     ./email-oauth2-proxy
     ./forgejo
     ./headscale
     ./immich
     ./immich-public-proxy
-    ./lldap.nix
     ./mount-dcim.nix
     ./mycorrhiza
     ./pinlist.nix

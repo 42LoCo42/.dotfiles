@@ -69,3 +69,11 @@ vencloud.bunny {
 	header ?Access-Control-Allow-Origin *
 	reverse_proxy vencloud:8080
 }
+
+vw.bunny {
+	import bind
+
+	reverse_proxy vaultwarden:8080 {
+		header_up X-Real-IP {remote_host}
+	}
+}

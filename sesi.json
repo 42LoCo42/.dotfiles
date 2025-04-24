@@ -41,25 +41,11 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "DKMn_E_zuAyC-2-bVyXfON_iY0SHhKuDcY8AdsGC6Qx5X4pHS9UvTcVgtPbReT_MS3ef_4xfGIdFkqGRMPSRZLAALoAAvylPiI7q7S4vuVE"
 		}
 	},
-	"machine/bunny/authelia": {
-		"enc": "9577cP07TTb4CR-GeATUY4lFkOi7vJInlrQWPRIpedCwrxoBxYfpncn0fo0QkM9YLTubQwYHfZ4ON9k0V5DYAXFcm-Vd6-H1OaOBxyM08pYR-sy-WzA-3WYxAmiqnOHwx4c68PsyG6tcycljH5ZveunWvVJt3_nVBTixFxeIv-5m5k2K6aqmggv1V9hFfNELyshCoNxM7JAyaUOI3q0V7Czmu04E3ig5BTyGCnpruQ57vIHVKtyWtOZjQwqkuMhePdbbJ12S6Nomwf_auf_d92VxT_wXCXb-tfLXiRcaS-BAJzR0ipcazyCLI5lmp1z8uTeXHZ1__IAa11L96wWUsSEhVIgm8xKp4FFoqCk-9tAw2xX_SG1-yeyoyPOOgaXKN-vEN89St1mrGHNPIovdp76RLobb8bjotiDT4OrBSnSfOnl0vicV1fvzFIckKqF7pexNWxyoPtty8u30B1qXi4ydOtBGdKN6ZD0AS7coFJRTlaX4qPkvNKO31aHvYXOi2mFzOLC0C2gB1VFLjvlljdVpwjXISkn_0qMydtSRZE11KkLtn_tOaoAsFEk630j5S4HxWQql7or2ofNDl4CLX_wR8-7ew_JTQr033tKit_XTL1kv8Tp6NjeT2Chbjhs8CEGbv0w_WbakpvPUGP_WslX1fkzR27CcHAxZv86fENVlK-B0QSGlCeZYxWPZ7Dsv-rgZhsCCGKiLtuYFzuN9OOa8854ihGX8JOIjkSErqktJ",
-		"rcp": {
-			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "FiEEPKZ-UsI9M3I-mDb7lEwKVPCcheXm0hq7S9N1Iwh8djMYbRlOawnMEQ6R3GU0YymnX8mdFD1WPbFmzh1tiljWB964GcntAB6qHxkIDPI",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "eAFHrjNaDDVwVQMKZHg3HG7u3J0lLO2yzqhRcdbckwOEFPQ1f9rimLDueic8uYXyOonL8tonxEnnCIjo9WoYi05NJcl4Q6gGpNglJIe-zNc"
-		}
-	},
 	"machine/bunny/email-oauth2-proxy": {
 		"enc": "Ik4X5A7w7gPZxjXx2fp8ZV2ioqxiXAGl_Mvcr1Ut1_xljGOaO00b0E7vQIh-ol_5gyBU9YSgR4EuAHA0m0xHLYw7DSmIR7QEHxHvwnTsqPhG2FoDac63ycdtpRoaYeKZ9aFpZ_H2rXl0Ruk5fRP8CCsqvC-zR1Y8Yaeo8cyl-sAXtNFcODXK9FqgJpEupKxqx9nd16O-ouiJgkHWz0jxEa610IC_Q-6hovCQOg",
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "qfCdLFIDLNNnNugDRCjCraXXakZuGN-xyFn7_xtGBE7P0gB21sylUrQMzn9GhDqnvmq_mcroY5qsLaQitE7RwAzWPD9719GDBb8kj3aubVk",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "0qtF6zTSYefPU__tNSJhYYcJjnZm_zGmBItlcJt73hdIf6aEKV0hzEh2TALhS1DujT2MldUWhChgMHxpdvsL2G_2zIMgo5f4WM5vG0ppws0"
-		}
-	},
-	"machine/bunny/firefox-sync": {
-		"enc": "kgH_yEgb9YSnrdKMwKo3glLpSbz__Bh2nkLnpds2UoZMCzvg3zZ19hRgVbScrLknFFNNDlSBT_28iV2MKE8Odjezz1HToZCJ-bHnmuaYfGRdJs3Fku-IvVLLTP8T7sU_tPgcEaB7OjpF90XB4S_jYGI6DwjYBVmUFdmDvACPbmBcjJOpLPLBPvCmRQIniGHJQGD0EMDJOgJjxsEJuUZeuGUuriQ33bjVeVhfcGYb-u7ihS6WeQZ7SbdarLKvE4SuJd_Wjaw99YbFokT_2-nGQ-o6eX8NohyS4Q",
-		"rcp": {
-			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "nhJRJHhbDcN-s5lU2vvtgnxKadZQjBM5HJiwPfaJASgSpuXqFanRqWnSBSzdOpkihoc4cWMLfyajF1OjJi9tECjZE8OCIjVx5xU4Z96Wopk",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "IHCUJswitytbtGvzgjdDOtZYBTGurUlbYTtnJBC17iKuDrLUpObljCxdFGMn8Pejr8sov8osWHmSF_2KsOfGiBvudB11IPZCwf9w0PYhxi8"
 		}
 	},
 	"machine/bunny/forgejo": {
@@ -83,20 +69,6 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "BXmHbJdak16f5niqFx2fBKlNG4g1S2xG9GDirY3i_jPFPzW1NGXhkzjBShr4Ec6z3qlPbMtie_93ZhckyaM5AmJy5jhBDtJSFxISVST3U38"
 		}
 	},
-	"machine/bunny/lldap": {
-		"enc": "vV2y_hsOBFsCpy3tlaTsj3d_fl2R3O7Z2y4X-JGG97-EIg5hSbPeet8nxE6y5KGSI0g25pAOwmftZsdhXGdAvdHfBz67lbmHS0zizU_cyAb9PuuImo2Fe7FgH-g71DplcK905c3kTaPx_yVVWiK__KI8JZBzGt34V8x5-0maAP4F7vKnF21pqq6SDckYszw46Edai9fNklcNt717y4l-ST5O1QsRPC_khart-vJ2ygSzwPrukCGNGJ-3NpbdDo7Sj0WPsCyzBir4yHOTW_Wj59R6yDdYcvCEJ0a6QqkNhEQRAwtnzYgVVSgZJOJQ42fCUHVN3-9GMbXPT5bVcAJZsgyfph1EYd319jOpVg7pQX6AJ663_Qdyl2h2JFv6tG3IhiPEyjH6xKPROYp_Fw",
-		"rcp": {
-			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "7sWujm8hFlZRnF9hGF9wqUylZzTfqC2Jq3hjrtVXz01m84eui_Ou6T76Z272AsqGtJJk2043KuF26KA1Ogn9agOJTj6k4VhoqkDvwkDSi6A",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "XunryRVIDtlfbAB1KNJXAoxezG-N53TzTX83P2_9-BKgIc_WHrYiO5k7NkfV5vpOpU0tE5J-L9GNdGBRqbVCUzflEihTkBdbTkgK1A8vm7Q"
-		}
-	},
-	"machine/bunny/photoview": {
-		"enc": "SjDh1ZbGP7wSmHDw8lJbrSDTKUV0c-eKzj9Wpl50RGIVRA_MAOaa5G1cvDZ9iLwdVAShp-qo717jO4V97rsbIDfNhy5wGsrQbppg7ttfaWQlHea8d6RdpB2MJ8CxwDDwC83jI1njHeKHTA3eHiXVMV-OPoEGw-Xp67lsJMmny7TEpF_VKd9PuQ",
-		"rcp": {
-			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "cYMtO1TBavAK7E0wes8rD5ya1Bxp16lbDJYdgcwOf1MMYocrU5aNN5FlnO2HjYLQLcG0QzUJS35vKYjt7K4mllW-7dSf11RpoLH1cDmsmVw",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "5-0pewPjwviGUKniIz6r3nkx8sPMFqHK6f7LUhvpWDSvvQe6cFAOGG-7a52bZbtEcbnkrNtMGgOrnJCFI_1LiVsH4IU-cc02Q-FRbrXxu9s"
-		}
-	},
 	"machine/bunny/rustdesk": {
 		"enc": "BHDaT_5AhD41k-wmNEGgqyzO1UnlMfYLT0KSxfQ9EfCITqbAoTjvYtA4bCgTMOey2bZ7aQDcgNMABTHiwhrH4Zfiey4-qgr1hrneJf1OGbBwAtYVAOW8mmThRuCf5YaVkTgMqj8vupYpv7OpqQPAk1ygZeL1A9uOFe2fEI6kQgLJ",
 		"rcp": {
@@ -109,20 +81,6 @@
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "X2WftMhVzyNjfOQ691GvpFs9VPXTg_TxVcQWe1e91mVsRvoN2GNWaf1L5XJ6kAi8nbHNOicDlp2o-ok1iIb0ul88cweq9tcQEBlX7WUxIbM",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "E8H8V0yrz-c0k_n-4R7UKsnnkZESh3qDdfvaWVa4Rk_H9ker3hffYU7m9vzHGR0P1LRrfDd4F_F1bGvJzfGuEWuhQvA1aN1RjgyKIWvg7eU"
-		}
-	},
-	"machine/bunny/synapse/secrets": {
-		"enc": "0pUNWShLh91Mj2BUbXTVIS-FPgXe9pqLSR2zCebvSkt9ZmovRztnvm5IQNJVkNJmb7soBlL2sisD5AGKUOykgnzbkESRy5foBh7SzuUE7qFBcb8Jvg-jN4MmVgXXDsM5R1EWGqU9hXAUnhGL_i2MRuM4g3jpO1bbP0ZlomK6MfUrW-6XxWuYzZ69xxy0qcXG_aNL6Dx7DCbObSH3B8G3msSlhMxCBt1cYqKXD9kTR0jbbW6EKUTXIbcrYPg43CAavITYNjt5DSTP1zHsTuanu2GtXt96JAKvfFo-vXzAIbnU6J3n5QBIUU-ZV2LTA9oKD9DSUz4ujd4x8ZwcWl84OdihXMmFYrYb7coUKTQsX-PEM00hNXCcBk3l8qECtScXLz1hywLE3qGhtMRVIjN8sp_nnCWJ5DdMH3RyY_NAgt-qi4i-15FGU5pBC_2ELPz2ev7LVgNBcjz-bDHERo9yFG4VCW2eobFn9CP2clPcQcMfzKdNtl7KZfOuhcfFn4nH9y1b08A7nKnoBJ2mKKNU0jX7KzKnUnbCtPuwmb2aeAA3E7Otk681dlonCDr0GURKreoTYrZEbh7v_ooTMIVw",
-		"rcp": {
-			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "YsoUR2n5Yc8W1WeKB0bYPwqTu0XWCdtA39x3asFm2Q4kcSFol9x1xRy_PGNVV6AWh9tiby3yC4rtUJT-6c3_qjp3-ByhvVXsQ_CjrMDQP2k",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "worROjDmZRTwQIIT0gCyaiY_mCeBs27q8Excg_0ECHFUhKGlp8qfcla-LrO-aTn7LIv6Lh3Ziw-7-0Pm9W5XypysiTon5IUUs5C5IytJhKI"
-		}
-	},
-	"machine/bunny/synapse/signing-key": {
-		"enc": "kw9cSYCS2hQXQtUPHTebqWBIUG0d_3bhQlapiubl8sBUsTOKG51yPWitw7lrCGuIPfKbH2yiw6jrxbzoIJrlIFWKkHENK9cyfu9YpyR3X-N3Ee6xA39CPA_kwZb1SfOrnqR8",
-		"rcp": {
-			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "oVIixt-j1sCybjo1IB_4x8D4SizScSQ-MANOCoLEQS_OlSY7H0c-kexXLRw4mXzf-D2TY14AvfIpDC0p8e0Q-JspoEHC_KANOuAR2KeKOWE",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "OqKa9oYryi479MLnWFMeeULDh2r8cZXX7hdCnkknrXoY4JKMjJuqUHEZv1bEuPibKV5_VPi3lg6wrb_dJPJWwT6dH_NnyUC0zxfTm2CBr3U"
 		}
 	},
 	"machine/bunny/tailscaled": {

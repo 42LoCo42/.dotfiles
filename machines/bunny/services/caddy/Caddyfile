@@ -56,22 +56,8 @@
 	}
 }
 
-(auth) {
-	# allow optional matcher
-	forward_auth {args[:]} authelia:8080 {
-		uri /api/authz/forward-auth
-		copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
-	}
-}
-
 {$DOMAIN} {
 	import default
-
-	# ##### synapse #####
-	# header /.well-known/matrix/* Content-Type application/json
-	# header /.well-known/matrix/* Access-Control-Allow-Origin *
-	# respond /.well-known/matrix/server `{"m.server": "matrix.{$DOMAIN}:443"}`
-	# respond /.well-known/matrix/client `{"m.homeserver":{"base_url":"https://matrix.{$DOMAIN}"}}`
 
 	##### homepage #####
 	root * /srv/homepage
@@ -100,16 +86,11 @@ attic-default.{$DOMAIN} {
 	}
 }
 
-auth.{$DOMAIN} {
-	import default
-	reverse_proxy authelia:8080
-}
-
-avh.{$DOMAIN} {
-	import default
-	import auth
-	reverse_proxy avh:8080
-}
+# TODO build better UI
+# avh.{$DOMAIN} {
+# 	import default
+# 	reverse_proxy avh:8080
+# }
 
 chronometer.{$DOMAIN} {
 	import default
@@ -122,21 +103,7 @@ emailproxy.{$DOMAIN} {
 	reverse_proxy email-oauth2-proxy:8080
 }
 
-# element.{$DOMAIN} {
-# 	import default
-# 	root * /srv/element
-# 	file_server
-# }
-
-# firefox-sync.{$DOMAIN} {
-# 	import default
-# 	reverse_proxy firefox-sync:8080
-# }
-
 img.{$DOMAIN} {
-	# import default
-	# import auth
-	# reverse_proxy photoview:4001
 	import default
 	reverse_proxy immich-public-proxy:8080
 }
@@ -145,19 +112,6 @@ headscale.{$DOMAIN} {
 	import default
 	reverse_proxy headscale:8080
 }
-
-ldap.{$DOMAIN} {
-	import default
-	import auth
-	reverse_proxy lldap:8080
-}
-
-# matrix.{$DOMAIN} {
-# 	import default
-# 	reverse_proxy /_matrix/* synapse:8080
-# 	reverse_proxy /_synapse/client/* synapse:8080
-# }
-
 
 rd.{$DOMAIN} {
 	import default
@@ -187,8 +141,14 @@ vencloud.{$DOMAIN} {
 
 vw.{$DOMAIN} {
 	import default
-	import auth /admin*
-	reverse_proxy vaultwarden:8080 {
+
+	@notblacklisted {
+		not {
+			path /admin*
+		}
+	}
+
+	reverse_proxy @notblacklisted vaultwarden:8080 {
 		header_up X-Real-IP {remote_host}
 	}
 }

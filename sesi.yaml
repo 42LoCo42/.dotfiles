@@ -41,18 +41,11 @@ machine:
     key:
 
     attic:
-    authelia:
     email-oauth2-proxy:
-    firefox-sync:
     forgejo:
     immich:
-    lldap:
-    photoview:
     rustdesk:
     searxng:
-    synapse:
-      secrets:
-      signing-key:
     tailscaled:
     tscaddy:
     vaultwarden:

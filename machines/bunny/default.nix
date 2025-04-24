@@ -1,6 +1,6 @@
 { pkgs, config, lib, aquaris, ... }:
 let
-  inherit (lib) concatMapStringsSep mkOption pipe splitString;
+  inherit (lib) mkOption pipe;
   inherit (lib.types) functionTo package str;
 in
 {
@@ -15,20 +15,12 @@ in
       default = "eleonora.gay";
     };
 
-    dn = mkOption {
-      type = str;
-      default = pipe config.rice.domain [
-        (splitString ".")
-        (concatMapStringsSep "," (x: "dc=" + x))
-      ];
-    };
-
     subsDomain = mkOption {
       type = functionTo package;
       default = file: aquaris.lib.subsF {
         inherit file;
         func = pkgs.writeText;
-        subs = { inherit (config.rice) domain dn; };
+        subs = { inherit (config.rice) domain; };
       };
     };
 
