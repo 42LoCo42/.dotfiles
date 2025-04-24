@@ -16,6 +16,7 @@
           avh
           caddyfile-language-server
           chronometer
+          email-oauth2-proxy
           ferroxide
           flameshot-grim
           glfw3-minecraft-extra

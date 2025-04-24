@@ -32,7 +32,10 @@ session:
 
 notifier:
   smtp:
-    address: "submission://smtp.gmail.com:587"
+    address: "smtp://email-oauth2-proxy:2465"
+    disable_require_tls: true
+    disable_starttls: true
+    username: "11213kbm@gmail.com"
     sender: "authelia@@domain@"
 
 access_control:

@@ -8,10 +8,10 @@
       LLDAP_HTTP_URL = "https://ldap.${config.rice.domain}";
 
       LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET = "true";
-      LLDAP_SMTP_OPTIONS__FROM = "ldap@${config.rice.domain}";
-      LLDAP_SMTP_OPTIONS__SERVER = "smtp.gmail.com";
-      LLDAP_SMTP_OPTIONS__PORT = "587";
-      LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION = "STARTTLS";
+      LLDAP_SMTP_OPTIONS__SERVER = "email-oauth2-proxy";
+      LLDAP_SMTP_OPTIONS__PORT = "2465";
+      LLDAP_SMTP_OPTIONS__USER = "11213kbm@gmail.com";
+      LLDAP_SMTP_OPTIONS__PASSWORD = "ignored";
     };
     environmentFiles = [ (config.aquaris.secret "@machine/lldap") ];
   };

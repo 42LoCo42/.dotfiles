@@ -9,6 +9,7 @@
     ./authelia
     ./avh.nix
     ./caddy
+    ./email-oauth2-proxy
     ./forgejo
     ./headscale
     ./immich

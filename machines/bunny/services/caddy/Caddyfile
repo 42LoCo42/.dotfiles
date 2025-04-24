@@ -117,6 +117,11 @@ chronometer.{$DOMAIN} {
 	file_server
 }
 
+emailproxy.{$DOMAIN} {
+	import default
+	reverse_proxy email-oauth2-proxy:8080
+}
+
 # element.{$DOMAIN} {
 # 	import default
 # 	root * /srv/element
