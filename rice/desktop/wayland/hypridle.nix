@@ -1,10 +1,34 @@
-{ lib, config, ... }: {
-  options.rice.desktop.wayland.hypridle.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+{ lib, config, ... }: let
+  inherit (lib) mkIf mkOption;
+  inherit (lib.types) bool int;
+  cfg = config.rice.desktop.wayland.hypridle;
+in
+{
+  options.rice.desktop.wayland.hypridle = {
+    enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    timeouts = {
+      lock = mkOption {
+        type = int;
+        default = 300;
+      };
+
+      dpms = mkOption {
+        type = int;
+        default = cfg.timeouts.lock + 5;
+      };
+
+      suspend = mkOption {
+        type = int;
+        default = 600;
+      };
+    };
   };
 
-  config = lib.mkIf config.rice.desktop.wayland.hypridle.enable {
+  config = mkIf cfg.enable {
     home-manager.sharedModules = [{
       services.hypridle = {
         enable = true;
@@ -16,16 +40,16 @@
 
           listener = [
             {
-              timeout = 300;
+              timeout = cfg.timeouts.lock;
               on-timeout = "loginctl lock-session";
             }
             {
-              timeout = 305;
+              timeout = cfg.timeouts.dpms;
               on-timeout = "hyprctl dispatch dpms off";
               on-resume = "hyprctl dispatch dpms on";
             }
             {
-              timeout = 600;
+              timeout = cfg.timeouts.suspend;
               on-timeout = "systemctl suspend";
             }
           ];

@@ -50,6 +50,11 @@ let inherit (config.rice.ssh) proxy; in
           '';
         };
 
+        hypridle.timeouts = {
+          lock = 900;     # 15 min
+          suspend = 2700; # 45 min
+        };
+
         waybar.icons = {
           "1" = "";
           "2" = "";
