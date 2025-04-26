@@ -49,6 +49,11 @@ in
 
       wayland.windowManager.hyprland = {
         enable = true;
+
+        plugins = with pkgs.hyprlandPlugins; [
+          hypr-dynamic-cursors
+        ];
+
         extraConfig = pipe ./hyprland.conf [
           builtins.readFile
           (x: builtins.concatStringsSep "\n" [
