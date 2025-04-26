@@ -74,6 +74,8 @@ in
         secureboot = false;
       };
 
+      secrets.pub = "XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs";
+
       filesystems = { fs, ... }: {
         disks."/dev/disk/by-id/scsi-36024c6ac39264da98ce1a64b9fab7a20".partitions = [
           fs.defaultBoot

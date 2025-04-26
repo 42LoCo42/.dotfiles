@@ -15,6 +15,8 @@
       secureboot = false;
     };
 
+    secrets.pub = "XKjp1ZlWTBBb2s6WVz-JMOj4S_QPIkDZ0t-C8ryP5Uo";
+
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/nvme-CT1000P3SSD8_2320E6D694B5_1".partitions = [
         fs.defaultBoot

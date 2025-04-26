@@ -3,6 +3,7 @@
 
   aquaris = {
     machine.id = "c426b77d7a1940ba98f0cdcf669cd11c";
+    secrets.pub = "w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI";
 
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/wwn-0x5002538f415750ea".partitions = [
