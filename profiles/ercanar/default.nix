@@ -119,6 +119,12 @@ let inherit (config.rice.ssh) proxy; in
         # google earth
         ".config/Google" = { };
         ".googleearth" = { };
+
+        # steam games
+        ".config/Vampire_Survivors" = { };
+        ".config/Vampire_Survivors_461785915" = { };
+        ".config/Vampire_Survivors_Data" = { };
+        ".factorio" = { };
       };
     };
 
