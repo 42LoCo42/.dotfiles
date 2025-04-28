@@ -1,7 +1,7 @@
 { pkgs, config, lib, aquaris, ... }:
 let
-  inherit (lib) mkOption pipe;
-  inherit (lib.types) functionTo package str;
+  inherit (lib) flatten mkOption pipe;
+  inherit (lib.types) functionTo listOf package str;
 in
 {
   imports = [
@@ -31,6 +31,18 @@ in
         cc -Wall -Wextra -Werror -O3 -static -flto ${./invfork.c} -o $out
         strip -s $out
       '';
+    };
+
+    redis = mkOption {
+      type = listOf str;
+      default = flatten [
+        [ (lib.getExe pkgs.tini) "--" ]
+        (config.rice.invfork.outPath)
+        (lib.getExe' pkgs.redis "redis-server")
+        [ "--dir" "/data" ]
+        [ "--bind" "127.0.0.1" ]
+        "--"
+      ];
     };
 
     homepage = mkOption {

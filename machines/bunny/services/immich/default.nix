@@ -20,11 +20,13 @@
 
   virtualisation.pnoc = {
     immich = {
-      cmd = [ (lib.getExe pkgs.immich) ];
+      cmd = config.rice.redis ++ [ (lib.getExe pkgs.immich) ];
 
       environment = {
         IMMICH_PORT = "8080";
         IMMICH_MEDIA_LOCATION = "/data";
+
+        REDIS_HOSTNAME = "localhost";
 
         DB_HOSTNAME = "postgres";
         DB_USERNAME = "immich";

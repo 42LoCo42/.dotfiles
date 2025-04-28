@@ -1,10 +1,11 @@
 { pkgs, lib, config, ... }: {
   virtualisation.pnoc.vencloud = {
-    cmd = [ (lib.getExe pkgs.vencloud) ];
+    cmd = config.rice.redis ++ [ (lib.getExe pkgs.vencloud) ];
+
     environment = {
       HOST = "0.0.0.0";
       PORT = "8080";
-      REDIS_URI = "redis:6379";
+      REDIS_URI = "localhost:6379";
 
       ROOT_REDIRECT = "https://github.com/Vencord/Vencloud";
 
@@ -14,6 +15,9 @@
 
       PROXY_HEADER = "X-Forwarded-For";
     };
+
     environmentFiles = [ (config.aquaris.secret "@machine/vencloud") ];
+
+    volumes = [ "vencloud:/data" ];
   };
 }

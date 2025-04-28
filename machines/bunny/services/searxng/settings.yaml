@@ -8,7 +8,7 @@ ui:
   static_use_hash: true
 
 redis:
-  url: redis://redis:6379/0
+  url: redis://localhost:6379/0
 
 enabled_plugins:
   - 'Hostnames plugin' # https://docs.searxng.org/src/searx.plugins.hostnames.html

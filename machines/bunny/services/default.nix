@@ -11,7 +11,6 @@
     ./mycorrhiza
     ./pinlist.nix
     ./postgres
-    ./redis.nix
     ./rustdesk
     ./searxng
     ./ssh.nix
