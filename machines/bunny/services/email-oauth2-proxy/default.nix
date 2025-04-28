@@ -1,4 +1,9 @@
 { pkgs, lib, config, ... }: {
+  rice.caddy.cfg.emailproxy = ''
+    import default
+    reverse_proxy email-oauth2-proxy:8080
+  '';
+
   virtualisation.pnoc.email-oauth2-proxy = {
     cmd = [
       (lib.getExe (pkgs.writeShellApplication {

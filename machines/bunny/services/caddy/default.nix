@@ -1,36 +1,78 @@
-{ pkgs, lib, config, ... }: {
-  networking.firewall = {
-    allowedTCPPorts = [ 80 443 ];
-    allowedUDPPorts = [ 443 ]; # QUIC
-  };
+{ pkgs, lib, config, ... }:
+let
+  inherit (lib)
+    concatLines
+    getExe
+    mapAttrsToList
+    mkOption
+    pipe
+    splitString
+    ;
+  inherit (lib.types)
+    attrsOf
+    lines
+    listOf
+    str
+    ;
 
-  virtualisation.pnoc.caddy = {
-    cmd = [ (lib.getExe pkgs.caddy) "run" ];
-
-    environment = {
-      DOMAIN = config.rice.domain;
-
-      XDG_CONFIG_HOME = "/data/config";
-      XDG_DATA_HOME = "/data/data";
+  caddyfile = pipe config.rice.caddy.cfg [
+    (mapAttrsToList (k: v: pipe v [
+      (splitString "\n")
+      (map (x: "  " + x))
+      concatLines
+      (v: ''
+        ${if k == "" then "" else "${k}."}{$DOMAIN} {
+        ${v}}
+      '')
+    ]))
+    concatLines
+    (x: builtins.readFile ./Caddyfile + x)
+    (pkgs.writeText "Caddyfile")
+  ];
+in
+{
+  options.rice.caddy = {
+    cfg = mkOption {
+      type = attrsOf lines;
+      default = "";
     };
 
-    ports = [
-      "80:8080"
-      "443:8443"
-      "443:8443/udp"
-    ];
+    volumes = mkOption {
+      type = listOf str;
+      default = [ ];
+    };
+  };
 
-    volumes = [
-      "caddy:/data"
-      "${./Caddyfile}:/Caddyfile:ro"
+  config = {
+    rice.caddy = {
+      volumes = [
+        "caddy:/data"
+        "${caddyfile}:/Caddyfile:ro"
+      ];
+    };
 
-      "${config.rice.homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
-      "/persist/home/admin/hidden:/srv/homepage/foo:ro"
+    networking.firewall = {
+      allowedTCPPorts = [ 80 443 ];
+      allowedUDPPorts = [ 443 ]; # QUIC
+    };
 
-      "${pkgs.chronometer}:/srv/chronometer:ro"
+    virtualisation.pnoc.caddy = {
+      cmd = [ (getExe pkgs.caddy) "run" ];
 
-      # "${pkgs.element-web}:/srv/element:ro"
-      # "${subsDomain ./element.json}:/srv/element/config.json:ro"
-    ];
+      environment = {
+        DOMAIN = config.rice.domain;
+
+        XDG_CONFIG_HOME = "/data/config";
+        XDG_DATA_HOME = "/data/data";
+      };
+
+      ports = [
+        "80:8080"
+        "443:8443"
+        "443:8443/udp"
+      ];
+
+      inherit (config.rice.caddy) volumes;
+    };
   };
 }

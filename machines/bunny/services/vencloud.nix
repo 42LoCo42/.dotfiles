@@ -1,4 +1,9 @@
 { pkgs, lib, config, ... }: {
+  rice.caddy.cfg.vencloud = ''
+    header ?Access-Control-Allow-Origin *
+    redir https://vencloud.bunny{uri}
+  '';
+
   virtualisation.pnoc.vencloud = {
     cmd = config.rice.redis ++ [ (lib.getExe pkgs.vencloud) ];
 

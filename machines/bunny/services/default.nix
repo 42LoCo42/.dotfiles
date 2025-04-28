@@ -1,10 +1,13 @@
 {
   imports = [
     ./attic
+    ./avh.nix
     ./caddy
+    ./chronometer.nix
     ./email-oauth2-proxy
     ./forgejo
     ./headscale
+    ./homepage.nix
     ./immich
     ./immich-public-proxy
     ./mount-dcim.nix

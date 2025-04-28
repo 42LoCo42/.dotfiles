@@ -1,4 +1,17 @@
 { pkgs, lib, aquaris, ... }: {
+  rice.caddy.cfg.rd = ''
+    import default
+    header Content-Type text/html
+    respond <<HTML
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta http-equiv='refresh' content='0; URL=https://{$DOMAIN}/foo/rustdesk--9JSPRRmaX1merRHZIpUSLlXbTx0QS1GMTZlMSdFSCBjYJd0NMRGTEl1csBDaEJiOikXZrJCLiIiOikGchJCLiIiOikXYsVmciwiI5F2ZuEmcv52blxWZiojI0N3boJye--.exe'>
+      </head>
+    </html>
+    HTML 200
+  '';
+
   networking.firewall = {
     allowedTCPPorts = [
       21115

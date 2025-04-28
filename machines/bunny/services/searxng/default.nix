@@ -1,4 +1,12 @@
 { pkgs, lib, config, ... }: {
+  rice.caddy.cfg.searx = ''
+    import default
+    reverse_proxy searxng:8888 {
+      header_up X-Forwarded-Port {http.request.port}
+      header_up X-Real-IP {remote_host}
+    }
+  '';
+
   virtualisation.pnoc.searxng = {
     cmd = config.rice.redis ++ [ (lib.getExe' pkgs.searxng "searxng-run") ];
 

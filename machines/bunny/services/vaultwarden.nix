@@ -1,6 +1,21 @@
 { pkgs, lib, config, ... }: {
+  rice.caddy.cfg.vw = ''
+    import default
+
+    @notblacklisted {
+      not {
+        path /admin*
+      }
+    }
+
+    reverse_proxy @notblacklisted vaultwarden:8080 {
+      header_up X-Real-IP {remote_host}
+    }
+  '';
+
   virtualisation.pnoc.vaultwarden = {
     cmd = [ (lib.getExe pkgs.vaultwarden) ];
+
     environment = {
       ROCKET_ADDRESS = "0.0.0.0";
       ROCKET_PORT = "8080";
@@ -17,7 +32,9 @@
 
       WEB_VAULT_FOLDER = "${pkgs.vaultwarden.webvault}/share/vaultwarden/vault";
     };
+
     environmentFiles = [ (config.aquaris.secret "@machine/vaultwarden") ];
+
     volumes = [ "vaultwarden:/data" ];
   };
 }
