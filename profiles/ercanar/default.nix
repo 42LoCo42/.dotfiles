@@ -3,6 +3,11 @@ let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../../rice ./aliases.nix ];
 
+  # TODO move into rice like unfreeNames
+  nixpkgs.config.allowInsecurePredicate = p: builtins.elem (lib.getName p) [
+    "googleearth-pro"
+  ];
+
   aquaris = {
     users = pkgs.lib.mkMerge [
       { inherit (aquaris.cfg.users) ercanar; }
@@ -79,6 +84,7 @@ let inherit (config.rice.ssh) proxy; in
     tailscale.enable = true;
 
     unfreeNames = [
+      "googleearth-pro"
       "steam"
       "steam-unwrapped"
     ];
@@ -109,11 +115,16 @@ let inherit (config.rice.ssh) proxy; in
         ".config/rustdesk" = { };
 
         ".local/share/Steam" = { };
+
+        # google earth
+        ".config/Google" = { };
+        ".googleearth" = { };
       };
     };
 
     home.packages = with pkgs; [
       gimp
+      googleearth-pro
       libreoffice
       musescore
       rustdesk-flutter
