@@ -8,10 +8,13 @@
     hardware.sane = {
       enable = true;
       extraBackends = [ pkgs.sane-airscan ];
+      disabledDefaultBackends = [ "escl" ];
       openFirewall = true;
     };
 
     services = {
+      udev.packages = [ pkgs.sane-airscan ];
+
       avahi = {
         enable = true;
         nssmdns4 = true;
