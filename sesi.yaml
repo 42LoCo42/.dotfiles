@@ -60,6 +60,7 @@ machine:
 
     key:
     ncps:
+    paperless:
 
   satinor:
     :key: ow1SvzI5RFVro8k71KpKMtt-TCnQun4FMy6l0Bt-dSg

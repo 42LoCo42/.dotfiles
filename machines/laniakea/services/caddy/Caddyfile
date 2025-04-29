@@ -39,6 +39,13 @@ laniakea.fritz.box:8501 {
 	reverse_proxy ncps:8501
 }
 
+##### paperless #####
+
+# reachable from VPN
+doc.laniakea {
+	reverse_proxy paperless:8080
+}
+
 ##### qbittorrent #####
 
 # reachable from VPN

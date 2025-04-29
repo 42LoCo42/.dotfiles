@@ -1,10 +1,14 @@
 { pkgs, lib, config, aquaris, ... }:
 let
   inherit (lib)
+    concatLines
     flatten
+    flip
     getExe
     getExe'
+    mapAttrsToList
     mkOption
+    pipe
     ;
   inherit (lib.types)
     functionTo
@@ -46,6 +50,25 @@ in
         [ "--dir" "/data" ]
         [ "--bind" "127.0.0.1" ]
         "--"
+      ];
+    };
+
+    mkRunit = mkOption {
+      type = functionTo package;
+      default = flip pipe [
+        (mapAttrsToList (k: v: ''
+          mkdir -p $out/${k}
+
+          cat <<\EOF > $out/${k}/run
+          #!${getExe pkgs.bash}
+          ${v}
+          EOF
+          chmod +x $out/${k}/run
+
+          ln -s /tmp/${k}.supervise $out/${k}/supervise
+        ''))
+        concatLines
+        (pkgs.runCommand "runit-services" { })
       ];
     };
   };
