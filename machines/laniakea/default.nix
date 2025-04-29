@@ -37,6 +37,8 @@
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";
 
   rice = {
+    domain = "laniakea";
+
     ca.enable = true;
     nixremote.enable = true;
     tailscale.enable = true;

@@ -1,5 +1,5 @@
 { pkgs, aquaris, ... }: {
-  imports = [ ../../rice ];
+  imports = [ ../../rice ./options.nix ];
 
   nixpkgs.overlays = [
     (_: pkgs: {
