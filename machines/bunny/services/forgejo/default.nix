@@ -16,8 +16,6 @@
 
     environmentFiles = [ (config.aquaris.secret "@machine/forgejo") ];
 
-    extraOptions = [ "--tmpfs=/tmp" ];
-
     volumes = [
       "forgejo:/data"
 

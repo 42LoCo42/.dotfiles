@@ -53,8 +53,6 @@
         MPLCONFIGDIR = "/data/matplotlib";
       };
 
-      extraOptions = [ "--tmpfs=/tmp" ];
-
       volumes = [ "immich-machine-learning:/data" ];
     };
   };

@@ -8,6 +8,7 @@ let
     mapAttrs'
     mkBefore
     mkIf
+    mkMerge
     mkOption
     pipe
     splitString
@@ -112,10 +113,22 @@ let
         SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
       };
 
-      extraOptions = [ "--hostuser" name "--tz" top.config.time.timeZone ];
+      extraOptions = [
+        "--read-only"
+        "--tmpfs=/tmp"
+        "--tz=${top.config.time.timeZone}"
+      ];
 
-      extraOptionsRaw = (flip map config.secrets)
-        (x: ''-v "''${CREDENTIALS_DIRECTORY}/${x.name}:${x.cont}:ro"'');
+      extraOptionsRaw = mkMerge [
+        [
+          ''--user="$CUID:$CGID"''
+          ''--passwd-entry="${name}:x:$CUID:$CGID:${name}:/:/bin/sh"''
+          ''--group-entry="${name}:x:$CGID:"''
+        ]
+
+        ((flip map config.secrets)
+          (x: ''-v "''${CREDENTIALS_DIRECTORY}/${x.name}:${x.cont}:ro"''))
+      ];
     };
   };
 
@@ -177,22 +190,31 @@ in
 
     systemd.services = flip mapAttrs' cfg (name: cfg: {
       name = "podman-${name}";
-      value = mkIf (cfg.secrets != [ ]) {
-        serviceConfig = pipe cfg.secrets [
-          (map (x: { LoadCredential = "${x.name}:${x.host}"; }))
-          zipAttrs
-        ];
+      value = mkMerge [
+        {
+          script = mkBefore ''
+            CUID="$(id -u "${name}")"
+            CGID="$(id -g "${name}")"
+          '';
+        }
 
-        script = mkBefore ''
-          ${pkgs.util-linux}/bin/mount -v -o remount,rw "''${CREDENTIALS_DIRECTORY}"
+        (mkIf (cfg.secrets != [ ]) {
+          serviceConfig = pipe cfg.secrets [
+            (map (x: { LoadCredential = "${x.name}:${x.host}"; }))
+            zipAttrs
+          ];
 
-          ${join (map (x: ''
-            ${pkgs.coreutils}/bin/chown -v ${name} "''${CREDENTIALS_DIRECTORY}/${x.name}"
-          '') cfg.secrets)}
+          script = mkBefore ''
+            ${pkgs.util-linux}/bin/mount -v -o remount,rw "''${CREDENTIALS_DIRECTORY}"
 
-          ${pkgs.util-linux}/bin/mount -v -o remount,ro "''${CREDENTIALS_DIRECTORY}"
-        '';
-      };
+            ${join (map (x: ''
+              ${pkgs.coreutils}/bin/chown -v ${name} "''${CREDENTIALS_DIRECTORY}/${x.name}"
+            '') cfg.secrets)}
+
+            ${pkgs.util-linux}/bin/mount -v -o remount,ro "''${CREDENTIALS_DIRECTORY}"
+          '';
+        })
+      ];
     });
 
     virtualisation = {
@@ -219,8 +241,6 @@ in
         ];
 
         imageFile = empty;
-
-        user = name;
       });
     };
   };

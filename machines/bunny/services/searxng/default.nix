@@ -17,8 +17,6 @@
 
     environmentFiles = [ (config.aquaris.secret "@machine/searxng") ];
 
-    extraOptions = [ "--tmpfs=/tmp" ];
-
     volumes = [
       "searxng:/data"
 

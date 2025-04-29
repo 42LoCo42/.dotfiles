@@ -66,8 +66,6 @@ in
 
     environmentFiles = [ (config.aquaris.secret "@machine/paperless") ];
 
-    extraOptions = [ "--read-only" "--tmpfs=/tmp" ];
-
     volumes = [ "paperless:/data" ];
   };
 }

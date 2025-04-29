@@ -19,8 +19,6 @@
 
     environmentFiles = [ (config.aquaris.secret "@machine/email-oauth2-proxy") ];
 
-    extraOptions = [ "--tmpfs=/tmp" ];
-
     volumes = [ "email-oauth2-proxy:/data" ];
   };
 }

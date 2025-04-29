@@ -28,11 +28,6 @@ in
       UPSTREAM_PUBLIC_KEYS = ncps-caches.keys;
     };
 
-    # for some reason, /etc/passwd gets mode 600
-    # if the container image is not read-only
-    # otherwise, it gets 644
-    # ncps tries to lookup its user here, so it needs read access
-    extraOptions = [ "--read-only" ];
 
     secrets = [ "@machine/ncps:/key" ];
 

@@ -24,10 +24,7 @@
     {
       cmd = [ (lib.getExe run) ];
 
-      extraOptions = [
-        "--read-only" # for UID/GID resolution
-        "--tmpfs=/run/postgresql"
-      ];
+      extraOptions = [ "--tmpfs=/run/postgresql" ];
 
       volumes = [
         "postgres:/data"
