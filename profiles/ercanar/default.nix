@@ -90,6 +90,7 @@ let inherit (config.rice.ssh) proxy; in
     dns.enable = true;
     nixremote.enable = true;
     printer.enable = true;
+    syncthing.enable = true;
     tailscale.enable = true;
 
     unfreeNames = [
