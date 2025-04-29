@@ -23,6 +23,14 @@ let inherit (config.rice.ssh) proxy; in
     };
   };
 
+  hardware.printers = {
+    ensurePrinters = [{
+      deviceUri = "dnssd://Brother%20DCP-L2530DW%20series._ipp._tcp.local/?uuid=e3248000-80ce-11db-8000-5c619941d47e";
+      name = "Brother";
+      model = "everywhere";
+    }];
+  };
+
   rice = {
     desktop = {
       enable = true;
@@ -58,7 +66,7 @@ let inherit (config.rice.ssh) proxy; in
         };
 
         hypridle.timeouts = {
-          lock = 900;     # 15 min
+          lock = 900; # 15 min
           suspend = 2700; # 45 min
         };
 
@@ -81,6 +89,7 @@ let inherit (config.rice.ssh) proxy; in
     ca.enable = true;
     dns.enable = true;
     nixremote.enable = true;
+    printer.enable = true;
     tailscale.enable = true;
 
     unfreeNames = [
@@ -131,6 +140,7 @@ let inherit (config.rice.ssh) proxy; in
     home.packages = with pkgs; [
       gimp
       googleearth-pro
+      imagemagick
       libreoffice
       musescore
       rustdesk-flutter
