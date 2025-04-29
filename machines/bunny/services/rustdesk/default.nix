@@ -1,4 +1,4 @@
-{ pkgs, lib, aquaris, ... }: {
+{ pkgs, lib, config, ... }: {
   rice.caddy.cfg.rd = ''
     import default
     header Content-Type text/html
@@ -28,33 +28,50 @@
     let
       pubkey = "Dh0lsYDLdL7GIb0BHWR2VS0mRCLSmyKIJHdtkzmWjdQ=";
       resources = "${pkgs.rustdesk-api}/resources";
-
-      app = pkgs.writeShellApplication {
-        name = "rustdesk";
-
-        runtimeInputs = with pkgs; [
-          coreutils
-          rustdesk-server
-          rustdesk-api
-        ];
-
-        text = aquaris.lib.subsT ./start.sh {
-          inherit pubkey resources;
-
-          config = pkgs.writeText "config.yaml" ''
-            lang: en
-            app:
-              token-expire: 24h
-            gin:
-              mode: release
-              api-addr: 0.0.0.0:21114
-              resources-path: ${resources}
-          '';
-        };
-      };
+      apiconfig = pkgs.writeText "config.yaml" ''
+        lang: en
+        app:
+          token-expire: 24h
+        gin:
+          mode: release
+          api-addr: 0.0.0.0:21114
+          resources-path: ${resources}
+      '';
     in
     {
-      cmd = [ (lib.getExe app) ];
+      cmd = [
+        (lib.getExe' pkgs.runit "runsvdir")
+        (config.rice.mkRunit {
+          api = ''
+            cd /data
+
+            # work around hardcoded bullshit
+            mkdir -p data                  # DB
+            ln -sfT ${resources} resources # web templates
+
+            exec apimain -c ${apiconfig}
+          '';
+
+          hbbr = ''
+            cd /data
+            exec hbbr -k ${pubkey}
+          '';
+
+          hbbs = ''
+            cd /data
+            exec hbbs -k ${pubkey} -r localhost
+          '';
+        }).outPath
+      ];
+
+      environment = {
+        PATH = lib.makeBinPath (with pkgs; [
+          coreutils
+          runit
+          rustdesk-api
+          rustdesk-server
+        ]);
+      };
 
       ports = [
         "21115:21115"
@@ -68,7 +85,5 @@
       secrets = [ "@machine/rustdesk:/data/id_ed25519" ];
 
       volumes = [ "rustdesk:/data" ];
-
-      workdir = "/data";
     };
 }
