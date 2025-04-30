@@ -108,7 +108,7 @@
               ("C-x C-f" . find-file)
 
               ("C-#"   . (lambda () (interactive) (select-window (next-window))))
-              ("C-M-#" . (lambda () (interactive) (select-window (previous-window))))
+              ("M-#"   . (lambda () (interactive) (select-window (previous-window))))
               ("M-e"   . forward-word)
               ("M-f"   . forward-to-word)
               ("M-n"   . scroll-up-command)
@@ -348,6 +348,18 @@
           };
 
           ##### Behaviour #####
+
+          ace-window = {
+            bind' = ''
+              ("C-M-#" . ace-window)
+            '';
+
+            custom = ''
+              (aw-keys '(?a ?s ?d ?f   ?h ?j ?k ?l
+                         ?q ?w ?e ?r   ?u ?i ?o ?p))
+              (aw-scope 'frame)
+            '';
+          };
 
           direnv = {
             config = "(direnv-mode 1)";
