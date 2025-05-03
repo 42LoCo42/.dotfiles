@@ -1,9 +1,10 @@
 {
   imports = [
+    # ./paperless
+
     ./caddy
     ./mympd
     ./ncps
-    ./paperless
     ./qbittorrent
     ./syncthing
   ];
