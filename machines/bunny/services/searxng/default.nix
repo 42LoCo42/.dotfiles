@@ -1,17 +1,24 @@
 { pkgs, lib, config, ... }: {
   rice.caddy.cfg.searx = ''
     import default
-    reverse_proxy searxng:8888 {
+    reverse_proxy searxng:8080 {
       header_up X-Forwarded-Port {http.request.port}
       header_up X-Real-IP {remote_host}
     }
   '';
 
   virtualisation.pnoc.searxng = {
-    cmd = config.rice.redis ++ [ (lib.getExe' pkgs.searxng "searxng-run") ];
+    cmd = config.rice.redis ++ [
+      (lib.getExe pkgs.granian)
+      "--interface=wsgi"
+      "--workers=4"
+      "--host=0.0.0.0"
+      "--port=8080"
+      "searx.webapp:app"
+    ];
 
     environment = {
-      SEARXNG_BIND_ADDRESS = "0.0.0.0";
+      PYTHONPATH = pkgs.searxng.pythonModule.pkgs.makePythonPath [ pkgs.searxng ];
       SEARXNG_URL = "https://searx.${config.rice.domain}";
     };
 
