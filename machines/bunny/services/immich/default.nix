@@ -1,23 +1,4 @@
 { pkgs, lib, config, ... }: {
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      immich = pkgs.immich.overrideAttrs (new: _: {
-        patches = [
-          ./0001-fluent-ffmpeg-fix-stdoutRing-stderrRing-crash.patch
-        ];
-
-        patchFlags = [ "-p2" ];
-
-        npmDeps = pkgs.fetchNpmDeps {
-          name = "${new.pname}-${new.version}-npm-deps";
-          inherit (new) src patches patchFlags;
-
-          hash = "sha256-RIEc70aOWH6P3KV7qhA2vNOYAgxJAb022/BSyMRgiDA=";
-        };
-      });
-    })
-  ];
-
   virtualisation.pnoc = {
     immich = {
       cmd = config.rice.redis ++ [ (lib.getExe pkgs.immich) ];

@@ -10,6 +10,35 @@
           };
         });
 
+        immich = pkgs.immich.overrideAttrs (new: old: {
+          prePatch = (old.prePatch or "") + ''
+            cp ${new.npmDeps}/package-lock.json .
+          '';
+
+          npmDeps = pkgs.fetchNpmDeps {
+            name = "${old.pname}-${old.version}-npm-deps";
+            inherit (old) src;
+
+            nativeBuildInputs = with pkgs; [ nodejs ];
+
+            env.NODE_EXTRA_CA_CERTS =
+              "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+
+            patchPhase = ''
+              export HOME="$TMP"
+              npm install --save-exact --package-lock-only \
+                esbuild@0.23.0 \
+                ${builtins.concatStringsSep "" [
+                  "fluent-ffmpeg"
+                  "@github:fluent-ffmpeg/node-fluent-ffmpeg"
+                  "#bfc99125d3d1885c01254d47b6403c2efe9df32a"
+                ]}
+            '';
+
+            hash = "sha256-NfqtLIAVN+TSqd0RNFUTEkKiB0jNGmiTZJ+ICmqVf/A=";
+          };
+        });
+
         waybar = obscura.waybar-ipfix;
 
         inherit (obscura)
