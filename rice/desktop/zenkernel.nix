@@ -14,12 +14,10 @@ in
 
     pkgs = mkOption {
       type = raw;
-      # default = pkgs;
+      default = pkgs;
 
-      # TODO wait for ZFS 2.3.2
-      # ZFS 2.3.1 @ KRN 6.13.5-zen1
-      default = import (builtins.getFlake "github:nixos/nixpkgs/6607cf789e541e7873d40d3a8f7815ea92204f32")
-        { inherit (pkgs) system config; };
+      # default = import (builtins.getFlake "github:nixos/nixpkgs/<rev>")
+      #   { inherit (pkgs) system config; };
     };
   };
 

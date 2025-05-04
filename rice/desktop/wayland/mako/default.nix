@@ -8,18 +8,24 @@
     home-manager.sharedModules = [{
       services.mako = {
         enable = true;
-        defaultTimeout = 5000;
-        layer = "overlay";
-        extraConfig = ''
-          [urgency=critical]
-          default-timeout=0
-          border-color=#d30706
-          background-color=#f09b00
-          text-color=#000000
 
-          [app-name=flameshot]
-          invisible=true
-        '';
+        settings = {
+          default-timeout = "5000";
+          layer = "overlay";
+        };
+
+        criteria = {
+          "urgency=critical" = {
+            default-timeout = "0";
+            border-color = "#d30706";
+            background-color = "#f09b00";
+            text-color = "#000000";
+          };
+
+          "app-name=flameshot" = {
+            invisible = "true";
+          };
+        };
       };
 
       xdg = {
