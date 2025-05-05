@@ -9,6 +9,8 @@
 
     programs.gamemode.enable = true;
 
+    rice.unfreeNames = [ "p7zip" ];
+
     home-manager.sharedModules = [{
       home = {
         packages = with pkgs; [
@@ -16,7 +18,7 @@
           cryptsetup
           feh
           mpv
-          p7zip
+          p7zip-rar
           pwgen
           python3
           wf-recorder
