@@ -17,6 +17,8 @@
     device = "/dev/disk/by-id/ata-JAJM600M1TB_AA202100000000000773-part1";
   };
 
+  hardware.amdgpu.opencl.enable = true;
+
   rice.desktop = {
     udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 

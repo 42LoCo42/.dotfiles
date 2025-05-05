@@ -25,7 +25,7 @@ let inherit (config.rice.ssh) proxy; in
 
   hardware.printers = {
     ensurePrinters = [{
-      deviceUri = "dnssd://Brother%20DCP-L2530DW%20series._ipp._tcp.local/?uuid=e3248000-80ce-11db-8000-5c619941d47e";
+      deviceUri = "ipp://Brother%20DCP-L2530DW%20series._ipp._tcp.local";
       name = "Brother";
       model = "everywhere";
     }];
