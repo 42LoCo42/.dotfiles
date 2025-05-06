@@ -62,6 +62,8 @@
               "--video-sync=display-desync"
               "--wayland-internal-vsync=no"
             ];
+
+            t = "tmux new-session -A -E -s 0";
           };
       };
 
