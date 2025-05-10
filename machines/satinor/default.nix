@@ -20,11 +20,11 @@
   hardware.amdgpu.opencl.enable = true;
 
   rice.desktop = {
+    alpha = 80;
+
     udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 
     wayland = {
-      foot.alpha = "0.8";
-
       fuzzel.fontSize = 20;
 
       hyprland = {

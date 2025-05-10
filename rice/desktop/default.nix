@@ -1,7 +1,15 @@
 { lib, config, ... }: {
-  options.rice.desktop.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+  options.rice.desktop = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+
+    alpha = lib.mkOption {
+      type = lib.types.int;
+      description = "Alpha value in % for programs with transparent background";
+      default = 50;
+    };
   };
 
   config = lib.mkIf config.rice.desktop.enable {

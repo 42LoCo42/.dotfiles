@@ -7,7 +7,7 @@
 
     alpha = lib.mkOption {
       type = lib.types.str;
-      default = "0.5";
+      default = "0.${toString config.rice.desktop.alpha}";
     };
   };
 

@@ -1,7 +1,14 @@
 { pkgs, lib, config, ... }: {
-  options.rice.desktop.emacs.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+  options.rice.desktop.emacs = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+
+    alpha = lib.mkOption {
+      type = lib.types.str;
+      default = toString config.rice.desktop.alpha;
+    };
   };
 
   config = lib.mkIf config.rice.desktop.emacs.enable {
@@ -168,7 +175,9 @@
               (defalias 'yes-or-no-p 'y-or-n-p)
 
               ; transparency
-              (push '(alpha-background . 50) default-frame-alist)
+              (push '(alpha-background .
+                ${config.rice.desktop.emacs.alpha})
+                default-frame-alist)
 
               ; all frames use monospace font
               (add-to-list 'default-frame-alist '(font . "monospace:size=14"))
