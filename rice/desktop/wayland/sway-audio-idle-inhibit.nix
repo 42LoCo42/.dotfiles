@@ -6,7 +6,7 @@
 
   config = lib.mkIf config.rice.desktop.wayland.sway-audio-idle-inhibit.enable {
     home-manager.sharedModules = [{
-      systemd.user.services.sway-audio-idle-inhbit = {
+      systemd.user.services.sway-audio-idle-inhibit = {
         Install.WantedBy = [ "graphical-session.target" ];
         Service.ExecStart = lib.getExe pkgs.sway-audio-idle-inhibit;
       };
