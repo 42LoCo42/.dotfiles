@@ -509,6 +509,8 @@
             '';
           };
 
+          poly-markdown = { defer = true; };
+
           ##### Completion #####
 
           prescient = {
@@ -866,6 +868,7 @@
             ];
 
             mode = ''"\\.typ\\'"'';
+            hook = "(typst-ts-mode . poly-typst-ts-mode)";
 
             config = ''
               (require 'lsp-mode)
@@ -879,6 +882,13 @@
               (require 'apheleia)
               (add-to-list 'apheleia-mode-alist '(typst-ts-mode . prettypst))
               (add-to-list 'apheleia-formatters '(prettypst "prettypst" "--use-std-in" "--use-std-out"))
+
+              (require 'poly-markdown)
+              (define-hostmode poly-typst-ts-hostmode
+                :mode 'typst-ts-mode)
+              (define-polymode poly-typst-ts-mode
+                :hostmode 'poly-typst-ts-hostmode
+                :innermodes '(poly-markdown-fenced-code-innermode))
             '';
           };
 
