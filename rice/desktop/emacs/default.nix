@@ -125,6 +125,9 @@
               ("C-x C-a" . mark-whole-buffer)
               ("C-x C-k" . (lambda () (interactive) (kill-buffer (current-buffer))))
 
+              ("C-c C-s" . sort-lines)
+              ("C-c C-x" . align-regexp)
+
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
               ("C-=" . text-scale-mode)
