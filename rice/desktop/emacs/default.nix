@@ -92,6 +92,14 @@
             (pcase major-mode
               ('org-mode (consult-outline))
               (_ (consult-imenu))))
+
+          (defun my/align-regexp ()
+            "Run align-regexp with indent-tabs disabled."
+            (interactive)
+            (let ((state indent-tabs-mode))
+              (indent-tabs-mode -1)
+              (call-interactively #'align-regexp)
+              (indent-tabs-mode (if state 1 -1))))
         '';
 
         postlude = ''
@@ -126,7 +134,7 @@
               ("C-x C-k" . (lambda () (interactive) (kill-buffer (current-buffer))))
 
               ("C-c C-s" . sort-lines)
-              ("C-c C-x" . align-regexp)
+              ("C-c C-x" . my/align-regexp)
 
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
