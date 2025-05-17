@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 src="$HOME/doc/trans/hrtrack"
 has="$(<"$src")"
-now="$(date "+%Y-%m-%d")"
+now="$(date -I)"
 
 if [ "$has" = "$now" ]; then
 	notify-send "HRT already taken!"
 else
 	extra=""
-	if (($(date +%s) / 86400 % 4 == 0)); then
+	if (($(date +%s --date "$now") / 86400 % 4 == 0)); then
 		extra=" and Cypro"
 	fi
 
