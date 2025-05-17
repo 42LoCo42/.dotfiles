@@ -2,6 +2,14 @@
   nixpkgs.overlays = [
     (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
+        nix-tree = (pkgs.runCommand "nix-tree" {
+          nativeBuildInputs = with pkgs; [ makeBinaryWrapper ];
+        }) ''
+          mkdir -p $out/bin
+          makeWrapper ${pkgs.lib.getExe pkgs.nix-tree} $out/bin/nix-tree \
+            --prefix PATH : ${pkgs.nix}/bin
+        '';
+
         pam_rssh = pkgs.pam_rssh.overrideAttrs (old: {
           src = pkgs.fetchFromGitHub {
             inherit (old.src) owner repo fetchSubmodules;
