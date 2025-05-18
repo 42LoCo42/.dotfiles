@@ -6,7 +6,6 @@
     ./nix.nix
     ./patches.nix
     ./pnoc-v2
-    ./pnoc.nix
     ./procfs.nix
     ./ssh.nix
     ./zfs
