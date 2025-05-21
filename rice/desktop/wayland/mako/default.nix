@@ -12,9 +12,7 @@
         settings = {
           default-timeout = "5000";
           layer = "overlay";
-        };
 
-        criteria = {
           "urgency=critical" = {
             default-timeout = "0";
             border-color = "#d30706";

@@ -6,5 +6,6 @@
 
   imports = [ self.inputs.aagl.nixosModules.default ];
 
+  aagl.enableNixpkgsReleaseBranchCheck = false;
   programs.anime-game-launcher.enable = true;
 }
