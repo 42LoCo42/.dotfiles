@@ -29,13 +29,6 @@ let inherit (config.rice.ssh) proxy; in
 
       wayland = {
         hyprland = {
-          preConfig = ''
-            debug {
-              disable_logs = false
-              enable_stdout_logs = true
-            }
-          '';
-
           windowRules = ''
             windowrulev2 = workspace 3, class:(vesktop)
           '';

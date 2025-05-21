@@ -39,13 +39,6 @@ let inherit (config.rice.ssh) proxy; in
 
       wayland = {
         hyprland = {
-          preConfig = ''
-            debug {
-              disable_logs = false
-              enable_stdout_logs = true
-            }
-          '';
-
           postConfig = ''
             bind = $mod      , l, exec, libreoffice
             bind = $mod SHIFT, g, exec, gimp
