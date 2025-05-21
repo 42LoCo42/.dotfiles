@@ -45,12 +45,10 @@ let inherit (config.rice.ssh) proxy; in
             bind = $mod SHIFT, w, exec, uwsm app librewolf
           '';
 
-          # TODO check these after programs are installed
-          # to get correct matchers
           windowRules = ''
             windowrulev2 = workspace 2, class:(vesktop)
             windowrulev2 = workspace 4, class:(librewolf)
-            windowrulev2 = workspace 5, class:(genshin)
+            windowrulev2 = workspace 5, class:(moe.launcher.an-anime-game-launcher)
             windowrulev2 = workspace 6, class:(Gimp)
             windowrulev2 = workspace 6, class:(org.musescore.MuseScore)
             windowrulev2 = workspace 6, class:(googleearth)

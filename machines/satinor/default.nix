@@ -44,11 +44,11 @@
           windowrulev2 = size 1 1, title:vkcube
           exec-once    = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
 
-          exec-once = @terminal@
+          exec-once = [workspace 1 silent] @terminal@
           exec-once = [workspace 2 silent] uwsm app @vesktop@
-          exec-once = anime-game-launcher
-          exec-once = steam
-          exec-once = uwsm app librewolf
+          exec-once = [workspace 3 silent] steam
+          exec-once = [workspace 4 silent] uwsm app librewolf
+          exec-once = [workspace 5 silent] anime-game-launcher
         '';
       };
 
