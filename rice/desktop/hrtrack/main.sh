@@ -11,7 +11,7 @@ else
 		extra=" and Cypro"
 	fi
 
-	if (($(date +%u) == 6)); then
+	if (($(date +%u --date "$now") == 6)); then
 		extra="$extra and Vitamin D"
 	fi
 
