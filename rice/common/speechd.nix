@@ -1,0 +1,3 @@
+{ ... }: {
+  services.speechd.enable = false;
+}

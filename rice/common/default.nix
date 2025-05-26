@@ -7,6 +7,7 @@
     ./patches.nix
     ./pnoc-v2
     ./procfs.nix
+    ./speechd.nix
     ./ssh.nix
     ./sudo-rs.nix
     ./zfs
