@@ -8,6 +8,7 @@
     ./pnoc-v2
     ./procfs.nix
     ./ssh.nix
+    ./sudo-rs.nix
     ./zfs
     ./zsh
   ];
