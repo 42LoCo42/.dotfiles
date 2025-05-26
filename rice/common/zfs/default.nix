@@ -1,3 +1,5 @@
+# TODO upstream to Aquaris
+
 { pkgs, lib, config, ... }: lib.mkIf config.boot.zfs.enabled {
   rice.desktop.wayland.waybar.zfullfs = "rpool";
 

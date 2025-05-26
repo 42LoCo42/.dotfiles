@@ -47,8 +47,6 @@
           };
         });
 
-        waybar = obscura.waybar-ipfix;
-
         inherit (obscura)
           caddyfile-language-server
           chronometer
@@ -68,6 +66,7 @@
           ;
 
         foot = obscura.foot-transparent;
+        waybar = obscura.waybar-ipfix;
       })
   ];
 }

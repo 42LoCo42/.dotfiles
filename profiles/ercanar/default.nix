@@ -3,11 +3,6 @@ let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../../rice ./aliases.nix ];
 
-  # TODO move into rice like unfreeNames
-  nixpkgs.config.allowInsecurePredicate = p: builtins.elem (lib.getName p) [
-    "googleearth-pro"
-  ];
-
   aquaris = {
     users = pkgs.lib.mkMerge [
       { inherit (aquaris.cfg.users) ercanar; }
@@ -90,6 +85,10 @@ let inherit (config.rice.ssh) proxy; in
     printer.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
+
+    insecureNames = [
+      "googleearth-pro"
+    ];
 
     unfreeNames = [
       "googleearth-pro"

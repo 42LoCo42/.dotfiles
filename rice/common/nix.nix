@@ -1,18 +1,26 @@
 { self, lib, config, ... }: {
-  options.rice.unfreeNames = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = [ ];
+  options.rice = {
+    insecureNames = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
+
+    unfreeNames = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
   };
 
   config = {
-    nixpkgs.config.allowUnfreePredicate =
-      p: builtins.elem (lib.getName p) config.rice.unfreeNames;
+    nixpkgs.config = {
+      allowInsecurePredicate =
+        p: builtins.elem (lib.getName p) config.rice.insecureNames;
+
+      allowUnfreePredicate =
+        p: builtins.elem (lib.getName p) config.rice.unfreeNames;
+    };
 
     nix = {
-      # TODO does this actually do anything?
-      daemonCPUSchedPolicy = "idle";
-      daemonIOSchedClass = "idle";
-
       registry.obscura.to = {
         type = "github";
         owner = "42LoCo42";

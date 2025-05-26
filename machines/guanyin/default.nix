@@ -33,6 +33,8 @@ let inherit (lib) mkForce; in {
   boot.initrd.systemd.enable = false;
   networking.wireless.enable = false;
 
+  security.sudo.enable = mkForce false;
+
   services = {
     getty.autologinUser = mkForce "root";
 
