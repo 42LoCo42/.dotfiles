@@ -407,6 +407,11 @@
               (add-to-list 'apheleia-mode-alist '(bibtex-mode . bibtex-tidy))
               (add-to-list 'apheleia-formatters '(bibtex-tidy
                 "bibtex-tidy" "--tab" "--blank-lines"))
+
+              (add-to-list 'apheleia-mode-alist '(c-mode   . my/clang-format))
+              (add-to-list 'apheleia-mode-alist '(c++-mode . my/clang-format))
+              (add-to-list 'apheleia-formatters '(my/clang-format
+                "clang-format" "--style=file:${./clang-format.yaml}"))
             '';
 
             extraPackages = with pkgs; [
@@ -732,6 +737,8 @@
           lsp-haskell = { defer = true; };
 
           lsp-pyright = {
+            defer = true;
+
             hook = ''
               (python-mode . (lambda ()
                 (require 'lsp-pyright)
@@ -884,7 +891,7 @@
             ];
 
             mode = ''"\\.typ\\'"'';
-            hook = "(typst-ts-mode . poly-typst-ts-mode)";
+            # hook = "(typst-ts-mode . poly-typst-ts-mode)";
 
             config = ''
               (require 'lsp-mode)
