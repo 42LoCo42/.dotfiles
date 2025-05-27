@@ -403,9 +403,14 @@
 
             config = ''
               (add-to-list 'apheleia-mode-alist '(sh-mode . shfmt))
+
+              (add-to-list 'apheleia-mode-alist '(bibtex-mode . bibtex-tidy))
+              (add-to-list 'apheleia-formatters '(bibtex-tidy
+                "bibtex-tidy" "--tab" "--blank-lines"))
             '';
 
             extraPackages = with pkgs; [
+              bibtex-tidy
               black # python-mode
               nodePackages.prettier
               shfmt
