@@ -30,6 +30,7 @@
 
         extraPackages = epkgs: with epkgs; [
           (treesit-grammars.with-grammars (g: with g; [
+            tree-sitter-hyprlang
             tree-sitter-typst
           ]))
         ];
@@ -964,6 +965,14 @@
 
           #   extraPackages = [ (import ./tip-server.nix pkgs) ];
           # };
+
+          hyprlang-ts-mode = {
+            mode = ''"hypr.*\\.conf\\'"'';
+
+            custom = ''
+              (hyprlang-ts-mode-indent-offset 4)
+            '';
+          };
         };
       };
     }];
