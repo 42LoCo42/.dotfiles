@@ -57,10 +57,4 @@
       waybar.temperatureWarn = 70;
     };
   };
-
-  home-manager.sharedModules = [{
-    aquaris.persist = {
-      ".local/share/anime-game-launcher" = { };
-    };
-  }];
 }
