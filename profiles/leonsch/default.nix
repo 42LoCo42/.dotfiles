@@ -94,6 +94,13 @@ let inherit (config.rice.ssh) proxy; in
         user = "admin";
       };
 
+      bunny-fallback = {
+        hostname = "eleonora.gay";
+        addressFamily = "inet";
+        port = 18213;
+        user = "admin";
+      };
+
       forgejo = proxy "git.bunny:22" {
         user = "forgejo";
       };

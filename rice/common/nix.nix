@@ -1,4 +1,4 @@
-{ self, lib, config, ... }: {
+{ self, pkgs, lib, config, ... }: {
   options.rice = {
     insecureNames = lib.mkOption {
       type = lib.types.listOf lib.types.str;
@@ -21,6 +21,8 @@
     };
 
     nix = {
+      package = pkgs.lixPackageSets.lix_2_93.lix;
+
       registry.obscura.to = {
         type = "github";
         owner = "42LoCo42";

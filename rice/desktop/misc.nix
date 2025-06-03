@@ -5,8 +5,6 @@
   };
 
   config = lib.mkIf config.rice.desktop.misc.enable {
-    nix.package = pkgs.lix-fix-help;
-
     programs.gamemode.enable = true;
 
     rice.unfreeNames = [ "p7zip" ];

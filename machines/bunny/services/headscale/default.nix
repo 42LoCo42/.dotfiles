@@ -7,6 +7,10 @@
   virtualisation.pnoc.headscale = {
     cmd = [ (lib.getExe' pkgs.headscale "headscale") "serve" ];
 
+    environment.PATH = lib.makeBinPath (with pkgs; [
+      headscale
+    ]);
+
     volumes = [
       "headscale:/data"
       "${config.rice.subsDomain ./config.yaml}:/etc/headscale/config.yaml:ro"

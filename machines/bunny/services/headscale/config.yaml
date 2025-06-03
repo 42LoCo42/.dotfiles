@@ -18,12 +18,13 @@ dns:
   magic_dns: true
   base_domain: bunny.vpn
   nameservers:
-    - 1.1.1.1
-    - 1.0.0.1
-    - 9.9.9.9
+    global:
+      - 1.1.1.1
+      - 1.0.0.1
+      - 9.9.9.9
 
 derp:
   urls:
-  - https://controlplane.tailscale.com/derpmap/default
+    - https://controlplane.tailscale.com/derpmap/default
 
 unix_socket: "/data/headscale.sock"

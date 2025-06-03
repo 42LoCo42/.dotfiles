@@ -43,7 +43,7 @@
                 ]}
             '';
 
-            hash = "sha256-NfqtLIAVN+TSqd0RNFUTEkKiB0jNGmiTZJ+ICmqVf/A=";
+            hash = "sha256-TXVNqx02D9NzsDOX2KAXPy2EBilH6R+tkGliTxa/RKM=";
           };
         });
 
@@ -54,7 +54,6 @@
           ferroxide
           flameshot-grim
           glfw3-minecraft-extra
-          lix-fix-help
           ncps-db-helper
           photoview
           pinlist
