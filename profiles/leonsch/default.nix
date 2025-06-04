@@ -21,6 +21,12 @@ let inherit (config.rice.ssh) proxy; in
     };
 
     secrets.rules."@machine/syncstat".user = "leonsch";
+
+    # work stuff
+    dnscrypt.rules.cloaking = {
+      "lbswis.gbv.de" = "127.0.0.1";
+      "readers.lakd" = "127.0.0.1";
+    };
   };
 
   rice = {
