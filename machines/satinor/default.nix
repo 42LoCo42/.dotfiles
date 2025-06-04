@@ -19,6 +19,14 @@
 
   hardware.amdgpu.opencl.enable = true;
 
+  services.keyd.keyboards.default = {
+    ids = [ "260d:1026:161a6f2c" ]; # definitely a keyboard btw trust me bro :3
+    settings.main = {
+      mouse1 = "q";
+      mouse2 = "e";
+    };
+  };
+
   rice.desktop = {
     alpha = 80;
 
