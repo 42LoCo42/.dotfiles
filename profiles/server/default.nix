@@ -1,4 +1,4 @@
-{ pkgs, aquaris, ... }: {
+{ pkgs, lib, config, aquaris, ... }: {
   imports = [ ../../rice ./options.nix ];
 
   nixpkgs.overlays = [
@@ -31,6 +31,14 @@
     flake = "github:42loco42/.dotfiles";
     flags = [ "--refresh" "-L" ];
   };
+
+  systemd.services.nixos-upgrade.script =
+    let keep = config.aquaris.machine.keepGenerations; in
+    lib.mkIf (keep != null) (lib.mkAfter ''
+      nix-env \
+        --profile /nix/var/nix/profiles/system \
+        --delete-generations "+${toString keep}"
+    '');
 
   nix.gc.automatic = true;
 
