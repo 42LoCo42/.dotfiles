@@ -40,6 +40,7 @@
     domain = "laniakea";
 
     ca.enable = true;
+    dns.enable = true;
     nixremote.enable = true;
     tailscale.enable = true;
     use-ncps.enable = true;
