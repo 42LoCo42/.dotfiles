@@ -10,8 +10,8 @@
       keyboards.default = {
         ids = [ "*" ];
         settings.main = {
-          capslock = "overload(control, esc)";
-          compose = "leftmeta";
+          capslock = "layer(control)";
+          compose = "layer(meta)";
         };
       };
     };
