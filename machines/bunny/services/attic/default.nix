@@ -19,6 +19,10 @@
   virtualisation.pnoc.attic = {
     cmd = [ (lib.getExe pkgs.attic-server) ];
 
+    environment.PATH = lib.makeBinPath (with pkgs; [
+      attic-server
+    ]);
+
     environmentFiles = [ (config.aquaris.secret "@machine/attic") ];
 
     volumes = [

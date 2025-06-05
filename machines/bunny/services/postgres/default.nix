@@ -24,6 +24,10 @@
     {
       cmd = [ (lib.getExe run) ];
 
+      environment.PATH = lib.makeBinPath [
+        postgres
+      ];
+
       extraOptions = [ "--tmpfs=/run/postgresql" ];
 
       volumes = [
@@ -31,9 +35,6 @@
 
         "${./pg_hba.conf}:/pg_hba.conf:ro"
         "${./postgresql.conf}:/postgresql.conf:ro"
-
-        "${pkgs.lib.getExe pkgs.bash}:/bin/sh:ro"
-        "${pkgs.lib.getExe' postgres "psql"}:/bin/psql:ro"
       ];
     };
 }
