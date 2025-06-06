@@ -47,6 +47,34 @@
           };
         });
 
+        # taken from https://github.com/NixOS/nixpkgs/pull/322045
+        swaybg = pkgs.swaybg.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ (with pkgs; [
+            makeBinaryWrapper
+            wrapGAppsNoGuiHook
+          ]);
+
+          postInstall =
+            let
+              loaders = pkgs.gnome._gdkPixbufCacheBuilder_DO_NOT_USE {
+                extraLoaders = with pkgs; [
+                  webp-pixbuf-loader
+                ];
+              };
+            in
+            ''
+              export GDK_PIXBUF_MODULE_FILE="${loaders}"
+            '';
+
+          preFixup = ''
+            makeWrapperArgs+=("''${gappsWrapperArgs[@]}")
+          '';
+
+          postFixup = ''
+            wrapProgram $out/bin/swaybg ''${makeWrapperArgs[@]}
+          '';
+        });
+
         inherit (obscura)
           caddyfile-language-server
           chronometer

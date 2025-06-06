@@ -12,7 +12,7 @@
 
   config = lib.mkIf config.rice.desktop.wayland.swaybg.enable {
     rice.desktop.wayland.swaybg.image =
-      let path = "${self}/machines/${aquaris.name}/wallpaper.png"; in
+      let path = "${self}/machines/${aquaris.name}/wallpaper.webp"; in
       lib.mkIf (builtins.pathExists path) (builtins.path { inherit path; });
 
     home-manager.sharedModules = [{
