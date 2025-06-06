@@ -37,6 +37,12 @@
       xdg.enable = true;
       zenkernel.enable = true;
     };
+
+    # nix-daemon: lower priorities on desktop, to fight against lagspikes
+    nix = {
+      daemonCPUSchedPolicy = "idle";
+      daemonIOSchedClass = "idle";
+    };
   };
 
   imports = [
