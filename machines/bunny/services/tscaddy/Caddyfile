@@ -54,6 +54,29 @@ rd.bunny {
 	reverse_proxy rustdesk:21114
 }
 
+searx.bunny {
+	import bind
+
+	respond /opensearch.xml <<EOF
+		<?xml version="1.0" encoding="utf-8"?>
+		<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+		  <ShortName>SearXNG</ShortName>
+		  <LongName>SearXNG metasearch</LongName>
+		  <Description>SearXNG is a metasearch engine that respects your privacy.</Description>
+		  <InputEncoding>UTF-8</InputEncoding>
+		  <Image type="image/png">https://searx.bunny/static/themes/simple/img/favicon.png</Image>
+		  <Url rel="results" type="text/html" method="POST" template="https://searx.bunny/search">
+		    <Param name="q" value="{searchTerms}" />
+		  </Url>
+		  <Url rel="self" type="application/opensearchdescription+xml"  method="POST" template="https://searx.bunny/opensearch.xml" />
+		  <Query role="example" searchTerms="SearXNG" />
+		  <moz:SearchForm>https://searx.bunny/search</moz:SearchForm>
+		</OpenSearchDescription>
+		EOF 200
+
+	reverse_proxy searxng:8081
+}
+
 ssh.bunny {
 	import bind
 	import connect host.containers.internal:18213
