@@ -9,17 +9,16 @@
 
   virtualisation.pnoc.searxng = {
     cmd = config.rice.redis ++ [
-      (lib.getExe pkgs.granian)
-      "--interface=wsgi"
+      (lib.getExe pkgs.python3.pkgs.gunicorn)
+      "--bind=0.0.0.0:8080"
+      "--threads=4"
       "--workers=4"
-      "--host=0.0.0.0"
-      "--port=8080"
       "searx.webapp:app"
     ];
 
     environment = {
       PYTHONPATH = pkgs.searxng.pythonModule.pkgs.makePythonPath [ pkgs.searxng ];
-      SEARXNG_URL = "https://searx.${config.rice.domain}";
+      SEARXNG_BASE_URL = "https://searx.${config.rice.domain}";
     };
 
     environmentFiles = [ (config.aquaris.secret "@machine/searxng") ];
