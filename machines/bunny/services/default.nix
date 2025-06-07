@@ -1,26 +1,26 @@
 {
   imports = [
     ./attic
-    ./avh.nix
+    ./avh
     ./caddy
-    ./chronometer.nix
+    ./chronometer
     ./email-oauth2-proxy
     ./forgejo
     ./headscale
-    ./homepage.nix
+    ./homepage
     ./immich
     ./immich-public-proxy
-    ./mount-dcim.nix
+    ./mount-dcim
     ./mycorrhiza
-    ./pinlist.nix
+    ./pinlist
     ./postgres
     ./rustdesk
     ./searxng
-    ./ssh.nix
-    ./syncthing.nix
+    ./ssh
+    ./syncthing
     ./tailscaled
     ./tscaddy
-    ./vaultwarden.nix
-    ./vencloud.nix
+    ./vaultwarden
+    ./vencloud
   ];
 }
