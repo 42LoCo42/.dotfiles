@@ -1,14 +1,11 @@
 use_default_settings: true
 
 server:
-  limiter: true
+  limiter: false
   image_proxy: true
 
 ui:
   static_use_hash: true
-
-redis:
-  url: redis://localhost:6379/0
 
 enabled_plugins:
   - 'Hostnames plugin' # https://docs.searxng.org/src/searx.plugins.hostnames.html
