@@ -2,6 +2,8 @@
   nixpkgs.overlays = [
     (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
+        # nix-tree needs mainline nix,
+        # since lix has a different path-info output format
         nix-tree = (pkgs.runCommand "nix-tree" {
           nativeBuildInputs = with pkgs; [ makeBinaryWrapper ];
         }) ''
@@ -10,6 +12,7 @@
             --prefix PATH : ${pkgs.nix}/bin
         '';
 
+        # https://github.com/z4yx/pam_rssh/commit/083d69962084a1515b357009bd26407a9c47b67c
         pam_rssh = pkgs.pam_rssh.overrideAttrs (old: {
           src = pkgs.fetchFromGitHub {
             inherit (old.src) owner repo fetchSubmodules;
@@ -18,6 +21,9 @@
           };
         });
 
+        # immich is missing esbuild for architectures other than x86_64-linux
+        # fluent-ffmpeg can cause crashes on some error messages
+        # fixed in https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/pull/1321
         immich = pkgs.immich.overrideAttrs (new: old: {
           prePatch = (old.prePatch or "") + ''
             cp ${new.npmDeps}/package-lock.json .
@@ -47,6 +53,8 @@
           };
         });
 
+        # we can't just call swaybg with GDK_PIXBUF_MODULE_FILE,
+        # since it's already wrapped with that, so override that wrapping
         # taken from https://github.com/NixOS/nixpkgs/pull/322045
         swaybg = pkgs.swaybg.overrideAttrs (old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ (with pkgs; [
@@ -75,6 +83,13 @@
           '';
         });
 
+        # default foot is opaque on fullscreen
+        foot = obscura.foot-transparent;
+
+        # default waybar always shows IPv6 in network module
+        waybar = obscura.waybar-ipfix;
+
+        # obscura inclusion
         inherit (obscura)
           caddyfile-language-server
           chronometer
@@ -91,9 +106,6 @@
           vencloud
           zfullfs
           ;
-
-        foot = obscura.foot-transparent;
-        waybar = obscura.waybar-ipfix;
       })
   ];
 }
