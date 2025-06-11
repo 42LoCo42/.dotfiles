@@ -400,7 +400,7 @@
               ("C-<tab>" . apheleia-format-buffer)
             '';
 
-            hook = "prog-mode typst-ts-mode";
+            hook = "prog-mode typst-ts-mode bibtex-mode";
 
             config = ''
               (add-to-list 'apheleia-mode-alist '(sh-mode . shfmt))
