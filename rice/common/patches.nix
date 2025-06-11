@@ -87,6 +87,8 @@
         foot = obscura.foot-transparent;
 
         # default waybar always shows IPv6 in network module
+        # https://github.com/Alexays/Waybar/pull/3959
+        # https://github.com/Alexays/Waybar/commit/5e4dac1c0aebd6c4ad1f358f09e1cfd06a95d529
         waybar = obscura.waybar-ipfix;
 
         # obscura inclusion
