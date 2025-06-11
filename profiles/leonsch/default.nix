@@ -72,6 +72,28 @@ let inherit (config.rice.ssh) proxy; in
 
   home-manager.sharedModules = [{
     aquaris = {
+      firefox = {
+        preRun = ''
+          if ! pgrep librewolf &&
+             curl --connect-timeout 1 https://icanhazip.com
+          then
+            foot rsync -azvP --delete \
+              "firefox-sync:"         \
+              "$FIREFOX_PROFILE_DIR"
+          fi
+        '';
+
+        postRun = ''
+          if ! pgrep librewolf &&
+             curl --connect-timeout 1 https://icanhazip.com
+          then
+            foot rsync -azvP --delete \
+              "$FIREFOX_PROFILE_DIR"  \
+              "firefox-sync:"
+          fi
+        '';
+      };
+
       # default key is fido, but we don't want it for git signing
       git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
 
@@ -105,6 +127,18 @@ let inherit (config.rice.ssh) proxy; in
         addressFamily = "inet";
         port = 18213;
         user = "admin";
+      };
+
+      firefox-sync = {
+        hostname = "exit.bunny.vpn";
+        user = "admin";
+
+        extraOptions = {
+          AddKeysToAgent = "no";
+          IdentitiesOnly = "yes";
+          IdentityAgent = "/dev/null";
+          IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
+        };
       };
 
       forgejo = proxy "git.bunny:22" {

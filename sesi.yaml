@@ -87,10 +87,11 @@ user:
 
   leonsch:
     password:
+    firefox-sync:
+    u2f-keys:
     ssh:
       fido:
       main:
       old:
         ed25519:
         rsa:
-    u2f-keys:

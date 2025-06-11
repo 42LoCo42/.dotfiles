@@ -46,6 +46,13 @@ in
 
   config = {
     aquaris = {
+      users.admin.sshKeys =
+        let
+          cmd = "${lib.getExe pkgs.rrsync} /persist/home/admin/firefox/";
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInpOfiVpjqdtV7KEZJ6PLBJ2a0Iu9tYdwufZpl/qOBD";
+        in
+        [ ''command="${cmd}",restrict ${key}'' ];
+
       machine = {
         id = "488cb972c1ac70db8307933f65d5defc";
         secureboot = false;
