@@ -132,7 +132,14 @@ let inherit (config.rice.ssh) proxy; in
         ".config/Vampire_Survivors" = { };
         ".config/Vampire_Survivors_461785915" = { };
         ".config/Vampire_Survivors_Data" = { };
+        ".config/unity3d/Asteroid Lab/Terraformers" = { };
+        ".config/unity3d/Dry Cactus/Poly Bridge 2" = { };
+        ".config/unity3d/Free Lives/Terra Nil" = { };
+        ".config/unity3d/Klei/Oxygen Not Included" = { };
         ".factorio" = { };
+        ".local/share/Celeste" = { } ;
+        ".local/share/Rocket League" = { };
+        ".local/share/Surviving Mars" = { };
       };
     };
 
