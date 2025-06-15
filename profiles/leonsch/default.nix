@@ -74,22 +74,30 @@ let inherit (config.rice.ssh) proxy; in
     aquaris = {
       firefox = {
         preRun = ''
-          if ! pgrep librewolf &&
-             curl --connect-timeout 1 https://icanhazip.com
-          then
-            foot rsync -azvP --delete \
-              "firefox-sync:"         \
-              "$FIREFOX_PROFILE_DIR"
+          LAUNCHER=0
+          RUNNING="$FIREFOX_PROFILE_DIR/running"
+
+          if [ ! -e "$RUNNING" ]; then
+            if curl --connect-timeout 1 https://icanhazip.com; then
+              foot rsync -azvP --delete \
+                "firefox-sync:"         \
+                "$FIREFOX_PROFILE_DIR"
+            fi
+
+            touch "$RUNNING"
+            LAUNCHER=1
           fi
         '';
 
         postRun = ''
-          if ! pgrep librewolf &&
-             curl --connect-timeout 1 https://icanhazip.com
-          then
-            foot rsync -azvP --delete \
-              "$FIREFOX_PROFILE_DIR"  \
-              "firefox-sync:"
+          if ((LAUNCHER)); then
+            rm -f "$RUNNING"
+
+            if curl --connect-timeout 1 https://icanhazip.com; then
+              foot rsync -azvP --delete \
+                "$FIREFOX_PROFILE_DIR"  \
+                "firefox-sync:"
+            fi
           fi
         '';
       };
