@@ -65,7 +65,7 @@
     ./sudo-u2f.nix
     ./theming.nix
     ./udev.nix
-    ./vesktop.nix
+    ./vesktop
     ./wayland
     ./xdg.nix
     ./zenkernel.nix

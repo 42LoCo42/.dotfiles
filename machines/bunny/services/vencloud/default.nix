@@ -15,6 +15,8 @@
       ROOT_REDIRECT = "https://github.com/Vencord/Vencloud";
       DISCORD_REDIRECT_URI = "https://vencloud.${config.rice.domain}/v1/oauth/callback";
 
+      SIZE_LIMIT = "32000000";
+
       PROXY_HEADER = "X-Forwarded-For";
     };
 

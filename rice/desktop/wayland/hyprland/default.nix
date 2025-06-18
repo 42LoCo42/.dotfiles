@@ -67,7 +67,6 @@ in
             ipython = getExe' pkgs.python3Packages.ipython "ipython";
             pulsemixer = getExe pkgs.pulsemixer;
             qalc = getExe pkgs.libqalculate;
-            vesktop = getExe pkgs.vesktop;
 
             audio-helper = script {
               file = ./scripts/audio-helper.sh;

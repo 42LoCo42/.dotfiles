@@ -1,0 +1,27 @@
+From 726304fe41f750e128c9fe7c5c4fe9a10a057dd4 Mon Sep 17 00:00:00 2001
+From: Leon Schumacher <leonsch@protonmail.com>
+Date: Wed, 18 Jun 2025 17:13:43 +0200
+Subject: [PATCH] add private domains to CSP
+
+---
+ src/main/csp.ts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/main/csp.ts b/src/main/csp.ts
+index b35a11a8..92a3e9b1 100644
+--- a/src/main/csp.ts
++++ b/src/main/csp.ts
+@@ -53,6 +53,10 @@ export const CspPolicies: PolicyMap = {
+     "dearrow-thumb.ajay.app": MediaSrc, // Dearrow Thumbnail CDN
+     "usrbg.is-hardly.online": MediaSrc, // USRBG API
+     "icons.duckduckgo.com": MediaSrc, // DuckDuckGo Favicon API (Reverse Image Search)
++
++    // private domains :3
++    "*.bunny": MediaScriptsAndCssSrc,
++    "*.eleonora.gay": MediaScriptsAndCssSrc,
+ };
+ 
+ const findHeader = (headers: PolicyMap, headerName: Lowercase<string>) => {
+-- 
+2.49.0
+
