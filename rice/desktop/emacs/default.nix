@@ -949,28 +949,6 @@ in
             '';
           };
 
-          # tip = {
-          #   package = epkgs: epkgs.trivialBuild {
-          #     pname = "tip";
-          #     version = "2024-09-07";
-
-          #     src = pkgs.fetchFromSourcehut {
-          #       owner = "~mafty";
-          #       repo = "tip";
-          #       rev = "2ccfe1e7f9675ed612275d88f046fead0bb9dc6d";
-          #       hash = "sha256-G2GxnvSFz35Ay8FNdAfUF+Nvhf25xlEm6vKJQtN/350=";
-          #     };
-
-          #     patches = [
-          #       ./patches/tip/0001-use-cl-sort-instead-of-builtin-sort.patch
-          #     ];
-          #   };
-
-          #   hook = "typst-ts-mode";
-
-          #   extraPackages = [ (import ./tip-server.nix pkgs) ];
-          # };
-
           hyprlang-ts-mode = mkIf cfg.allLanguages {
             mode = ''"hypr.*\\.conf\\'"'';
 
