@@ -1,24 +1,39 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, ... }:
+let
+  inherit (lib) mkForce mkIf mkOption remove;
+  inherit (lib.types) bool str;
+
+  cfg = config.rice.desktop.emacs;
+in
+{
   options.rice.desktop.emacs = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
+    enable = mkOption {
+      type = bool;
       default = false;
     };
 
-    alpha = lib.mkOption {
-      type = lib.types.str;
+    alpha = mkOption {
+      type = str;
       default = toString config.rice.desktop.alpha;
+    };
+
+    allLanguages = mkOption {
+      type = bool;
+      description = "Enable support for all languages instead of just Typst";
+      default = true;
     };
   };
 
-  config = lib.mkIf config.rice.desktop.emacs.enable {
+  config = mkIf cfg.enable {
     home-manager.sharedModules = [{
+      home.shellAliases."e" = "emacsclient -cn";
+
       services.emacs = {
         enable = true;
         startWithUserSession = "graphical";
       };
 
-      systemd.user.services.emacs.Service.Restart = lib.mkForce "always";
+      systemd.user.services.emacs.Service.Restart = mkForce "always";
 
       xdg.configFile."fourmolu.yaml".source = ./fourmolu.yaml;
 
@@ -188,7 +203,7 @@
 
               ; transparency
               (push '(alpha-background .
-                ${config.rice.desktop.emacs.alpha})
+                ${cfg.alpha})
                 default-frame-alist)
 
               ; all frames use monospace font
@@ -508,7 +523,7 @@
           org-drill = {
             package = epkgs: epkgs.org-drill.overrideAttrs (old: {
               # org is part of emacs
-              packageRequires = lib.remove epkgs.org old.packageRequires;
+              packageRequires = remove epkgs.org old.packageRequires;
             });
 
             commands = "org-drill-strip-all-data";
@@ -649,7 +664,7 @@
 
           ##### Languages #####
 
-          caddyfile-mode = {
+          caddyfile-mode = mkIf cfg.allLanguages {
             mode = ''"Caddyfile"'';
 
             hook = ''
@@ -672,7 +687,7 @@
             ];
           };
 
-          glsl-mode = {
+          glsl-mode = mkIf cfg.allLanguages {
             mode = ''
               "\\.frag\\'"
               "\\.glsl\\'"
@@ -690,18 +705,18 @@
             extraPackages = with pkgs; [ glsl_analyzer ];
           };
 
-          go-mode = {
+          go-mode = mkIf cfg.allLanguages {
             mode = ''"\\.go\\'"'';
             extraPackages = with pkgs; [ gopls ];
           };
 
-          haskell-mode = {
+          haskell-mode = mkIf cfg.allLanguages {
             mode = ''"\\.hs\\'"'';
 
             bind' = ''(
-            :map haskell-mode-map
-            ("C-c C-p" . haskell-interactive-switch)
-          )'';
+              :map haskell-mode-map
+              ("C-c C-p" . haskell-interactive-switch)
+            )'';
 
             hook = ''
               (haskell-interactive-mode . (lambda ()
@@ -731,11 +746,11 @@
             extraPackages = with pkgs; [ fourmolu ];
           };
 
-          json-mode = { mode = ''"\\.json\\'"''; };
+          json-mode = mkIf cfg.allLanguages { mode = ''"\\.json\\'"''; };
 
-          lsp-haskell = { defer = true; };
+          lsp-haskell = mkIf cfg.allLanguages { defer = true; };
 
-          lsp-pyright = {
+          lsp-pyright = mkIf cfg.allLanguages {
             defer = true;
 
             hook = ''
@@ -751,9 +766,9 @@
             extraPackages = with pkgs; [ basedpyright ];
           };
 
-          nftables-mode = { mode = ''"\\.nft\\'"''; };
+          nftables-mode = mkIf cfg.allLanguages { mode = ''"\\.nft\\'"''; };
 
-          nix-mode = {
+          nix-mode = mkIf cfg.allLanguages {
             mode = ''"\\.nix\\'"'';
             extraPackages = with pkgs; [
               nil
@@ -767,7 +782,7 @@
             '';
           };
 
-          pug-mode = {
+          pug-mode = mkIf cfg.allLanguages {
             mode = ''"\\.pug\\'"'';
 
             hook = "(pug-mode . (lambda () (indent-tabs-mode 0)))";
@@ -778,7 +793,7 @@
             '';
           };
 
-          rustic = {
+          rustic = mkIf cfg.allLanguages {
             mode = ''("\\.rs\\'" . rustic-mode)'';
             custom = ''
               (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -790,14 +805,14 @@
             ];
           };
 
-          yaml-mode = {
+          yaml-mode = mkIf cfg.allLanguages {
             mode = ''
               "\\.yaml\\'"
               "\\.yml\\'"
             '';
           };
 
-          typescript-mode = {
+          typescript-mode = mkIf cfg.allLanguages {
             mode = ''"\\.ts\\'"'';
             extraPackages = with pkgs.nodePackages; [
               typescript
@@ -805,7 +820,7 @@
             ];
           };
 
-          web-mode = {
+          web-mode = mkIf cfg.allLanguages {
             mode = ''
               "\\.svelte\\'"
             '';
@@ -815,7 +830,7 @@
             ];
           };
 
-          zig-mode = {
+          zig-mode = mkIf cfg.allLanguages {
             package = epkgs: epkgs.zig-mode.overrideAttrs {
               # stub out reformatter (zig-mode wants it, but we use apheleia)
               packageRequires = [
@@ -840,12 +855,12 @@
 
           # Lisp
 
-          lisp-extra-font-lock = {
+          lisp-extra-font-lock = mkIf cfg.allLanguages {
             hook = "lisp-data-mode";
             config = "(lisp-extra-font-lock-global-mode 1)";
           };
 
-          parinfer-rust-mode = {
+          parinfer-rust-mode = mkIf cfg.allLanguages {
             hook = "lisp-data-mode";
             custom = "(parinfer-rust-auto-download t)";
             config = ''
@@ -956,7 +971,7 @@
           #   extraPackages = [ (import ./tip-server.nix pkgs) ];
           # };
 
-          hyprlang-ts-mode = {
+          hyprlang-ts-mode = mkIf cfg.allLanguages {
             mode = ''"hypr.*\\.conf\\'"'';
 
             custom = ''

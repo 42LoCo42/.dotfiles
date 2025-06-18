@@ -30,7 +30,7 @@ let inherit (config.rice.ssh) proxy; in
     desktop = {
       enable = true;
 
-      emacs.enable = lib.mkForce false;
+      emacs.allLanguages = false;
 
       wayland = {
         hyprland = {
@@ -137,7 +137,7 @@ let inherit (config.rice.ssh) proxy; in
         ".config/unity3d/Free Lives/Terra Nil" = { };
         ".config/unity3d/Klei/Oxygen Not Included" = { };
         ".factorio" = { };
-        ".local/share/Celeste" = { } ;
+        ".local/share/Celeste" = { };
         ".local/share/Rocket League" = { };
         ".local/share/Surviving Mars" = { };
       };
