@@ -919,6 +919,10 @@ in
               (add-to-list 'apheleia-mode-alist '(typst-ts-mode . prettypst))
               (add-to-list 'apheleia-formatters '(prettypst "prettypst" "--use-std-in" "--use-std-out"))
             '';
+
+            custom = ''
+              (typst-ts-mode-indent-offset 2)
+            '';
           };
 
           typst-preview = {
