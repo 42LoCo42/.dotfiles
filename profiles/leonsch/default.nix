@@ -36,7 +36,12 @@ let inherit (config.rice.ssh) proxy; in
       wayland = {
         hyprland = {
           windowRules = ''
-            windowrulev2 = workspace 3, class:(vesktop)
+            windowrulev2 = workspace 3,  class:(vesktop)
+            windowrulev2 = workspace 10, initialClass:(thunderbird)
+          '';
+
+          postConfig = ''
+            exec-once = [workspace 10 silent] uwsm app thunderbird
           '';
         };
 
@@ -46,6 +51,7 @@ let inherit (config.rice.ssh) proxy; in
             "2" = "";
             "3" = "󰙯";
             "4" = "";
+            "10" = "";
           };
 
           syncstat = {
