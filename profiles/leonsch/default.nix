@@ -35,30 +35,32 @@ let inherit (config.rice.ssh) proxy; in
 
       wayland = {
         hyprland = {
-          windowRules = ''
-            windowrulev2 = workspace 3,  class:(vesktop)
-            windowrulev2 = workspace 10, initialClass:(thunderbird)
-          '';
+          workspaces = {
+            "1" = {
+              icon = "";
+            };
 
-          postConfig = ''
-            exec-once = [workspace 10 silent] uwsm app thunderbird
-          '';
+            "2" = {
+              icon = "";
+              rules = [ "class:(vesktop)" ];
+            };
+
+            "3" = {
+              icon = "";
+            };
+
+            "9" = {
+              icon = "";
+              autostart = [ "uwsm app thunderbird" ];
+              rules = [ "initialClass:(thunderbird)" ];
+            };
+          };
         };
 
-        waybar = {
-          icons = {
-            "1" = "";
-            "2" = "";
-            "3" = "󰙯";
-            "4" = "";
-            "10" = "";
-          };
-
-          syncstat = {
-            enable = true;
-            folder = "cw6hv-bpaei"; # main
-            keyFile = config.aquaris.secret "@machine/syncstat";
-          };
+        waybar.syncstat = {
+          enable = true;
+          folder = "cw6hv-bpaei"; # main
+          keyFile = config.aquaris.secret "@machine/syncstat";
         };
 
         wlsunset = {

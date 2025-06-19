@@ -1,8 +1,35 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) flip getExe getExe' mkIf mkOption pipe;
-  inherit (lib.types) bool lines;
+  inherit (lib)
+    concatLines
+    flip
+    getExe
+    getExe'
+    listToAttrs
+    mapAttrs'
+    mapAttrsToList
+    mkDefault
+    mkIf
+    mkMerge
+    mkOption
+    pipe
+    range
+    readFile
+    toInt
+    ;
+  inherit (lib.types)
+    attrsOf
+    bool
+    functionTo
+    int
+    lines
+    listOf
+    str
+    submodule
+    ;
   inherit (aquaris.lib) subsF;
+
+  join = builtins.concatStringsSep "";
 
   subs = x: s: aquaris.lib.subs { text = x; subs = s; };
   script = x: subsF (x // { func = pkgs.writeScript; });
@@ -26,13 +53,116 @@ in
       default = "";
     };
 
-    windowRules = mkOption {
-      type = lines;
-      default = "";
+    workspaces = mkOption {
+      type = attrsOf (submodule ({ name, config, ... }: {
+        options = {
+          indexN = mkOption {
+            type = int;
+            description = "Parsed index of this workspace";
+            default = toInt name;
+          };
+
+          indexS = mkOption {
+            type = str;
+            description = "Parsed index of this workspace ";
+            default = toString config.indexN;
+          };
+
+          internalN = mkOption {
+            type = int;
+            description = "Actual index of the workspace (internal to Hyprland)";
+            default = config.indexN + 1;
+          };
+
+          internalS = mkOption {
+            type = str;
+            description = "Actual index of the workspace (internal to Hyprland)";
+            default = toString config.internalN;
+          };
+
+          icon = mkOption {
+            type = str;
+            description = "Icon of the workspace (shown by waybar)";
+            default = name;
+          };
+
+          autostart = mkOption {
+            type = listOf str;
+            description = "List of commands to autostart in this workspace";
+            default = [ ];
+          };
+
+          rules = mkOption {
+            type = listOf str;
+            description = "Window rules bound to this workspace";
+            default = [ ];
+          };
+
+          extra = mkOption {
+            type = functionTo lines;
+            description = ''
+              Any extra configuration for this workspace.
+              Gets passed this submodule; must return lines.
+            '';
+            default = _: "";
+          };
+        };
+      }));
+      default = { };
     };
   };
 
   config = mkIf cfg.enable {
+    rice.desktop.wayland = {
+      hyprland = {
+        workspaces = mkMerge [
+          (pipe (range 0 9) [
+            (map (x:
+              let name = toString x; in {
+                inherit name;
+                value = {
+                  icon = mkDefault name;
+                  extra = x: ''
+                    bind = $mod,       ${x.indexS}, workspace,       ${x.internalS}
+                    bind = $mod SHIFT, ${x.indexS}, movetoworkspace, ${x.internalS}
+                  '';
+                };
+              }))
+            listToAttrs
+          ])
+
+          {
+            "0" = {
+              icon = "";
+              extra = x: ''
+                bind = $mod,       dead_circumflex, workspace,       ${x.internalS}
+                bind = $mod SHIFT, dead_circumflex, movetoworkspace, ${x.internalS}
+              '';
+            };
+          }
+        ];
+
+        postConfig = pipe cfg.workspaces [
+          (mapAttrsToList (_: x: pipe [
+            (flip map x.rules (y:
+              "windowrulev2 = workspace ${x.internalS}, ${y}"))
+            (flip map x.autostart (y:
+              "exec-once = [workspace ${x.internalS} silent] ${y}"))
+            [ (x.extra x) ]
+          ] [ (map concatLines) join ]
+          ))
+          join
+        ];
+      };
+
+      waybar.icons = pipe cfg.workspaces [
+        (mapAttrs' (_: x: {
+          name = x.internalS;
+          value = x.icon;
+        }))
+      ];
+    };
+
     programs = {
       hyprland = {
         enable = true;
@@ -55,13 +185,8 @@ in
         ];
 
         extraConfig = pipe ./hyprland.conf [
-          builtins.readFile
-          (x: builtins.concatStringsSep "\n" [
-            cfg.preConfig
-            x
-            cfg.windowRules
-            cfg.postConfig
-          ])
+          readFile
+          (x: concatLines [ cfg.preConfig x cfg.postConfig ])
           (flip subs {
             fuzzel = getExe pkgs.fuzzel;
             ipython = getExe' pkgs.python3Packages.ipython "ipython";

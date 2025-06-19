@@ -33,43 +33,56 @@ let inherit (config.rice.ssh) proxy; in
       emacs.allLanguages = false;
 
       wayland = {
-        hyprland = {
-          postConfig = ''
-            bind = $mod      , l, exec, libreoffice
-            bind = $mod SHIFT, g, exec, gimp
-            bind = $mod SHIFT, w, exec, uwsm app librewolf
-          '';
+        hyprland.workspaces = {
+          "0" = {
+            autostart = [ "@terminal@" ];
+          };
 
-          windowRules = ''
-            windowrulev2 = workspace 2, class:(vesktop)
-            windowrulev2 = workspace 4, class:(librewolf)
-            windowrulev2 = workspace 5, class:(moe.launcher.an-anime-game-launcher)
-            windowrulev2 = workspace 6, class:(Gimp)
-            windowrulev2 = workspace 6, class:(org.musescore.MuseScore)
-            windowrulev2 = workspace 6, class:(googleearth)
+          "1" = {
+            icon = "";
+            autostart = [ "uwsm app vesktop" ];
+            rules = [ "class:(vesktop)" ];
+          };
 
-            # Steam
-            windowrulev2 = workspace 3, class:(steam)
-            windowrulev2 = workspace 3, title:(Steam)
+          "2" = {
+            icon = "";
+            autostart = [ "uwsm app steam" ];
+            rules = [ "class:(steam)" "title:(Steam)" ];
+          };
 
-            # libreoffice
-            windowrulev2 = workspace 5, class:(soffice)
-            windowrulev2 = workspace 5, initialClass:(libreoffice-startcenter)
-          '';
+          "3" = {
+            icon = "󰈹";
+            autostart = [ "uwsm app librewolf" ];
+            rules = [ "class:(librewolf)" ];
+          };
+
+          "4" = {
+            rules = [
+              "class:(soffice)"
+              "initialClass:(libreoffice-startcenter)"
+            ];
+          };
+
+          "5" = {
+            icon = "";
+            rules = [
+              "class:(Gimp)"
+              "class:(org.musescore.MuseScore)"
+              "class:(googleearth)"
+            ];
+          };
         };
+
+        hyprland.postConfig = ''
+          bind = $mod      , l, exec, libreoffice
+          bind = $mod SHIFT, g, exec, gimp
+          bind = $mod SHIFT, w, exec, uwsm app librewolf
+        '';
+
 
         hypridle.timeouts = {
           lock = 900; # 15 min
           suspend = 2700; # 45 min
-        };
-
-        waybar.icons = {
-          "1" = "";
-          "2" = "";
-          "3" = "";
-          "4" = "󰈹";
-          "5" = "⛩️";
-          "6" = "";
         };
 
         wlsunset = {
@@ -97,9 +110,7 @@ let inherit (config.rice.ssh) proxy; in
     ];
   };
 
-  programs.steam = {
-    enable = true;
-  };
+  programs.steam.enable = true;
 
   home-manager.sharedModules = [{
     aquaris = {

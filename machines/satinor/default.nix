@@ -51,13 +51,21 @@
           windowrulev2 = move 0 0, title:vkcube
           windowrulev2 = size 1 1, title:vkcube
           exec-once    = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
-
-          exec-once = [workspace 1 silent] @terminal@
-          exec-once = [workspace 2 silent] uwsm app vesktop
-          exec-once = [workspace 3 silent] steam
-          exec-once = [workspace 4 silent] uwsm app librewolf
-          exec-once = [workspace 5 silent] anime-game-launcher
         '';
+
+        workspaces = {
+          "4" = {
+            icon = "⛩️";
+            autostart = [ "uwsm app anime-game-launcher" ];
+            rules = [
+              "class:(moe.launcher.an-anime-game-launcher)"
+
+              # libreoffice
+              "class:(soffice)"
+              "initialClass:(libreoffice-startcenter)"
+            ];
+          };
+        };
       };
 
       swaybg.image = config.aquaris.secret "user/ercanar/wallpaper";

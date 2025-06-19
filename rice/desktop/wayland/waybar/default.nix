@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 let
-  inherit (lib) getExe getExe' mkDefault mkIf mkOption;
+  inherit (lib) getExe getExe' mkIf mkOption;
   inherit (lib.types) attrsOf bool int nullOr str;
 
   cfg = config.rice.desktop.wayland.waybar;
@@ -29,21 +29,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    rice.desktop.wayland.waybar = {
-      icons = {
-        "1" = mkDefault "0";
-        "2" = mkDefault "1";
-        "3" = mkDefault "2";
-        "4" = mkDefault "3";
-        "5" = mkDefault "4";
-        "6" = mkDefault "5";
-        "7" = mkDefault "6";
-        "8" = mkDefault "7";
-        "9" = mkDefault "8";
-        "10" = mkDefault "9";
-      };
-    };
-
     systemd.services.zfullfs = mkIf (cfg.zfullfs != null) {
       serviceConfig = {
         ExecStartPre = [ "${getExe' pkgs.coreutils "mkdir"} -p /full" ];
@@ -108,7 +93,7 @@ in
             format = "{}°";
             tooltip = true;
             interval = 3600;
-            exec = "${getExe pkgs.wttrbar}";
+            exec = getExe pkgs.wttrbar;
             return-type = "json";
           };
 
