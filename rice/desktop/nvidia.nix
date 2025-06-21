@@ -32,7 +32,7 @@
     ];
 
     hardware.nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.stable; # 570.153.02
+      package = config.boot.kernelPackages.nvidiaPackages.stable; # 570.169
       open = false;
       modesetting.enable = true;
       nvidiaSettings = false;

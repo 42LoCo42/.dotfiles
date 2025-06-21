@@ -2,6 +2,20 @@
   nixpkgs.overlays = [
     (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
+        # TODO remove when https://nixpk.gs/pr-tracker.html?pr=418139 is done
+        # only required cuz i'm a bit silly and did a nixos-unstable-small update
+        # :3
+        mpd = pkgs.mpd.override {
+          liburing = pkgs.liburing.overrideAttrs (old: rec {
+            version = "2.11";
+            src = pkgs.fetchFromGitHub {
+              inherit (old.src) owner repo;
+              tag = "liburing-${version}";
+              hash = "sha256-V73QP89WMrL2fkPRbo/TSkfO7GeDsCudlw2Ut5baDzA=";
+            };
+          });
+        };
+
         # nix-tree needs mainline nix,
         # since lix has a different path-info output format
         nix-tree = (pkgs.runCommand "nix-tree" {

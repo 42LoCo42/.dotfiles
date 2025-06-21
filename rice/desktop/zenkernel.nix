@@ -14,12 +14,12 @@ in
 
     pkgs = mkOption {
       type = raw;
-      # default = pkgs;
+      default = pkgs;
 
-      default = (import (builtins.fetchTarball {
-        url = "https://github.com/nixos/nixpkgs/tarball/3e3afe5174c561dee0df6f2c2b2236990146329f";
-        sha256 = "sha256-frdhQvPbmDYaScPFiCnfdh3B/Vh81Uuoo0w5TkWmmjU=";
-      })) { inherit (pkgs) system config; };
+      # default = (import (builtins.fetchTarball {
+      #   url = "https://github.com/nixos/nixpkgs/tarball/";
+      #   sha256 = "";
+      # })) { inherit (pkgs) system config; };
     };
   };
 
