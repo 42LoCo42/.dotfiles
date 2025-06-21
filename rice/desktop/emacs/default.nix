@@ -325,7 +325,7 @@ in
               (global-display-line-numbers-mode 1)
             '';
 
-            custom = "(display-line-numbers-type 'relative)";
+            custom = "(display-line-numbers-type 'visual)";
           };
 
           telephone-line = {
