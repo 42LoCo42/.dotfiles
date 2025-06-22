@@ -5,7 +5,6 @@
         ########## obscura inclusion ##########
 
         foot = obscura.foot-transparent; # default foot is opaque on fullscreen
-        nix-tree = obscura.nix-tree-next; # default does not understand lix path-info
         pam_rssh = obscura.pam_rssh_next; # v1.2.0 shows prompt on authentication
         swaybg = obscura.swaybg_webp; # support for webp images
 
@@ -22,7 +21,6 @@
           flameshot-grim
           glfw3-minecraft-extra
           ncps-db-helper
-          photoview
           pinlist
           pug
           rustdesk-api
