@@ -2,6 +2,14 @@
   nixpkgs.overlays = [
     (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
+        googleearth-pro = pkgs.googleearth-pro.override {
+          libxml2 = pkgs.runCommand "libxml2.so.2" { } ''
+            install -Dm555                       \
+              ${pkgs.libxml2.out}/lib/libxml2.so \
+              $out/lib/libxml2.so.2
+          '';
+        };
+
         ########## obscura inclusion ##########
 
         foot = obscura.foot-transparent; # default foot is opaque on fullscreen
