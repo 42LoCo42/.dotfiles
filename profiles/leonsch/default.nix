@@ -70,8 +70,12 @@ let inherit (config.rice.ssh) proxy; in
       };
     };
 
+    dns = {
+      enable = true;
+      ui = true;
+    };
+
     ca.enable = true;
-    dns.enable = true;
     nixremote.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;

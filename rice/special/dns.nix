@@ -1,10 +1,24 @@
-{ lib, config, ... }: {
-  options.rice.dns.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+{ lib, config, ... }:
+let
+  inherit (lib) mkIf mkOption;
+  inherit (lib.types) bool;
+
+  cfg = config.rice.dns;
+in
+{
+  options.rice.dns = {
+    enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    ui = mkOption {
+      type = bool;
+      default = false;
+    };
   };
 
-  config = lib.mkIf config.rice.dns.enable {
+  config = mkIf cfg.enable {
     aquaris.dnscrypt = {
       enable = true;
 
@@ -37,6 +51,16 @@
           "bunny.vpn" = "100.100.100.100";
           "vm" = "192.168.122.1";
         };
+      };
+    };
+
+    services.dnscrypt-proxy2.settings = mkIf cfg.ui {
+      monitoring_ui = {
+        enabled = true;
+        listen_address = "127.0.0.1:53080";
+        username = "";
+        password = "";
+        privacy_level = 0;
       };
     };
   };
