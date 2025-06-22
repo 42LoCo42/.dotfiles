@@ -2,19 +2,10 @@
   nixpkgs.overlays = [
     (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
-        # nix-tree needs mainline nix,
-        # since lix has a different path-info output format
-        nix-tree = (pkgs.runCommand "nix-tree" {
-          nativeBuildInputs = with pkgs; [ makeBinaryWrapper ];
-        }) ''
-          mkdir -p $out/bin
-          makeWrapper ${pkgs.lib.getExe pkgs.nix-tree} $out/bin/nix-tree \
-            --prefix PATH : ${pkgs.nix}/bin
-        '';
-
         ########## obscura inclusion ##########
 
         foot = obscura.foot-transparent; # default foot is opaque on fullscreen
+        nix-tree = obscura.nix-tree-next; # default does not understand lix path-info
         pam_rssh = obscura.pam_rssh_next; # v1.2.0 shows prompt on authentication
         swaybg = obscura.swaybg_webp; # support for webp images
 
