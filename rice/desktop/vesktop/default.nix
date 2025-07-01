@@ -14,7 +14,6 @@
         package = pkgs.vesktop.override {
           vencord = pkgs.vencord.overrideAttrs (old: {
             patches = (old.patches or [ ]) ++ [
-              ./add-private-domains-to-CSP.patch
               ./add-smirk-plugin.patch
             ];
 

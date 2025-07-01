@@ -14,9 +14,3 @@ sudo() {
 
 	command sudo "$cmd" "${args[@]}"
 }
-
-# help for builtins
-# TODO upstream to Aquaris
-unalias run-help
-autoload run-help
-alias help=run-help
