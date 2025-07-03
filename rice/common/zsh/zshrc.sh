@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 sudo() {
 	cmd="$1"
 	shift
@@ -13,4 +15,11 @@ sudo() {
 	done
 
 	command sudo "$cmd" "${args[@]}"
+}
+
+today() {
+	TZ=UTC date --date "$(date -I)" "+%s; # %F" \
+	| tee /dev/stderr                           \
+	| tr -d '\n'                                \
+	| wl-copy
 }
