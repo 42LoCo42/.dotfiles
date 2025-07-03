@@ -5,7 +5,14 @@
   };
 
   config = lib.mkIf config.rice.desktop.misc.enable {
-    programs.gamemode.enable = true;
+    programs = {
+      adb.enable = true;
+      gamemode.enable = true;
+    };
+
+    users.users = builtins.mapAttrs
+      (_: _: { extraGroups = [ "adbusers" ]; })
+      config.aquaris.users;
 
     rice.unfreeNames = [ "p7zip" ];
 
