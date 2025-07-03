@@ -222,6 +222,7 @@ in
               (auto-save-list-file-prefix               my/temp-dir)
               (backup-directory-alist         `(("." . ,my/temp-dir)))
 
+              (backward-delete-char-untabify-method nil)
               (c-backspace-function 'delete-backward-char)
               (c-basic-offset 4)
               (sgml-basic-offset 4)
