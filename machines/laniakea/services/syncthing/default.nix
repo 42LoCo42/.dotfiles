@@ -1,4 +1,4 @@
-{ ... }: {
+{
   rice.syncthing.enable = true;
 
   home-manager.sharedModules = [{

@@ -45,7 +45,7 @@ in
       type = listOf str;
       default = flatten [
         [ (getExe pkgs.tini) "--" ]
-        (config.rice.invfork.outPath)
+        config.rice.invfork.outPath
         (getExe' pkgs.redis "redis-server")
         [ "--dir" "/data" ]
         [ "--bind" "127.0.0.1" ]

@@ -1,4 +1,4 @@
-{ ... }: {
+{
   imports = [ ../../profiles/leonsch ];
 
   aquaris = {
