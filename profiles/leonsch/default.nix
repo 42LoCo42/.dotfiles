@@ -77,6 +77,7 @@ let inherit (config.rice.ssh) proxy; in
 
     ca.enable = true;
     nixremote.enable = true;
+    podman.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
     use-ncps.enable = true;

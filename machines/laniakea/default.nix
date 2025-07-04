@@ -45,6 +45,4 @@
     tailscale.enable = true;
     use-ncps.enable = true;
   };
-
-  networking.firewall.trustedInterfaces = [ "podman0" ];
 }

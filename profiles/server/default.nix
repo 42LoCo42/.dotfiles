@@ -42,19 +42,8 @@
 
   nix.gc.automatic = true;
 
-  virtualisation.podman.defaultNetwork.settings = {
-    ipv6_enabled = true;
-    subnets = [
-      {
-        subnet = "10.88.0.0/16";
-        gateway = "10.88.0.1";
-      }
-      {
-        subnet = "fd00::/80";
-        gateway = "fd00::1";
-      }
-    ];
+  rice = {
+    pam-rssh.enable = true;
+    podman.enable = true;
   };
-
-  rice.pam-rssh.enable = true;
 }
