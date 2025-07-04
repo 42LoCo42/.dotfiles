@@ -1,10 +1,10 @@
-{ pkgs, config, aquaris, ... }:
+{ pkgs, lib, config, aquaris, ... }:
 let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../../rice ];
 
   aquaris = {
-    users = pkgs.lib.mkMerge [
+    users = lib.mkMerge [
       { inherit (aquaris.cfg.users) leonsch; }
       { leonsch.admin = true; }
     ];
@@ -86,7 +86,20 @@ let inherit (config.rice.ssh) proxy; in
   home-manager.sharedModules = [{
     aquaris = {
       firefox = {
-        preRun = ''
+        sanitize = {
+          enable = true;
+          exceptions = [
+            "https://github.com"
+            "https://iu.org"
+            "https://mynixos.com"
+            "https://proton.me"
+            "https://reddit.com"
+            "https://spk-vorpommern.de"
+            "https://youtube.com"
+          ];
+        };
+
+        preRun = lib.mkBefore ''
           LAUNCHER=0
           RUNNING="$FIREFOX_PROFILE_DIR/running"
 
@@ -102,7 +115,7 @@ let inherit (config.rice.ssh) proxy; in
           fi
         '';
 
-        postRun = ''
+        postRun = lib.mkAfter ''
           if ((LAUNCHER)); then
             rm -f "$RUNNING"
 
