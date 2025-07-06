@@ -89,30 +89,18 @@ let inherit (config.rice.ssh) proxy; in
         };
 
         preRun = lib.mkBefore ''
-          LAUNCHER=0
-          RUNNING="$FIREFOX_PROFILE_DIR/running"
-
-          if [ ! -e "$RUNNING" ]; then
-            if curl --connect-timeout 1 https://icanhazip.com; then
-              foot rsync -azvP --delete \
-                "firefox-sync:"         \
-                "$FIREFOX_PROFILE_DIR"
-            fi
-
-            touch "$RUNNING"
-            LAUNCHER=1
+          if ((LAUNCHER)) && curl --connect-timeout 1 https://icanhazip.com; then
+            foot rsync -azvP --delete \
+              "firefox-sync:"         \
+              "$FIREFOX_PROFILE_DIR"
           fi
         '';
 
         postRun = lib.mkAfter ''
-          if ((LAUNCHER)); then
-            rm -f "$RUNNING"
-
-            if curl --connect-timeout 1 https://icanhazip.com; then
-              foot rsync -azvP --delete \
-                "$FIREFOX_PROFILE_DIR"  \
-                "firefox-sync:"
-            fi
+          if ((LAUNCHER)) && curl --connect-timeout 1 https://icanhazip.com; then
+            foot rsync -azvP --delete \
+              "$FIREFOX_PROFILE_DIR"  \
+              "firefox-sync:"
           fi
         '';
       };
