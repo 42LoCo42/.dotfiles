@@ -83,7 +83,7 @@ in
           ];
 
           "hyprland/workspaces" = {
-            all-outputs = true;
+            all-outputs = false;
             sort-by-number = true;
             format = "{icon}";
             format-icons = cfg.icons;
