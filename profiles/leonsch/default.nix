@@ -9,10 +9,6 @@ let inherit (config.rice.ssh) proxy; in
       { leonsch.admin = true; }
     ];
 
-    persist.dirs = {
-      "/root/.android" = { };
-    };
-
     secrets.rules."@machine/syncstat".user = "leonsch";
 
     # work stuff

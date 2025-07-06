@@ -19,6 +19,8 @@
     rice.unfreeNames = [ "p7zip" ];
 
     home-manager.sharedModules = [{
+      aquaris.persist.".android" = { }; # for ADB
+
       home = {
         packages = with pkgs; [
           btrfs-progs
