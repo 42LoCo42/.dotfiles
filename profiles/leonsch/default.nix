@@ -1,7 +1,7 @@
 { pkgs, lib, config, aquaris, ... }:
 let inherit (config.rice.ssh) proxy; in
 {
-  imports = [ ../../rice ];
+  imports = [ ../common ];
 
   aquaris = {
     users = lib.mkMerge [
@@ -9,15 +9,8 @@ let inherit (config.rice.ssh) proxy; in
       { leonsch.admin = true; }
     ];
 
-    filesystems = { fs, ... }: {
-      zpools.rpool = fs.defaultPool;
-    };
-
-    persist = {
-      enable = true;
-      dirs = {
-        "/root/.android" = { };
-      };
+    persist.dirs = {
+      "/root/.android" = { };
     };
 
     secrets.rules."@machine/syncstat".user = "leonsch";

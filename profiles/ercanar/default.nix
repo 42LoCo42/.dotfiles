@@ -1,21 +1,13 @@
-{ pkgs, lib, config, aquaris, ... }:
+{ pkgs, config, aquaris, ... }:
 let inherit (config.rice.ssh) proxy; in
 {
-  imports = [ ../../rice ./aliases.nix ];
+  imports = [ ../common ./aliases.nix ];
 
   aquaris = {
     users = pkgs.lib.mkMerge [
       { inherit (aquaris.cfg.users) ercanar; }
       { ercanar.admin = true; }
     ];
-
-    filesystems = { fs, ... }: {
-      zpools.rpool = fs.defaultPool;
-    };
-
-    persist = {
-      enable = true;
-    };
   };
 
   hardware.printers = {

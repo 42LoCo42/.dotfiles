@@ -1,5 +1,5 @@
 { pkgs, lib, config, aquaris, ... }: {
-  imports = [ ../../rice ./options.nix ];
+  imports = [ ../common ./options.nix ];
 
   nixpkgs.overlays = [
     (_: pkgs: {
@@ -18,12 +18,6 @@
       { inherit (aquaris.cfg.users) admin; }
       { admin.admin = true; }
     ];
-
-    filesystems = { fs, ... }: {
-      zpools.rpool = fs.defaultPool;
-    };
-
-    persist.enable = true;
   };
 
   system.autoUpgrade = {
