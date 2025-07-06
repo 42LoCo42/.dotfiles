@@ -15,7 +15,10 @@
   };
 
   rice.desktop = {
-    nvidia.enable = true;
+    gpu = {
+      intel = true;
+      nvidia = true;
+    };
 
     udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';
 

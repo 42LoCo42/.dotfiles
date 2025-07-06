@@ -5,8 +5,6 @@
   };
 
   config = lib.mkIf config.rice.desktop.misc.enable {
-    documentation.man.generateCaches = true;
-
     programs = {
       adb.enable = true;
       gamemode.enable = true;
@@ -75,8 +73,6 @@
             t = "tmux new-session -A -E -s 0";
           };
       };
-
-      programs.man.generateCaches = true;
 
       services.ssh-agent.enable = true;
 

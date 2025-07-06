@@ -1,0 +1,132 @@
+{ pkgs, lib, config, ... }:
+let
+  inherit (lib) mkIf mkMerge mkOption;
+  inherit (lib.types) bool;
+
+  cfg = config.rice.desktop.gpu;
+in
+{
+  options.rice.desktop.gpu = {
+    enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    intel = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    nvidia = mkOption {
+      type = bool;
+      default = false;
+    };
+  };
+  config = mkIf (cfg.enable) (mkMerge [
+    {
+      rice.unfreeNames = [
+        "cuda-merged"
+        "cuda_cccl"
+        "cuda_cudart"
+        "cuda_cuobjdump"
+        "cuda_cupti"
+        "cuda_cuxxfilt"
+        "cuda_gdb"
+        "cuda_nvcc"
+        "cuda_nvdisasm"
+        "cuda_nvml_dev"
+        "cuda_nvprune"
+        "cuda_nvrtc"
+        "cuda_nvtx"
+        "cuda_profiler_api"
+        "cuda_sanitizer_api"
+        "libcublas"
+        "libcufft"
+        "libcurand"
+        "libcusolver"
+        "libcusparse"
+        "libnpp"
+        "libnvjitlink"
+      ];
+
+      environment = {
+        systemPackages =
+          with config.rice.desktop.zenkernel.pkgs; [
+            nvtopPackages.full
+          ];
+
+        sessionVariables.MOZ_DISABLE_RDD_SANDBOX = "1";
+      };
+
+      home-manager.sharedModules = [{
+        aquaris.firefox = {
+          extensions = {
+            # https://addons.mozilla.org/en-US/firefox/addon/enhanced-h264ify
+            "{9a41dee2-b924-4161-a971-7fb35c053a4a}" = { };
+          };
+
+          prefs = {
+            "media.ffmpeg.vaapi.enabled" = true;
+            "media.hardware-video-decoding.force-enabled" = true;
+            "media.rdd-ffmpeg.enabled" = true;
+            "widget.dmabuf.force-enabled" = true;
+          };
+        };
+      }];
+    }
+
+    (mkIf cfg.intel {
+      # TODO confirm these
+      boot.kernelParams = [
+        "i915.enable_guc=2"
+        "i915.enable_psr=0"
+      ];
+
+      hardware.graphics.extraPackages = with pkgs; [
+        intel-media-driver
+        intel-media-sdk
+        intel-vaapi-driver
+        vpl-gpu-rt
+      ];
+
+      systemd.services.intel-gpu-max-freq = {
+        path = with pkgs; [ intel-gpu-tools ];
+        script = "intel_gpu_frequency -m";
+        serviceConfig.Type = "oneshot";
+        before = [ "graphical.target" ];
+        wantedBy = [ "graphical.target" ];
+      };
+
+      services.xserver.videoDrivers = [ "modesetting" ];
+    })
+
+    (mkIf cfg.nvidia {
+      rice = {
+        unfreeNames = [ "nvidia-x11" ];
+
+        desktop.wayland.hyprland.preConfig = ''
+          env = GBM_BACKEND,nvidia-drm
+          env = LIBVA_DRIVER_NAME,nvidia
+          env = NVD_BACKEND,direct
+          env = VDPAU_DRIVER,nvidia
+          env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+          env = __NV_PRIME_RENDER_OFFLOAD,1
+          env = __NV_PRIME_RENDER_OFFLOAD_PROVIDER,NVIDIA-G0
+          env = __VK_LAYER_NV_optimus,NVIDIA_only
+
+          cursor:no_hardware_cursors = 1
+        '';
+      };
+
+      hardware.nvidia = {
+        package = config.boot.kernelPackages.nvidiaPackages.stable; # 570.169
+        open = false;
+        modesetting.enable = true;
+        nvidiaSettings = false;
+        powerManagement.enable = true;
+      };
+
+      services.xserver.videoDrivers = [ "nvidia" ];
+    })
+  ]);
+}

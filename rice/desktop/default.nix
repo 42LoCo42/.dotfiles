@@ -19,6 +19,7 @@
       eww.enable = true;
       firefox.enable = true;
       fonts.enable = true;
+      gpu.enable = true;
       greetd.enable = true;
       hrtrack.enable = true;
       keyd.enable = true;
@@ -51,6 +52,7 @@
     ./eww
     ./firefox.nix
     ./fonts.nix
+    ./gpu.nix
     ./greetd.nix
     ./hrtrack
     ./keyd.nix
@@ -59,7 +61,6 @@
     ./minecraft.nix
     ./misc.nix
     ./mpd.nix
-    ./nvidia.nix
     ./pipewire.nix
     ./scx.nix
     ./sudo-u2f.nix
