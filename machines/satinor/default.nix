@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, ... }: {
   imports = [ ../../profiles/ercanar ];
 
   aquaris = {
@@ -17,8 +17,6 @@
     device = "/dev/disk/by-id/ata-JAJM600M1TB_AA202100000000000773-part1";
   };
 
-  hardware.amdgpu.opencl.enable = true;
-
   services.keyd.keyboards.default = {
     ids = [ "260d:1026:161a6f2c" ]; # definitely a keyboard btw trust me bro :3
     settings.main = {
@@ -29,6 +27,11 @@
 
   rice.desktop = {
     alpha = 80;
+
+    gpu = {
+      amd = true;
+      baseload = true;
+    };
 
     udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 
@@ -41,16 +44,6 @@
           monitor   = HDMI-A-1, 1920x1080@60, 2560x0, 1
           monitor   = HDMI-A-1, disable
           workspace = 9, monitor:HDMI-A-1, default:true
-        '';
-
-        postConfig = ''
-          # fix GPU spikes by providing a constant baseload
-          windowrulev2 = float,    title:vkcube
-          windowrulev2 = pin,      title:vkcube
-          windowrulev2 = nofocus,  title:vkcube
-          windowrulev2 = move 0 0, title:vkcube
-          windowrulev2 = size 1 1, title:vkcube
-          exec-once    = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
         '';
 
         workspaces = {

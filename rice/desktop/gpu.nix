@@ -12,6 +12,19 @@ in
       default = false;
     };
 
+    baseload = mkOption {
+      type = bool;
+      description = "Provide a constant GPU baseload (using vkcube)";
+      default = false;
+    };
+
+    ############################################################################
+
+    amd = mkOption {
+      type = bool;
+      default = false;
+    };
+
     intel = mkOption {
       type = bool;
       default = false;
@@ -22,7 +35,8 @@ in
       default = false;
     };
   };
-  config = mkIf (cfg.enable) (mkMerge [
+
+  config = mkIf cfg.enable (mkMerge [
     {
       rice.unfreeNames = [
         "cuda-merged"
@@ -74,6 +88,24 @@ in
         };
       }];
     }
+
+    (mkIf cfg.baseload {
+      rice.desktop.wayland.hyprland.postConfig = ''
+        # fix GPU spikes by providing a constant baseload
+        windowrulev2 = float,    title:vkcube
+        windowrulev2 = pin,      title:vkcube
+        windowrulev2 = nofocus,  title:vkcube
+        windowrulev2 = move 0 0, title:vkcube
+        windowrulev2 = size 1 1, title:vkcube
+        exec-once    = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
+      '';
+    })
+
+    ############################################################################
+
+    (mkIf cfg.amd {
+      hardware.amdgpu.opencl.enable = true;
+    })
 
     (mkIf cfg.intel {
       # TODO confirm these
