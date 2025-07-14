@@ -116,7 +116,6 @@ in
 
       hardware.graphics.extraPackages = with pkgs; [
         intel-media-driver
-        intel-media-sdk
         intel-vaapi-driver
         vpl-gpu-rt
       ];
