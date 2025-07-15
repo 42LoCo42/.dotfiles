@@ -29,6 +29,8 @@
 	}
 }
 
+################################################################################
+
 git.bunny:22 {
 	import bind
 	import connect forgejo:2222
@@ -39,20 +41,28 @@ git.bunny {
 	reverse_proxy forgejo:8080
 }
 
+################################################################################
+
 img.bunny {
 	import bind
 	reverse_proxy immich:8080
 }
+
+################################################################################
 
 pin.bunny {
 	import bind
 	reverse_proxy pinlist:8080
 }
 
+################################################################################
+
 rd.bunny {
 	import bind
 	reverse_proxy rustdesk:21114
 }
+
+################################################################################
 
 searx.bunny {
 	import bind
@@ -77,21 +87,29 @@ searx.bunny {
 	reverse_proxy searxng:8081
 }
 
+################################################################################
+
 ssh.bunny {
 	import bind
 	import connect host.containers.internal:18213
 }
+
+################################################################################
 
 sync.bunny {
 	import bind
 	reverse_proxy syncthing:8080
 }
 
+################################################################################
+
 vencloud.bunny {
 	import bind
 	header ?Access-Control-Allow-Origin *
 	reverse_proxy vencloud:8080
 }
+
+################################################################################
 
 vw.bunny {
 	import bind

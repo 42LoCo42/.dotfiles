@@ -44,6 +44,7 @@ machine:
     email-oauth2-proxy:
     forgejo:
     immich:
+    pocket-id:
     rustdesk:
     searxng:
     tailscaled:

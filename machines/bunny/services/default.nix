@@ -13,6 +13,7 @@
     ./mount-dcim
     ./mycorrhiza
     ./pinlist
+    ./pocket-id
     ./postgres
     ./rustdesk
     ./searxng
