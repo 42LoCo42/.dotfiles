@@ -44,7 +44,7 @@
 
 		########################################
 
-		Content-Security-Policy "frame-ancestors 'self'"
+		?Content-Security-Policy "frame-ancestors 'self'"
 
 		# clickjacking protection
 		X-Frame-Options DENY

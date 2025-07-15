@@ -1,0 +1,28 @@
+From 361fe6c00d7cd522f4139a95d380454914cd4acc Mon Sep 17 00:00:00 2001
+From: Leon Schumacher <leonsch@protonmail.com>
+Date: Tue, 15 Jul 2025 15:22:23 +0200
+Subject: [PATCH] get config location from environment
+
+---
+ index.js | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/index.js b/index.js
+index 9c7d57e..066f900 100644
+--- a/index.js
++++ b/index.js
+@@ -7,9 +7,9 @@ const SSO = {};
+ 
+ let config = {};
+ try {
+-    config = require("../../../config/sso");
++    config = require(process.env.CRYPTPAD_SSO_CONFIG);
+ } catch (e) {
+-    //console.log("SSO config not found");
++    console.log("SSO config not found");
+ }
+ 
+ 
+-- 
+2.50.0
+

@@ -41,6 +41,7 @@ machine:
     key:
 
     attic:
+    cryptpad:
     email-oauth2-proxy:
     forgejo:
     headscale:

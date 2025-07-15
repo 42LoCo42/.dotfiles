@@ -41,6 +41,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "DKMn_E_zuAyC-2-bVyXfON_iY0SHhKuDcY8AdsGC6Qx5X4pHS9UvTcVgtPbReT_MS3ef_4xfGIdFkqGRMPSRZLAALoAAvylPiI7q7S4vuVE"
 		}
 	},
+	"machine/bunny/cryptpad": {
+		"enc": "G3iGlZ-zNk8cq-SERLkFHJWROk_669yaLvW79HDT_XYADjjO3RHYkTbNMAjYG6ErKOb-fjyQSEfvYYHsOy1BbgKB95S-S2UA7Rfx4n3QvfwmwrZ28Ya-AUtpJJg0u4MQ7iQAIA",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "XNT2sz_iQpeiFOnpjXG-FQ_Tf9GYbtEFzOb_1f0mDBmxOmdKYM0S9HDUBI1xbIesDsqUXYkvgYk_ROBTqUgz5xMbcPXtSjwG0DUD4ozXlUk",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "wNLmU1T3gMpbMp1c40TlV-MDbCh3dFtzsj_EAUd8a3VsETpnPKWp6P4FslsNAWdMH1zvOCjHlmzzMG1l_PdXCbEayIO3vUIY9GnHbgnK-3c"
+		}
+	},
 	"machine/bunny/email-oauth2-proxy": {
 		"enc": "Ik4X5A7w7gPZxjXx2fp8ZV2ioqxiXAGl_Mvcr1Ut1_xljGOaO00b0E7vQIh-ol_5gyBU9YSgR4EuAHA0m0xHLYw7DSmIR7QEHxHvwnTsqPhG2FoDac63ycdtpRoaYeKZ9aFpZ_H2rXl0Ruk5fRP8CCsqvC-zR1Y8Yaeo8cyl-sAXtNFcODXK9FqgJpEupKxqx9nd16O-ouiJgkHWz0jxEa610IC_Q-6hovCQOg",
 		"rcp": {
