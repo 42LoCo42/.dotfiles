@@ -55,6 +55,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "EoszOwNeAakceRCeuE5GCRihjYoNHLRuGakRGXejJjMEEFxZ2yz4FK4MPf5IQyyYtH6AhT7a1Ezm-5lEdAIqr79dOR6ErJRGlQPmUt04VJs"
 		}
 	},
+	"machine/bunny/headscale": {
+		"enc": "9CDAl_SuwHmif_VYA-e-L35nlyxuXz5kgS4Fitr8NNnCECAFmnNBMgMLXzsJGN67B72AV8xgTp-yGYeQKagU-bDs7YbPfVCyULfA_vRd1WIfMkDQEhA_fbYvnRn2IpynL4vC01LO",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "TiSOaAZ9NlhrHrrJLTpRImw7BCuPXVw2KpZLR6HNGyU_3EqnH18urBqitIsNKrV7LRQLVVdjWZG85NZVttX3eARVH2GJURhkuseTf3kFhqU",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "cA3-aqYYkZ0pObN-Xql1CXeJe0SZAZ3zpOc4InOWY2f--dActdsJpcyh3q2tgTOqJzsf73gFIrRFJ6AMsgUw-1LFxmLyfJPjmVL8UKdk0Mo"
+		}
+	},
 	"machine/bunny/immich": {
 		"enc": "G-nD70O4FGN4G_ZFQeEDBTQfPDexkuv06j3faT6c9KT7Y4kQ62ssWw4U7BaL9tIVegufb4YFRO68QXbGaghujW_7KyUrtHAEQyhC8jQJrm8ZW_XgQrRuvx2XW77TbHs",
 		"rcp": {

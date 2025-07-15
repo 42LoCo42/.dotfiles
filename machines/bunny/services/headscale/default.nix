@@ -11,6 +11,8 @@
       headscale
     ]);
 
+    environmentFiles = [ (config.aquaris.secret "@machine/headscale") ];
+
     volumes = [
       "headscale:/data"
       "${config.rice.subsDomain ./config.yaml}:/etc/headscale/config.yaml:ro"

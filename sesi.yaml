@@ -43,6 +43,7 @@ machine:
     attic:
     email-oauth2-proxy:
     forgejo:
+    headscale:
     immich:
     pocket-id:
     rustdesk:
