@@ -10,7 +10,7 @@
         (prismlauncher.override {
           glfw3-minecraft = pkgs.glfw3-minecraft-extra;
           jdks = with pkgs; [
-            # jdk8 # TODO currently broken
+            jdk8
             jdk17
             jdk21
           ];
