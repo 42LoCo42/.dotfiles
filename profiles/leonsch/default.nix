@@ -44,6 +44,14 @@ let inherit (config.rice.ssh) proxy; in
               rules = [ "initialClass:(thunderbird)" ];
             };
           };
+
+          postConfig = ''
+            plugin {
+              hyprwinwrap {
+                class = background-wrap
+              }
+            }
+          '';
         };
 
         waybar.syncstat = {
@@ -89,18 +97,18 @@ let inherit (config.rice.ssh) proxy; in
         };
 
         preRun = lib.mkBefore ''
-          if ((LAUNCHER)) && curl --connect-timeout 1 https://icanhazip.com; then
-            foot rsync -azvP --delete \
-              "firefox-sync:"         \
-              "$FIREFOX_PROFILE_DIR"
+          if ((LAUNCHER)); then
+            foot -a background-wrap -o colors.alpha=0 \
+              rsync -azvP --delete                    \
+                "firefox-sync:" "$FIREFOX_PROFILE_DIR"
           fi
         '';
 
         postRun = lib.mkAfter ''
-          if ((LAUNCHER)) && curl --connect-timeout 1 https://icanhazip.com; then
-            foot rsync -azvP --delete \
-              "$FIREFOX_PROFILE_DIR"  \
-              "firefox-sync:"
+          if ((LAUNCHER)); then
+            foot -a background-wrap -o colors.alpha=0 \
+              rsync -azvP --delete                    \
+                "$FIREFOX_PROFILE_DIR" "firefox-sync:"
           fi
         '';
       };
@@ -120,6 +128,11 @@ let inherit (config.rice.ssh) proxy; in
         "work" = { };
       };
     };
+
+    wayland.windowManager.hyprland.plugins =
+      with pkgs.hyprlandPlugins; [
+        hyprwinwrap
+      ];
 
     home.packages = with pkgs; [
       openvpn # for corporate VPN
