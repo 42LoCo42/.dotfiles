@@ -23,6 +23,13 @@
                 url = "https://github.com/Vendicated/Vencord/commit/600a95f751c5977f47d64aaa97fdbfd3f324504e.patch";
                 hash = "sha256-8GcZub1Ot1rSXqMxRBgsL2zIy0hr2I1J1iOxHaNIVpA=";
               }}
+
+              # allow media-src for raw.githubusercontent.com
+              # so that moyai and smirk can load sounds
+              sed -i '${lib.replaceString "\n" "" ''
+                /"raw.githubusercontent.com"/
+                s|ImageAndCssSrc|[...ImageAndCssSrc, "media-src"]|
+              ''}' src/main/csp/index.ts
             '';
           });
 
