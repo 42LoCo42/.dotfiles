@@ -12,7 +12,6 @@
 
         ########## obscura inclusion ##########
 
-        foot = obscura.foot-transparent; # default foot is opaque on fullscreen
         swaybg = obscura.swaybg_webp; # support for webp images
 
         inherit (obscura)
