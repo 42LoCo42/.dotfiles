@@ -1,21 +1,9 @@
-From ee17cb8a6b3756b7ad54ed7530bc8d5b3d86ab96 Mon Sep 17 00:00:00 2001
-From: Leon Schumacher <leonsch@protonmail.com>
-Date: Wed, 18 Jun 2025 21:29:07 +0200
-Subject: [PATCH] add smirk plugin from
- https://github.com/Vendicated/Vencord/pull/2830
-
----
- src/plugins/Smirk/index.ts | 133 +++++++++++++++++++++++++++++++++++++
- src/utils/constants.ts     |   6 +-
- 2 files changed, 138 insertions(+), 1 deletion(-)
- create mode 100644 src/plugins/Smirk/index.ts
-
 diff --git a/src/plugins/Smirk/index.ts b/src/plugins/Smirk/index.ts
 new file mode 100644
-index 00000000..bf0fc28b
+index 00000000..22206ef2
 --- /dev/null
 +++ b/src/plugins/Smirk/index.ts
-@@ -0,0 +1,133 @@
+@@ -0,0 +1,132 @@
 +/*
 + * Vencord, a Discord client mod
 + * Copyright (c) 2024 Vendicated and contributors
@@ -23,8 +11,7 @@ index 00000000..bf0fc28b
 + */
 +
 +import { definePluginSettings } from "@api/Settings";
-+import { makeRange } from "@components/PluginSettings/components";
-+import { Devs } from "@utils/constants";
++import { makeRange } from "@utils/types";
 +import { sleep } from "@utils/misc";
 +import definePlugin, { OptionType } from "@utils/types";
 +import { RelationshipStore, SelectedChannelStore, UserStore } from "@webpack/common";
@@ -72,7 +59,7 @@ index 00000000..bf0fc28b
 +export default definePlugin({
 +    name: "Smirk 😏",
 +    description: "Get rizzed up with this emoji (also a heavily inspired plugin from the Moyai plugin by Megu and Nuckyz)",
-+    authors: [Devs.uhAlexz],
++    authors: [{name: "uhalexz_", id: 1144267370769174608n}],
 +    settings,
 +
 +    flux: {
@@ -149,23 +136,3 @@ index 00000000..bf0fc28b
 +
 +    return Math.min(count, 10);
 +}
-diff --git a/src/utils/constants.ts b/src/utils/constants.ts
-index afe1651f..bee2ed25 100644
---- a/src/utils/constants.ts
-+++ b/src/utils/constants.ts
-@@ -591,7 +591,11 @@ export const Devs = /* #__PURE__*/ Object.freeze({
-     },
-     Cootshk: {
-         name: "Cootshk",
--        id: 921605971577548820n
-+        id: 921605971577548820n,
-+    },
-+    uhAlexz: {
-+        name: "uhalexz_",
-+        id: 1144267370769174608n,
-     },
- } satisfies Record<string, Dev>);
- 
--- 
-2.49.0
-
