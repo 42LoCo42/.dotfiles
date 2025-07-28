@@ -46,6 +46,26 @@
         "type": "github"
       }
     },
+    "fjordlauncher": {
+      "inputs": {
+        "libnbtplusplus": "libnbtplusplus",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1745115920,
+        "narHash": "sha256-BJNok8fp76twPqEVoZ6+ictphN/VgemZUASWGuB5swA=",
+        "owner": "unmojang",
+        "repo": "FjordLauncher",
+        "rev": "55572112d1f52f9f1dc363b9ae629bed7f38447d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "unmojang",
+        "ref": "9.4.0",
+        "repo": "FjordLauncher",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -100,6 +120,22 @@
         "type": "github"
       }
     },
+    "libnbtplusplus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1699286814,
+        "narHash": "sha256-yy0q+bky80LtK1GWzz7qpM+aAGrOqLuewbid8WT1ilk=",
+        "owner": "PrismLauncher",
+        "repo": "libnbtplusplus",
+        "rev": "23b955121b8217c1c348a9ed2483167a6f3ff4ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PrismLauncher",
+        "repo": "libnbtplusplus",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -138,6 +174,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1743583204,
+        "narHash": "sha256-F7n4+KOIfWrwoQjXrL2wD9RhFYLs2/GGe/MQY1sSdlE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1753429684,
         "narHash": "sha256-9h7+4/53cSfQ/uA3pSvCaBepmZaz/dLlLVJnbQ+SJjk=",
         "owner": "nixos",
@@ -152,7 +204,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1753369216,
         "narHash": "sha256-Jx2i6loWL755GD+GlCXESMhIiO0aFc/pDo82N16fEiw=",
@@ -170,7 +222,7 @@
     },
     "obscura": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1753522043,
@@ -190,9 +242,10 @@
       "inputs": {
         "aagl": "aagl",
         "aquaris": "aquaris",
+        "fjordlauncher": "fjordlauncher",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "obscura": "obscura"
       }
     },

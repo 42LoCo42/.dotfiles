@@ -58,7 +58,7 @@
     ./keyd.nix
     ./libvirt.nix
     ./mail.nix
-    ./minecraft.nix
+    ./minecraft
     ./misc.nix
     ./mpd.nix
     ./pipewire.nix

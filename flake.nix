@@ -13,6 +13,10 @@
       };
     };
 
+    fjordlauncher = {
+      url = "github:unmojang/FjordLauncher/9.4.0";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
