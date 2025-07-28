@@ -5,6 +5,7 @@
     ./caddy
     ./chronometer
     ./cryptpad
+    ./drasl
     ./email-oauth2-proxy
     ./forgejo
     ./headscale

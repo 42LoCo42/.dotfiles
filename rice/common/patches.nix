@@ -17,6 +17,7 @@
         inherit (obscura)
           caddyfile-language-server
           chronometer
+          drasl
           email-oauth2-proxy
           ferroxide
           flameshot-grim

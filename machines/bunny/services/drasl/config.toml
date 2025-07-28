@@ -1,0 +1,45 @@
+Domain = "drasl.bunny"
+BaseURL = "https://drasl.bunny"
+ListenAddress = "0.0.0.0:8080"
+
+StateDirectory = "/data"
+
+DefaultAdmins = ["leonsch@protonmail.com"]
+
+AllowAddingDeletingPlayers = true
+DefaultMaxPlayerCount = -1
+
+################################################################################
+
+AllowPasswordLogin = false
+
+[RegistrationNewPlayer]
+Allow = true
+
+[[RegistrationOIDC]]
+  Name = "PocketID"
+  Issuer = "https://id.eleonora.gay"
+  ClientID = "$CLIENT_ID"
+  ClientSecret = "$CLIENT_SECRET"
+  PKCE = true
+  AllowChoosingPlayerName = true
+
+################################################################################
+
+[CreateNewPlayer]
+AllowChoosingUUID = true
+
+[ImportExistingPlayer]
+  Allow = true
+  Nickname = "Mojang"
+  AccountURL = "https://api.mojang.com"
+  SessionURL = "https://sessionserver.mojang.com"
+  SetSkinURL = "https://www.minecraft.net/msaprofile/mygames/editskin"
+
+[[FallbackAPIServers]]
+  Nickname = "Mojang"
+  SessionURL = "https://sessionserver.mojang.com"
+  AccountURL = "https://api.mojang.com"
+  ServicesURL = "https://api.minecraftservices.com"
+  SkinDomains = ["textures.minecraft.net"]
+  CacheTTLSeconds = 60
