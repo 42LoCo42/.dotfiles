@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (defvar my/temp-dir (concat user-emacs-directory "temp"))
 
 (defun my/join-line ()
@@ -62,6 +64,8 @@
     (call-interactively #'align-regexp)
     (indent-tabs-mode (if state 1 -1))))
 
+(defvar my/splash (create-image "@splash@"))
+
 (defun my/greeter ()
   "Switches to a simple buffer which greets the user."
   (interactive)
@@ -79,14 +83,13 @@
   (setq cursor-type nil)                  ; hide cursor
   (setq mode-line-format nil)             ; hide modeline
 
-  (let* ((img (create-image "@splash@"))
-         (greeting (propertize "Welcome to Emacs!" 'face '(:height 4.0 :foreground "white")))
+  (let* ((greeting (propertize "Welcome to Emacs!" 'face '(:height 4.0 :foreground "white")))
          (cw (frame-char-width))
          (gw (string-pixel-width greeting))
          (gs (+ (/ gw cw) (if (zerop (% gw cw)) 0 1))))
 
     (insert-char ?\n 8)
-    (insert-image img (propertize "a" 'line-prefix `(space . (:align-to (- center (0.5 . ,img))))))
+    (insert-image my/splash (propertize "a" 'line-prefix `(space . (:align-to (- center (0.5 . ,my/splash))))))
 
     (insert-char ?\n 4)
     (insert (propertize greeting 'line-prefix `(space . (:align-to (- center (0.5 . ,gs)))))))
