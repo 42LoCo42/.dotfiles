@@ -4,8 +4,14 @@
 
   home-manager.sharedModules = [{
     home.shellAliases = {
-      nl = "nix-locate --top-level";
+      nl = "nix-locate";
       nlr = "nl --regex";
     };
+
+    programs.zsh.initContent = ''
+      nlb() {
+        nix-locate --regex "bin/$1$"
+      }
+    '';
   }];
 }
