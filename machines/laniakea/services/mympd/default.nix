@@ -34,18 +34,27 @@
 
   virtualisation = {
     pnoc.mympd = {
-      cmd = [ (lib.getExe pkgs.mympd) "-a" "/data/cache" "-w" "/data/work" ];
+      cmd = [
+        (lib.getExe (pkgs.writeShellApplication {
+          name = "mympd";
+          runtimeInputs = with pkgs; [ coreutils mympd ];
+          text = builtins.readFile ./start.sh;
+        }))
+      ];
+
+      environment = {
+        MYMPD_HTTP_HOST = "0.0.0.0";
+        MYMPD_HTTP_PORT = "8080";
+        MYMPD_SSL = "false";
+        MYMPD_CA_CERT_STORE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+        MYMPD_URI = "http://host.containers.internal:6600";
+      };
 
       ports = [ "8081:8080" ];
 
       volumes = [
         "mympd:/data"
-
-        "${./config/http_port}:/data/work/config/http_port:ro"
-        "${./config/ssl}:/data/work/config/ssl:ro"
-
         "/persist/home/admin/music:/music:ro"
-        "/persist/home/admin/music/ARTIST_COVERS:/data/work/pics/Artist:ro"
       ];
     };
 
