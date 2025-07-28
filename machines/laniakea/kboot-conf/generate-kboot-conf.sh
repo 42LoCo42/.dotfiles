@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
 
 pfxcopy() {
 	name="$(realpath "$1" | cut -b 12-43)-$(basename "$1")"
