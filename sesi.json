@@ -160,6 +160,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "4LD7Y5nVpvkTiR-TZ8gfV6qB00vAb-JU2WHMdYlc2Qa3OBP28jb5EKk9UKlLGYWqwvWq7q1WppjRBdO9pKkWjc4cmVAMAtq7UC2iqe5zjBc"
 		}
 	},
+	"machine/laniakea/qbit-stop": {
+		"enc": "rJj9RtJf6U1qqRnrnUuBMhrexk51q8IXPLedjYVBadAIPUGHz88j9US6o8PGZkm7zCisOUiT9LsEF4FGMErEdNIly0eVrlD9beU0xo6A2gJIqW8aaMeLBHelt0ZVxU0-tS2A4wghf7gblOQm5Q-nY4egIhm0Ir0fzNCot-34g6jAItOFf8hMB8rzbw",
+		"rcp": {
+			"XKjp1ZlWTBBb2s6WVz-JMOj4S_QPIkDZ0t-C8ryP5Uo": "L8pQMcK6qoNDVM9SThx-XhmCOt_VySFMNfqsq5iM5g8hf0SPEd2ISS29F0XAXqwMYsg1F3UtrmCnQQQNnnCD264WVLD9yg24OIPDNNvLlh8",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "T3OdK03E29EsHV-nukOWFO7wMaYerDysKdQfA-8zsjcLZqTxA4OaMkiDLNylq_yj9Pjw-JnhZqoOh1ztGxNvY3rqvL5vcHcQHks5ZFTLPuk"
+		}
+	},
 	"machine/satinor/key": {
 		"enc": "Y245zE_nxlAiQwZPLVwcyUKK_ZJmYQ9bBST_TgmGo-72OSn85AXZ96mfxIPI55LgWF_ZqWAZ1u9PAGzBZvTX_ZBQ-TT6Rqn-",
 		"rcp": {

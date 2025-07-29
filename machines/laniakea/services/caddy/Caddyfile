@@ -19,7 +19,7 @@
 
 (mympd) {
 	# connect to socket activation proxy on host
-	reverse_proxy host.containers.internal:8080
+	reverse_proxy unix//caddy/mympd.sock
 }
 
 # reachable from LAN
@@ -50,7 +50,8 @@ doc.laniakea {
 
 # reachable from VPN
 qbit.laniakea {
-	reverse_proxy qbittorrent:8080
+	# connect to socket activation proxy on host
+	reverse_proxy unix//caddy/qbittorrent.sock
 }
 
 ##### syncthing #####

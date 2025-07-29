@@ -23,6 +23,15 @@
         { content = fs.zpool (p: p.rpool); }
       ];
     };
+
+    dnscrypt.rules.forwarding = {
+      "dns.podman" = "10.88.0.1";
+    };
+  };
+
+  services.dnscrypt-proxy2.settings = {
+    cache_neg_min_ttl = 0;
+    cache_neg_max_ttl = 0;
   };
 
   boot = rec {

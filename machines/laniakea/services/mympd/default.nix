@@ -4,31 +4,25 @@
   services.openssh.settings.GatewayPorts = "yes";
 
   systemd = {
-    services = {
-      mympd = {
-        serviceConfig = {
-          ExecStart = builtins.concatStringsSep " " [
-            (lib.getExe pkgs.socket-activate)
-            "-u podman-mympd.service" # activate this unit
-            "-a 127.0.0.1:8081" # connect here
-            "-d 2000" # delay attempts by 2 seconds to account for mympd startup
-            "-t 5m" # stop unit after 5 minutes of inactivity
-          ];
-
-          NonBlocking = true;
-        };
+    sockets.mympd = {
+      socketConfig = {
+        ListenStream = "/var/lib/containers/storage/volumes/caddy/_data/mympd.sock";
+        NoDelay = true;
       };
+
+      wantedBy = [ "sockets.target" ];
     };
 
-    sockets = {
-      mympd = {
-        socketConfig = {
-          ListenStream = "8080";
-          NoDelay = true;
-        };
+    services.mympd.serviceConfig = {
+      ExecStart = builtins.concatStringsSep " " [
+        (lib.getExe pkgs.socket-activate)
+        "-u podman-mympd.service" # activate this unit
+        "-a mympd.dns.podman:8080" # connect here
+        "-d 2000" # delay attempts by 2 seconds to account for startup
+        "-t 5m" # stop unit after 5 minutes of inactivity
+      ];
 
-        wantedBy = [ "sockets.target" ];
-      };
+      NonBlocking = true;
     };
   };
 
@@ -49,8 +43,6 @@
         MYMPD_CA_CERT_STORE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
         MYMPD_URI = "http://host.containers.internal:6600";
       };
-
-      ports = [ "8081:8080" ];
 
       volumes = [
         "mympd:/data"
