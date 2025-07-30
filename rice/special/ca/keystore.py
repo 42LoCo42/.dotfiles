@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- apheleia-mode: nil; -*-
 from base64 import b64decode
 import jks
 import re

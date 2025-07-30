@@ -34,6 +34,12 @@ in
     home-manager.sharedModules = [{
       home.packages = with pkgs; [
         ((fjordlauncher.override {
+          jdks = with pkgs; [
+            temurin-bin-21
+            temurin-bin-17
+            temurin-bin-8
+          ];
+
           glfw3-minecraft = pkgs.glfw3-minecraft-extra;
 
           # use shell wrapper instead of binary since the latter doesn't support --run
