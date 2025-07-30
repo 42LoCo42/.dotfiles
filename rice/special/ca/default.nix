@@ -1,6 +1,6 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
-  inherit (lib) mkIf mkOption;
+  inherit (lib) getExe mkIf mkOption pipe;
   inherit (lib.types) bool coercedTo package pathInStore;
 
   cfg = config.rice.ca;
@@ -20,5 +20,14 @@ in
 
   config = mkIf cfg.enable {
     security.pki.certificateFiles = [ cfg.file ];
+
+    environment.variables.JAVAX_NET_SSL_TRUSTSTORE = pipe pkgs.python3 [
+      (x: x.withPackages (p: with p; [ pyjks ]))
+      (x: pkgs.runCommand "java-truststore" { } ''
+        ${getExe x} ${./keystore.py} \
+          ${config.environment.etc."ssl/certs/ca-bundle.crt".source} \
+          $out
+      '')
+    ];
   };
 }
