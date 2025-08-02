@@ -24,67 +24,71 @@
     powerManagement.finegrained = true;
   };
 
-  rice.desktop = {
-    gpu = {
-      intel = true;
-      nvidia = true;
-    };
+  rice = {
+    use-ncps.enable = true;
 
-    udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';
+    desktop = {
+      gpu = {
+        intel = true;
+        nvidia = true;
+      };
 
-    wayland = {
-      fuzzel.fontSize = 20;
+      udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';
 
-      hyprland =
-        let
-          primary = "DVI-D-1";
-          secondary = "DP-1";
+      wayland = {
+        fuzzel.fontSize = 20;
 
-          secondary-goto = pkgs.writeShellScript "secondary-goto" ''
-            if
-              [ -n "$(
-                hyprctl workspaces -j \
-                | jq '.[] | select(.name == "secondary")'
-              )" ] ||
-              "$(
-                hyprctl monitors all -j | jq -r '
-                  .[] | select(.name == "${secondary}")
-                  | .disabled | not'
-              )"
-            then
-              hyprctl dispatch workspace name:secondary
-            fi
-          '';
+        hyprland =
+          let
+            primary = "DVI-D-1";
+            secondary = "DP-1";
 
-          secondary-move = pkgs.writeShellScript "secondary-move" ''
-            hyprctl keyword monitor ${secondary}
-            hyprctl dispatch movetoworkspace name:secondary
-          '';
+            secondary-goto = pkgs.writeShellScript "secondary-goto" ''
+              if
+                [ -n "$(
+                  hyprctl workspaces -j \
+                  | jq '.[] | select(.name == "secondary")'
+                )" ] ||
+                "$(
+                  hyprctl monitors all -j | jq -r '
+                    .[] | select(.name == "${secondary}")
+                    | .disabled | not'
+                )"
+              then
+                hyprctl dispatch workspace name:secondary
+              fi
+            '';
 
-          secondary-quit = pkgs.writeShellScript "secondary-quit" ''
-            hyprctl keyword monitor ${secondary},disable
-          '';
-        in
-        {
-          preConfig = ''
-            env = AQ_DRM_DEVICES,/dev/dri/by-type/intel:/dev/dri/by-type/nvidia
+            secondary-move = pkgs.writeShellScript "secondary-move" ''
+              hyprctl keyword monitor ${secondary}
+              hyprctl dispatch movetoworkspace name:secondary
+            '';
 
-            monitor = ${primary},   1920x1080@60,    0x0, 1
-            monitor = ${secondary}, 1920x1080@60, 1920x0, 1
-            monitor = ${secondary}, disable
+            secondary-quit = pkgs.writeShellScript "secondary-quit" ''
+              hyprctl keyword monitor ${secondary},disable
+            '';
+          in
+          {
+            preConfig = ''
+              env = AQ_DRM_DEVICES,/dev/dri/by-type/intel:/dev/dri/by-type/nvidia
 
-            workspace = n[false],       monitor:${primary}
-            workspace = name:secondary, monitor:${secondary}, default
-          '';
+              monitor = ${primary},   1920x1080@60,    0x0, 1
+              monitor = ${secondary}, 1920x1080@60, 1920x0, 1
+              monitor = ${secondary}, disable
 
-          postConfig = ''
-            bind = $mod      , ssharp, exec, ${secondary-goto}
-            bind = $mod SHIFT, ssharp, exec, ${secondary-move}
-            bind = $mod CTRL , ssharp, exec, ${secondary-quit}
-          '';
-        };
+              workspace = n[false],       monitor:${primary}
+              workspace = name:secondary, monitor:${secondary}, default
+            '';
 
-      waybar.temperatureWarn = 70;
+            postConfig = ''
+              bind = $mod      , ssharp, exec, ${secondary-goto}
+              bind = $mod SHIFT, ssharp, exec, ${secondary-move}
+              bind = $mod CTRL , ssharp, exec, ${secondary-quit}
+            '';
+          };
+
+        waybar.temperatureWarn = 70;
+      };
     };
   };
 

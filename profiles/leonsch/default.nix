@@ -77,7 +77,6 @@ let inherit (config.rice.ssh) proxy; in
     podman.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
-    use-ncps.enable = true;
   };
 
   home-manager.sharedModules = [{
