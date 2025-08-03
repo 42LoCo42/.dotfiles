@@ -104,7 +104,10 @@ in
     ############################################################################
 
     (mkIf cfg.amd {
-      hardware.amdgpu.opencl.enable = true;
+      hardware.amdgpu = {
+        amdvlk.enable = true;
+        opencl.enable = true;
+      };
     })
 
     (mkIf cfg.intel {
