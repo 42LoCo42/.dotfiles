@@ -1,6 +1,14 @@
 { pkgs, lib, config, ... }: {
+  # TODO openid-configuration should include 'code_challenge_methods_supported'
+  # waiting for fix to reach a release...
+  # https://github.com/pocket-id/pocket-id/commit/d479817b6a7ca4807b5de500b3ba713d436b0770
   rice.caddy.cfg.id = ''
     import default
+
+    respond /.well-known/openid-configuration <<JSON
+    ${builtins.readFile ./info.json}
+    JSON 200
+
     reverse_proxy pocket-id:8080
   '';
 

@@ -1,0 +1,32 @@
+{
+	"authorization_endpoint": "https://id.eleonora.gay/authorize",
+	"authorization_response_iss_parameter_supported": true,
+	"claims_supported": [
+		"sub",
+		"given_name",
+		"family_name",
+		"name",
+		"email",
+		"email_verified",
+		"preferred_username",
+		"picture",
+		"groups"
+	],
+	"code_challenge_methods_supported": ["plain", "S256"],
+	"device_authorization_endpoint": "https://id.eleonora.gay/api/oidc/device/authorize",
+	"end_session_endpoint": "https://id.eleonora.gay/api/oidc/end-session",
+	"grant_types_supported": [
+		"authorization_code",
+		"refresh_token",
+		"urn:ietf:params:oauth:grant-type:device_code"
+	],
+	"id_token_signing_alg_values_supported": ["RS256"],
+	"introspection_endpoint": "https://id.eleonora.gay/api/oidc/introspect",
+	"issuer": "https://id.eleonora.gay",
+	"jwks_uri": "https://id.eleonora.gay/.well-known/jwks.json",
+	"response_types_supported": ["code", "id_token"],
+	"scopes_supported": ["openid", "profile", "email", "groups"],
+	"subject_types_supported": ["public"],
+	"token_endpoint": "https://id.eleonora.gay/api/oidc/token",
+	"userinfo_endpoint": "https://id.eleonora.gay/api/oidc/userinfo"
+}
