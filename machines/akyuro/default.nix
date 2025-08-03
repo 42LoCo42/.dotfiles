@@ -27,6 +27,8 @@
   };
 
   rice.desktop = {
+    gpu.amd = true;
+
     udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 
     wayland = {
