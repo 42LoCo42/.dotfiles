@@ -4,6 +4,7 @@
 
     environment = {
       PINLIST_OIDC_ISSUER = "https://id.eleonora.gay";
+      PINLIST_OIDC_REDIRECT = "https://pin.bunny";
     };
 
     environmentFiles = [ (config.aquaris.secret "@machine/pinlist") ];
