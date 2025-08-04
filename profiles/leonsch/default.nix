@@ -86,11 +86,13 @@ let inherit (config.rice.ssh) proxy; in
           enable = true;
           exceptions = [
             "https://github.com"
+            "https://id.eleonora.gay"
             "https://iu.org"
             "https://mynixos.com"
             "https://proton.me"
             "https://reddit.com"
             "https://spk-vorpommern.de"
+            "https://vw.eleonora.gay"
             "https://youtube.com"
           ];
         };
