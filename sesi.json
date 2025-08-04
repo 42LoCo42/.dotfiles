@@ -90,6 +90,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "BXmHbJdak16f5niqFx2fBKlNG4g1S2xG9GDirY3i_jPFPzW1NGXhkzjBShr4Ec6z3qlPbMtie_93ZhckyaM5AmJy5jhBDtJSFxISVST3U38"
 		}
 	},
+	"machine/bunny/pinlist": {
+		"enc": "scdbNcvkssyDMTn92JEET-4yafP_e9LUb5AkK3xVjyeecNiQwYpYuQIsIDsUB8f4eryn400uvhiNntWxpqOCL4g1zfcGJrYpMkZOp3MT0Pzwets4aSn7jBHwj_lI6HLHG9ehr-7wzb0eeFUPcZl-h2jlp2gIKm1l5b75WKdNYOcfc320HTZUOinrogUfTKhIKwh-sCyPzRzW0wah7j_-XQ",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "pXmMcBvD-6o6jZPM5Vm0tHLmvqs40p50iKiRnXG2nQFlOmA4M_Ww41i13JrxjhkiWMMblYR-Y_c0R954k5O50NrLS2YHHcghqewm7BoLWJE",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "i1MHq-mCsS0bUrFopt99pRSRknq5bUkVLNE-F5uMQlmwB5jhxGUFIfVoW8utsXLjZ1qw4F22YZ68DOGje1Vp04A9Nb8oXUGyKF89Ka2sp8w"
+		}
+	},
 	"machine/bunny/pocket-id": {
 		"enc": "8UTPYj1siBanBHv-goAaRXvKTKMlGNJawfYh6a5vLjVFQQbYBdVAeOXypvtINDlhu52657MxKhP6S85rjZWxYKrxsf933uHmJAXAJFAKF8XO8rjlz4OqI76ZDwF5JS0ai0VJdg",
 		"rcp": {

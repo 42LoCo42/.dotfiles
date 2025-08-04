@@ -47,6 +47,7 @@ machine:
     forgejo:
     headscale:
     immich:
+    pinlist:
     pocket-id:
     rustdesk:
     searxng:
