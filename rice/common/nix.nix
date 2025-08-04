@@ -29,6 +29,13 @@
         repo = "obscura";
         inherit (self.inputs.obscura) rev;
       };
+
+      settings = {
+        allowed-users = [ "@wheel" ];
+
+        auto-allocate-uids = true;
+        experimental-features = [ "auto-allocate-uids" ];
+      };
     };
   };
 }
