@@ -8,7 +8,7 @@
           "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
         ];
 
-        hash = "sha256-mGJcpvs3XqW5UNUkIADdz/poyr96cq+SzCFdKyWdMKY=";
+        hash = "sha256-eBsZy0n/NEZez8dC/zvFO4LENgsNXkqMovLcYwMnZwo=";
       };
     })
   ];

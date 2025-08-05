@@ -20,6 +20,12 @@
       pulse.enable = true;
 
       extraConfig.pipewire = {
+        "00-realtime" = {
+          "module.rt.args" = {
+            "rtportal.enabled" = false;
+          };
+        };
+
         "10-clock-rate" = {
           "context.properties" = {
             "default.clock.max-quantum" = 1024;

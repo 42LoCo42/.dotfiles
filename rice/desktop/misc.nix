@@ -11,7 +11,7 @@
     };
 
     users.users = builtins.mapAttrs
-      (_: _: { extraGroups = [ "adbusers" ]; })
+      (_: _: { extraGroups = [ "adbusers" "gamemode" ]; })
       config.aquaris.users;
 
     rice.unfreeNames = [ "p7zip" ];
