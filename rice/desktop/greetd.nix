@@ -13,7 +13,7 @@
 
       settings = {
         default_session.command =
-          "${lib.getExe pkgs.greetd.tuigreet} -tr --remember-user-session";
+          "${lib.getExe pkgs.tuigreet} -tr --remember-user-session";
 
         terminal.vt = lib.mkForce 7;
       };
