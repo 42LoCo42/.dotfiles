@@ -78,6 +78,11 @@
 
               workspace = n[false],       monitor:${primary}
               workspace = name:secondary, monitor:${secondary}, default
+
+              # fixes crash in CCompositor::shouldChangePreferredImageDescription
+              render {
+                cm_enabled = false
+              }
             '';
 
             postConfig = ''
