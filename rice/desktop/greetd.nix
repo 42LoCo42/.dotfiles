@@ -10,8 +10,13 @@
     services.greetd = {
       enable = true;
       restart = true;
-      settings.default_session.command =
-        "${pkgs.greetd.tuigreet}/bin/tuigreet -tr --remember-user-session";
+
+      settings = {
+        default_session.command =
+          "${lib.getExe pkgs.greetd.tuigreet} -tr --remember-user-session";
+
+        terminal.vt = lib.mkForce 7;
+      };
     };
   };
 }
