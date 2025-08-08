@@ -99,17 +99,21 @@ let inherit (config.rice.ssh) proxy; in
 
         preRun = lib.mkBefore ''
           if ((LAUNCHER)); then
+            hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors.alpha=0 \
               rsync -azvP --delete                    \
                 "firefox-sync:" "$FIREFOX_PROFILE_DIR"
+            hyprctl keyword decoration:blur:new_optimizations true
           fi
         '';
 
         postRun = lib.mkAfter ''
           if ((LAUNCHER)); then
+            hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors.alpha=0 \
               rsync -azvP --delete                    \
                 "$FIREFOX_PROFILE_DIR" "firefox-sync:"
+            hyprctl keyword decoration:blur:new_optimizations true
           fi
         '';
       };
