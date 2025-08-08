@@ -30,7 +30,6 @@
           python3
           wf-recorder
           yt-dlp
-          zathura
         ];
 
         shellAliases =
@@ -75,6 +74,15 @@
       };
 
       services.ssh-agent.enable = true;
+
+      programs = {
+        zathura = {
+          enable = true;
+          options = {
+            selection-clipboard = "clipboard";
+          };
+        };
+      };
 
       # haskek my beloved <3
       xdg.configFile."ghc/ghci.conf".text = ''
