@@ -12,8 +12,10 @@
   "Jump to beginning of line or first non-whitespace."
   (interactive)
   (let ((oldpos (point)))
-    (back-to-indentation)
-    (and (= oldpos (point)) (beginning-of-line))))
+    (beginning-of-visual-line 1)
+    (skip-syntax-forward " " (line-end-position))
+    (backward-prefix-chars)
+    (and (= oldpos (point)) (beginning-of-visual-line))))
 
 (defun my/autosplit ()
   (interactive)
