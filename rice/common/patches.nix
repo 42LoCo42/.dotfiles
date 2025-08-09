@@ -10,6 +10,38 @@
           '';
         };
 
+        pocket-id = pkgs.pocket-id.overrideAttrs (final: old: {
+          version = "1.7.0";
+
+          src = pkgs.fetchFromGitHub {
+            inherit (old.src) owner repo;
+            tag = "v${final.version}";
+            hash = "sha256-u4H1wC5RL3p7GNL7WQkmK8DNgwKQvgxHd8TIug+Be+o=";
+          };
+
+          vendorHash = "sha256-guG/JnwUi2WeClSfAX9pRG3kLJMTvTDiJ7L54TGeSd0=";
+
+          frontend = pkgs.stdenv.mkDerivation (x: {
+            inherit (old.frontend) pname installPhase;
+            inherit (final) version src;
+
+            nativeBuildInputs = with pkgs; [
+              nodejs
+              pnpm.configHook
+            ];
+
+            pnpmDeps = pkgs.pnpm.fetchDeps {
+              inherit (x) pname version src;
+              fetcherVersion = 2;
+              hash = "sha256-Yrx3M78OFPuxsuhe74vYSRAsAuMAfRh8ruVlhp7lyiQ=";
+            };
+
+            env.BUILD_OUTPUT_PATH = "../dist";
+
+            buildPhase = "pnpm run build";
+          });
+        });
+
         ########## obscura inclusion ##########
 
         swaybg = obscura.swaybg_webp; # support for webp images
