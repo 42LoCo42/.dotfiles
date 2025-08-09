@@ -17,7 +17,6 @@
 
       avahi = {
         enable = true;
-        nssmdns4 = true;
         openFirewall = true;
       };
 
@@ -29,6 +28,19 @@
           cups-filters
         ];
       };
+    };
+
+    aquaris.dnscrypt.rules.forwarding = {
+      ${config.services.avahi.domainName} = "0.0.0.0:5354";
+    };
+
+    systemd.services.avahi-proxy = {
+      serviceConfig.ExecStart = builtins.concatStringsSep " " [
+        "${lib.getExe pkgs.avahi-proxy} run"
+        "--baseDomain ${config.services.avahi.domainName}"
+      ];
+
+      wantedBy = [ "multi-user.target" ];
     };
 
     users.users = builtins.mapAttrs

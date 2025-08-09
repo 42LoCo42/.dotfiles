@@ -15,6 +15,7 @@
         swaybg = obscura.swaybg_webp; # support for webp images
 
         inherit (obscura)
+          avahi-proxy
           caddyfile-language-server
           chronometer
           drasl
