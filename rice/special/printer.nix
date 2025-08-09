@@ -21,7 +21,14 @@
         openFirewall = true;
       };
 
-      printing.enable = true;
+      printing = {
+        enable = true;
+
+        drivers = with pkgs; [
+          cups-browsed
+          cups-filters
+        ];
+      };
     };
 
     users.users = builtins.mapAttrs

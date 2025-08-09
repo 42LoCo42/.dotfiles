@@ -10,14 +10,6 @@ let inherit (config.rice.ssh) proxy; in
     ];
   };
 
-  hardware.printers = {
-    ensurePrinters = [{
-      deviceUri = "ipp://Brother%20DCP-L2530DW%20series._ipp._tcp.local";
-      name = "Brother";
-      model = "everywhere";
-    }];
-  };
-
   rice = {
     desktop = {
       enable = true;
