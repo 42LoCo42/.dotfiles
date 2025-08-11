@@ -1,4 +1,5 @@
-{ lib, config, ... }: let
+{ lib, config, ... }:
+let
   inherit (lib) mkIf mkOption;
   inherit (lib.types) bool int;
   cfg = config.rice.desktop.wayland.hypridle;

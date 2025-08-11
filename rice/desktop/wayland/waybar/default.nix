@@ -49,7 +49,7 @@ in
       programs.waybar = {
         enable = true;
         systemd.enable = true;
-        systemd.target = "hyprland-session.target";
+        systemd.target = "graphical-session.target";
         style = ./style.css;
 
         settings.mainBar = {
