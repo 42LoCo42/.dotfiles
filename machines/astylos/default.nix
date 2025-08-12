@@ -19,8 +19,8 @@
 
     desktop = {
       gpu = {
-        intel = true;
-        nvidia = true;
+        intel.enable = true;
+        nvidia.enable = true;
       };
 
       udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';

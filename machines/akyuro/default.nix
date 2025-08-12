@@ -27,7 +27,7 @@
   };
 
   rice.desktop = {
-    gpu.amd = true;
+    gpu.amd.enable = true;
 
     udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
 

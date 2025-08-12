@@ -4,13 +4,11 @@ let
   inherit (lib.types) bool;
 
   cfg = config.rice.desktop.gpu;
+  mkEnable = mkOption { type = bool; default = false; };
 in
 {
   options.rice.desktop.gpu = {
-    enable = mkOption {
-      type = bool;
-      default = false;
-    };
+    enable = mkEnable;
 
     baseload = mkOption {
       type = bool;
@@ -20,20 +18,14 @@ in
 
     ############################################################################
 
-    amd = mkOption {
-      type = bool;
-      default = false;
+    amd.enable = mkEnable;
+
+    intel = {
+      enable = mkEnable;
+      maxFreq = mkEnable;
     };
 
-    intel = mkOption {
-      type = bool;
-      default = false;
-    };
-
-    nvidia = mkOption {
-      type = bool;
-      default = false;
-    };
+    nvidia.enable = mkEnable;
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -103,14 +95,14 @@ in
 
     ############################################################################
 
-    (mkIf cfg.amd {
+    (mkIf cfg.amd.enable {
       hardware.amdgpu = {
         amdvlk.enable = true;
         opencl.enable = true;
       };
     })
 
-    (mkIf cfg.intel {
+    (mkIf cfg.intel.enable {
       boot.kernelParams = [
         "i915.enable_guc=2"
         "i915.enable_psr=0"
@@ -122,7 +114,7 @@ in
         vpl-gpu-rt
       ];
 
-      systemd.services.intel-gpu-max-freq = {
+      systemd.services.intel-gpu-max-freq = mkIf cfg.intel.maxFreq {
         path = with pkgs; [ intel-gpu-tools ];
         script = "intel_gpu_frequency -m";
         serviceConfig.Type = "oneshot";
@@ -133,7 +125,7 @@ in
       services.xserver.videoDrivers = [ "modesetting" ];
     })
 
-    (mkIf cfg.nvidia {
+    (mkIf cfg.nvidia.enable {
       rice = {
         unfreeNames = [ "nvidia-x11" ];
 

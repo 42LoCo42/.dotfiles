@@ -29,7 +29,7 @@
     alpha = 80;
 
     gpu = {
-      amd = true;
+      amd.enable = true;
       baseload = true;
     };
 
