@@ -369,13 +369,17 @@ in
               (add-to-list 'apheleia-mode-alist '(c++-mode . my/clang-format))
               (add-to-list 'apheleia-formatters '(my/clang-format
                 "clang-format" "--style=file:${./clang-format.yaml}"))
+
+              (setf (alist-get 'python-mode apheleia-mode-alist)
+                    '(isort black))
             '';
 
             extraPackages = with pkgs; [
               bibtex-tidy
               black # python-mode
-              nodePackages.prettier
-              shfmt
+              isort # python-mode
+              nodePackages.prettier # JS and others
+              shfmt # shell
             ];
           };
 
