@@ -14,16 +14,6 @@
     };
   };
 
-  hardware.nvidia = {
-    prime = {
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-      offload.enable = true;
-    };
-
-    powerManagement.finegrained = true;
-  };
-
   rice = {
     use-ncps.enable = true;
 
@@ -70,19 +60,12 @@
           in
           {
             preConfig = ''
-              env = AQ_DRM_DEVICES,/dev/dri/by-type/intel:/dev/dri/by-type/nvidia
-
               monitor = ${primary},   1920x1080@60,    0x0, 1
               monitor = ${secondary}, 1920x1080@60, 1920x0, 1
               monitor = ${secondary}, disable
 
               workspace = n[false],       monitor:${primary}
               workspace = name:secondary, monitor:${secondary}, default
-
-              # fixes crash in CCompositor::shouldChangePreferredImageDescription
-              render {
-                cm_enabled = false
-              }
             '';
 
             postConfig = ''
