@@ -98,7 +98,7 @@ let inherit (config.rice.ssh) proxy; in
         };
 
         preRun = lib.mkBefore ''
-          if ((LAUNCHER)); then
+          if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
             hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors.alpha=0 \
               rsync -azvP --delete                    \
@@ -108,7 +108,7 @@ let inherit (config.rice.ssh) proxy; in
         '';
 
         postRun = lib.mkAfter ''
-          if ((LAUNCHER)); then
+          if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
             hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors.alpha=0 \
               rsync -azvP --delete                    \
