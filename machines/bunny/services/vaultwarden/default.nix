@@ -27,7 +27,7 @@
       SMTP_PORT = "2465";
       SMTP_SECURITY = "off";
       SMTP_USERNAME = "11213kbm@gmail.com";
-      SMTP_PASSWORD = "ignored";
+      SMTP_PASSWORD = "empty";
       SMTP_FROM = "vaultwarden@${config.rice.domain}";
 
       WEB_VAULT_FOLDER = "${pkgs.vaultwarden.webvault}/share/vaultwarden/vault";
