@@ -8,6 +8,7 @@ let
     listToAttrs
     mapAttrs'
     mapAttrsToList
+    mkBefore
     mkDefault
     mkIf
     mkMerge
@@ -24,6 +25,7 @@ let
     int
     lines
     listOf
+    nullOr
     str
     submodule
     ;
@@ -35,12 +37,44 @@ let
   script = x: subsF (x // { func = pkgs.writeScript; });
 
   cfg = config.rice.desktop.wayland.hyprland;
+
+  secondary-goto = pkgs.writeShellScript "secondary-goto" ''
+    if
+      [ -n "$(
+        hyprctl workspaces -j \
+        | jq '.[] | select(.name == "secondary")'
+      )" ] ||
+      "$(
+        hyprctl monitors all -j | jq -r '
+          .[] | select(.name == "${cfg.monitors.secondary.name}")
+          | .disabled | not'
+      )"
+    then
+      hyprctl dispatch moveworkspacetomonitor "name:secondary ${cfg.monitors.secondary.name}"
+      hyprctl dispatch workspace name:secondary
+    fi
+  '';
+
+  secondary-move = pkgs.writeShellScript "secondary-move" ''
+    hyprctl keyword monitor ${cfg.monitors.secondary.name}
+    hyprctl dispatch moveworkspacetomonitor "name:secondary ${cfg.monitors.secondary.name}"
+    hyprctl dispatch movetoworkspace name:secondary
+  '';
+
+  secondary-quit = pkgs.writeShellScript "secondary-quit" ''
+    hyprctl keyword monitor ${cfg.monitors.secondary.name},disable
+  '';
 in
 {
   options.rice.desktop.wayland.hyprland = {
     enable = mkOption {
       type = bool;
       default = false;
+    };
+
+    mod = mkOption {
+      type = str;
+      default = "SUPER";
     };
 
     preConfig = mkOption {
@@ -51,6 +85,24 @@ in
     postConfig = mkOption {
       type = lines;
       default = "";
+    };
+
+    monitors = {
+      primary = {
+        name = mkOption { type = str; };
+        mode = mkOption { type = str; };
+      };
+
+      secondary = mkOption {
+        type = nullOr (submodule {
+          options = {
+            name = mkOption { type = str; };
+            mode = mkOption { type = str; };
+          };
+        });
+
+        default = null;
+      };
     };
 
     workspaces = mkOption {
@@ -123,8 +175,10 @@ in
                 value = {
                   icon = mkDefault name;
                   extra = x: ''
-                    bind = $mod,       ${x.indexS}, workspace,       ${x.internalS}
-                    bind = $mod SHIFT, ${x.indexS}, movetoworkspace, ${x.internalS}
+                    bind = $mod,       ${x.indexS}, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
+                    bind = $mod,       ${x.indexS}, workspace,              ${x.internalS}
+                    bind = $mod SHIFT, ${x.indexS}, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
+                    bind = $mod SHIFT, ${x.indexS}, movetoworkspace,        ${x.internalS}
                   '';
                 };
               }))
@@ -135,11 +189,41 @@ in
             "0" = {
               icon = "";
               extra = x: ''
-                bind = $mod,       dead_circumflex, workspace,       ${x.internalS}
-                bind = $mod SHIFT, dead_circumflex, movetoworkspace, ${x.internalS}
+                bind = $mod,       dead_circumflex, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
+                bind = $mod,       dead_circumflex, workspace,              ${x.internalS}
+                bind = $mod SHIFT, dead_circumflex, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
+                bind = $mod SHIFT, dead_circumflex, movetoworkspace,        ${x.internalS}
               '';
             };
           }
+        ];
+
+        preConfig = mkMerge [
+          (mkBefore ''
+            env = GDK_BACKEND,wayland
+            env = QT_QPA_PLATFORM,wayland
+            env = SDL_VIDEODRIVER,wayland
+
+            env = NIXOS_OZONE_WL,1
+            env = _JAVA_AWT_WM_NONREPARENTING,1
+
+            $mod = ${cfg.mod}
+          '')
+
+          ''
+            monitor = ${cfg.monitors.primary.name}, ${cfg.monitors.primary.mode}
+            workspace = n[false], monitor:${cfg.monitors.primary.name}
+          ''
+
+          (mkIf (cfg.monitors.secondary != null) ''
+            monitor = ${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}
+            monitor = ${cfg.monitors.secondary.name}, disable
+            workspace = name:secondary, monitor:${cfg.monitors.secondary.name}, default
+
+            bind = $mod      , ssharp, exec, ${secondary-goto}
+            bind = $mod SHIFT, ssharp, exec, ${secondary-move}
+            bind = $mod CTRL , ssharp, exec, ${secondary-quit}
+          '')
         ];
 
         postConfig = pipe cfg.workspaces [

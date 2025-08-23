@@ -20,6 +20,7 @@ in
 
     temperatureWarn = mkOption {
       type = int;
+      default = 70;
     };
 
     zfullfs = mkOption {

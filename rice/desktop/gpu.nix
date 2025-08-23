@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 let
-  inherit (lib) mkIf mkMerge mkOption;
+  inherit (lib) mkBefore mkIf mkMerge mkOption;
   inherit (lib.types) bool;
 
   cfg = config.rice.desktop.gpu;
@@ -129,7 +129,7 @@ in
       rice = {
         unfreeNames = [ "nvidia-x11" ];
 
-        desktop.wayland.hyprland.preConfig = ''
+        desktop.wayland.hyprland.preConfig = mkBefore ''
           env = GBM_BACKEND,nvidia-drm
           env = LIBVA_DRIVER_NAME,nvidia
           env = NVD_BACKEND,direct

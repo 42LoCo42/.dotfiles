@@ -28,54 +28,17 @@
       wayland = {
         fuzzel.fontSize = 20;
 
-        hyprland =
-          let
-            primary = "DVI-D-1";
-            secondary = "DP-1";
-
-            secondary-goto = pkgs.writeShellScript "secondary-goto" ''
-              if
-                [ -n "$(
-                  hyprctl workspaces -j \
-                  | jq '.[] | select(.name == "secondary")'
-                )" ] ||
-                "$(
-                  hyprctl monitors all -j | jq -r '
-                    .[] | select(.name == "${secondary}")
-                    | .disabled | not'
-                )"
-              then
-                hyprctl dispatch workspace name:secondary
-              fi
-            '';
-
-            secondary-move = pkgs.writeShellScript "secondary-move" ''
-              hyprctl keyword monitor ${secondary}
-              hyprctl dispatch movetoworkspace name:secondary
-            '';
-
-            secondary-quit = pkgs.writeShellScript "secondary-quit" ''
-              hyprctl keyword monitor ${secondary},disable
-            '';
-          in
-          {
-            preConfig = ''
-              monitor = ${primary},   1920x1080@60,    0x0, 1
-              monitor = ${secondary}, 1920x1080@60, 1920x0, 1
-              monitor = ${secondary}, disable
-
-              workspace = n[false],       monitor:${primary}
-              workspace = name:secondary, monitor:${secondary}, default
-            '';
-
-            postConfig = ''
-              bind = $mod      , ssharp, exec, ${secondary-goto}
-              bind = $mod SHIFT, ssharp, exec, ${secondary-move}
-              bind = $mod CTRL , ssharp, exec, ${secondary-quit}
-            '';
+        hyprland.monitors = {
+          primary = {
+            name = "DVI-D-1";
+            mode = "1920x1080@60, 0x0, 1";
           };
 
-        waybar.temperatureWarn = 70;
+          secondary = {
+            name = "DP-1";
+            mode = "1920x1080@60, 1920x0, 1";
+          };
+        };
       };
     };
   };

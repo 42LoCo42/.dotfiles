@@ -34,11 +34,10 @@
     wayland = {
       fuzzel.fontSize = 14;
 
-      hyprland.preConfig = ''
-        monitor = eDP-1,1920x1080@60,0x0,1
-      '';
-
-      waybar.temperatureWarn = 70;
+      hyprland.monitors.primary = {
+        name = "eDP-1";
+        mode = "1920x1080@60, 0x0, 1";
+      };
     };
   };
 }

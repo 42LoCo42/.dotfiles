@@ -38,12 +38,21 @@
     wayland = {
       fuzzel.fontSize = 20;
 
-      hyprland = {
+      hyprland = rec {
+        monitors = {
+          primary = {
+            name = "DP-1";
+            mode = "2560x1440@60, 0x0, 1";
+          };
+
+          secondary = {
+            name = "HDMI-A-1";
+            mode = "1920x1080@60, 2560x0, 1";
+          };
+        };
+
         preConfig = ''
-          monitor   = DP-1,     2560x1440@60,    0x0, 1
-          monitor   = HDMI-A-1, 1920x1080@60, 2560x0, 1
-          monitor   = HDMI-A-1, disable
-          workspace = 9, monitor:HDMI-A-1, default:true
+          workspace = 9, monitor:${monitors.secondary.name}, default:true
         '';
 
         workspaces = {
@@ -62,8 +71,6 @@
       };
 
       swaybg.image = config.aquaris.secret "user/ercanar/wallpaper";
-
-      waybar.temperatureWarn = 70;
     };
   };
 }
