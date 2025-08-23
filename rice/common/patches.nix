@@ -19,7 +19,6 @@
           drasl
           email-oauth2-proxy
           ferroxide
-          flameshot-grim
           glfw3-minecraft-extra
           ncps-db-helper
           pinlist

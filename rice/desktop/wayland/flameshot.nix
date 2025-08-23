@@ -7,16 +7,20 @@
   config = lib.mkIf config.rice.desktop.wayland.flameshot.enable {
     home-manager.sharedModules = [{
       home.packages = with pkgs; [
+        grim
+        slurp
         wl-clipboard
 
         (pkgs.writeShellApplication {
           name = "flameshot-run";
-          text = ''
-            export XDG_CURRENT_DESKTOP=sway
-            ${lib.getExe pkgs.flameshot-grim} gui -r | wl-copy
-          '';
+          text = "${lib.getExe pkgs.flameshot} gui -r | wl-copy";
         })
       ];
+
+      xdg.configFile."flameshot/flameshot.ini".text = ''
+        [General]
+        useGrimAdapter=true
+      '';
     }];
   };
 }
