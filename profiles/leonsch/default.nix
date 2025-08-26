@@ -57,7 +57,6 @@ let inherit (config.rice.ssh) proxy; in
         waybar.syncstat = {
           enable = true;
           folder = "cw6hv-bpaei"; # main
-          keyFile = config.aquaris.secret "@machine/syncstat";
         };
 
         wlsunset = {

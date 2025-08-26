@@ -21,7 +21,6 @@ machine:
 
     key:
     recovery:
-    syncstat:
 
   astylos:
     :key: w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI
@@ -30,7 +29,6 @@ machine:
       - user/leonsch
 
     key:
-    syncstat:
 
   bunny:
     :key: XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs

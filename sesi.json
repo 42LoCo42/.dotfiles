@@ -13,25 +13,11 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "UhvD_ICR4wLRhMVfOTKlTVppvlTYOl9Ej5dtoO__nXwt9OSYIYLxdzr9Bd_FOhEL3MKjyVlx3bhsXNg_Vt6_fynEx1r9h-cLO9KWiAEFCZg"
 		}
 	},
-	"machine/akyuro/syncstat": {
-		"enc": "KE-iAqw9NDTEmTGjIM5TWmLlx6Qk4YtCcKz4OuR7k9HqJ4LVUHZ7wFSpyPvsr7Encpt_SMhPMyz8vyEt7rKPPOkHNtLian78xg",
-		"rcp": {
-			"IIZ7WIULG2jlmL9zKJogbfjVysqd4iPDh9cLoU2lAHI": "LNskvghrZhHXez01A3nSyukf1UdA4JpHq0DpTb2-BXvUadeJcNQbqQYAP-pwbxjPtuaK7orSTnDKE1uM_NaP0sDv_hdUtZZgb9Iax4UVxas",
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "92TRuDNAmrHaP49KApRikIK1S6l5oI6t6M6VwEEIhyDwfAuui8f9xjdDaMAIZf42pVziVhcaOhrCssSgexyNnvS4BoBM59cJAjj2J1Bn1Tw"
-		}
-	},
 	"machine/astylos/key": {
 		"enc": "M6J3Q_0h_RWbZpQMWzPCAVewaATzGpyeypZ4ZcqevozPWxXEyASYbzvF6FlQPy6R4vhF_QemfqdUT2OxG_mO9ZNWOroYICSGzMxgYAsXypHdVb5mwnZqMWYgbxZomMWrxGtMi3h2JzO0Aduo5cSE4a4uWFXu9SaP1fDefpXniZWzx_E4u9FJ9-Ry4qHjcxgHcH7N-XW_RXfy6nrV0iHLSoT1VM9jEdI6Bp9FnDjP0fZ75cyOlzztbDdV6UqKDTJcGnpZ1dai4-bNC_Ookemk5L5HWxOGQkYksvQw46knCobyee79A-10xd5s1vC39azg3AeT3VypydL-TQ0vkyFeILKlTVr-NpeKvg0AEUonvZKbZw0nzpWv7D4sBDaaouOJxeIllLSuJIR_WK10LbnIKCoCeKGhTVeP8vcl8mSd73Ob-hHJS7DS4gpDWuxaMSySENF4QIKi5Vv1wE83mSbZJU_XLp7P4XKmSWSkze4nTixv6HhTY1DbCEeOy-V0I1JiHm2CGDGu1YWws9ys5DHknkxRPD8jq63uAR3KEAputUtl7yXVtbgdxk0dAXwStEtumUKg5rWa-6RGuDmPuZwU9fPs0Q",
 		"rcp": {
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "_buCzt_HB74WKw3VL-smyvC806O_14ETxya541OpgTbND3mFhLExmh8pfk_z_cw-wJ_YgJFfw0DidAd-3ZNrwEiqRijClIptQOpAWF6yNng",
 			"w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI": "YrMf2h1bTfGLhkgVRyAJIjXlpw7-Uffm_0CAgLY3EWyO_lvjGBNERmtWREzPTeaUYKWsGojp3aB30fpvd1M6Yh_-v3xLzf-hVSd-J2-uHVw"
-		}
-	},
-	"machine/astylos/syncstat": {
-		"enc": "0xCIQxfO95rMHKbRzC_cebeNXWgXTYDn2GgCPyUhDT30s8QTqHjl6WBdgNRndXE_37Ixcwq2ny21vnOBMGdeLE1yXa5OkorDIA",
-		"rcp": {
-			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "kr2QoN2cDuG7eK5zRR-feNcrRzTkSElCQrX_4Kgbwy4TARzu9MgUmnr-Ilkv0eLe904jlmu3YbGwiL28_ysRCPyakO-cjFX12Md0liZjTVk",
-			"w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI": "AunT3QOOPrHjgpBX4sNckm2B6xadguYiv9I-fxNmVD_lVqo4QBP7aoV9P9dCwIYEke0remZr1SYdKrPdMEazzChRKbM9D_IdhwkzWugsOfc"
 		}
 	},
 	"machine/bunny/attic": {

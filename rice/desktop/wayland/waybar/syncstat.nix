@@ -8,7 +8,6 @@ let
     ;
   inherit (lib.types)
     bool
-    path
     str
     ;
 
@@ -26,11 +25,6 @@ in
       type = str;
       description = "Folder ID";
     };
-
-    keyFile = mkOption {
-      type = path;
-      description = "File containing the Syncthing API key";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -38,9 +32,9 @@ in
       (_: pkgs: {
         syncstat = pkgs.writeShellApplication {
           name = "syncstat";
-          runtimeInputs = with pkgs; [ curl jq ];
+          runtimeInputs = with pkgs; [ curl yq ];
           text = aquaris.lib.subsT ./syncstat.sh {
-            inherit (cfg) folder keyFile;
+            inherit (cfg) folder;
           };
         };
       })
