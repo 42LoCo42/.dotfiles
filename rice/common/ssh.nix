@@ -3,8 +3,8 @@
 { pkgs, lib, config, ... }:
 let
   inherit (lib)
-    concatLines
-    flip
+    concatStringsSep
+    filter
     getExe
     hasPrefix
     mkIf
@@ -16,7 +16,7 @@ let
 
   inherit (lib.types) anything;
 
-  knownHosts = user: builtins.concatStringsSep "" [
+  knownHosts = user: concatStringsSep "" [
     config.aquaris.persist.root
     config.users.users.${user}.home
     "/.cache/ssh-known-hosts"
@@ -39,23 +39,24 @@ in
     {
       programs.ssh = {
         enable = true;
+        enableDefaultConfig = false;
 
-        addKeysToAgent = "yes";
-        forwardAgent = true;
-        userKnownHostsFile = kh;
+        matchBlocks = {
+          "*" = {
+            addKeysToAgent = "yes";
+            forwardAgent = true;
+            userKnownHostsFile = kh;
 
-        extraConfig = pipe config.aquaris.secrets.all [
-          (builtins.filter (hasPrefix "user/${user}/ssh/"))
-          (map (flip pipe [
-            config.aquaris.secret
-            (x: "IdentityFile ${x}")
-          ]))
-          concatLines
-        ];
+            identityFile = pipe config.aquaris.secrets.all [
+              (filter (hasPrefix "user/${user}/ssh/"))
+              (map config.aquaris.secret)
+            ];
+          };
 
-        matchBlocks.github = {
-          hostname = "github.com";
-          user = "git";
+          github = {
+            hostname = "github.com";
+            user = "git";
+          };
         };
       };
 

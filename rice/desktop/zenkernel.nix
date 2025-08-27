@@ -14,19 +14,19 @@ in
 
     pkgs = mkOption {
       type = raw;
-      # default = pkgs;
+      default = pkgs;
 
-      default = (import (builtins.fetchTarball {
-        url = "https://github.com/nixos/nixpkgs/tarball/85dbfc7aaf52ecb755f87e577ddbe6dbbdbc1054";
-        sha256 = "sha256-iAcj9T/Y+3DBy2J0N+yF9XQQQ8IEb5swLFzs23CdP88=";
-      })) { inherit (pkgs) system config; };
+      # default = (import (builtins.fetchTarball {
+      #   url = "https://github.com/nixos/nixpkgs/tarball/";
+      #   sha256 = "";
+      # })) { inherit (pkgs) system config; };
     };
   };
 
   config = mkIf config.rice.desktop.zenkernel.enable {
     boot = {
       kernelPackages = cfg.pkgs.linuxPackages_zen;
-      zfs.package = cfg.pkgs.zfs_unstable;
+      zfs.package = cfg.pkgs.zfs_2_3;
     };
   };
 }
