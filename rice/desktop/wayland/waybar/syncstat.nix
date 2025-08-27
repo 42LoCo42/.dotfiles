@@ -47,7 +47,6 @@ in
         "custom/syncstat" = {
           format = "󰓦  {text}% in sync";
           exec = "${getExe pkgs.syncstat}";
-          interval = 1;
           hide-empty-text = true;
         };
       };

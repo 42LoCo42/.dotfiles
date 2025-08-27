@@ -6,10 +6,12 @@ apikey="$(
 		<"$HOME/.local/state/syncthing/config.xml"
 )"
 
-curl -s -K <(
-	cat <<-EOF
-		-H "Authorization: Bearer $apikey"
-	EOF
-) "http://localhost:8384/rest/db/status?folder=@folder@" |
-	jq -r 'if .state == "idle" then empty else
-		"\(.state) - \(100 * .inSyncFiles / .globalFiles)" end'
+while sleep 1; do
+	curl -s -K <(
+		cat <<-EOF
+			-H "Authorization: Bearer $apikey"
+		EOF
+	) "http://localhost:8384/rest/db/status?folder=@folder@" |
+		jq -r 'if .state == "idle" then "" else
+			"\(.state) - \(100 * .inSyncFiles / .globalFiles)" end'
+done
