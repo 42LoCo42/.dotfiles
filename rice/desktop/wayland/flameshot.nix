@@ -13,7 +13,13 @@
 
         (pkgs.writeShellApplication {
           name = "flameshot-run";
-          text = "${lib.getExe pkgs.flameshot} gui -r | wl-copy";
+          text = ''
+            ${lib.getExe pkgs.flameshot} gui -r | wl-copy &
+            sleep 1.5
+            pkill -SIGUSR1 waybar
+            wait
+            pkill -SIGUSR1 waybar
+          '';
         })
       ];
 
