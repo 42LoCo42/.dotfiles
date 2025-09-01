@@ -50,15 +50,15 @@ let
           | .disabled | not'
       )"
     then
+      hyprctl dispatch workspace              "name:secondary"
       hyprctl dispatch moveworkspacetomonitor "name:secondary ${cfg.monitors.secondary.name}"
-      hyprctl dispatch workspace name:secondary
     fi
   '';
 
   secondary-move = pkgs.writeShellScript "secondary-move" ''
     hyprctl keyword monitor ${cfg.monitors.secondary.name}
+    hyprctl dispatch movetoworkspace        "name:secondary"
     hyprctl dispatch moveworkspacetomonitor "name:secondary ${cfg.monitors.secondary.name}"
-    hyprctl dispatch movetoworkspace name:secondary
   '';
 
   secondary-quit = pkgs.writeShellScript "secondary-quit" ''
@@ -175,10 +175,10 @@ in
                 value = {
                   icon = mkDefault name;
                   extra = x: ''
-                    bind = $mod,       ${x.indexS}, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
                     bind = $mod,       ${x.indexS}, workspace,              ${x.internalS}
-                    bind = $mod SHIFT, ${x.indexS}, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
+                    bind = $mod,       ${x.indexS}, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
                     bind = $mod SHIFT, ${x.indexS}, movetoworkspace,        ${x.internalS}
+                    bind = $mod SHIFT, ${x.indexS}, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
                   '';
                 };
               }))
@@ -189,10 +189,10 @@ in
             "0" = {
               icon = "";
               extra = x: ''
-                bind = $mod,       dead_circumflex, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
                 bind = $mod,       dead_circumflex, workspace,              ${x.internalS}
-                bind = $mod SHIFT, dead_circumflex, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
+                bind = $mod,       dead_circumflex, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
                 bind = $mod SHIFT, dead_circumflex, movetoworkspace,        ${x.internalS}
+                bind = $mod SHIFT, dead_circumflex, moveworkspacetomonitor, ${x.internalS} ${cfg.monitors.primary.name}
               '';
             };
           }
