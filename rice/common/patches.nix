@@ -13,6 +13,7 @@
           ferroxide
           glfw3-minecraft-extra
           ncps-db-helper
+          papra
           pinlist
           pug
           rustdesk-api

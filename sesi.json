@@ -153,6 +153,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "4LD7Y5nVpvkTiR-TZ8gfV6qB00vAb-JU2WHMdYlc2Qa3OBP28jb5EKk9UKlLGYWqwvWq7q1WppjRBdO9pKkWjc4cmVAMAtq7UC2iqe5zjBc"
 		}
 	},
+	"machine/laniakea/papra": {
+		"enc": "qRZ-1I_dkhthEDwYtvvTiXjNXa44Gbi_GZ_WxRiasJZCDXX5P4VQw123W6_ZyL0Ugonf8r6kFZKtTchdQUyvwDta2iDdWWiNd4gBLKgzoyi1B3NlOLVtqQBhYyJTiQYtV56tJIguIzmVKJ4FEYTeSo29k8xLYZi3xnRBcN5OT9ITtYlpX6r114bXjGVa0U_vO2d8GkFQWaHYsUiZig6JU81jxD4",
+		"rcp": {
+			"XKjp1ZlWTBBb2s6WVz-JMOj4S_QPIkDZ0t-C8ryP5Uo": "Mk71QEoq5rablPRmKbuxzBy524XunPiVHSPrvrNBsHPtMt0_X6ae4MIYigHhaHKaAM6V2PDA3DMVtWKtdZEyTsbYT5bhMUyG_mjq5Zn7nxI",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "dosl1xWYeCuHetl31yhqN5UajZNudrDOHReKpBC6GiZcXUA1H6dGfdivFnWxvOjBp1MjZbZEY4WoWxXqLH4F-zPn5cEushKg0wEvXo5zCdY"
+		}
+	},
 	"machine/laniakea/qbit-stop": {
 		"enc": "rJj9RtJf6U1qqRnrnUuBMhrexk51q8IXPLedjYVBadAIPUGHz88j9US6o8PGZkm7zCisOUiT9LsEF4FGMErEdNIly0eVrlD9beU0xo6A2gJIqW8aaMeLBHelt0ZVxU0-tS2A4wghf7gblOQm5Q-nY4egIhm0Ir0fzNCot-34g6jAItOFf8hMB8rzbw",
 		"rcp": {

@@ -1,0 +1,35 @@
+appBaseUrl: "https://doc.laniakea"
+
+server:
+  port: 8080
+
+database:
+  url: "file:/data/db.sqlite"
+
+documents:
+  ocrLanguages: "deu,eng"
+
+documentsStorage:
+  drivers:
+    filesystem:
+      root: "/data/documents"
+
+auth:
+  isRegistrationEnabled: false
+  isPasswordResetEnabled: false
+  isEmailVerificationRequired: false
+
+  providers:
+    email:
+      isEnabled: false
+
+    customs:
+      - providerId: "pocketid"
+        providerName: "Pocket ID"
+        providerIconUrl: "https://id.eleonora.gay/api/application-configuration/favicon"
+        type: "oidc"
+        discoveryUrl: "https://id.eleonora.gay/.well-known/openid-configuration"
+        scopes: ["openid", "profile", "email"]
+        pkce: true
+        clientId: "9e4f04e7-4575-4c52-bf04-252371deebc4"
+        clientSecret: "$CLIENT_SECRET"

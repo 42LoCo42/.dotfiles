@@ -64,6 +64,7 @@ machine:
     key:
     ncps:
     paperless:
+    papra:
     qbit-stop:
 
   satinor:
