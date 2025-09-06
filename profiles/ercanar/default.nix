@@ -117,9 +117,12 @@ let inherit (config.rice.ssh) proxy; in
         "img" = { };
 
         ".config/GIMP" = { };
-        ".config/MuseScore" = { };
         ".config/libreoffice" = { };
         ".config/rustdesk" = { };
+
+        # musescore
+        ".config/MuseScore" = { };
+        ".local/share/MuseScore" = { };
 
         ".local/share/Steam" = { };
 
