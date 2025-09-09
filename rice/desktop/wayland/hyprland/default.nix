@@ -264,8 +264,8 @@ in
       wayland.windowManager.hyprland = {
         enable = true;
 
-        plugins = with pkgs.hyprlandPlugins; [
-          hypr-dynamic-cursors
+        plugins = with pkgs; [
+          hyprDC-nodebug
         ];
 
         extraConfig = pipe ./hyprland.conf [

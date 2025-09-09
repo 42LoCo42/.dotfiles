@@ -2,6 +2,14 @@
   nixpkgs.overlays = [
     (pkgs': pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
+        hyprDC-nodebug = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
+          preBuild = (old.preBuild or "") + ''
+            grep -Rl Debug::log | xargs sed -i '/Debug::log/d'
+          '';
+
+          enableParallelBuilding = true;
+        });
+
         ########## obscura inclusion ##########
 
         inherit (obscura)
