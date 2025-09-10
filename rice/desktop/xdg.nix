@@ -11,10 +11,15 @@
     };
 
     home-manager.sharedModules = [{
-      home.packages = with pkgs; [ xdg-utils ];
-
       # used to store device access permissions
       aquaris.persist = { ".local/share/flatpak" = { }; };
+
+      home.packages = with pkgs; [ xdg-utils ];
+
+      xdg.systemDirs.data = with pkgs; map glib.getSchemaDataDirPath [
+        gsettings-desktop-schemas
+        gtk3
+      ];
     }];
   };
 }
