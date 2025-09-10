@@ -17,6 +17,8 @@
     device = "/dev/disk/by-id/ata-JAJM600M1TB_AA202100000000000773-part1";
   };
 
+  networking.firewall.allowedTCPPorts = [ 25565 ];
+
   services.keyd.keyboards.default = {
     ids = [ "260d:1026:161a6f2c" ]; # definitely a keyboard btw trust me bro :3
     settings.main = {
