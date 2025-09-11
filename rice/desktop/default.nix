@@ -16,7 +16,6 @@
     rice.desktop = {
       alarm.enable = true;
       emacs.enable = true;
-      eww.enable = true;
       firefox.enable = true;
       fonts.enable = true;
       gpu.enable = true;
@@ -49,7 +48,6 @@
   imports = [
     ./alarm
     ./emacs
-    ./eww
     ./firefox.nix
     ./fonts.nix
     ./gpu.nix
