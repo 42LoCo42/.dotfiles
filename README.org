@@ -12,9 +12,19 @@ which provides a wealth of default options, tools and functions.
 | [[file:machines/laniakea/default.nix][laniakea]] | Odroid M1          |
 | [[file:machines/satinor/default.nix][satinor]]  | Desktop of [[https://github.com/Ercanar][Ercanar]] |
 
-** Screenshots
-**** A lot of stuff happening on =astylos=
-[[file:images/astylos.png]]
+** Software
+| Kernel         | [[https://github.com/zen-kernel/zen-kernel][Zen]]       |
+| Scheduler      | [[https://github.com/sched-ext/scx/tree/main/scheds/rust/scx_lavd][scx_lavd]]  |
+| Greeter        | [[https://github.com/apognu/tuigreet][tuigreet]]  |
+| Window manager | [[https://github.com/hyprwm/Hyprland][Hyprland]]  |
+| Bar            | [[https://github.com/Alexays/Waybar][Waybar]]    |
+| Font           | [[https://typeof.net/Iosevka][Iosevka]]   |
+| Terminal       | [[https://codeberg.org/dnkl/foot][foot]]      |
+| Shell          | [[https://www.zsh.org][Zsh]]       |
+| Editor         | [[https://www.gnu.org/software/emacs][GNU Emacs]] |
+| Browser        | [[https://librewolf.net][LibreWolf]] |
+| Messenger      | [[https://github.com/Vencord/Vesktop][Vesktop]]   |
+| Music Player   | [[https://github.com/MusicPlayerDaemon/MPD][MPD]]       |
 
-**** More neofetch action on =akyuro=
-[[file:images/akyuro.png]]
+** Screenshot
+[[file:images/astylos.png]]
