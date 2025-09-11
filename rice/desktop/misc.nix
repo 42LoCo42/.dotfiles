@@ -73,8 +73,6 @@
           };
       };
 
-      services.ssh-agent.enable = true;
-
       programs = {
         zathura = {
           enable = true;

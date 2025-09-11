@@ -25,7 +25,7 @@ in
 
     zfullfs = mkOption {
       type = nullOr str;
-      default = null;
+      default = if config.boot.zfs.enabled then "rpool" else null;
     };
   };
 
