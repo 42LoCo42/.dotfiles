@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
+(defvar my/home-dir (expand-file-name "~/"))
 (defvar my/temp-dir (concat user-emacs-directory "temp"))
 
 (defun my/join-line ()
@@ -98,3 +99,33 @@
 
   (read-only-mode 1)
   (message nil))
+
+
+(require 'telephone-line)
+(require 'project)
+
+(telephone-line-defsegment my/telephone-line-project-cached-segment ()
+  (if (boundp 'my/project-cached) my/project-cached
+    (let ((result (funcall (funcall #'telephone-line-project-segment) face)))
+      (setq-local my/project-cached result)
+      result)))
+
+(telephone-line-defsegment my/telephone-line-buffer-segment ()
+  (let ((name (buffer-file-name))
+        (proj (project-current))
+        (prop (lambda (path)
+                (concat (propertize (file-name-directory path) 'face 'bold)
+                        (propertize (file-name-nondirectory path) 'face '(bold :foreground "light green"))))))
+    `(""
+      mode-line-mule-info
+      mode-line-modified
+      mode-line-client
+      mode-line-remote
+      mode-line-frame-identification
+      ,(cond
+        ((not name) (propertize (buffer-name) 'face 'bold))
+        (proj (funcall prop (string-remove-prefix
+                             (expand-file-name (project-root proj)) name)))
+        (t (funcall prop (if (string-prefix-p my/home-dir name)
+                           (concat "~/" (string-remove-prefix my/home-dir name))
+                           name)))))))
