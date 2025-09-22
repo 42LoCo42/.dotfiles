@@ -29,7 +29,7 @@
     };
   };
 
-  services.dnscrypt-proxy2.settings = {
+  services.dnscrypt-proxy.settings = {
     cache_neg_min_ttl = 0;
     cache_neg_max_ttl = 0;
   };

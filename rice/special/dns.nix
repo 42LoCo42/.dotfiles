@@ -54,7 +54,7 @@ in
       };
     };
 
-    services.dnscrypt-proxy2.settings = mkIf cfg.ui {
+    services.dnscrypt-proxy.settings = mkIf cfg.ui {
       monitoring_ui = {
         enabled = true;
         listen_address = "127.0.0.1:53080";
