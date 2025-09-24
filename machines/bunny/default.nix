@@ -2,6 +2,7 @@
 let
   inherit (lib) mkOption pipe;
   inherit (lib.types) package;
+  inherit (lib.fileset) toSource;
 in
 {
   imports = [
@@ -12,16 +13,20 @@ in
   options.rice = {
     homepage = mkOption {
       type = package;
-      default =
-        let
-          iosevka = pipe pkgs.nerd-fonts [
-            (x: x.iosevka)
-            (x: "${x}/share/fonts/truetype/NerdFonts/Iosevka/IosevkaNerdFont-Regular.ttf")
-          ];
-        in
-        pkgs.stdenvNoCC.mkDerivation {
+      default = pipe pkgs.nerd-fonts [
+        (x: x.iosevka)
+        (x: "${x}/share/fonts/truetype/NerdFonts/Iosevka/IosevkaNerdFont-Regular.ttf")
+        (x: (pkgs.runCommand "iosevka" {
+          nativeBuildInputs = with pkgs; [ woff2 ];
+        }) ''
+          mkdir -p $out
+          cp ${x} $out/iosevka.ttf
+          woff2_compress $out/iosevka.ttf
+        '')
+        (x: pkgs.stdenvNoCC.mkDerivation {
           name = "homepage";
-          src = let d = ../../homepage; in lib.fileset.toSource {
+
+          src = let d = ../../homepage; in toSource {
             root = d;
             fileset = d;
           };
@@ -30,17 +35,16 @@ in
             glibcLocales
             pug
             tree
-            woff2
           ];
 
           buildPhase = ''
             cp -r static $out
-            cp "${iosevka}" $out/iosevka.ttf
-            woff2_compress $out/iosevka.ttf
+            cp    ${x}/* $out
             bash processStuff.sh
-            pug3 -o $out .
+            pug3 -o $out index.pug
           '';
-        };
+        })
+      ];
     };
   };
 
