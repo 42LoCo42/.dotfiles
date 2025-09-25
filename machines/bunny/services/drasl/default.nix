@@ -1,16 +1,7 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, ... }: {
   virtualisation.pnoc.drasl = {
-    cmd = [
-      (lib.getExe (pkgs.writeShellApplication {
-        name = "drasl";
-        runtimeInputs = with pkgs; [ envsubst drasl ];
-        text = builtins.readFile ./start.sh;
-      }))
-      "${./config.toml}"
-    ];
-
-    environmentFiles = [ (config.aquaris.secret "@machine/drasl") ];
-
+    cmd = [ (lib.getExe pkgs.drasl) "--config=${./config.toml}" ];
+    secrets = [ "@machine/drasl:/key" ];
     volumes = [ "drasl:/data" ];
   };
 }

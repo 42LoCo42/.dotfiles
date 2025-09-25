@@ -19,8 +19,8 @@ Allow = true
 [[RegistrationOIDC]]
   Name = "PocketID"
   Issuer = "https://id.eleonora.gay"
-  ClientID = "$CLIENT_ID"
-  ClientSecret = "$CLIENT_SECRET"
+  ClientID = "3e9529fc-698a-4e1c-9f67-a8a3dc6bddee"
+  ClientSecretFile = "/key"
   PKCE = true
   AllowChoosingPlayerName = true
 
