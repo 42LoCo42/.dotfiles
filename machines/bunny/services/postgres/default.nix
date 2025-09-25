@@ -1,13 +1,22 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+let
+  postgres = pkgs.postgresql_17.withPackages (p: with p; [
+    pgvector # required by vectorchord
+    vectorchord
+  ]);
+in
+{
+  topology.nodes.bunny.services.postgres = {
+    name = "PostgreSQL ${lib.versions.major postgres.version}";
+    icon = "services.postgres";
+    info = "Central database for other services";
+  };
+
   virtualisation.pnoc.postgres = {
     path = with pkgs; [
       coreutils
       less
-
-      (postgresql_17.withPackages (p: with p; [
-        pgvector # required by vectorchord
-        vectorchord
-      ]))
+      postgres
     ];
 
     script = ''

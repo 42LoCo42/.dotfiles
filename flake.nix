@@ -27,6 +27,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-topology = {
+      url = "github:oddlama/nix-topology";
+      inputs = {
+        devshell.follows = "";
+        flake-utils.follows = "aquaris/flake-utils";
+        nixpkgs.follows = "";
+        pre-commit-hooks.follows = "";
+      };
+    };
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     obscura.url = "github:42loco42/obscura";

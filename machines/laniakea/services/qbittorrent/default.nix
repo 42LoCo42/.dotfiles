@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.self.services.qbittorrent = {
+    name = "qBittorrent";
+    icon = "services.qbittorrent";
+    info = "BitTorrent web interface";
+    details.url.text = "https://qbit.laniakea";
+  };
+
   systemd = {
     sockets.qbittorrent = {
       socketConfig = {

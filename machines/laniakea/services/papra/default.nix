@@ -1,4 +1,11 @@
 { pkgs, config, ... }: {
+  topology.self.services.papra = {
+    name = "Papra";
+    icon = "services.papra";
+    info = "Document archiving platform";
+    details.url.text = "https://doc.laniakea";
+  };
+
   virtualisation.pnoc.papra = {
     path = with pkgs; [
       envsubst

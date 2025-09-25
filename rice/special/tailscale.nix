@@ -5,6 +5,17 @@
   };
 
   config = lib.mkIf config.rice.tailscale.enable {
+    topology.self.interfaces."tailscale0" = {
+      type = "wireguard";
+      virtual = true;
+      network = "vpn";
+
+      physicalConnections = [{
+        node = "bunny-private";
+        interface = "*";
+      }];
+    };
+
     services.tailscale = {
       enable = true;
       openFirewall = true;

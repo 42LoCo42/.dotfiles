@@ -1,4 +1,11 @@
 { pkgs, config, ... }: {
+  topology.nodes.bunny-public.services.attic = {
+    name = "Attic";
+    icon = "misc.package";
+    info = "Selfhosted Nix binary cache";
+    details.url.text = "https://attic.eleonora.gay";
+  };
+
   rice.caddy = {
     cfg = {
       attic = ''

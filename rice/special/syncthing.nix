@@ -1,10 +1,41 @@
-{ config, lib, ... }: {
-  options.rice.syncthing.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+{ config, lib, ... }:
+let
+  inherit (lib)
+    mkIf
+    mkOption
+    ;
+  inherit (lib.types)
+    bool
+    nullOr
+    str
+    ;
+
+  cfg = config.rice.syncthing;
+in
+{
+  options.rice.syncthing = {
+    enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    url = mkOption {
+      type = nullOr str;
+      default = null;
+    };
   };
 
-  config = lib.mkIf config.rice.syncthing.enable {
+  config = mkIf cfg.enable {
+    topology.self.services.syncthing = {
+      name = "Syncthing";
+      icon = "services.syncthing";
+      info = "File synchronization";
+
+      details = {
+        url = mkIf (cfg.url != null) { text = cfg.url; };
+      };
+    };
+
     home-manager.sharedModules = [{
       aquaris.persist = { ".local/state/syncthing" = { }; };
       services.syncthing.enable = true;

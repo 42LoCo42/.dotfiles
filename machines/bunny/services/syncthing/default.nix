@@ -1,4 +1,11 @@
 { pkgs, lib, ... }: {
+  topology.nodes.bunny-private.services.syncthing = {
+    name = "Syncthing";
+    icon = "services.syncthing";
+    info = "Central file synchronization hub";
+    details.url.text = "https://sync.bunny";
+  };
+
   networking.firewall = {
     allowedTCPPorts = [ 22000 ];
     allowedUDPPorts = [ 22000 ];

@@ -157,6 +157,30 @@
         "type": "github"
       }
     },
+    "nix-topology": {
+      "inputs": {
+        "devshell": [],
+        "flake-utils": [
+          "aquaris",
+          "flake-utils"
+        ],
+        "nixpkgs": [],
+        "pre-commit-hooks": []
+      },
+      "locked": {
+        "lastModified": 1752093877,
+        "narHash": "sha256-P0TySh6sQl1EhfxjW9ZqGxEyUBSsEpdnchOe1QB0pLA=",
+        "owner": "oddlama",
+        "repo": "nix-topology",
+        "rev": "6a536c4b686ee4bcf07a7b0f8b823584560e2633",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oddlama",
+        "repo": "nix-topology",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1758277210,
@@ -262,6 +286,7 @@
         "fjordlauncher": "fjordlauncher",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
+        "nix-topology": "nix-topology",
         "nixpkgs": "nixpkgs_4",
         "obscura": "obscura"
       }

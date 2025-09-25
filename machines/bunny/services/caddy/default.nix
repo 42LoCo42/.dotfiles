@@ -44,6 +44,13 @@ in
   };
 
   config = {
+    topology.nodes.bunny-public.services."00-caddy" = {
+      name = "Caddy";
+      icon = "services.caddy";
+      info = "Primary service gateway";
+      details.url.text = "https://eleonora.gay";
+    };
+
     rice.caddy = {
       volumes = [
         "caddy:/data"

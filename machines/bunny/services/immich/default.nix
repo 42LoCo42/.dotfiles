@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-private.services.immich = {
+    name = "Immich";
+    icon = "services.immich";
+    info = "Personal photo gallery";
+    details.url.text = "https://img.bunny";
+  };
+
   virtualisation.pnoc = {
     immich = {
       path = with pkgs; [

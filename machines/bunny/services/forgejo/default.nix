@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-private.services.forgejo = {
+    name = "Forgejo";
+    icon = "services.forgejo";
+    info = "Selfhosted Git forge";
+    details.url.text = "https://git.bunny";
+  };
+
   virtualisation.pnoc.forgejo = {
     path = with pkgs; [
       bash

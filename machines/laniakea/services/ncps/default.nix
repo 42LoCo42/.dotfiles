@@ -14,6 +14,13 @@ let
   ];
 in
 {
+  topology.self.services.ncps = {
+    name = "ncps";
+    icon = "misc.package";
+    info = "Nix Cache Proxy Server";
+    details.url.text = "https://laniakea.fritz.box:8501";
+  };
+
   virtualisation.pnoc.ncps = {
     cmd = [ (getExe pkgs.ncps-db-helper) "serve" ];
 

@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-public.services.vaultwarden = {
+    name = "Vaultwarden";
+    icon = "services.vaultwarden";
+    info = "Selfhosted password manager";
+    details.url.text = "https://vw.eleonora.gay";
+  };
+
   rice.caddy.cfg.vw = ''
     import default
 

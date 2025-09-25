@@ -8,6 +8,7 @@
     ./pnoc-v2
     ./procfs.nix
     ./speechd.nix
+    ./topology
     ./zsh
   ];
 }

@@ -5,6 +5,12 @@
   };
 
   config = lib.mkIf config.rice.podman.enable {
+    topology.self.services.podman = {
+      name = "Podman";
+      icon = "services.podman";
+      info = "Container management";
+    };
+
     virtualisation.podman = {
       enable = true;
 

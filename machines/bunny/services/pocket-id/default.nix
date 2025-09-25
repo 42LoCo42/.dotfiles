@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-public.services.pocket-id = {
+    name = "Pocket ID";
+    icon = "services.pocket-id";
+    info = "OIDC provider for other services";
+    details.url.text = "https://id.eleonora.gay";
+  };
+
   rice.caddy.cfg.id = ''
     import default
     reverse_proxy pocket-id:8080

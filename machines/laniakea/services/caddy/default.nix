@@ -1,4 +1,10 @@
 { pkgs, lib, config, ... }: {
+  topology.self.services.caddy = {
+    name = "Caddy (Tailscale)";
+    icon = "services.caddy";
+    info = "Service gateway inside the VPN";
+  };
+
   networking.firewall.allowedTCPPorts = [
     80
     443

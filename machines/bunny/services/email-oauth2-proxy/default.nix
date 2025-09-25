@@ -1,4 +1,10 @@
 { pkgs, config, ... }: {
+  topology.self.services.email-oauth2-proxy = {
+    name = "Email OAuth2 Proxy";
+    icon = "misc.mail";
+    info = "SMTP → Gmail forwarder";
+  };
+
   rice.caddy.cfg.emailproxy = ''
     import default
     reverse_proxy email-oauth2-proxy:8080

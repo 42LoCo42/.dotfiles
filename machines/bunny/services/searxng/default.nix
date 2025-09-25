@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-public.services.searxng = {
+    name = "SearXNG";
+    icon = "services.searxng";
+    info = "Privacy-respecting metasearch engine";
+    details.url.text = "https://searx.eleonora.gay";
+  };
+
   rice.caddy.cfg.searx = ''
     import default
     reverse_proxy searxng:8080 {

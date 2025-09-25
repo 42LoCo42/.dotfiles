@@ -28,3 +28,6 @@ which provides a wealth of default options, tools and functions.
 
 ** Screenshot
 [[file:images/astylos.png]]
+
+** Topology
+[[file:topology.svg]]

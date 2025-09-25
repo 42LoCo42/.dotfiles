@@ -19,6 +19,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    topology.self.services.dnscrypt-proxy = {
+      name = "dnscrypt-proxy";
+      icon = "services.dnscrypt-proxy";
+      info = "Split DNS proxy";
+    };
+
     aquaris.dnscrypt = {
       enable = true;
 

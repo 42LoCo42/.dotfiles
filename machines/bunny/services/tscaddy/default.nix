@@ -1,4 +1,10 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-private.services."00-tscaddy" = {
+    name = "Caddy (Tailscale)";
+    icon = "services.caddy";
+    info = "Service gateway inside the VPN";
+  };
+
   virtualisation.pnoc.tscaddy = {
     cmd = [
       config.rice.invfork.outPath

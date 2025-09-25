@@ -21,6 +21,13 @@ let
   };
 in
 {
+  topology.nodes.bunny-public.services.cryptpad = {
+    name = "CryptPad";
+    icon = "services.cryptpad";
+    info = "Collaborative office suite";
+    details.url.text = "https://pad.eleonora.gay";
+  };
+
   rice.caddy.cfg = {
     "pad" = ''
       import default

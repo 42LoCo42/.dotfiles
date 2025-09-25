@@ -1,4 +1,11 @@
 { pkgs, lib, ... }: {
+  topology.self.services.mympd = {
+    name = "MyMPD";
+    icon = "services.mympd";
+    info = "Web MPD client";
+    details.url.text = "https://music.laniakea";
+  };
+
   # rubicon needs to forward MPD to our 0.0.0.0
   # so that mympd can connect to it from the podman network
   services.openssh.settings.GatewayPorts = "yes";

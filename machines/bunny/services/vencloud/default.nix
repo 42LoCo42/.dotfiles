@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-private.services.vencloud = {
+    name = "Vencloud";
+    icon = "misc.vencord";
+    info = "API & sync server for Vencord";
+    details.url.text = "https://vencloud.bunny";
+  };
+
   rice.caddy.cfg.vencloud = ''
     header ?Access-Control-Allow-Origin *
     redir https://vencloud.bunny{uri}

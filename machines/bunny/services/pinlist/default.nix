@@ -1,4 +1,11 @@
 { pkgs, lib, config, ... }: {
+  topology.nodes.bunny-private.services.pinlist = {
+    name = "Pinlist";
+    icon = "services.pinlist";
+    info = "Private pinboard for interesting things";
+    details.url.text = "https://pin.bunny";
+  };
+
   virtualisation.pnoc.pinlist = {
     cmd = [ (lib.getExe pkgs.pinlist) "/data/pinlist.db" ];
 
