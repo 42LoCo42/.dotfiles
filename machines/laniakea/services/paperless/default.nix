@@ -1,10 +1,9 @@
 { pkgs, lib, config, ... }:
 let
   inherit (lib)
-    unique
-    splitString
-    makeBinPath
     getExe'
+    splitString
+    unique
     ;
 
   PAPERLESS_OCR_LANGUAGE = "deu+eng";
@@ -18,6 +17,13 @@ let
 in
 {
   virtualisation.pnoc.paperless = {
+    path = with pkgs; [
+      PKG
+      coreutils
+      granian
+      runit
+    ];
+
     cmd = config.rice.redis ++ [
       (getExe' pkgs.runit "runsvdir")
       (config.rice.mkRunit {
@@ -44,8 +50,6 @@ in
     ];
 
     environment = {
-      PATH = makeBinPath (with pkgs; [ PKG coreutils granian runit ]);
-
       PYTHONPATH = builtins.concatStringsSep ":" [
         (PKG.python.pkgs.makePythonPath PKG.propagatedBuildInputs)
         "${PKG}/lib/paperless-ngx/src"

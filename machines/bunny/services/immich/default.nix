@@ -1,6 +1,10 @@
 { pkgs, lib, config, ... }: {
   virtualisation.pnoc = {
     immich = {
+      path = with pkgs; [
+        coreutils # immich start ffmpeg with "nice 10"
+      ];
+
       cmd = config.rice.redis ++ [ (lib.getExe pkgs.immich) ];
 
       environment = {
@@ -12,10 +16,6 @@
         DB_HOSTNAME = "postgres";
         DB_USERNAME = "immich";
         DB_DATABASE_NAME = "immich";
-
-        PATH = lib.makeBinPath (with pkgs; [
-          coreutils # immich start ffmpeg with "nice 10"
-        ]);
       };
 
       environmentFiles = [ (config.aquaris.secret "@machine/immich") ];

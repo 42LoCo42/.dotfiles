@@ -1,18 +1,17 @@
 { pkgs, lib, config, ... }: {
   virtualisation.pnoc.forgejo = {
-    cmd = [
-      (lib.getExe (pkgs.writeShellApplication {
-        name = "forgejo";
-        runtimeInputs = with pkgs; [
-          bash
-          coreutils
-          forgejo
-          tini
-        ];
-        text = builtins.readFile ./start.sh;
-      }))
-      "${./config.ini}"
+    path = with pkgs; [
+      bash
+      coreutils
+      forgejo
+      tini
     ];
+
+    script = ''
+      environment-to-ini --config ${./config.ini} --out /tmp/config.ini
+      chmod 400 /tmp/config.ini
+      exec tini -- gitea --config /tmp/config.ini
+    '';
 
     environmentFiles = [ (config.aquaris.secret "@machine/forgejo") ];
 

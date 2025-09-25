@@ -39,6 +39,13 @@
       '';
     in
     {
+      path = with pkgs; [
+        coreutils
+        runit
+        rustdesk-api
+        rustdesk-server
+      ];
+
       cmd = [
         (lib.getExe' pkgs.runit "runsvdir")
         (config.rice.mkRunit {
@@ -63,15 +70,6 @@
           '';
         }).outPath
       ];
-
-      environment = {
-        PATH = lib.makeBinPath (with pkgs; [
-          coreutils
-          runit
-          rustdesk-api
-          rustdesk-server
-        ]);
-      };
 
       ports = [
         "21115:21115"

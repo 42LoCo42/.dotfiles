@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, config, ... }: {
   rice.caddy = {
     cfg = {
       attic = ''
@@ -17,11 +17,9 @@
   };
 
   virtualisation.pnoc.attic = {
-    cmd = [ (lib.getExe pkgs.attic-server) ];
+    path = with pkgs; [ attic-server ];
 
-    environment.PATH = lib.makeBinPath (with pkgs; [
-      attic-server
-    ]);
+    script = "exec atticd";
 
     environmentFiles = [ (config.aquaris.secret "@machine/attic") ];
 

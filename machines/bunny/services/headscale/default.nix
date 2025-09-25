@@ -1,15 +1,13 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, config, ... }: {
   rice.caddy.cfg.headscale = ''
     import default
     reverse_proxy headscale:8080
   '';
 
   virtualisation.pnoc.headscale = {
-    cmd = [ (lib.getExe' pkgs.headscale "headscale") "serve" ];
+    path = with pkgs; [ headscale ];
 
-    environment.PATH = lib.makeBinPath (with pkgs; [
-      headscale
-    ]);
+    script = "exec headscale serve";
 
     environmentFiles = [ (config.aquaris.secret "@machine/headscale") ];
 

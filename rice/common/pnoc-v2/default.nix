@@ -215,7 +215,7 @@ in
     };
 
     containers = mkOption {
-      type = attrsOf (submodule ({ config, ... }: {
+      type = attrsOf (submodule {
         options = {
           script = mkOption {
             description = "The script that will be executed inside this container";
@@ -351,7 +351,7 @@ in
             SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
           };
         };
-      }));
+      });
       default = { };
     };
   };

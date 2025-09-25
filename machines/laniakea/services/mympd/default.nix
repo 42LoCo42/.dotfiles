@@ -28,13 +28,21 @@
 
   virtualisation = {
     pnoc.mympd = {
-      cmd = [
-        (lib.getExe (pkgs.writeShellApplication {
-          name = "mympd";
-          runtimeInputs = with pkgs; [ coreutils mympd ];
-          text = builtins.readFile ./start.sh;
-        }))
+      path = with pkgs; [
+        coreutils
+        mympd
       ];
+
+      script = ''
+        mkdir -p /data/{cache,work/pics}
+        for i in Artist AlbumArtist; do
+          ln -sfT "/music/ARTIST_COVERS" "/data/work/pics/$i"
+        done
+
+        exec mympd               \
+          --cachedir /data/cache \
+          --workdir /data/work
+      '';
 
       environment = {
         MYMPD_HTTP_HOST = "0.0.0.0";

@@ -1,6 +1,6 @@
 { self, ... }: {
   nixpkgs.overlays = [
-    (pkgs': pkgs:
+    (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
         hyprDC-nodebug = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
           preBuild = (old.preBuild or "") + ''

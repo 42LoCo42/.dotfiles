@@ -8,6 +8,12 @@
   '';
 
   virtualisation.pnoc.searxng = {
+    path = with pkgs; with python3.pkgs; [
+      anubis
+      gunicorn
+      runit
+    ];
+
     cmd = [
       (lib.getExe' pkgs.runit "runsvdir")
       (config.rice.mkRunit {
@@ -31,12 +37,6 @@
     ];
 
     environment = {
-      PATH = lib.makeBinPath (with pkgs; with python3.pkgs; [
-        anubis
-        gunicorn
-        runit
-      ]);
-
       PYTHONPATH = pkgs.searxng.pythonModule.pkgs.makePythonPath
         (with pkgs; [ searxng ]);
 
