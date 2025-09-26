@@ -1,5 +1,8 @@
 {
   imports = [
+    # ./mycorrhiza
+    # ./rustdesk
+
     ./attic
     ./avh
     ./caddy
@@ -13,11 +16,9 @@
     ./immich
     ./immich-public-proxy
     ./mount-dcim
-    ./mycorrhiza
     ./pinlist
     ./pocket-id
     ./postgres
-    ./rustdesk
     ./searxng
     ./ssh
     ./syncthing
