@@ -25,6 +25,7 @@
 
     volumes = [
       "${config.rice.homepage}:/srv/homepage" # can't be ro due to hidden/foo subdir
+      "${config.system.build.topology}/main.svg:/srv/homepage/topology.svg:ro"
       "/persist/home/admin/hidden:/srv/homepage/foo:ro"
     ];
   };
