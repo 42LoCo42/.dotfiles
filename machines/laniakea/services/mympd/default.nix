@@ -55,7 +55,6 @@
         MYMPD_HTTP_HOST = "0.0.0.0";
         MYMPD_HTTP_PORT = "8080";
         MYMPD_SSL = "false";
-        MYMPD_CA_CERT_STORE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
         MYMPD_URI = "http://host.containers.internal:6600";
       };
 

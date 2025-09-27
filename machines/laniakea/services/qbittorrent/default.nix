@@ -90,12 +90,7 @@
       # why is this even required; i am going to krill my shelf
       extraOptions = [ "--tmpfs=/.qBittorrent" ];
 
-      volumes = [
-        "qbittorrent:/data"
-
-        # qbit does not seem to respect SSL_CERT_FILE...
-        "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt:/etc/ssl/certs/ca-bundle.crt:ro"
-      ];
+      volumes = [ "qbittorrent:/data" ];
     };
 
     oci-containers.containers.qbittorrent.autoStart = false;
