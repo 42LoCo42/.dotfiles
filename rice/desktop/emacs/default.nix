@@ -119,10 +119,6 @@ in
               ; send a graphical notification on startup
               (emacs-startup . my/startup-notify)
 
-              ; indicate the 80th column on each line
-              (display-fill-column-indicator-mode .
-                (lambda () (set-fill-column 80)))
-
               ; disable tabs in org-mode
               (org-mode . (lambda () (indent-tabs-mode 0)))
             '';
@@ -159,8 +155,8 @@ in
 
             custom = ''
               (auto-save-file-name-transforms `((".*"  ,my/temp-dir t)))
-              (auto-save-list-file-prefix               my/temp-dir)
-              (backup-directory-alist         `(("." . ,my/temp-dir)))
+              (backup-directory-alist         `(("." . ,my/temp-dir  )))
+              (lock-file-name-transforms      `((".*"  ,my/temp-dir t)))
 
               (backward-delete-char-untabify-method nil)
               (c-backspace-function 'delete-backward-char)
@@ -168,6 +164,7 @@ in
               (sgml-basic-offset 4)
               (tab-width 4)
 
+              (fill-column 80)
               (inhibit-startup-screen t)
               (initial-major-mode 'fundamental-mode)
               (initial-scratch-message "")

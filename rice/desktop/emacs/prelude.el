@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t -*-
 
 (defvar my/home-dir (expand-file-name "~/"))
-(defvar my/temp-dir (concat user-emacs-directory "temp"))
+(defvar my/temp-dir (concat user-emacs-directory "temp/"))
+(mkdir my/temp-dir t)
 
 (defun my/join-line ()
   (interactive)
