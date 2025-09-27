@@ -116,8 +116,8 @@
     (let ((name (buffer-file-name))
           (proj (project-current))
           (prop (lambda (path)
-                  (concat (propertize (file-name-directory path) 'face 'bold)
-                          (propertize (file-name-nondirectory path) 'face '(bold :foreground "light green"))))))
+                  (concat (propertize (or (file-name-directory path) "") 'face 'bold)
+                          (propertize (file-name-nondirectory path)      'face '(bold :foreground "light green"))))))
       (setq-local
        my/buffer-segment-cached
        `(""
