@@ -121,6 +121,9 @@ in
 
               ; disable tabs in org-mode
               (org-mode . (lambda () (indent-tabs-mode 0)))
+
+              ; show matching parentheses
+              (prog-mode . show-paren-mode)
             '';
 
             config = ''
@@ -183,6 +186,10 @@ in
 
               (which-key-idle-delay 0.5)
               (which-key-idle-secondary-delay 0)
+
+              (show-paren-delay                   0)
+              (show-paren-when-point-in-periphery t)
+              (show-paren-context-when-offscreen  'overlay)
             '';
 
             extraPackages = with pkgs; [
