@@ -559,6 +559,7 @@ in
               (nix-mode        . lsp-deferred)
               (rustic-mode     . lsp-deferred)
               (sh-mode         . lsp-deferred)
+              (terraform-mode  . lsp-deferred)
               (typescript-mode . lsp-deferred)
               (typst-ts-mode   . lsp-deferred)
               (web-mode        . lsp-deferred)
@@ -900,6 +901,31 @@ in
             custom = ''
               (hyprlang-ts-mode-indent-offset 4)
             '';
+          };
+
+          terraform-mode = mkIf cfg.allLanguages {
+            mode = ''"\\.tofu\\'"'';
+
+            custom = ''
+              (terraform-command "tofu")
+            '';
+
+            config = ''
+              (require 'apheleia)
+              (add-to-list 'apheleia-formatters '(terraform "tofu" "fmt" "-"))
+
+              (require 'lsp-terraform)
+              (setq lsp-terraform-server '("tofu-ls" "serve"))
+            '';
+
+            hook = ''
+              (terraform-mode . (lambda () (indent-tabs-mode 0)))
+            '';
+
+            extraPackages = with pkgs; [
+              opentofu
+              tofu-ls
+            ];
           };
         };
       };
