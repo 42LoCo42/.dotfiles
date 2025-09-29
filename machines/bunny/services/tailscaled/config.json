@@ -1,9 +1,0 @@
-{
-	"version": "alpha0",
-
-	"serverURL": "https://headscale.@domain@",
-	"authKey": "file:/key",
-	"hostname": "exit",
-
-	"AdvertiseRoutes": ["0.0.0.0/0", "::/0"]
-}

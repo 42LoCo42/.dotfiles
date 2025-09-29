@@ -49,7 +49,7 @@ machine:
     pocket-id:
     rustdesk:
     searxng:
-    tailscaled:
+    tailscale:
     tscaddy:
     vaultwarden:
     vencloud:

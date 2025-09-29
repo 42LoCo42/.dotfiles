@@ -5,17 +5,24 @@
   };
 
   config = lib.mkIf config.rice.nixremote.enable {
+    programs.ssh.extraConfig = ''
+      Host nixremote
+        HostName exit.bunny.vpn
+        Port 18213
+        User nixremote
+        Compression yes
+        IdentityFile ${config.aquaris.secret "svc/nixremote"}
+        StrictHostKeyChecking no
+        UserKnownHostsFile /dev/null
+    '';
+
     nix = {
       distributedBuilds = true;
       settings.builders-use-substitutes = true;
 
       buildMachines = [{
         protocol = "ssh-ng";
-        sshUser = "nixremote";
-        hostName = "exit.bunny.vpn";
-
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJic0w3SHlPQ001NmVqdGxXcUVCRzFZelF3WDJLbVozUzVLem9HbldoL2oK";
-        sshKey = "${config.aquaris.secret "svc/nixremote"}";
+        hostName = "nixremote";
 
         maxJobs = 4;
         speedFactor = 4;

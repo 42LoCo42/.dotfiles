@@ -96,13 +96,6 @@ searx.bunny {
 
 ################################################################################
 
-ssh.bunny {
-	import bind
-	import connect host.containers.internal:18213
-}
-
-################################################################################
-
 sync.bunny {
 	import bind
 	reverse_proxy syncthing:8080

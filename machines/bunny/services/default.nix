@@ -22,7 +22,7 @@
     ./searxng
     ./ssh
     ./syncthing
-    ./tailscaled
+    ./tailscale
     ./tscaddy
     ./vaultwarden
     ./vencloud

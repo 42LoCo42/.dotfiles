@@ -146,7 +146,9 @@ let inherit (config.rice.ssh) proxy; in
     programs.ssh.matchBlocks = {
       ##### private machines #####
 
-      bunny = proxy "ssh.bunny" {
+      bunny = {
+        hostname = "exit.bunny.vpn";
+        port = 18213;
         user = "admin";
       };
 
@@ -159,6 +161,7 @@ let inherit (config.rice.ssh) proxy; in
 
       firefox-sync = {
         hostname = "exit.bunny.vpn";
+        port = 18213;
         user = "admin";
 
         extraOptions = {
