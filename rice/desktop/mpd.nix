@@ -20,8 +20,8 @@
           musicDirectory = "${hm.config.home.homeDirectory}/music";
           extraConfig = ''
             audio_output {
-              type "pipewire"
-              name "pipewire"
+              type "pulse"
+              name "pulse"
             }
           '';
         };

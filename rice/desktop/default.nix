@@ -59,7 +59,7 @@
     ./minecraft
     ./misc.nix
     ./mpd.nix
-    ./pipewire.nix
+    ./pipewire
     ./scx.nix
     ./sudo-u2f.nix
     ./theming.nix
