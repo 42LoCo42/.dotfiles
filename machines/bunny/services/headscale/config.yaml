@@ -15,6 +15,10 @@ database:
   sqlite:
     path: "/data/db.sqlite"
 
+policy:
+  mode: "file"
+  path: "/etc/headscale/policy.jsonc"
+
 dns:
   magic_dns: true
   base_domain: bunny.vpn

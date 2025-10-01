@@ -1,0 +1,22 @@
+// -*- mode: jsonc; -*-
+{
+	"acls": [
+		{
+			"action": "accept",
+			"src": ["*"],
+			"dst": ["*:*"]
+		}
+	],
+
+	"groups": {
+		"group:admin": ["leonsch@protonmail.com"]
+	},
+
+	"tagOwners": {
+		"tag:exit": ["group:admin"]
+	},
+
+	"autoApprovers": {
+		"exitNode": ["tag:exit"]
+	}
+}

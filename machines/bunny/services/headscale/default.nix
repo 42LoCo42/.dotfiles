@@ -21,6 +21,7 @@
     volumes = [
       "headscale:/data"
       "${config.rice.subsDomain ./config.yaml}:/etc/headscale/config.yaml:ro"
+      "${./policy.jsonc}:/etc/headscale/policy.jsonc:ro"
     ];
   };
 }
