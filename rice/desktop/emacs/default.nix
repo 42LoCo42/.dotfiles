@@ -28,12 +28,23 @@ in
     home-manager.sharedModules = [{
       home.shellAliases."e" = "emacsclient -cn";
 
+      programs.emacs.overrides = _: epkgs: {
+        lsp-mode = epkgs.lsp-mode.overrideAttrs (old: {
+          buildPhase = ''
+            export LSP_USE_PLISTS=true
+          '' + (old.buildPhase or "");
+        });
+      };
+
       services.emacs = {
         enable = true;
         startWithUserSession = "graphical";
       };
 
-      systemd.user.services.emacs.Service.Restart = mkForce "always";
+      systemd.user.services.emacs.Service = {
+        Environment = [ "LSP_USE_PLISTS=true" ];
+        Restart = mkForce "always";
+      };
 
       xdg.configFile."fourmolu.yaml".source = ./fourmolu.yaml;
 
@@ -581,9 +592,21 @@ in
             config = ''
               (advice-add 'lsp-mode :before
                 #'lsp-inline-completion-company-integration-mode)
+
+              (advice-add (if (progn (require 'json)
+                                     (fboundp 'json-parse-buffer))
+                            'json-parse-buffer
+                            'json-read)
+                          :around
+                          #'lsp-booster--advice-json-parse)
+
+              (advice-add 'lsp-resolve-final-command :around
+                #'lsp-booster--advice-final-command)
             '';
 
             extraPackages = with pkgs; [
+              emacs-lsp-booster
+
               clang-tools # c-mode
 
               # sh-mode
