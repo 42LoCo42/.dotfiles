@@ -17,7 +17,7 @@
     script = ''
       environment-to-ini --config ${./config.ini} --out /tmp/config.ini
       chmod 400 /tmp/config.ini
-      exec tini -- gitea --config /tmp/config.ini
+      exec tini -- forgejo --config /tmp/config.ini
     '';
 
     environmentFiles = [ (config.aquaris.secret "@machine/forgejo") ];
