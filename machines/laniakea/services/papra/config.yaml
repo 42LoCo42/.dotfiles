@@ -26,7 +26,7 @@ auth:
     customs:
       - providerId: "pocketid"
         providerName: "Pocket ID"
-        providerIconUrl: "https://id.eleonora.gay/api/application-configuration/favicon"
+        providerIconUrl: "https://id.eleonora.gay/api/application-images/favicon"
         type: "oidc"
         discoveryUrl: "https://id.eleonora.gay/.well-known/openid-configuration"
         scopes: ["openid", "profile", "email"]
