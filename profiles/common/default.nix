@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  inherit (lib) getExe mkOption;
+  inherit (lib) getExe mkDefault mkOption;
   inherit (lib.types) anything;
 in
 {
@@ -35,6 +35,12 @@ in
     documentation = {
       info.enable = false;
       nixos.enable = false;
+    };
+
+    nix.gc = {
+      automatic = true;
+      persistent = true;
+      dates = mkDefault "monthly";
     };
   };
 }

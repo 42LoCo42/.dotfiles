@@ -22,6 +22,7 @@
 
   system.autoUpgrade = {
     enable = true;
+    dates = "04:00";
     flake = "github:42loco42/.dotfiles";
     flags = [ "--refresh" "-L" ];
   };
@@ -34,7 +35,7 @@
         --delete-generations "+${toString keep}"
     '');
 
-  nix.gc.automatic = true;
+  nix.gc.dates = "05:00";
 
   rice = {
     pam-rssh.enable = true;
