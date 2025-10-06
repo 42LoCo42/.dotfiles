@@ -44,7 +44,7 @@ in
     redis = mkOption {
       type = listOf str;
       default = flatten [
-        [ (getExe pkgs.tini) "--" ]
+        [ (getExe pkgs.docker.docker-tini) "--" ]
         config.rice.invfork.outPath
         (getExe' pkgs.redis "redis-server")
         [ "--dir" "/data" ]

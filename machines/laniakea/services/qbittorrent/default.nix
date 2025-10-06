@@ -76,7 +76,7 @@
     pnoc.qbittorrent = {
       cmd = [
         # qbit doesn't reap its python children when searching
-        (lib.getExe pkgs.tini)
+        (lib.getExe pkgs.docker.docker-tini)
         "--"
 
         (lib.getExe pkgs.qbittorrent-nox)

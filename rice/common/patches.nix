@@ -10,6 +10,13 @@
           enableParallelBuilding = true;
         });
 
+        # TODO wait for https://pr-tracker.bunny/?pr=449273 (already in hydra)
+        mxnet = pkgs.mxnet.overrideAttrs (old: {
+          cmakeFlags = [
+            (pkgs.lib.cmakeFeature "CMAKE_POLICY_VERSION_MINIMUM" "3.5")
+          ] ++ (old.cmakeFlags or [ ]);
+        });
+
         ########## obscura inclusion ##########
 
         inherit (obscura)

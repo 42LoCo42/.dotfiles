@@ -539,12 +539,17 @@ in
 
           company = {
             hook = "prog-mode haskell-interactive-mode";
+
             custom = ''
               (company-dabbrev-downcase nil)
               (company-dabbrev-ignore-case t)
               (company-idle-delay 0)
               (company-minimum-prefix-length 1)
               (company-show-numbers t)
+            '';
+
+            bind' = ''
+              ("M-SPC" . company-complete)
             '';
           };
 

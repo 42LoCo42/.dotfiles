@@ -5,7 +5,7 @@
   '';
 
   virtualisation.pnoc.mycorrhiza = {
-    cmd = [ (lib.getExe pkgs.tini) "--" (lib.getExe pkgs.mycorrhiza) "/data" ];
+    cmd = [ (lib.getExe pkgs.docker.docker-tini) "--" (lib.getExe pkgs.mycorrhiza) "/data" ];
 
     volumes = [
       "mycorrhiza:/data"

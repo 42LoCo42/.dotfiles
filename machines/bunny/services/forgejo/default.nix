@@ -10,8 +10,8 @@
     path = with pkgs; [
       bash
       coreutils
+      docker.docker-tini
       forgejo
-      tini
     ];
 
     script = ''
