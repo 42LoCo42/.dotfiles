@@ -19,6 +19,7 @@
     ./pinlist
     ./pocket-id
     ./postgres
+    ./pr-tracker
     ./searxng
     ./ssh
     ./syncthing

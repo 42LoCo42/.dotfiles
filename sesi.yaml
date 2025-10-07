@@ -47,6 +47,7 @@ machine:
     immich:
     pinlist:
     pocket-id:
+    pr-tracker:
     rustdesk:
     searxng:
     tailscale:

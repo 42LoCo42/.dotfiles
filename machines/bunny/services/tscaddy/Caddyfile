@@ -64,6 +64,13 @@ pin.bunny {
 
 ################################################################################
 
+pr-tracker.bunny {
+	import bind
+	reverse_proxy pr-tracker:8080
+}
+
+################################################################################
+
 rd.bunny {
 	import bind
 	reverse_proxy rustdesk:21114
