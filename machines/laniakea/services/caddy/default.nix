@@ -1,8 +1,8 @@
 { pkgs, lib, config, ... }: {
-  topology.self.services.caddy = {
-    name = "Caddy (Tailscale)";
+  topology.self.services."00-caddy" = {
+    name = "Caddy";
     icon = "services.caddy";
-    info = "Service gateway inside the VPN";
+    info = "Primary service gateway";
   };
 
   networking.firewall.allowedTCPPorts = [
