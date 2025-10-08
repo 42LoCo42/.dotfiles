@@ -8,6 +8,7 @@
 
   virtualisation.pnoc.pr-tracker = {
     path = with pkgs; [
+      coreutils # sleep
       git
       pr-tracker
       systemdMinimal
@@ -19,6 +20,14 @@
       if [ ! -e nixpkgs ]; then
         git clone https://github.com/nixos/nixpkgs --no-checkout
       fi
+
+      (
+        cd nixpkgs
+        while true; do
+          git fetch
+          sleep 1h
+        done
+      ) &
 
       exec ${lib.getExe pkgs.docker.docker-tini} -- \
       systemd-socket-activate                       \
