@@ -149,7 +149,7 @@ let inherit (config.rice.ssh) proxy; in
       gimp
       googleearth-pro
       imagemagick
-      libreoffice
+      libreoffice-fresh
       musescore
       rustdesk-flutter
     ];
