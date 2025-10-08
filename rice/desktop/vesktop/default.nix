@@ -12,10 +12,27 @@
         vencord.useSystem = true;
 
         package = pkgs.vesktop.override {
-          vencord = pkgs.vencord.overrideAttrs (old: {
+          vencord = pkgs.vencord.overrideAttrs (new: old: {
+            # TODO wait for 1.13.2 update in nixpkgs
+
+            version = "1.13.2";
+
+            src = pkgs.fetchFromGitHub {
+              inherit (old.src) owner repo;
+              tag = "v${new.version}";
+              hash = "sha256-fz6u4x7s074QU4oN6u6I0gALFKIzceZe8LSoDDRV2ao=";
+            };
+
+            pnpmDeps = pkgs.pnpm_10.fetchDeps {
+              inherit (new) pname src patches;
+              fetcherVersion = 2;
+              hash = "sha256-sC9Bct8RLeENPeL4CouqNNt6q1luHOJ+iclTGNYXIAM=";
+            };
+
             patches = (old.patches or [ ]) ++ [
               ./add-moyai-plugin.patch
               ./add-smirk-plugin.patch
+              ./fix-lockfile.patch
             ];
 
             preBuild = (old.preBuild or "") + ''
