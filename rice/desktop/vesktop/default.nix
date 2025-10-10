@@ -14,7 +14,7 @@
         package = pkgs.vesktop.override {
           vencord = pkgs.vencord.overrideAttrs (new: old: {
             # TODO wait for 1.13.2 update in nixpkgs
-
+            # https://pr-tracker.bunny/?pr=450960
             version = "1.13.2";
 
             src = pkgs.fetchFromGitHub {

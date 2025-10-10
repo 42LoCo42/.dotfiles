@@ -4,7 +4,10 @@ let
 
   cryptpad-sso = pkgs.stdenv.mkDerivation rec {
     pname = "cryptpad-sso";
-    version = "0.2.1"; # TODO update to 0.3.0 when cryptpad reaches 2025.3.1
+
+    # TODO update to 0.3.0 when cryptpad reaches 2025.3.1
+    # https://pr-tracker.bunny/?pr=434721
+    version = "0.2.1";
 
     src = pkgs.fetchFromGitHub {
       owner = "cryptpad";
