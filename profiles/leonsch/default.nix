@@ -5,12 +5,20 @@ let inherit (config.rice.ssh) proxy; in
 
   nixpkgs.overlays = [
     (_: pkgs: {
-      hypr-dynamic-cursors = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
-        preBuild = (old.preBuild or "") + ''
-          grep -Rl Debug::log | xargs sed -i '/Debug::log/d'
-        '';
+      hyprland = pkgs.hyprland.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [
+          # disable LTO
+          (pkgs.fetchpatch {
+            url = "https://github.com/hyprwm/Hyprland/commit/ed936430216e7aa5f6f53d22eff713f8e9ed69ac.patch";
+            hash = "sha256-5dX/n9Pj4q3EAdbAEcNW1LlSFeAVStnp0KKvOtSxUDM=";
+          })
 
-        enableParallelBuilding = true;
+          # fix Debug::log race condition
+          (pkgs.fetchpatch {
+            url = "https://github.com/hyprwm/Hyprland/commit/cfac27251af5df4352f747c4539ea9f65450f05a.patch";
+            hash = "sha256-b6XP4X9bQps7YSzFHTSPVx2rtEYI85EUgCw+yENHJkQ=";
+          })
+        ];
       });
     })
   ];

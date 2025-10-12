@@ -13,17 +13,6 @@ let inherit (config.rice.ssh) proxy; in
           hash = "sha256-hdr0zG8CS5MzjhoKCyA3OWdtiEf30jfWROeFSUNu3RY=";
         };
       });
-
-      # TODO wait for next update in nixpkgs
-      hypr-dynamic-cursors = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
-        src = pkgs.fetchFromGitHub {
-          inherit (old.src) owner repo;
-          rev = "d0e9f7320711fc83967cf6b172e8ed40c565631b";
-          hash = "sha256-Zr9eBntl3vfoIjmgSF9MgDAW+YGbYa1auttah7qqqTc=";
-        };
-
-        enableParallelBuilding = true;
-      });
     })
   ];
 
