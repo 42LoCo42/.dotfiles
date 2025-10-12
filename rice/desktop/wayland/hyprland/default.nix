@@ -265,7 +265,7 @@ in
         enable = true;
 
         plugins = with pkgs; [
-          hyprDC-nodebug
+          hypr-dynamic-cursors
         ];
 
         extraConfig = pipe ./hyprland.conf [

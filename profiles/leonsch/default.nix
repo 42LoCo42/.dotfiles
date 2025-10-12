@@ -3,6 +3,18 @@ let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../common ];
 
+  nixpkgs.overlays = [
+    (_: pkgs: {
+      hypr-dynamic-cursors = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
+        preBuild = (old.preBuild or "") + ''
+          grep -Rl Debug::log | xargs sed -i '/Debug::log/d'
+        '';
+
+        enableParallelBuilding = true;
+      });
+    })
+  ];
+
   aquaris = {
     users = lib.mkMerge [
       { inherit (aquaris.cfg.users) leonsch; }
