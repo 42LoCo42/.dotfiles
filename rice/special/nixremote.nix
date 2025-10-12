@@ -1,12 +1,7 @@
 { lib, config, ... }:
 let
-  inherit (lib)
-    mkOption
-    mkMerge
-    mkIf
-    ;
-  inherit (lib.types)
-    bool;
+  inherit (lib) filter ifEnable mkIf mkMerge mkOption;
+  inherit (lib.types) bool;
 
   cfg = config.rice.nixremote;
 
@@ -69,8 +64,8 @@ in
         distributedBuilds = true;
         settings.builders-use-substitutes = true;
 
-        buildMachines = [
-          {
+        buildMachines = filter (x: x != { }) [
+          (ifEnable (config.system.name != "satinor") {
             protocol = "ssh-ng";
             hostName = "nixremote-satinor";
 
@@ -84,9 +79,9 @@ in
               "kvm"
               "nixos-test"
             ];
-          }
+          })
 
-          {
+          (ifEnable (config.system.name != "bunny") {
             protocol = "ssh-ng";
             hostName = "nixremote-bunny";
 
@@ -101,7 +96,7 @@ in
               "kvm"
               "nixos-test"
             ];
-          }
+          })
         ];
       };
     })
