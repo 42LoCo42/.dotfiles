@@ -50,7 +50,7 @@
 
     ca.enable = true;
     dns.enable = true;
-    nixremote.enable = true;
+    nixremote.use = true;
     tailscale.enable = true;
     use-ncps.enable = true;
   };

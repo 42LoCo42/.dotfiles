@@ -72,7 +72,11 @@ in
       };
     };
 
-    rice.domain = "eleonora.gay";
+    rice = {
+      domain = "eleonora.gay";
+
+      nixremote.act = true;
+    };
 
     networking.networkmanager.enable = false;
 

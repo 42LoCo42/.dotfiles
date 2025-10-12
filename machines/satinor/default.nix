@@ -27,52 +27,56 @@
     };
   };
 
-  rice.desktop = {
-    alpha = 80;
+  rice = {
+    nixremote.act = true;
 
-    gpu = {
-      amd.enable = true;
-      baseload = true;
-    };
+    desktop = {
+      alpha = 80;
 
-    udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
-
-    wayland = {
-      fuzzel.fontSize = 20;
-
-      hyprland = rec {
-        monitors = {
-          primary = {
-            name = "DP-1";
-            mode = "2560x1440@60, 0x0, 1";
-          };
-
-          secondary = {
-            name = "HDMI-A-1";
-            mode = "1920x1080@60, 2560x0, 1";
-          };
-        };
-
-        preConfig = ''
-          workspace = 9, monitor:${monitors.secondary.name}, default:true
-        '';
-
-        workspaces = {
-          "4" = {
-            icon = "⛩️";
-            autostart = [ "uwsm app anime-game-launcher" ];
-            rules = [
-              "class:(moe.launcher.an-anime-game-launcher)"
-
-              # libreoffice
-              "class:(soffice)"
-              "initialClass:(libreoffice-startcenter)"
-            ];
-          };
-        };
+      gpu = {
+        amd.enable = true;
+        baseload = true;
       };
 
-      swaybg.image = config.aquaris.secret "user/ercanar/wallpaper";
+      udev.cpuTemperatureSelector = ''DRIVERS=="k10temp"'';
+
+      wayland = {
+        fuzzel.fontSize = 20;
+
+        hyprland = rec {
+          monitors = {
+            primary = {
+              name = "DP-1";
+              mode = "2560x1440@60, 0x0, 1";
+            };
+
+            secondary = {
+              name = "HDMI-A-1";
+              mode = "1920x1080@60, 2560x0, 1";
+            };
+          };
+
+          preConfig = ''
+            workspace = 9, monitor:${monitors.secondary.name}, default:true
+          '';
+
+          workspaces = {
+            "4" = {
+              icon = "⛩️";
+              autostart = [ "uwsm app anime-game-launcher" ];
+              rules = [
+                "class:(moe.launcher.an-anime-game-launcher)"
+
+                # libreoffice
+                "class:(soffice)"
+                "initialClass:(libreoffice-startcenter)"
+              ];
+            };
+          };
+        };
+
+        swaybg.image = config.aquaris.secret "user/ercanar/wallpaper";
+      };
     };
   };
 }
