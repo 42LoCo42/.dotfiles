@@ -19,6 +19,7 @@
           avahi-proxy
           caddyfile-language-server
           chronometer
+          datetime
           drasl
           email-oauth2-proxy
           ferroxide

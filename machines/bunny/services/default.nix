@@ -8,6 +8,7 @@
     ./caddy
     ./chronometer
     ./cryptpad
+    ./datetime
     ./drasl
     ./email-oauth2-proxy
     ./forgejo
