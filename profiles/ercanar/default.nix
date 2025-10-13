@@ -50,7 +50,7 @@ let inherit (config.rice.ssh) proxy; in
           "5" = {
             icon = "";
             rules = [
-              "class:(Gimp)"
+              "class:(gimp)"
               "class:(org.musescore.MuseScore)"
               "class:(googleearth)"
             ];
