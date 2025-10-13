@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ pkgs, config, ... }: {
   imports = [ ../../profiles/ercanar ];
 
   aquaris = {
@@ -79,4 +79,16 @@
       };
     };
   };
+
+  home-manager.sharedModules = [{
+    aquaris = {
+      persist = {
+        ".config/blender" = { };
+      };
+    };
+
+    home.packages = with pkgs; [
+      blender-hip
+    ];
+  }];
 }
