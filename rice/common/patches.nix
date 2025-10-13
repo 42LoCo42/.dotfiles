@@ -2,7 +2,7 @@
   nixpkgs.overlays = [
     (_: pkgs:
       let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
-        # TODO wait for next update in nixpkgs
+        # TODO wait for https://pr-tracker.bunny/?pr=451680
         hypr-dynamic-cursors = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
           src = pkgs.fetchFromGitHub {
             inherit (old.src) owner repo;
