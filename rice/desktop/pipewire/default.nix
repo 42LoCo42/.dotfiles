@@ -15,9 +15,14 @@
     nixpkgs.overlays = [
       (_: prev: {
         rtkit = prev.rtkit.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [
-            ./rtkit-fix-hidepid.patch
-          ];
+          prePatch = (old.prePatch or "") + ''
+            sed -i '${builtins.concatStringsSep "|" [
+              "s"
+              "setgroups(0, NULL)"
+              "setgroups(1, (gid_t[]) { 1 })"
+              ""
+            ]}' rtkit-daemon.c
+          '';
         });
       })
     ];
