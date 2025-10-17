@@ -20,28 +20,29 @@
     }
   '';
 
-  virtualisation.pnoc.vaultwarden = {
-    cmd = [ (lib.getExe pkgs.vaultwarden) ];
+  virtualisation.pnoc.vaultwarden =
+    let vw = pkgs.vaultwarden-postgresql; in {
+      cmd = [ (lib.getExe vw) ];
 
-    environment = {
-      ROCKET_ADDRESS = "0.0.0.0";
-      ROCKET_PORT = "8080";
+      environment = {
+        ROCKET_ADDRESS = "0.0.0.0";
+        ROCKET_PORT = "8080";
 
-      DOMAIN = "https://vw.${config.rice.domain}";
-      SIGNUPS_ALLOWED = "false";
+        DOMAIN = "https://vw.${config.rice.domain}";
+        SIGNUPS_ALLOWED = "false";
 
-      SMTP_HOST = "email-oauth2-proxy";
-      SMTP_PORT = "2465";
-      SMTP_SECURITY = "off";
-      SMTP_USERNAME = "11213kbm@gmail.com";
-      SMTP_PASSWORD = "empty";
-      SMTP_FROM = "vaultwarden@${config.rice.domain}";
+        SMTP_HOST = "email-oauth2-proxy";
+        SMTP_PORT = "2465";
+        SMTP_SECURITY = "off";
+        SMTP_USERNAME = "11213kbm@gmail.com";
+        SMTP_PASSWORD = "empty";
+        SMTP_FROM = "vaultwarden@${config.rice.domain}";
 
-      WEB_VAULT_FOLDER = "${pkgs.vaultwarden.webvault}/share/vaultwarden/vault";
+        WEB_VAULT_FOLDER = "${vw.webvault}/share/vaultwarden/vault";
+      };
+
+      environmentFiles = [ (config.aquaris.secret "@machine/vaultwarden") ];
+
+      volumes = [ "vaultwarden:/data" ];
     };
-
-    environmentFiles = [ (config.aquaris.secret "@machine/vaultwarden") ];
-
-    volumes = [ "vaultwarden:/data" ];
-  };
 }
