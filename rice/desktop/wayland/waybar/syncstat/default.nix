@@ -30,10 +30,13 @@ in
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (_: pkgs: {
-        syncstat = pkgs.writeShellApplication {
-          name = "syncstat";
-          runtimeInputs = with pkgs; [ curl yq ];
-          text = aquaris.lib.subsT ./syncstat.sh {
+        syncstat = aquaris.lib.subsF {
+          file = ./syncstat.py;
+          func = pkgs.writeScriptBin;
+          subs = {
+            python = getExe (pkgs.python3.withPackages
+              (p: with p; [ requests ]));
+
             inherit (cfg) folder;
           };
         };

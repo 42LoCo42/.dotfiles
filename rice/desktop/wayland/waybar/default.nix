@@ -6,7 +6,7 @@ let
   cfg = config.rice.desktop.wayland.waybar;
 in
 {
-  imports = [ ./syncstat.nix ];
+  imports = [ ./syncstat ];
 
   options.rice.desktop.wayland.waybar = {
     enable = mkOption {
