@@ -496,6 +496,11 @@ in
               (sp-local-pair 'prog-mode "[" nil :post-handlers '((indent-between-pair "RET")))
               (sp-local-pair 'prog-mode "{" nil :post-handlers '((indent-between-pair "RET")))
             '';
+
+            bind' = ''(
+              :map minibuffer-mode-map
+              ("M-DEL" . sp-backward-kill-symbol)
+            )'';
           };
 
           ##### Completion #####
