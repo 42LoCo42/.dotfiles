@@ -28,6 +28,7 @@
           p7zip-rar
           pwgen
           python3
+          scrcpy
           wf-recorder
           yt-dlp
         ];
