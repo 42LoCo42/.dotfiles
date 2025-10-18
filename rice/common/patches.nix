@@ -1,17 +1,22 @@
 { self, ... }: {
   nixpkgs.overlays = [
-    (_: pkgs:
-      let obscura = self.inputs.obscura.packages.${pkgs.system}; in {
-        # TODO wait for https://pr-tracker.bunny/?pr=451680
-        hypr-dynamic-cursors = pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (old: {
-          src = pkgs.fetchFromGitHub {
-            inherit (old.src) owner repo;
-            rev = "d0e9f7320711fc83967cf6b172e8ed40c565631b";
-            hash = "sha256-Zr9eBntl3vfoIjmgSF9MgDAW+YGbYa1auttah7qqqTc=";
+    (_: prev:
+      let obscura = self.inputs.obscura.packages.${prev.system}; in {
+        # TODO this doesn't even have an issue yet :sob:
+        # update was https://github.com/NixOS/nixpkgs/pull/452627
+        immich-machine-learning = prev.immich-machine-learning.override {
+          python3 = prev.python3.override {
+            packageOverrides = _: pysuper: {
+              stringzilla = pysuper.stringzilla.overrideAttrs (old: {
+                postPatch = (old.postPatch or "") + ''
+                  sed -i                                       \
+                    '/#define SZ_HAS_POSIX_EXTENSIONS_/s|1|0|' \
+                    include/stringzilla/stringzilla.h
+                '';
+              });
+            };
           };
-
-          enableParallelBuilding = true;
-        });
+        };
 
         ########## obscura inclusion ##########
 
@@ -23,7 +28,6 @@
           drasl
           email-oauth2-proxy
           ferroxide
-          glfw3-minecraft-extra
           ncps-db-helper
           papra
           pinlist
@@ -32,6 +36,15 @@
           socket-activate
           vencloud
           zfullfs
+          ;
+
+        # TODO wait for the whole hyprland fiasco to be over...
+        # blocked on next hyprland release & potential nvidia incompatibility
+        inherit (obscura.hyprland-patched.entries)
+          hyprland
+          hypr-dynamic-cursors
+          hyprwinwrap
+          xdg-desktop-portal-hyprland
           ;
       })
   ];

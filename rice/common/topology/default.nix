@@ -24,6 +24,12 @@ in
   imports = [ nix-topology.nixosModules.default ];
   nixpkgs.overlays = [ nix-topology.overlays.default ];
 
+  # protect these from garbage collection
+  system.extraDependencies = with pkgs; [
+    elk-to-svg
+    html-to-svg
+  ];
+
   system.build.topology = (import nix-topology {
     inherit pkgs;
     modules = [{

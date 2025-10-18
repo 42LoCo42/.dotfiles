@@ -3,26 +3,6 @@ let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../common ];
 
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      hyprland = pkgs.hyprland.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          # disable LTO
-          (pkgs.fetchpatch {
-            url = "https://github.com/hyprwm/Hyprland/commit/ed936430216e7aa5f6f53d22eff713f8e9ed69ac.patch";
-            hash = "sha256-5dX/n9Pj4q3EAdbAEcNW1LlSFeAVStnp0KKvOtSxUDM=";
-          })
-
-          # fix Debug::log race condition
-          (pkgs.fetchpatch {
-            url = "https://github.com/hyprwm/Hyprland/commit/cfac27251af5df4352f747c4539ea9f65450f05a.patch";
-            hash = "sha256-b6XP4X9bQps7YSzFHTSPVx2rtEYI85EUgCw+yENHJkQ=";
-          })
-        ];
-      });
-    })
-  ];
-
   aquaris = {
     users = lib.mkMerge [
       { inherit (aquaris.cfg.users) leonsch; }
@@ -159,10 +139,9 @@ let inherit (config.rice.ssh) proxy; in
       };
     };
 
-    wayland.windowManager.hyprland.plugins =
-      with pkgs.hyprlandPlugins; [
-        hyprwinwrap
-      ];
+    wayland.windowManager.hyprland.plugins = with pkgs; [
+      hyprwinwrap
+    ];
 
     home.packages = with pkgs; [
       openvpn # for corporate VPN

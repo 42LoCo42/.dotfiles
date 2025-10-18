@@ -3,19 +3,6 @@ let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../common ./aliases.nix ];
 
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      # TODO wait for next hyprland release
-      hyprland = pkgs.hyprland.overrideAttrs (old: {
-        src = pkgs.fetchFromGitHub {
-          inherit (old.src) owner repo fetchSubmodules;
-          rev = "ed936430216e7aa5f6f53d22eff713f8e9ed69ac";
-          hash = "sha256-hdr0zG8CS5MzjhoKCyA3OWdtiEf30jfWROeFSUNu3RY=";
-        };
-      });
-    })
-  ];
-
   aquaris = {
     users = pkgs.lib.mkMerge [
       { inherit (aquaris.cfg.users) ercanar; }

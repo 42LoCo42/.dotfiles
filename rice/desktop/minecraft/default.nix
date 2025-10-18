@@ -40,8 +40,6 @@ in
             temurin-bin-8
           ];
 
-          glfw3-minecraft = pkgs.glfw3-minecraft-extra;
-
           # use shell wrapper instead of binary since the latter doesn't support --run
           kdePackages = pkgs'.kdePackages // {
             wrapQtAppsHook = pkgs'.kdePackages.wrapQtAppsHook.override {
