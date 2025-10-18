@@ -11,6 +11,7 @@ let
     IdentityFile ${config.aquaris.secret "svc/nixremote"}
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
+    ConnectTimeout 1
   '';
 in
 {
