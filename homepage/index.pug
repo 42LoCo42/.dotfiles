@@ -26,8 +26,10 @@ block content
         +neofetch("Age")
           span(id = "age")
 
-        +neofetch("Public key")
-          a(href = "/pubkey.asc" download = "") Download
+        +neofetch("Public keys")
+          a(href = "/age-pubkey.txt" download = "") age
+          = ", "
+          a(href = "/gpg-pubkey.asc" download = "") gpg
 
         +neofetch("Studying")
           a(href = "https://www.iu.org/bachelor/cyber-security") Cyber Security

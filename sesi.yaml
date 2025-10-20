@@ -92,9 +92,11 @@ user:
       main:
 
   leonsch:
-    password:
+    age:
     firefox-sync:
+    password:
     u2f-keys:
+
     ssh:
       fido:
       main:

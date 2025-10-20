@@ -146,6 +146,22 @@ let inherit (config.rice.ssh) proxy; in
     home.packages = with pkgs; [
       openvpn # for corporate VPN
       rustdesk-flutter
+
+      (pkgs.writeShellApplication {
+        name = "aged"; # age decrypt
+
+        runtimeInputs = with pkgs; [
+          (age.withPlugins (p: with p; [
+            age-plugin-fido2-hmac
+          ]))
+        ];
+
+        text = ''
+          exec age                                          \
+            -i ${config.aquaris.secret "user/leonsch/age"}  \
+            -d "$@"
+        '';
+      })
     ];
 
     programs.ssh.matchBlocks = {
