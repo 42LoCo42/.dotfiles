@@ -1,4 +1,10 @@
-{ config, ... }: {
+{ pkgs, config, ... }: {
+  # protect these from garbage collection
+  system.extraDependencies = with pkgs; [
+    elk-to-svg
+    html-to-svg
+  ];
+
   rice.caddy = {
     cfg = {
       "" = ''
