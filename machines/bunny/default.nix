@@ -1,8 +1,7 @@
 { pkgs, lib, ... }:
 let
-  inherit (lib) mkOption pipe;
+  inherit (lib) mkOption;
   inherit (lib.types) package;
-  inherit (lib.fileset) toSource;
 in
 {
   imports = [
@@ -13,42 +12,13 @@ in
   options.rice = {
     homepage = mkOption {
       type = package;
-      default = pipe pkgs.nerd-fonts [
-        (x: x.iosevka)
-        (x: "${x}/share/fonts/truetype/NerdFonts/Iosevka/IosevkaNerdFont-Regular.ttf")
-        (x: (pkgs.runCommand "iosevka" {
-          nativeBuildInputs = with pkgs; [ woff2 ];
-        }) ''
-          mkdir -p $out
-          cp ${x} $out/iosevka.ttf
-          woff2_compress $out/iosevka.ttf
-        '')
-        (x: pkgs.stdenvNoCC.mkDerivation {
-          name = "homepage";
-
-          src = let d = ../../homepage; in toSource {
-            root = d;
-            fileset = d;
-          };
-
-          nativeBuildInputs = with pkgs; [
-            glibcLocales
-            pug
-            tree
-          ];
-
-          buildPhase = ''
-            cp -r static $out
-            cp    ${x}/* $out
-            bash processStuff.sh
-            pug3 -o $out index.pug
-          '';
-        })
-      ];
+      default = import ../../homepage pkgs;
     };
   };
 
   config = {
+    system.extraDependencies = with pkgs; [ pug ];
+
     aquaris = {
       users.admin.sshKeys =
         let
