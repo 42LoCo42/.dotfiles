@@ -1,6 +1,7 @@
 module.exports = {
 	enabled: true,
 	enforced: true,
+	forceRedirect: true,
 	cpPassword: true,
 	forceCpPassword: true,
 

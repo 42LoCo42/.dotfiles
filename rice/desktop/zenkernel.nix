@@ -26,7 +26,7 @@ in
   config = mkIf config.rice.desktop.zenkernel.enable {
     boot = {
       kernelPackages = cfg.pkgs.linuxPackages_zen;
-      zfs.package = cfg.pkgs.zfs_2_3;
+      zfs.package = cfg.pkgs.zfs;
     };
   };
 }

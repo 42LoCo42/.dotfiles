@@ -16,4 +16,6 @@ module.exports = {
 
 	logToStdout: true,
 	logLevel: "info",
+
+	removeDonateButton: true,
 };

@@ -4,16 +4,13 @@ let
 
   cryptpad-sso = pkgs.stdenv.mkDerivation rec {
     pname = "cryptpad-sso";
-
-    # TODO update to 0.3.0 when cryptpad reaches 2025.3.1
-    # https://pr-tracker.bunny/?pr=434721
-    version = "0.2.1";
+    version = "0.4.0";
 
     src = pkgs.fetchFromGitHub {
       owner = "cryptpad";
       repo = "sso";
       tag = version;
-      hash = "sha256-xgQe6xo5w5EF84yhFLcTRfzXn3yi9de+JhF9KaZlD3g=";
+      hash = "sha256-WkiWnRwXSvGJt0pMV5kAreqGlyj7aMO5RLHBZK4+CII=";
     };
 
     patches = [

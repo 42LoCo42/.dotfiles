@@ -46,6 +46,8 @@
           hyprwinwrap
           xdg-desktop-portal-hyprland
           ;
+
+        cryptpad = obscura.cryptpad_2025_9;
       })
   ];
 }
