@@ -2,21 +2,13 @@
   nixpkgs.overlays = [
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.system}; in {
-        # TODO this doesn't even have an issue yet :sob:
-        # update was https://github.com/NixOS/nixpkgs/pull/452627
-        immich-machine-learning = prev.immich-machine-learning.override {
-          python3 = prev.python3.override {
-            packageOverrides = _: pysuper: {
-              stringzilla = pysuper.stringzilla.overrideAttrs (old: {
-                postPatch = (old.postPatch or "") + ''
-                  sed -i                                       \
-                    '/#define SZ_HAS_POSIX_EXTENSIONS_/s|1|0|' \
-                    include/stringzilla/stringzilla.h
-                '';
-              });
-            };
-          };
-        };
+        # TODO https://pr-tracker.bunny/?pr=454758 but not actually?
+        # buncha missing includes and undeclared shit
+        # just pulling latest working hydra pin for now (https://hydra.nixos.org/build/310124401)
+        inherit ((import (fetchTarball {
+          url = "https://github.com/nixos/nixpkgs/archive/b4ac32e4bb71360baf41a18e5ef92962cd452007.tar.gz";
+          sha256 = "sha256-dsQLZssf+qzsh0nkt74QjoUTBGC3+vvirNIsKFwWQfM=";
+        })) { inherit (prev) system; }) musescore;
 
         ########## obscura inclusion ##########
 
