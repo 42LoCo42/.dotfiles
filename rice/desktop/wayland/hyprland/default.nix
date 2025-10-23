@@ -266,6 +266,7 @@ in
 
         plugins = with pkgs; [
           hypr-dynamic-cursors
+          hyprfocus
         ];
 
         extraConfig = pipe ./hyprland.conf [

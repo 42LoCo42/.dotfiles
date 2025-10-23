@@ -35,6 +35,7 @@
         inherit (obscura.hyprland-patched.entries)
           hyprland
           hypr-dynamic-cursors
+          hyprfocus
           hyprwinwrap
           xdg-desktop-portal-hyprland
           ;
