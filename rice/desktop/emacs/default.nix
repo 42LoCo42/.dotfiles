@@ -856,35 +856,10 @@ in
           typst-ts-mode = {
             defer = true;
 
-            package = epkgs: epkgs.trivialBuild {
-              pname = "typst-ts-mode";
-              version = "2024-12-07";
-
-              src = pkgs.fetchFromSourcehut {
-                owner = "~meow_king";
-                repo = "typst-ts-mode";
-                rev = "1367003e2ad55a2f6f9e43178584683028ab56e9";
-                hash = "sha256-0RAJ/Td3G7FDvzf7t8csNs/uc07WUPGvMo8ako5iyl0=";
-              };
-            };
-
             extraPackages = with pkgs; [
-              typst
               prettypst # formatter
-
-              # tinymist (LSP) patched to remove partial-rendering
-              # (which breaks the live preview)
-              (pkgs.writeShellApplication {
-                name = "tinymist";
-                runtimeInputs = with pkgs; [ tinymist ];
-                text = ''
-                  args=()
-                  for i in "$@"; do
-                    [ "$i" != "--partial-rendering" ] && args+=("$i")
-                  done
-                  exec tinymist "''${args[@]}"
-                '';
-              })
+              tinymist # language server
+              typst
             ];
 
             config = ''
@@ -907,18 +882,20 @@ in
           };
 
           typst-preview = {
-            package = epkgs: epkgs.trivialBuild {
+            package = epkgs: epkgs.trivialBuild rec {
               pname = "typst-preview";
-              version = "2024-10-26";
+              version = "1.0.0-alpha";
 
               src = pkgs.fetchFromGitHub {
                 owner = "havarddj";
-                repo = "typst-preview.el";
-                rev = "7443e227462f6563559fde45dc500cb03ee253bb";
-                hash = "sha256-7YWPWLRNgF9N91xW0QpMPhwZ57iCsgkDY4rNY/6lf6c=";
+                repo = "${pname}.el";
+                tag = "v${version}";
+                hash = "sha256-pU7H5UzRjjX4ql+CCOYIvyJs13YNWVX+j2X8nhfTyTg=";
               };
 
-              packageRequires = with epkgs; [ websocket ];
+              patches = [ ./typst-preview.patch ];
+
+              packageRequires = with epkgs; [ f websocket ];
             };
 
             hook = "typst-ts-mode";
@@ -929,8 +906,9 @@ in
             '';
 
             config = ''
+              ;; always set master file to current buffer; skip manual input
               (advice-add 'typst-preview-start :before (lambda (&rest r)
-                (setq tp--master-file buffer-file-name)))
+                (setq tp--master-file (f-canonical buffer-file-name))))
             '';
           };
 
