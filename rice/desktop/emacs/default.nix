@@ -1,9 +1,22 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) mkForce mkIf mkOption remove;
+  inherit (lib) getExe mkForce mkIf mkOption remove;
   inherit (lib.types) bool str;
 
   cfg = config.rice.desktop.emacs;
+
+  meson-fmt = pkgs.writeShellApplication {
+    name = "meson-fmt";
+    runtimeInputs = with pkgs; [ meson ];
+    text = ''
+      if out="$(meson fmt - | sed 's|    |	|g')"; then
+        echo "$out"
+      else
+        echo "$out" >&2
+        exit 1
+      fi
+    '';
+  };
 in
 {
   options.rice.desktop.emacs = {
@@ -959,6 +972,22 @@ in
               opentofu
               tofu-ls
             ];
+          };
+
+          meson-mode = mkIf cfg.allLanguages {
+            custom = ''
+              (meson-indent-basic 4)
+            '';
+
+            config = ''
+              (require 'apheleia)
+              (add-to-list 'apheleia-mode-alist '(meson-mode . meson-fmt))
+              (add-to-list 'apheleia-formatters '(meson-fmt "${getExe meson-fmt}"))
+            '';
+
+            hook = ''
+              (meson-mode . indent-tabs-mode)
+            '';
           };
         };
       };
