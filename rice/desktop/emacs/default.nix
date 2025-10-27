@@ -653,7 +653,7 @@ in
           ##### Languages #####
 
           caddyfile-mode = mkIf cfg.allLanguages {
-            mode = ''"Caddyfile"'';
+            defer = true;
 
             hook = ''
               (caddyfile-mode . (lambda ()
@@ -676,11 +676,7 @@ in
           };
 
           glsl-mode = mkIf cfg.allLanguages {
-            mode = ''
-              "\\.frag\\'"
-              "\\.glsl\\'"
-              "\\.vert\\'"
-            '';
+            defer = true;
 
             config = ''
               (require 'lsp-mode)
@@ -694,13 +690,11 @@ in
           };
 
           go-mode = mkIf cfg.allLanguages {
-            mode = ''"\\.go\\'"'';
+            defer = true;
             extraPackages = with pkgs; [ gopls ];
           };
 
           haskell-mode = mkIf cfg.allLanguages {
-            mode = ''"\\.hs\\'"'';
-
             bind' = ''(
               :map haskell-mode-map
               ("C-c C-p" . haskell-interactive-switch)
@@ -734,7 +728,7 @@ in
             extraPackages = with pkgs; [ fourmolu ];
           };
 
-          json-mode = mkIf cfg.allLanguages { mode = ''"\\.json\\'"''; };
+          json-mode = mkIf cfg.allLanguages { defer = true; };
 
           lsp-haskell = mkIf cfg.allLanguages { defer = true; };
 
@@ -754,10 +748,11 @@ in
             extraPackages = with pkgs; [ basedpyright ];
           };
 
-          nftables-mode = mkIf cfg.allLanguages { mode = ''"\\.nft\\'"''; };
+          nftables-mode = mkIf cfg.allLanguages { defer = true; };
 
           nix-mode = mkIf cfg.allLanguages {
-            mode = ''"\\.nix\\'"'';
+            defer = true;
+
             extraPackages = with pkgs; [
               nil
               nixpkgs-fmt
@@ -771,7 +766,7 @@ in
           };
 
           pug-mode = mkIf cfg.allLanguages {
-            mode = ''"\\.pug\\'"'';
+            defer = true;
 
             hook = "(pug-mode . (lambda () (indent-tabs-mode 0)))";
 
@@ -782,10 +777,12 @@ in
           };
 
           rustic = mkIf cfg.allLanguages {
-            mode = ''("\\.rs\\'" . rustic-mode)'';
+            defer = true;
+
             custom = ''
               (lsp-rust-analyzer-cargo-watch-command "clippy")
             '';
+
             extraPackages = with pkgs; [
               clippy
               rust-analyzer
@@ -793,15 +790,11 @@ in
             ];
           };
 
-          yaml-mode = mkIf cfg.allLanguages {
-            mode = ''
-              "\\.yaml\\'"
-              "\\.yml\\'"
-            '';
-          };
+          yaml-mode = mkIf cfg.allLanguages { defer = true; };
 
           typescript-mode = mkIf cfg.allLanguages {
-            mode = ''"\\.ts\\'"'';
+            defer = true;
+
             extraPackages = with pkgs.nodePackages; [
               typescript
               typescript-language-server
@@ -819,6 +812,8 @@ in
           };
 
           zig-mode = mkIf cfg.allLanguages {
+            defer = true;
+
             package = epkgs: epkgs.zig-mode.overrideAttrs {
               # stub out reformatter (zig-mode wants it, but we use apheleia)
               packageRequires = [
@@ -835,8 +830,6 @@ in
                 })
               ];
             };
-
-            mode = ''"\\.zig\\'"'';
 
             extraPackages = with pkgs; [ zls ];
           };
@@ -861,6 +854,8 @@ in
           # Typst
 
           typst-ts-mode = {
+            defer = true;
+
             package = epkgs: epkgs.trivialBuild {
               pname = "typst-ts-mode";
               version = "2024-12-07";
@@ -891,8 +886,6 @@ in
                 '';
               })
             ];
-
-            mode = ''"\\.typ\\'"'';
 
             config = ''
               (require 'lsp-mode)
@@ -942,7 +935,7 @@ in
           };
 
           hyprlang-ts-mode = mkIf cfg.allLanguages {
-            mode = ''"hypr.*\\.conf\\'"'';
+            defer = true;
 
             custom = ''
               (hyprlang-ts-mode-indent-offset 4)
@@ -950,7 +943,7 @@ in
           };
 
           terraform-mode = mkIf cfg.allLanguages {
-            mode = ''"\\.tofu\\'"'';
+            defer = true;
 
             custom = ''
               (terraform-command "tofu")
