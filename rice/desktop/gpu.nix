@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ self, pkgs, lib, config, ... }:
 let
   inherit (lib) mkBefore mkIf mkMerge mkOption;
   inherit (lib.types) bool;
@@ -30,36 +30,10 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      rice.unfreeNames = [
-        "cuda-merged"
-        "cuda_cccl"
-        "cuda_cudart"
-        "cuda_cuobjdump"
-        "cuda_cupti"
-        "cuda_cuxxfilt"
-        "cuda_gdb"
-        "cuda_nvcc"
-        "cuda_nvdisasm"
-        "cuda_nvml_dev"
-        "cuda_nvprune"
-        "cuda_nvrtc"
-        "cuda_nvtx"
-        "cuda_profiler_api"
-        "cuda_sanitizer_api"
-        "libcublas"
-        "libcufft"
-        "libcurand"
-        "libcusolver"
-        "libcusparse"
-        "libnpp"
-        "libnvjitlink"
-      ];
-
       environment = {
-        systemPackages =
-          with config.rice.desktop.zenkernel.pkgs; [
-            nvtopPackages.full
-          ];
+        systemPackages = [
+          self.inputs.obscura.packages.${pkgs.system}.nvidia.entries.nvtop
+        ];
 
         sessionVariables.MOZ_DISABLE_RDD_SANDBOX = "1";
       };
