@@ -960,6 +960,14 @@ in
               (meson-mode . indent-tabs-mode)
             '';
           };
+
+          just-mode = {
+            defer = true;
+
+            extraPackages = with pkgs; [
+              just
+            ];
+          };
         };
       };
     }];
