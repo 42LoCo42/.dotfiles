@@ -282,7 +282,7 @@ in
               file = ./scripts/audio-helper.sh;
               subs = {
                 pulsemixer = getExe pkgs.pulsemixer;
-                mpc = getExe pkgs.mpc-cli;
+                mpc = getExe pkgs.mpc;
               };
             };
 

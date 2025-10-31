@@ -1,14 +1,7 @@
 { self, ... }: {
   nixpkgs.overlays = [
     (_: prev:
-      let obscura = self.inputs.obscura.packages.${prev.system}; in {
-        # TODO https://pr-tracker.bunny/?pr=454758 but not actually?
-        # buncha missing includes and undeclared shit
-        # just pulling latest working hydra pin for now (https://hydra.nixos.org/build/310124401)
-        inherit ((import (fetchTarball {
-          url = "https://github.com/nixos/nixpkgs/archive/b4ac32e4bb71360baf41a18e5ef92962cd452007.tar.gz";
-          sha256 = "sha256-dsQLZssf+qzsh0nkt74QjoUTBGC3+vvirNIsKFwWQfM=";
-        })) { inherit (prev) system; }) musescore;
+      let obscura = self.inputs.obscura.packages.${prev.stdenv.hostPlatform.system}; in {
 
         ########## obscura inclusion ##########
 

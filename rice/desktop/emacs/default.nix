@@ -630,8 +630,6 @@ in
             extraPackages = with pkgs; [
               emacs-lsp-booster
 
-              clang-tools # c-mode
-
               # sh-mode
               bash-language-server
               shellcheck

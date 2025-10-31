@@ -9,7 +9,7 @@
       packages = with pkgs; [
         nerd-fonts.iosevka
         noto-fonts
-        noto-fonts-emoji
+        noto-fonts-color-emoji
       ];
 
       fontconfig.defaultFonts = {
