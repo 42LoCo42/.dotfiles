@@ -63,7 +63,6 @@ machine:
       - user/admin
 
     key:
-    ncps:
     paperless:
     papra:
     qbit-stop:

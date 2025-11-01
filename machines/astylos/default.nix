@@ -15,8 +15,6 @@
   };
 
   rice = {
-    use-ncps.enable = true;
-
     desktop = {
       gpu = {
         intel.enable = true;

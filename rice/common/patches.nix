@@ -13,7 +13,6 @@
           drasl
           email-oauth2-proxy
           ferroxide
-          ncps-db-helper
           papra
           pinlist
           pug

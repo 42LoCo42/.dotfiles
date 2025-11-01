@@ -52,6 +52,5 @@
     dns.enable = true;
     nixremote.use = true;
     tailscale.enable = true;
-    use-ncps.enable = true;
   };
 }

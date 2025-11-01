@@ -8,6 +8,5 @@
     ./printer.nix
     ./syncthing.nix
     ./tailscale.nix
-    ./use-ncps.nix
   ];
 }

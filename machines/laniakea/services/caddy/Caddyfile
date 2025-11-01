@@ -32,13 +32,6 @@ music.laniakea {
 	import mympd
 }
 
-##### ncps #####
-
-# reachable from LAN
-laniakea.fritz.box:8501 {
-	reverse_proxy ncps:8501
-}
-
 ##### papra #####
 
 # reachable from VPN

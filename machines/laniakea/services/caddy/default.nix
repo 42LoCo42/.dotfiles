@@ -8,8 +8,6 @@
   networking.firewall.allowedTCPPorts = [
     80
     443
-
-    8501 # ncps
   ];
 
   virtualisation.pnoc.caddy = {
