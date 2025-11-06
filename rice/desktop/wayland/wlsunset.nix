@@ -1,4 +1,9 @@
-{ lib, config, ... }: {
+{ pkgs, lib, config, ... }:
+let
+  inherit (lib) getExe mkForce;
+  cfg = config.rice.desktop.wayland.wlsunset;
+in
+{
   options.rice.desktop.wayland.wlsunset = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -14,12 +19,34 @@
     };
   };
 
-  config = lib.mkIf config.rice.desktop.wayland.wlsunset.enable {
+  config = lib.mkIf cfg.enable {
     home-manager.sharedModules = [{
-      services.wlsunset = {
-        enable = true;
-        latitude = config.rice.desktop.wayland.wlsunset.lat;
-        longitude = config.rice.desktop.wayland.wlsunset.lon;
+      services.hyprsunset.enable = true;
+
+      systemd.user.services.wlsunset = {
+        Install.WantedBy = [ "graphical-session.target" ];
+
+        Unit = {
+          After = [ "graphical-session.target" ];
+          PartOf = [ "graphical-session.target" ];
+        };
+
+        Service.ExecStart = mkForce [
+          (getExe (pkgs.writeShellApplication {
+            name = "wlsunset-via-hyprsunset";
+
+            runtimeInputs = with pkgs; [
+              hyprland
+              wlsunset
+            ];
+
+            text = ''
+              wlsunset -l ${cfg.lat} -L ${cfg.lon} |& sed -Enu        \
+                's|.* ([0-9]+) K|hyprctl hyprsunset temperature \1|p' \
+              | bash -x
+            '';
+          }))
+        ];
       };
     }];
   };
