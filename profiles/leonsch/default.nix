@@ -13,6 +13,7 @@ let inherit (config.rice.ssh) proxy; in
 
     # work stuff
     dnscrypt.rules.cloaking = {
+      "filer1.planet-ic.local" = "172.16.96.167";
       "lbswis.gbv.de" = "127.0.0.1";
       "readers.lakd" = "127.0.0.1";
     };
