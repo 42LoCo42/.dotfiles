@@ -6,8 +6,8 @@ while sleep "$foo"; do
 	foo=1
 	now="$(date "+%s")"
 	((now < end)) || break
-	read -r d h m s <<< "$(date -u +"%j %H %M %S" --date "@$((end - now))")"
+	read -r d h m s <<<"$(date -u +"%j %H %M %S" --date "@$((end - now))")"
 	((d--))
 	echo -ne "\rwaiting for $d days $h:$m:$s"
 done
-mpv --volume=75 "@bell@"
+mpv --ao=pulse --input-commands="set ao-volume 50" "@bell@"
