@@ -9,7 +9,7 @@
   virtualisation.pnoc = {
     immich = {
       path = with pkgs; [
-        coreutils # immich start ffmpeg with "nice 10"
+        coreutils # immich starts ffmpeg with "nice 10"
       ];
 
       cmd = config.rice.redis ++ [ (lib.getExe pkgs.immich) ];
