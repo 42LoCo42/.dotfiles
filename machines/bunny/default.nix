@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  inherit (lib) mkOption;
+  inherit (lib) getExe mkOption;
   inherit (lib.types) package;
 in
 {
@@ -20,12 +20,17 @@ in
     system.extraDependencies = with pkgs; [ pug ];
 
     aquaris = {
-      users.admin.sshKeys =
-        let
-          cmd = "${lib.getExe pkgs.rrsync} /persist/home/admin/firefox/";
+      users.admin.sshKeys = map
+        (x: ''command="${getExe pkgs.rrsync} ${x.dir}",restrict ${x.key}'') [
+        {
+          dir = "/persist/home/admin/firefox/";
           key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInpOfiVpjqdtV7KEZJ6PLBJ2a0Iu9tYdwufZpl/qOBD";
-        in
-        [ ''command="${cmd}",restrict ${key}'' ];
+        }
+        {
+          dir = "/persist/home/admin/hidden/pizza.d/";
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAATS/nPcQRUHbhvJG3TAqMFVxI1UW3LFxYaXkf3kxDE";
+        }
+      ];
 
       machine = {
         id = "488cb972c1ac70db8307933f65d5defc";

@@ -163,6 +163,19 @@ let inherit (config.rice.ssh) proxy; in
         hostname = "owo-ercanar-senpai.duckdns.org";
         port = 12345;
       };
+
+      pizza = {
+        hostname = "exit.bunny.vpn";
+        port = 18213;
+        user = "admin";
+
+        extraOptions = {
+          AddKeysToAgent = "no";
+          IdentitiesOnly = "yes";
+          IdentityAgent = "/dev/null";
+          IdentityFile = config.aquaris.secret "user/ercanar/pizza";
+        };
+      };
     };
   }];
 }
