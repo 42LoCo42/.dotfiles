@@ -86,6 +86,7 @@ in
           (setq cua-remap-control-v nil)
           (cua-mode 1)
           (bind-key "C-v" 'cua-paste)
+          (load "bootstrap") ; init straight.el
         '';
 
         config = {
@@ -226,10 +227,7 @@ in
           };
 
           straight = {
-            commands = ''
-              straight-remove-unused-repos
-              straight-use-package
-            '';
+            defer = true;
           };
 
           ##### Appearance #####
