@@ -140,7 +140,7 @@ let inherit (config.rice.ssh) proxy; in
       };
     };
 
-    wayland.windowManager.hyprland.plugins = with pkgs; [
+    wayland.windowManager.hyprland.plugins = with pkgs.hyprlandPlugins; [
       hyprwinwrap
     ];
 

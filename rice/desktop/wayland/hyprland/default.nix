@@ -264,7 +264,7 @@ in
       wayland.windowManager.hyprland = {
         enable = true;
 
-        plugins = with pkgs; [
+        plugins = with pkgs.hyprlandPlugins; [
           hypr-dynamic-cursors
           hyprfocus
         ];

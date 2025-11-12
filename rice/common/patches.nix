@@ -3,12 +3,26 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.hostPlatform.system}; in {
 
-        # TODO https://pr-tracker.bunny/?pr=458575
-        inherit ((import (fetchTarball {
-          url = "https://github.com/nixos/nixpkgs/tarball/0cf9d8c48210853611c9b8a6deffdf1a5833aef9";
-          sha256 = "sha256-jdkkqMOO/qwuPwAUgm53jKsVP8srSX+iQLSjm5Hu64A=";
-        })) { inherit (prev.stdenv.hostPlatform) system; })
-          immich immich-machine-learning;
+        # TODO try to upstream these?
+        hyprlandPlugins = prev.hyprlandPlugins // {
+          hyprfocus = prev.hyprlandPlugins.hyprfocus.overrideAttrs (old: {
+            patches = (old.patches or [ ]) ++ [
+              # fix fullscreen windows not restoring original state
+              (prev.fetchpatch {
+                url = "https://github.com/42LoCo42/hyprland-plugins/commit/c772e95bef8042704c770b3f9bb7dfd2a6906529.patch";
+                stripLen = 1;
+                hash = "sha256-lD+75P7eUbP2p5kaoReKQFUFoks6GPDBdqhOFf6TJKk=";
+              })
+
+              # add only_on_monitor_change option
+              (prev.fetchpatch {
+                url = "https://github.com/42LoCo42/hyprland-plugins/commit/157476d682a49207fecb63502471f1d3ac710195.patch";
+                stripLen = 1;
+                hash = "sha256-vJcbm1CEpImZs4N/mdLB0/eiKdyBMzNYB/x3ki8UXbg=";
+              })
+            ];
+          });
+        };
 
         ########## obscura inclusion ##########
 
@@ -27,16 +41,6 @@
           socket-activate
           vencloud
           zfullfs
-          ;
-
-        # TODO wait for the whole hyprland fiasco to be over...
-        # blocked on next hyprland release & potential nvidia incompatibility
-        inherit (obscura.hyprland-patched.entries)
-          hyprland
-          hypr-dynamic-cursors
-          hyprfocus
-          hyprwinwrap
-          xdg-desktop-portal-hyprland
           ;
 
         cryptpad = obscura.cryptpad_2025_9;
