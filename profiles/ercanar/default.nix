@@ -1,4 +1,4 @@
-{ pkgs, config, aquaris, ... }:
+{ pkgs, lib, config, aquaris, ... }:
 let inherit (config.rice.ssh) proxy; in
 {
   imports = [ ../common ./aliases.nix ];
@@ -14,7 +14,7 @@ let inherit (config.rice.ssh) proxy; in
     desktop = {
       enable = true;
 
-      emacs.allLanguages = false;
+      emacs.enable = lib.mkForce false;
 
       wayland = {
         hyprland.workspaces = {

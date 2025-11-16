@@ -29,12 +29,6 @@ in
       type = str;
       default = toString config.rice.desktop.alpha;
     };
-
-    allLanguages = mkOption {
-      type = bool;
-      description = "Enable support for all languages instead of just Typst";
-      default = true;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -648,7 +642,7 @@ in
 
           ##### Languages #####
 
-          caddyfile-mode = mkIf cfg.allLanguages {
+          caddyfile-mode = {
             defer = true;
 
             hook = ''
@@ -671,7 +665,7 @@ in
             ];
           };
 
-          glsl-mode = mkIf cfg.allLanguages {
+          glsl-mode = {
             defer = true;
 
             config = ''
@@ -685,12 +679,12 @@ in
             extraPackages = with pkgs; [ glsl_analyzer ];
           };
 
-          go-mode = mkIf cfg.allLanguages {
+          go-mode = {
             defer = true;
             extraPackages = with pkgs; [ gopls ];
           };
 
-          haskell-mode = mkIf cfg.allLanguages {
+          haskell-mode = {
             bind' = ''(
               :map haskell-mode-map
               ("C-c C-p" . haskell-interactive-switch)
@@ -724,11 +718,11 @@ in
             extraPackages = with pkgs; [ fourmolu ];
           };
 
-          json-mode = mkIf cfg.allLanguages { defer = true; };
+          json-mode = { defer = true; };
 
-          lsp-haskell = mkIf cfg.allLanguages { defer = true; };
+          lsp-haskell = { defer = true; };
 
-          lsp-pyright = mkIf cfg.allLanguages {
+          lsp-pyright = {
             defer = true;
 
             hook = ''
@@ -744,9 +738,9 @@ in
             extraPackages = with pkgs; [ basedpyright ];
           };
 
-          nftables-mode = mkIf cfg.allLanguages { defer = true; };
+          nftables-mode = { defer = true; };
 
-          nix-mode = mkIf cfg.allLanguages {
+          nix-mode = {
             defer = true;
 
             extraPackages = with pkgs; [
@@ -761,7 +755,7 @@ in
             '';
           };
 
-          pug-mode = mkIf cfg.allLanguages {
+          pug-mode = {
             defer = true;
 
             hook = "(pug-mode . (lambda () (indent-tabs-mode 0)))";
@@ -772,7 +766,7 @@ in
             '';
           };
 
-          rustic = mkIf cfg.allLanguages {
+          rustic = {
             defer = true;
 
             custom = ''
@@ -786,9 +780,9 @@ in
             ];
           };
 
-          yaml-mode = mkIf cfg.allLanguages { defer = true; };
+          yaml-mode = { defer = true; };
 
-          typescript-mode = mkIf cfg.allLanguages {
+          typescript-mode = {
             defer = true;
 
             extraPackages = with pkgs.nodePackages; [
@@ -797,7 +791,7 @@ in
             ];
           };
 
-          web-mode = mkIf cfg.allLanguages {
+          web-mode = {
             mode = ''
               "\\.svelte\\'"
             '';
@@ -807,7 +801,7 @@ in
             ];
           };
 
-          zig-mode = mkIf cfg.allLanguages {
+          zig-mode = {
             defer = true;
 
             package = epkgs: epkgs.zig-mode.overrideAttrs {
@@ -832,12 +826,12 @@ in
 
           # Lisp
 
-          lisp-extra-font-lock = mkIf cfg.allLanguages {
+          lisp-extra-font-lock = {
             hook = "lisp-data-mode";
             config = "(lisp-extra-font-lock-global-mode 1)";
           };
 
-          parinfer-rust-mode = mkIf cfg.allLanguages {
+          parinfer-rust-mode = {
             hook = "lisp-data-mode";
             custom = "(parinfer-rust-auto-download t)";
             config = ''
@@ -908,7 +902,7 @@ in
             '';
           };
 
-          hyprlang-ts-mode = mkIf cfg.allLanguages {
+          hyprlang-ts-mode = {
             defer = true;
 
             custom = ''
@@ -916,7 +910,7 @@ in
             '';
           };
 
-          terraform-mode = mkIf cfg.allLanguages {
+          terraform-mode = {
             defer = true;
 
             custom = ''
@@ -941,7 +935,7 @@ in
             ];
           };
 
-          meson-mode = mkIf cfg.allLanguages {
+          meson-mode = {
             custom = ''
               (meson-indent-basic 4)
             '';
