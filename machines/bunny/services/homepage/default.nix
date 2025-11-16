@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, lib, config, ... }: {
   # protect these from garbage collection
   system.extraDependencies = with pkgs; [
     elk-to-svg
@@ -7,22 +7,23 @@
 
   rice.caddy = {
     cfg = {
-      "" = ''
-        import default
+      "" = lib.mkMerge [
+        (lib.mkBefore "import default")
+        (lib.mkAfter ''
+          ##### homepage #####
+          root * /srv/homepage
+          file_server
 
-        ##### homepage #####
-        root * /srv/homepage
-        file_server
-
-        ##### funny cat :3 #####
-        handle_errors {
-          rewrite * /{err.status_code}
-          reverse_proxy https://http.cat {
-            header_up Host {upstream_hostport}
-            replace_status {err.status_code}
+          ##### funny cat :3 #####
+          handle_errors {
+            rewrite * /{err.status_code}
+            reverse_proxy https://http.cat {
+              header_up Host {upstream_hostport}
+              replace_status {err.status_code}
+            }
           }
-        }
-      '';
+        '')
+      ];
 
       www = ''
         redir https://{$DOMAIN}

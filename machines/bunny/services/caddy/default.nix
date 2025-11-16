@@ -3,6 +3,7 @@ let
   inherit (lib)
     concatLines
     getExe
+    hasInfix
     mapAttrsToList
     mkOption
     pipe
@@ -12,29 +13,45 @@ let
     attrsOf
     lines
     listOf
+    package
     str
     ;
 
-  caddyfile = pipe config.rice.caddy.cfg [
-    (mapAttrsToList (k: v: pipe v [
-      (splitString "\n")
-      (map (x: "  " + x))
-      concatLines
-      (v: ''
-        ${if k == "" then "" else "${k}."}{$DOMAIN} {
-        ${v}}
-      '')
-    ]))
-    concatLines
-    (x: builtins.readFile ./Caddyfile + x)
-    (pkgs.writeText "Caddyfile")
-  ];
+  cfg = config.rice.caddy;
 in
 {
   options.rice.caddy = {
     cfg = mkOption {
       type = attrsOf lines;
       default = "";
+    };
+
+    cfg-merged = mkOption {
+      type = lines;
+      readOnly = true;
+      default = pipe cfg.cfg [
+        (mapAttrsToList (k: v: pipe v [
+          (splitString "\n")
+          (map (x: "  " + x))
+          concatLines
+          (v:
+            let
+              entry =
+                if k == "" then "{$DOMAIN}"
+                else if hasInfix ":" k then k
+                else "${k}.{$DOMAIN}";
+            in
+            "${entry} {\n${v}}")
+        ]))
+        concatLines
+        (x: builtins.readFile ./Caddyfile + x)
+      ];
+    };
+
+    caddyfile = mkOption {
+      type = package;
+      readOnly = true;
+      default = pkgs.writeText "Caddyfile" cfg.cfg-merged;
     };
 
     volumes = mkOption {
@@ -54,7 +71,7 @@ in
     rice.caddy = {
       volumes = [
         "caddy:/data"
-        "${caddyfile}:/Caddyfile:ro"
+        "${cfg.caddyfile}:/Caddyfile:ro"
       ];
     };
 
@@ -79,7 +96,7 @@ in
         "443:8443/udp"
       ];
 
-      inherit (config.rice.caddy) volumes;
+      inherit (cfg) volumes;
     };
   };
 }

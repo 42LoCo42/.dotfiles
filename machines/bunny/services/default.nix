@@ -10,6 +10,7 @@
     ./cryptpad
     ./datetime
     ./drasl
+    ./element
     ./email-oauth2-proxy
     ./forgejo
     ./headscale
@@ -26,6 +27,7 @@
     ./syncthing
     ./tailscale
     ./tscaddy
+    ./tuwunel
     ./vaultwarden
     ./vencloud
   ];

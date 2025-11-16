@@ -1,0 +1,19 @@
+[global]
+server_name = "@domain@"
+database_path = "/data"
+
+address = "0.0.0.0"
+port = 8080
+
+allow_registration = true
+registration_token = "$REGISTRATION_TOKEN"
+new_user_displayname_suffix = ""
+
+encryption_enabled_by_default_for_room_type = "all"
+
+# protected in caddy
+allow_legacy_media = true
+
+[global.well_known]
+client = "https://matrix.@domain@"
+server = "matrix.@domain@:443"

@@ -52,6 +52,7 @@ machine:
     searxng:
     tailscale:
     tscaddy:
+    tuwunel:
     vaultwarden:
     vencloud:
 

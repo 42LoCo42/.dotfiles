@@ -1,0 +1,5 @@
+{
+	"default_server_name": "@domain@",
+	"disable_custom_urls": true,
+	"disable_3pid_login": true
+}
