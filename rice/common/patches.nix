@@ -3,7 +3,22 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.hostPlatform.system}; in {
 
-        # TODO try to upstream these?
+        # fix rustc leaking into matrix-tuwunel via rust compile commands
+        matrix-tuwunel = prev.runCommand "matrix-tuwunel" { } ''
+          install -Dm755 {${prev.matrix-tuwunel},$out}/bin/tuwunel
+          sed -i \
+            's|${prev.rustc-unwrapped}|/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-${prev.rustc-unwrapped.name}|g' \
+            $out/bin/tuwunel
+        '';
+
+        # TODO https://pr-tracker.bunny/?pr=461661
+        inherit ((import (fetchTarball {
+          url = "https://github.com/nixos/nixpkgs/tarball/c543a59edf25ada193719764f3bc0c6ba835f94d";
+          sha256 = "sha256-eEYvm+45PPmy+Qe+nZDpn1uhoMUjJwx3PwVVQoO9ksA=";
+        })) { inherit (prev.stdenv.hostPlatform) system; })
+          rustdesk-flutter;
+
+        # TODO wait for next hyprlandPlugins update in nixpkgs
         hyprlandPlugins = prev.hyprlandPlugins // {
           hyprfocus = prev.hyprlandPlugins.hyprfocus.overrideAttrs (old: {
             patches = (old.patches or [ ]) ++ [
