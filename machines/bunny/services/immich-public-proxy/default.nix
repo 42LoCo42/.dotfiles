@@ -1,9 +1,9 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }: {
   topology.nodes.bunny-public.services.immich-public-proxy = {
     name = "Immich Public Proxy";
     icon = "services.ipp";
     info = "Shared album access from outside the VPN";
-    details.url.text = "https://img.eleonora.gay";
+    details.url.text = "https://img.${config.rice.domain}";
   };
 
   rice.caddy.cfg.img = ''

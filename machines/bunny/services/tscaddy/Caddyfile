@@ -2,7 +2,7 @@
 	admin off
 
 	tailscale {
-		control_url https://headscale.eleonora.gay
+		control_url {$HEADSCALE}
 		ephemeral true
 	}
 

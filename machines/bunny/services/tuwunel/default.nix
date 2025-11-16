@@ -3,7 +3,7 @@
     name = "Tuwunel";
     icon = "services.matrix";
     info = "Matrix homeserver";
-    details.url.text = "https://matrix.eleonora.gay";
+    details.url.text = "https://matrix.${config.rice.domain}";
   };
 
   rice.caddy.cfg = {

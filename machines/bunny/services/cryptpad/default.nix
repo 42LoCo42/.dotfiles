@@ -25,7 +25,7 @@ in
     name = "CryptPad";
     icon = "services.cryptpad";
     info = "Collaborative office suite";
-    details.url.text = "https://pad.eleonora.gay";
+    details.url.text = "https://pad.${config.rice.domain}";
   };
 
   rice.caddy.cfg = {

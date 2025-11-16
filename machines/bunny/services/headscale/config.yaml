@@ -36,7 +36,7 @@ unix_socket: "/data/headscale.sock"
 
 oidc:
   only_start_if_oidc_is_available: true
-  issuer: "https://id.eleonora.gay"
+  issuer: "https://id.@domain@"
   client_id: "7ac720c5-8037-43e9-a17b-e7f0bff15d2a"
   # client_secret set via env
   pkce:

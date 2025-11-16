@@ -3,7 +3,7 @@
     name = "Pocket ID";
     icon = "services.pocket-id";
     info = "OIDC provider for other services";
-    details.url.text = "https://id.eleonora.gay";
+    details.url.text = "https://id.${config.rice.domain}";
   };
 
   rice.caddy.cfg.id = ''

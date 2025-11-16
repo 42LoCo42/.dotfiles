@@ -65,7 +65,7 @@ in
       name = "Caddy";
       icon = "services.caddy";
       info = "Primary service gateway";
-      details.url.text = "https://eleonora.gay";
+      details.url.text = "https://${config.rice.domain}";
     };
 
     rice.caddy = {

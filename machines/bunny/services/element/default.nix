@@ -3,7 +3,7 @@
     name = "Element";
     icon = "services.element";
     info = "Matrix web client";
-    details.url.text = "https://chat.eleonora.gay";
+    details.url.text = "https://chat.${config.rice.domain}";
   };
 
   rice.caddy = {

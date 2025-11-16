@@ -10,7 +10,7 @@
     cmd = [ (lib.getExe pkgs.pinlist) "/data/pinlist.db" ];
 
     environment = {
-      PINLIST_OIDC_ISSUER = "https://id.eleonora.gay";
+      PINLIST_OIDC_ISSUER = "https://id.${config.rice.domain}";
       PINLIST_OIDC_REDIRECT = "https://pin.bunny";
     };
 

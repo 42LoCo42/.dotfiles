@@ -26,6 +26,7 @@
     ];
 
     environment = {
+      HEADSCALE = "https://headscale.${config.rice.domain}";
       XDG_CONFIG_HOME = "/data/config";
       XDG_DATA_HOME = "/data/data";
     };

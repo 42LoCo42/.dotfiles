@@ -3,7 +3,7 @@
     name = "Attic";
     icon = "misc.package";
     info = "Selfhosted Nix binary cache";
-    details.url.text = "https://attic.eleonora.gay";
+    details.url.text = "https://attic.${config.rice.domain}";
   };
 
   rice.caddy = {

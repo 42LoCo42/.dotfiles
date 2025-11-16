@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }: {
   topology.nodes.bunny-private.services.drasl = {
     name = "Drasl";
     icon = "services.drasl";
@@ -7,7 +7,7 @@
   };
 
   virtualisation.pnoc.drasl = {
-    cmd = [ (lib.getExe pkgs.drasl) "--config=${./config.toml}" ];
+    cmd = [ (lib.getExe pkgs.drasl) "--config=${config.rice.subsDomain ./config.toml}" ];
     secrets = [ "@machine/drasl:/key" ];
     volumes = [ "drasl:/data" ];
   };

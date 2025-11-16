@@ -18,8 +18,8 @@
 
     script = ''
       umask 0077
-      envsubst                   \
-        < ${./emailproxy.config} \
+      envsubst                                          \
+        < ${config.rice.subsDomain ./emailproxy.config} \
         > /tmp/emailproxy.config
 
       exec emailproxy                        \

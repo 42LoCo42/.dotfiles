@@ -1,9 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   topology.nodes.bunny-public.services.chronometer = {
     name = "Chronometer";
     icon = "misc.clock";
     info = "The Chronometer of Endless Whimsy!";
-    details.url.text = "https://chronometer.eleonora.gay";
+    details.url.text = "https://chronometer.${config.rice.domain}";
   };
 
   rice.caddy = {

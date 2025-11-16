@@ -1,9 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   topology.nodes.bunny-public.services.datetime = {
     name = "Datetime";
     icon = "misc.clock";
     info = "What Datetime is it right now?";
-    details.url.text = "https://datetime.eleonora.gay";
+    details.url.text = "https://datetime.${config.rice.domain}";
   };
 
   rice.caddy = {

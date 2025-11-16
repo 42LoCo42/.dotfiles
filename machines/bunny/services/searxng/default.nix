@@ -3,7 +3,7 @@
     name = "SearXNG";
     icon = "services.searxng";
     info = "Privacy-respecting metasearch engine";
-    details.url.text = "https://searx.eleonora.gay";
+    details.url.text = "https://searx.${config.rice.domain}";
   };
 
   rice.caddy.cfg.searx = ''

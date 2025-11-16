@@ -3,7 +3,7 @@
     name = "Headscale";
     icon = "services.headscale1";
     info = "Tailscale control plane";
-    details.url.text = "https://headscale.eleonora.gay";
+    details.url.text = "https://headscale.${config.rice.domain}";
   };
 
   rice.caddy.cfg.headscale = ''

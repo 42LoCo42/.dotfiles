@@ -3,7 +3,7 @@
     name = "Vaultwarden";
     icon = "services.vaultwarden";
     info = "Selfhosted password manager";
-    details.url.text = "https://vw.eleonora.gay";
+    details.url.text = "https://vw.${config.rice.domain}";
   };
 
   rice.caddy.cfg.vw = ''
