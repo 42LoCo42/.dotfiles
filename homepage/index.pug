@@ -10,9 +10,19 @@ block content
       x-vbox(style = "row-gap: 5px;")
         img(id = "profile" src = "/profile.webp"
             alt = "My profile picture: a strawberry on a trans flag, both made out of wool")
-        small 󰇮&emsp;leonsch@protonmail.com
-        small 󰙯&emsp;42loco42
-
+        table(id = "contact")
+          tr
+            td 󰇮&nbsp;
+            td
+              a(href = "mailto:leonsch@protonmail.com") leonsch@protonmail.com
+          tr
+            td 󰙯&nbsp;
+            td
+              a(href = "https://discord.com/users/333268105365159937") 42loco42
+          tr
+            td [m]
+            td
+              a(href = "https://matrix.to/#/@me:eleonora.gay") @me:eleonora.gay
       div
         span(style = "color: var(--green); font-weight: bold;") eleonora
         | @

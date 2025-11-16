@@ -139,6 +139,14 @@ x-neosub {
 	margin-bottom: 10px;
 }
 
+#contact {
+	font-size: 0.8em;
+}
+
+#contact tr td:first-child {
+	text-align: center;
+}
+
 cursor {
 	animation: blink 500ms linear infinite alternate;
 }
