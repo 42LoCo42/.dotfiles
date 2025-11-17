@@ -94,6 +94,7 @@ let inherit (config.rice.ssh) proxy; in
             "https://youtube.com"
 
             # personal
+            "https://chat.eleonora.gay"
             "https://id.eleonora.gay"
             "https://vw.eleonora.gay"
 
