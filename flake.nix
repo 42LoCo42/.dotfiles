@@ -51,12 +51,12 @@
     users = {
       admin = {
         description = "Server Admin Account";
-        sshKeys = [ ssh.leonsch ];
+        sshKeys = with ssh; [ leonsch ];
       };
 
       ercanar = {
         description = "Hannes Wendt";
-        sshKeys = [ ssh.ercanar ssh.leonsch ];
+        sshKeys = with ssh; [ ercanar leonsch ];
         git = {
           email = "hanneswendt22@gmail.com";
           key = ssh.ercanar;
@@ -65,7 +65,7 @@
 
       leonsch = {
         description = "Leon Schumacher";
-        sshKeys = [ ssh.leonsch ];
+        sshKeys = with ssh; [ leonsch ];
         git = {
           email = "leonsch@protonmail.com";
           key = ssh.leonsch;

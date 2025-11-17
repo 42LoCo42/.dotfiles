@@ -90,5 +90,28 @@
     home.packages = with pkgs; [
       blender-hip
     ];
+
+    systemd.user.services.microphone-lock = {
+      Service.ExecStart = pkgs.lib.getExe (pkgs.writeShellApplication {
+        name = "microphone-lock";
+        runtimeInputs = with pkgs; [ gawk pulsemixer ];
+        text = ''
+          source="$(
+            pulsemixer --list-sources \
+            | awk '/HD 720P webcam/ {print (substr($3, 0, length($3) - 1))}')"
+
+          while sleep 1; do
+            pulsemixer --id "$source" --set-volume 90
+          done
+        '';
+      });
+
+      Unit = {
+        After = [ "pipewire.service" ];
+        Wants = [ "pipewire.service" ];
+      };
+
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
   }];
 }

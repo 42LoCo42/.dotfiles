@@ -1,10 +1,13 @@
 { pkgs, lib, config, aquaris, ... }:
-let inherit (config.rice.ssh) proxy; in
+let
+  inherit (lib) mkForce mkMerge;
+  inherit (config.rice.ssh) proxy;
+in
 {
   imports = [ ../common ./aliases.nix ];
 
   aquaris = {
-    users = pkgs.lib.mkMerge [
+    users = mkMerge [
       { inherit (aquaris.cfg.users) ercanar; }
       { ercanar.admin = true; }
     ];
@@ -14,7 +17,8 @@ let inherit (config.rice.ssh) proxy; in
     desktop = {
       enable = true;
 
-      emacs.enable = lib.mkForce false;
+      emacs.enable = mkForce false;
+      hrtrack.enable = mkForce false;
 
       wayland = {
         hyprland.workspaces = {
@@ -62,7 +66,6 @@ let inherit (config.rice.ssh) proxy; in
           bind = $mod SHIFT, g, exec, gimp
           bind = $mod SHIFT, w, exec, uwsm app librewolf
         '';
-
 
         hypridle.timeouts = {
           lock = 900; # 15 min
