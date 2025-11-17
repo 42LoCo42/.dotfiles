@@ -3,11 +3,17 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.hostPlatform.system}; in {
 
-        # fix rustc leaking into matrix-tuwunel via rust compile commands
-        matrix-tuwunel = prev.runCommand "matrix-tuwunel" { } ''
+        # TODO https://pr-tracker.bunny/?pr=462394
+        # fix gcc & rustc leaking into matrix-tuwunel
+        matrix-tuwunel = (prev.runCommand "matrix-tuwunel" {
+          nativeBuildInputs = with prev; [
+            removeReferencesTo
+          ];
+        }) ''
           install -Dm755 {${prev.matrix-tuwunel},$out}/bin/tuwunel
-          sed -i \
-            's|${prev.rustc-unwrapped}|/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-${prev.rustc-unwrapped.name}|g' \
+          remove-references-to         \
+            -t ${prev.stdenv.cc}       \
+            -t ${prev.rustc-unwrapped} \
             $out/bin/tuwunel
         '';
 
