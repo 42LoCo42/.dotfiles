@@ -1,0 +1,28 @@
+passwordLogin:
+  enabled: false
+
+oauth:
+  enabled: true
+  autoLaunch: true
+  buttonText: "Login with PocketID"
+  defaultStorageQuota: 10
+  issuerUrl: https://id.eleonora.gay/.well-known/openid-configuration
+  clientId: 97597d54-88e0-4483-8c6c-cb3f3a2face8
+  clientSecret: $CLIENT_SECRET
+
+backup:
+  database:
+    enabled: false
+
+machineLearning:
+  urls:
+    - http://immich-machine-learning:3003
+
+server:
+  externalDomain: https://img.$DOMAIN
+
+storageTemplate:
+  enabled: true
+
+newVersionCheck:
+  enabled: false

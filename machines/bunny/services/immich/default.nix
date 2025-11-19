@@ -10,13 +10,28 @@
     immich = {
       path = with pkgs; [
         coreutils # immich starts ffmpeg with "nice 10"
+        docker.docker-tini
+        envsubst
+        redis
       ];
 
-      cmd = config.rice.redis ++ [ (lib.getExe pkgs.immich) ];
+      script = ''
+        envsubst <${./config.yaml} > /tmp/config.yaml
+
+        exec tini --           \
+        ${config.rice.invfork} \
+          redis-server         \
+            --dir /data        \
+            --bind 127.0.0.1   \
+          -- ${lib.getExe pkgs.immich}
+      '';
 
       environment = {
+        DOMAIN = config.rice.domain;
+
         IMMICH_PORT = "8080";
         IMMICH_MEDIA_LOCATION = "/data";
+        IMMICH_CONFIG_FILE = "/tmp/config.yaml";
 
         REDIS_HOSTNAME = "localhost";
 

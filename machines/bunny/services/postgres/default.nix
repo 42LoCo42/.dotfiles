@@ -6,6 +6,8 @@ let
   ]);
 in
 {
+  rice = { inherit postgres; };
+
   topology.nodes.bunny.services.postgres = {
     name = "PostgreSQL ${lib.versions.major postgres.version}";
     icon = "services.postgres";
