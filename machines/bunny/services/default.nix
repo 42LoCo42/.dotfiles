@@ -1,8 +1,5 @@
 {
   imports = [
-    # ./mycorrhiza
-    # ./rustdesk
-
     ./attic
     ./avh
     ./caddy
@@ -11,7 +8,6 @@
     ./datetime
     ./drasl
     ./element
-    ./email-oauth2-proxy
     ./forgejo
     ./headscale
     ./homepage

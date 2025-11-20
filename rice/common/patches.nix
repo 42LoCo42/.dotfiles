@@ -53,7 +53,6 @@
           chronometer
           datetime
           drasl
-          email-oauth2-proxy
           ferroxide
           papra
           pinlist

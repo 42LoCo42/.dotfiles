@@ -41,14 +41,12 @@ machine:
     attic:
     cryptpad:
     drasl:
-    email-oauth2-proxy:
     forgejo:
     headscale:
     immich:
     pinlist:
     pocket-id:
     pr-tracker:
-    rustdesk:
     searxng:
     tailscale:
     tscaddy:
