@@ -53,6 +53,7 @@
           chronometer
           datetime
           drasl
+          eka
           ferroxide
           papra
           pinlist

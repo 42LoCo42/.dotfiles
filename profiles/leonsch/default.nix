@@ -146,6 +146,7 @@ let inherit (config.rice.ssh) proxy; in
     ];
 
     home.packages = with pkgs; [
+      eka
       openvpn # for corporate VPN
       rustdesk-flutter
 
