@@ -21,6 +21,16 @@ machineLearning:
 server:
   externalDomain: https://img.$DOMAIN
 
+notifications:
+  smtp:
+    enabled: true
+    from: immich@eleonora.gay
+    transport:
+      host: msmtpd
+      port: 2525
+      username: user
+      password: $SMTP_PASS
+
 storageTemplate:
   enabled: true
 

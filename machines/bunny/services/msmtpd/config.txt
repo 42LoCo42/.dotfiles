@@ -1,0 +1,7 @@
+account  default
+host     smtp.email.eu-frankfurt-1.oci.oraclecloud.com
+port     587
+tls      on
+auth     on
+user     $OCI_USER
+password $OCI_PASS

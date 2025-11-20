@@ -14,6 +14,7 @@
     ./immich
     ./immich-public-proxy
     ./mount-dcim
+    ./msmtpd
     ./pinlist
     ./pocket-id
     ./postgres

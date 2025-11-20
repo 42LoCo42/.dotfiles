@@ -20,6 +20,16 @@
       KEYS_STORAGE = "database";
       PORT = "8080";
       TRUST_PROXY = "true";
+
+      UI_CONFIG_DISABLED = "true";
+      EMAILS_VERIFIED = "true";
+      EMAIL_LOGIN_NOTIFICATION_ENABLED = "true";
+      EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED = "true";
+      EMAIL_API_KEY_EXPIRATION_ENABLED = "true";
+      SMTP_HOST = "msmtpd";
+      SMTP_PORT = "2525";
+      SMTP_FROM = "pocket-id@${config.rice.domain}";
+      SMTP_USER = "user";
     };
 
     environmentFiles = [ (config.aquaris.secret "@machine/pocket-id") ];

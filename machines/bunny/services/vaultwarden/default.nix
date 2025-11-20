@@ -31,12 +31,11 @@
         DOMAIN = "https://vw.${config.rice.domain}";
         SIGNUPS_ALLOWED = "false";
 
-        SMTP_HOST = "email-oauth2-proxy";
-        SMTP_PORT = "2465";
+        SMTP_HOST = "msmtpd";
+        SMTP_PORT = "2525";
         SMTP_SECURITY = "off";
-        SMTP_USERNAME = "11213kbm@gmail.com";
-        SMTP_PASSWORD = "empty";
         SMTP_FROM = "vaultwarden@${config.rice.domain}";
+        SMTP_USERNAME = "user";
 
         WEB_VAULT_FOLDER = "${vw.webvault}/share/vaultwarden/vault";
       };

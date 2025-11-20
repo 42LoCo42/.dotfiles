@@ -56,7 +56,7 @@
 		}
 	},
 	"machine/bunny/immich": {
-		"enc": "cZsRPtjHLwESpuDJCWWL1KR2vqh9NjdEQDEXEF7NorXdUjEKCgKjmXzUc6hNAUGX3j4HwIMK7tjTqZNm79SsmHiaHLt-CXcSnmzMJYT8CI8yryG0B4iRfuStx0GAb9lUiQ4B3J90DrtFIMYLk9E5oQ8EfF5A5-Q_Qe5r2YeL8VUJEIL5pXgT4yb4wvzXQQ",
+		"enc": "YauO-1eMPsu3xlzBPUfHVAJvRvcqnPdIOWffGCuNwCTyo24hVvOlNI4n-NYmwH2KCDCFDAy5km7o_kNHO7vjxEZtBqx0tGQlYph1UhMJwj1DPBTLbd8jsBTZEqHPDGm2jPBjxvM_kbXnz06avfEH4UYmhcy2fN48MnRgIzOHMG7q18Tx7KUpQ6AKAlFRcZpXr2CHVp0J6aMGGiSU7_Ix7IiyMgj8BadbvQWy9B3JLXVBPrxhJYQzeqWnz5m1KajhrwvmV1ZZwQ3Rz06TTcJuDMQ8h8Z9_dacEA",
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "lQgG-OEZVeo6dpuBtkPvLlahB0dO8m7afzovDef0RH3hVCdvuZmC2nidU5lJesLk22KkFXhSeMF7ucKoPc-UrcPjZxyyzcxf0u3j-QXEulA",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "baVoNK2lDvhIvoKSK6VOCYCJkHT_rSgG2HT8U4TmNGj-oF2jwurqK-YaOBmlgBlkmAKL8wCgHptHBAsJY66SDt3de7M2HNUqmHEfqJ_Dj2k"
@@ -69,6 +69,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "BXmHbJdak16f5niqFx2fBKlNG4g1S2xG9GDirY3i_jPFPzW1NGXhkzjBShr4Ec6z3qlPbMtie_93ZhckyaM5AmJy5jhBDtJSFxISVST3U38"
 		}
 	},
+	"machine/bunny/msmtpd": {
+		"enc": "KtSeP0nqGFT8PyKRA4RxUGFFVJvFdSioOQR7hjw8l8Pe4NOrwZuY38mt7LhilZjJ02iLHywJAA_cYWn9XD2gzQyZhLPLr1HBJnW_sBoEkkd_afnnmR0NdAaDhobpyVoaYaQy-05UU9bjB2jImyed3ZIQShRaWEV4R0wcrUVCak9v5vvhNuN7ypMZfG9dV7W0rAV7HxxhzjlIwT4eA0nGBRsIJ30v6qYsER70kSP6ObqchIcFmTZrVwmke6qJRPJ5CATJ1CvWW8koOm7bOR4I3qu5r8jXmbJgNOp83Kz2dg5fBYsSINmZTvstenGUCdlVWhDUYNTtG_shD7z5TH2cCnX8LuhCwIpBCulLEm9zLyh56VKrJQXrEcXm9CbzSU9Bglwifri7BYiorLIZi_iVS1LRGkirqcg0gzWG7n7vBg",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "I8QYcsrPt6w9oU-3VyLXuI-aeVnO86OPED9PmK4-JU988hOW5tqs5-vm4ad3FSkmdvNLcLRPi-FpOsCNYOGhnKTpQt_K_9QEoX0i7yIZuGY",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "sg705KbgsofSn9MWckHJAz6Qrn-OlY-3iYcM8YYWIW3ckOozqSjBk-AGtEn3XuhCGdxYlxVkYUislKGz_oXzGE0mdSlH0ajWNlWbXFvtvrk"
+		}
+	},
 	"machine/bunny/pinlist": {
 		"enc": "scdbNcvkssyDMTn92JEET-4yafP_e9LUb5AkK3xVjyeecNiQwYpYuQIsIDsUB8f4eryn400uvhiNntWxpqOCL4g1zfcGJrYpMkZOp3MT0Pzwets4aSn7jBHwj_lI6HLHG9ehr-7wzb0eeFUPcZl-h2jlp2gIKm1l5b75WKdNYOcfc320HTZUOinrogUfTKhIKwh-sCyPzRzW0wah7j_-XQ",
 		"rcp": {
@@ -77,7 +84,7 @@
 		}
 	},
 	"machine/bunny/pocket-id": {
-		"enc": "8UTPYj1siBanBHv-goAaRXvKTKMlGNJawfYh6a5vLjVFQQbYBdVAeOXypvtINDlhu52657MxKhP6S85rjZWxYKrxsf933uHmJAXAJFAKF8XO8rjlz4OqI76ZDwF5JS0ai0VJdg",
+		"enc": "KNtNSfMW7JgO_DPuUodvnE7yi8RnsOEK6uzZ7S3rZoRxH86PnxhwxDQxwVxldHwzfAgDODB71IK6LaZ6RMP-BlHvrrjmw9pkaLaF8z2UZggAjRBtHGR2Q645UnpjY0L_bMCkd3YihK7QpjU2c7K5pFjWGOvhnkumyTeTVC4f_t2uAD_jnhQ7B3xbVmCIowc2Z5fZx2rVkx0eFgA5Kfvv2rcykgfCKyV_TJ-AdBcgaFRiEWE",
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "ptcuYzuJha07wzbNK2pMa8XPEQaqcd6qToJCRieP33UoGK9eiKKqFc7dzbQPOFoBxpCfIpZBlALjeHVdLI986295c45wFBO76rMBNoGILgA",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "4cxdQxnSw_IieYm-Wvjwh1kv3mQkFdgEwxs9h3swPSyfPmckGGQ-nFnu5A7l6sQHh1a6-s5A8GmZHCWMG5sfmM8dg_PRjM0JZGYzDL9YCTY"
@@ -119,7 +126,7 @@
 		}
 	},
 	"machine/bunny/vaultwarden": {
-		"enc": "lNHl9HzDRFoV7ySlJmxHPiYnuIu7rG-hLqOrku7-0BeJWGRMvUSUfNQNEBbWfstQDuZ5cJlgsZDGnaGlctuuPhCBzAlgKURnYe2DNIZQDBIZtTDmNJzv_SJ897asV9enCk1FTz_DY1UO7W2iiqmaubrn26Aq8gePU3qgDqTyE8UN-Qp_ayUuZS0_-NS-YCzDkzKNYEk2MIwLqKyTT8urcoYvGrve1aQtmUBe8KM7G5bvV3UyQ9kKSfQi9SMU-K6qcKjUrKn4U81iU7lRg2MjmbyJfRRWdOh5lZ_yoNm1XVfCzv4UpiOxwF0g0L5WgytNvOpUIEb-hYEp9Oi-vJSU6eDvvbMt-Y7G5hdEVn8mjKzc_NyrQojpTeFjVchQ8qMEze1WIEt3Hg",
+		"enc": "DXx-HANUYAWL4l7OY5r3hvoGpL8N-RyUPPlZnm9lNxyHoW_ZniIV4tCx75cxpsi-0yzJN-z_JpO7iqnRiiO_XOnzEl0nZuztIxHc7hN_J18czL8kWCHlF2tWPTnEh632dv6Iyh8vv9BQWqDe6RXWjYfWjweq6SW8noi4D9r8Vfwo-2k6r-fTegeZHP3614g2imHdbdbQHaKTSQZnuScVOOrOIm-1Znmp_Mk8ZIoLDicz1rFoaC-OB72mVWeDgR88jzDEYdqWB_EhVSOQnEcWMYjv_NCwfc3rMHZSYcW6Wk2A3V57ugy9IcnN4RpXLD34WEHwr2OibLCQ90mgd8tc66YYYeCTqlcbHfWztJ1s7oOwteYUlwGpWlmLtDJqvbLtwmEKVfGQBboKqEQqyqp0PAPJGTIJ92K0DT6gca_UZcEyhxmdXocQCqikwBZTa9U7Hp6AI8dUDaxRJEWqKN7omGljEyqKabxS1rytpFpnvXj7Y2DEaZ8",
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "tsWL2RpkTQ6qsiuFeZP1nkZ-IpmQvdpaA757KWS3uBO5UyzFEkGyFz96aiEEupCXj9MpTM4iCnb1B5DcQwG5_4zKOEiKUmsVUO436aVzAWs",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "EhMLqRVASAA8vMS_qLSzRDcEavV6C0iict99M5M2EV99wqwFm31pr4Y_sRuojrBBPdc2wmTIljtZ8f2Y43hZPZ5nEO9HxrSOYwtyi0UYBo8"
