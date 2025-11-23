@@ -19,6 +19,13 @@ let inherit (config.rice.ssh) proxy; in
     };
   };
 
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark-qt;
+  };
+
+  users.users.leonsch.extraGroups = [ "wireshark" ];
+
   rice = {
     desktop = {
       enable = true;
