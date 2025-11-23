@@ -1,10 +1,17 @@
-{ pkgs, lib, ... }: {
-  topology.nodes.bunny-private.services.pr-tracker = {
+{ pkgs, config, lib, ... }: {
+  topology.nodes.bunny-public.services.pr-tracker = {
     name = "Nixpkgs Pull Request Tracker";
     icon = "devices.nixos";
     info = "A selfhosted version of https://nixpk.gs/pr-tracker.html";
-    details.url.text = "https://pr-tracker.bunny";
+    details.url.text = "https://pr-tracker.${config.rice.domain}";
   };
+
+  rice.caddy.cfg.pr-tracker = ''
+    import default
+    reverse_proxy pr-tracker:8080 {
+      header_up X-Real-IP {remote_host}
+    }
+  '';
 
   virtualisation.pnoc.pr-tracker = {
     path = with pkgs; [
@@ -15,6 +22,8 @@
     ];
 
     script = ''
+      ${config.rice.anubis}
+
       cd /data
 
       if [ ! -e nixpkgs ]; then
@@ -31,7 +40,7 @@
 
       exec ${lib.getExe pkgs.docker.docker-tini} -- \
       systemd-socket-activate                       \
-        -l 0.0.0.0:8080                             \
+        -l 0.0.0.0:8081                             \
         pr-tracker                                  \
           --path       'nixpkgs'                    \
           --remote     'origin'                     \

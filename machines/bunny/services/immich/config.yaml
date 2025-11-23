@@ -6,7 +6,7 @@ oauth:
   autoLaunch: true
   buttonText: "Login with PocketID"
   defaultStorageQuota: 10
-  issuerUrl: https://id.eleonora.gay/.well-known/openid-configuration
+  issuerUrl: https://id.$DOMAIN/.well-known/openid-configuration
   clientId: 97597d54-88e0-4483-8c6c-cb3f3a2face8
   clientSecret: $CLIENT_SECRET
 
@@ -24,7 +24,7 @@ server:
 notifications:
   smtp:
     enabled: true
-    from: immich@eleonora.gay
+    from: immich@$DOMAIN
     transport:
       host: msmtpd
       port: 2525

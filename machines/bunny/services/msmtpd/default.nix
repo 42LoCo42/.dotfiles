@@ -2,7 +2,7 @@
   topology.self.services.msmtpd = {
     name = "msmtp daemon";
     icon = "misc.mail";
-    info = "Sending mails from eleonora.gay";
+    info = "Sending mails from ${config.rice.domain}";
   };
 
   virtualisation.pnoc.msmtpd = {

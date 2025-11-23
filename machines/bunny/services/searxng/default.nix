@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, config, ... }: {
   topology.nodes.bunny-public.services.searxng = {
     name = "SearXNG";
     icon = "services.searxng";
@@ -15,33 +15,19 @@
   '';
 
   virtualisation.pnoc.searxng = {
-    path = with pkgs; with python3.pkgs; [
-      anubis
-      gunicorn
-      runit
+    path = with pkgs; [
+      python3.pkgs.gunicorn
     ];
 
-    cmd = [
-      (lib.getExe' pkgs.runit "runsvdir")
-      (config.rice.mkRunit {
-        anubis = ''
-          exec anubis                      \
-            --bind :8080                   \
-            --og-passthrough               \
-            --serve-robots-txt             \
-            --target http://localhost:8081 \
-            --redirect-domains searx.${config.rice.domain}
-        '';
+    script = ''
+      ${config.rice.anubis}
 
-        searxng = ''
-          exec gunicorn         \
-            --bind 0.0.0.0:8081 \
-            --threads 4         \
-            --workers 4         \
-            searx.webapp:app
-        '';
-      }).outPath
-    ];
+      exec gunicorn         \
+        --bind 0.0.0.0:8081 \
+        --threads 4         \
+        --workers 4         \
+        searx.webapp:app
+    '';
 
     environment = {
       PYTHONPATH = pkgs.searxng.pythonModule.pkgs.makePythonPath

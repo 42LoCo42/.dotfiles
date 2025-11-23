@@ -1,14 +1,10 @@
 { pkgs, lib, config, aquaris, ... }:
 let
   inherit (lib)
-    concatLines
     flatten
-    flip
     getExe
     getExe'
-    mapAttrsToList
     mkOption
-    pipe
     ;
   inherit (lib.types)
     functionTo
@@ -53,23 +49,17 @@ in
       ];
     };
 
-    mkRunit = mkOption {
-      type = functionTo package;
-      default = flip pipe [
-        (mapAttrsToList (k: v: ''
-          mkdir -p $out/${k}
-
-          cat <<\EOF > $out/${k}/run
-          #!${getExe pkgs.bash}
-          ${v}
-          EOF
-          chmod +x $out/${k}/run
-
-          ln -s /tmp/${k}.supervise $out/${k}/supervise
-        ''))
-        concatLines
-        (pkgs.runCommand "runit-services" { })
-      ];
+    anubis = mkOption {
+      type = str;
+      readOnly = true;
+      default = ''
+        ${getExe pkgs.anubis}              \
+          --bind 0.0.0.0:8080              \
+          --og-passthrough                 \
+          --serve-robots-txt               \
+          --policy-fname ${./anubis.yaml}  \
+          --target http://localhost:8081 &
+      '';
     };
   };
 }
