@@ -35,9 +35,11 @@ in
       home.packages = with pkgs; [
         ((fjordlauncher.override {
           jdks = with pkgs; [
-            temurin-bin-21
-            temurin-bin-17
-            temurin-bin-8
+            temurin-jre-bin-8
+            temurin-jre-bin-11
+            temurin-jre-bin-17
+            temurin-jre-bin-21
+            temurin-jre-bin-25
           ];
 
           # use shell wrapper instead of binary since the latter doesn't support --run
