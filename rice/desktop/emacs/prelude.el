@@ -70,6 +70,15 @@
 
 (defvar my/splash (create-image "@splash@"))
 
+(defun my/center-content (content)
+  "Inserts CONTENT centered between left and right window edge"
+  (if (imagep content)
+    (insert-image content (propertize "a" 'line-prefix `(space . (:align-to (- center (0.5 . ,content))))))
+    (let* ((cw (frame-char-width))                        ; char width
+           (tw (string-pixel-width content))              ; text width
+           (sp (+ (/ tw cw) (if (zerop (% tw cw)) 0 1)))) ; spacing
+      (insert (propertize content 'line-prefix `(space . (:align-to (- center (0.5 . ,sp)))))))))
+
 (defun my/greeter ()
   "Switches to a simple buffer which greets the user."
   (interactive)
@@ -87,20 +96,20 @@
   (setq cursor-type nil)                  ; hide cursor
   (setq mode-line-format nil)             ; hide modeline
 
-  (let* ((greeting (propertize "Welcome to Emacs!" 'face '(:height 4.0 :foreground "white")))
-         (cw (frame-char-width))
-         (gw (string-pixel-width greeting))
-         (gs (+ (/ gw cw) (if (zerop (% gw cw)) 0 1))))
+  (insert-char ?\n 8)
+  (my/center-content my/splash)
 
-    (insert-char ?\n 8)
-    (insert-image my/splash (propertize "a" 'line-prefix `(space . (:align-to (- center (0.5 . ,my/splash))))))
+  (insert-char ?\n 4)
+  (my/center-content (propertize "Welcome to Emacs!" 'face '(:height 4.0 :foreground "white")))
 
-    (insert-char ?\n 4)
-    (insert (propertize greeting 'line-prefix `(space . (:align-to (- center (0.5 . ,gs)))))))
+  (insert-char ?\n 2)
+  (my/center-content (propertize (format "<< Loaded %d packages in %s >>"
+                                         (hash-table-count use-package-statistics)
+                                         (emacs-init-time))
+                                 'face '(:height 1.25 :foreground "gray" :slant italic)))
 
   (read-only-mode 1)
   (message nil))
-
 
 (require 'telephone-line)
 (require 'project)
