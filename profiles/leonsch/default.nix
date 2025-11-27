@@ -154,6 +154,7 @@ let inherit (config.rice.ssh) proxy; in
 
     home.packages = with pkgs; [
       eka
+      jameica
       openvpn # for corporate VPN
       rustdesk-flutter
 
@@ -173,6 +174,11 @@ let inherit (config.rice.ssh) proxy; in
         '';
       })
     ];
+
+    xdg.configFile."jameica.properties".text = ''
+      ask=false
+      dir=/persist/home/leonsch/sync/jameica
+    '';
 
     programs.ssh.matchBlocks = {
       ##### private machines #####
