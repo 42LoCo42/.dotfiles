@@ -1,5 +1,8 @@
 server_url: https://headscale.@domain@
+
 listen_addr: 0.0.0.0:8080
+metrics_listen_addr: 127.0.0.1:9090
+unix_socket: "/data/headscale.sock"
 
 noise:
   private_key_path: "/data/noise.key"
@@ -31,8 +34,6 @@ dns:
 derp:
   urls:
     - https://controlplane.tailscale.com/derpmap/default
-
-unix_socket: "/data/headscale.sock"
 
 oidc:
   only_start_if_oidc_is_available: true
