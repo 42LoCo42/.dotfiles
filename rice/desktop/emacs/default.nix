@@ -209,6 +209,8 @@ in
               (show-paren-delay                   0)
               (show-paren-when-point-in-periphery t)
               (show-paren-context-when-offscreen  'overlay)
+
+              (org-startup-indented t)
             '';
 
             extraPackages = with pkgs; [
@@ -334,6 +336,10 @@ in
             custom = ''
               (whitespace-style '(face tab-mark trailing missig-newline-at-eof))
             '';
+          };
+
+          org-bullets = {
+            hook = "org-mode";
           };
 
           ##### Behaviour #####
