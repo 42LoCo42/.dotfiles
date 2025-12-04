@@ -48,7 +48,7 @@ in
         modules-left = mkAfter [ "custom/syncstat" ];
 
         "custom/syncstat" = {
-          format = "󰓦  {text}% in sync";
+          format = "󰓦  {text}";
           exec = "${getExe pkgs.syncstat}";
           hide-empty-text = true;
         };
