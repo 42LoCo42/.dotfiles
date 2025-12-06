@@ -1,10 +1,13 @@
 { pkgs, lib, config, aquaris, ... }:
-let inherit (config.rice.ssh) proxy; in
+let
+  inherit (lib) getExe mkAfter mkBefore mkMerge;
+  inherit (config.rice.ssh) proxy;
+in
 {
   imports = [ ../common ];
 
   aquaris = {
-    users = lib.mkMerge [
+    users = mkMerge [
       { inherit (aquaris.cfg.users) leonsch; }
       { leonsch.admin = true; }
     ];
@@ -59,6 +62,9 @@ let inherit (config.rice.ssh) proxy; in
                 class = background-wrap
               }
             }
+
+            bind = $mod, j, exec, @prompt@ "Enter Jameica password?" \
+              ${getExe pkgs.wtype} - < ${config.aquaris.secret "user/leonsch/jameica"}
           '';
         };
 
@@ -111,7 +117,7 @@ let inherit (config.rice.ssh) proxy; in
           ];
         };
 
-        preRun = lib.mkBefore ''
+        preRun = mkBefore ''
           if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
             hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors.alpha=0 \
@@ -121,7 +127,7 @@ let inherit (config.rice.ssh) proxy; in
           fi
         '';
 
-        postRun = lib.mkAfter ''
+        postRun = mkAfter ''
           if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
             hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors.alpha=0 \
