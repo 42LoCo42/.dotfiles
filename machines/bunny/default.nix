@@ -81,12 +81,14 @@ in
         tailscaled-autoconnect.serviceConfig.RemainAfterExit = true;
       };
 
-    environment.systemPackages = [
-      (pkgs.writeShellApplication {
+    environment.systemPackages = with pkgs; [
+      (writeShellApplication {
         name = "normalize";
-        runtimeInputs = with pkgs; [ exiftool parallel ];
+        runtimeInputs = [ exiftool parallel ];
         text = builtins.readFile ./normalize.sh;
       })
+
+      immich-folder-album-creator
     ];
 
     home-manager.sharedModules = [{

@@ -34,6 +34,7 @@
           drasl
           eka
           ferroxide
+          immich-folder-album-creator
           papra
           pinlist
           pug
