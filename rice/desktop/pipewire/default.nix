@@ -39,42 +39,20 @@
 
       extraConfig =
         let
-          quantum = "8192";
-          clock = "192000";
-          both = "${quantum}/${clock}";
-
-          rt."module.rt.args" = {
-            "rtportal.enabled" = false;
-            "nice.level" = -11;
+          rt = {
+            "module.rt.args" = {
+              "rtportal.enabled" = false;
+              "nice.level" = -11;
+            };
           };
         in
         {
           pipewire = {
-            "00-realtime" = rt // {
-              "context.properties" = {
-                "default.clock.max-quantum" = quantum;
-                "default.clock.min-quantum" = quantum;
-                "default.clock.quantum" = quantum;
-                "default.clock.rate" = clock;
-              };
-            };
+            "00-realtime" = rt;
           };
 
           pipewire-pulse = {
-            "00-realtime" = rt // {
-              "pulse.properties" = {
-                "pulse.default.req" = both;
-                "pulse.max.quantum" = both;
-                "pulse.max.req" = both;
-                "pulse.min.quantum" = both;
-                "pulse.min.req" = both;
-              };
-
-              "stream.properties" = {
-                "node.latency" = both;
-                "resample.quality" = 1;
-              };
-            };
+            "00-realtime" = rt;
           };
         };
 
