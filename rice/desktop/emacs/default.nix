@@ -878,22 +878,6 @@ in
           };
 
           typst-preview = {
-            package = epkgs: epkgs.trivialBuild rec {
-              pname = "typst-preview";
-              version = "1.0.0-alpha";
-
-              src = pkgs.fetchFromGitHub {
-                owner = "havarddj";
-                repo = "${pname}.el";
-                tag = "v${version}";
-                hash = "sha256-pU7H5UzRjjX4ql+CCOYIvyJs13YNWVX+j2X8nhfTyTg=";
-              };
-
-              patches = [ ./typst-preview.patch ];
-
-              packageRequires = with epkgs; [ f websocket ];
-            };
-
             hook = "typst-ts-mode";
 
             custom = ''
@@ -904,7 +888,7 @@ in
             config = ''
               ;; always set master file to current buffer; skip manual input
               (advice-add 'typst-preview-start :before (lambda (&rest r)
-                (setq tp--master-file (f-canonical buffer-file-name))))
+                (setq typst-preview--master-file (f-canonical buffer-file-name))))
             '';
           };
 
