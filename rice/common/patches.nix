@@ -3,6 +3,28 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.hostPlatform.system}; in {
 
+        # TODO https://pr-tracker.bunny/?pr=473143
+        # https://hydra.nixos.org/job/nixpkgs/unstable/matrix-tuwunel.aarch64-linux
+        matrix-tuwunel = prev.stdenv.mkDerivation {
+          pname = "matrix-tuwunel";
+          version = "1.4.8";
+
+          src = prev.fetchurl {
+            url = "https://github.com/matrix-construct/tuwunel/releases/download/v1.4.8/v1.4.8-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
+            hash = "sha256-e1jYDPgMFAQSP7TDDuJRrsrGkKWGDdZYocMvlOn7mcw=";
+          };
+          dontUnpack = true;
+
+          nativeBuildInputs = with prev; [ zstd ];
+
+          installPhase = ''
+            unzstd $src -o tuwunel
+            install -Dm755 {,$out/bin/}tuwunel
+          '';
+
+          meta.mainProgram = "tuwunel";
+        };
+
         # TODO wait for next hyprlandPlugins update in nixpkgs
         hyprlandPlugins = prev.hyprlandPlugins // {
           hyprfocus = prev.hyprlandPlugins.hyprfocus.overrideAttrs (old: {
