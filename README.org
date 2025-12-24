@@ -30,4 +30,4 @@ which provides a wealth of default options, tools and functions.
 [[file:images/astylos.png]]
 
 ** Topology
-[[https://eleonora.gay/topology.svg?][https://eleonora.gay/topology.svg?]]
+[[https://eleonora.gay/topology.svg][https://eleonora.gay/topology.svg]]
