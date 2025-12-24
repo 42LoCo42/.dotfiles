@@ -80,10 +80,7 @@ in
       };
     };
 
-    dns = {
-      enable = true;
-      ui = true;
-    };
+    dns.enable = true;
 
     ca.enable = true;
     nixremote.use = true;

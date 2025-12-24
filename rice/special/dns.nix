@@ -11,11 +11,6 @@ in
       type = bool;
       default = false;
     };
-
-    ui = mkOption {
-      type = bool;
-      default = false;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -28,21 +23,35 @@ in
     aquaris.dnscrypt = {
       enable = true;
 
+      protos = {
+        dnscrypt = true;
+        doh = false;
+        odoh = true;
+      };
+
       anonDNS = {
         enable = true;
 
         via = [
           "anon-cs-berlin"
+          "anon-cs-berlin6"
           "anon-cs-de"
-          "anon-cs-dus3"
+          "anon-cs-de6"
+          "anon-cs-dus"
+          "anon-cs-dus6"
           "anon-digitalprivacy.diy-ipv4"
+          "odohrelay-crypto-sx"
         ];
 
         ign = [
           "cs-berlin"
+          "cs-berlin6"
           "cs-de"
-          "cs-dus3"
+          "cs-de6"
+          "cs-dus"
+          "cs-dus6"
           "digitalprivacy.diy-dnscrypt-ipv4"
+          "odoh-crypto-sx"
         ];
       };
 
@@ -57,16 +66,6 @@ in
           "bunny.vpn" = "100.100.100.100";
           "vm" = "192.168.122.1";
         };
-      };
-    };
-
-    services.dnscrypt-proxy.settings = mkIf cfg.ui {
-      monitoring_ui = {
-        enabled = true;
-        listen_address = "127.0.0.1:53080";
-        username = "";
-        password = "";
-        privacy_level = 0;
       };
     };
   };
