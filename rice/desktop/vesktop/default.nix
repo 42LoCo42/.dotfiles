@@ -5,6 +5,10 @@
   };
 
   config = lib.mkIf config.rice.desktop.vesktop.enable {
+    rice.desktop.wayland.hyprland.postConfig = ''
+      bind = $mod CTRL, m, sendshortcut, CTRL SHIFT, m, class:(vesktop)
+    '';
+
     home-manager.sharedModules = [{
       aquaris.persist = { ".config/vesktop" = { }; };
       programs.vesktop = {
