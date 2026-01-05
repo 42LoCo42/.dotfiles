@@ -5,10 +5,7 @@
   };
 
   config = lib.mkIf config.rice.desktop.misc.enable {
-    programs = {
-      adb.enable = true;
-      gamemode.enable = true;
-    };
+    programs.gamemode.enable = true;
 
     users.users = builtins.mapAttrs
       (_: _: { extraGroups = [ "adbusers" "gamemode" ]; })
@@ -21,6 +18,7 @@
 
       home = {
         packages = with pkgs; [
+          android-tools
           btrfs-progs
           cryptsetup
           feh
