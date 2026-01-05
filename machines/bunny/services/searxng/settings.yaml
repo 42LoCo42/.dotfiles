@@ -12,4 +12,5 @@ enabled_plugins:
 
 hostnames:
   remove:
+    - '(.*\.)?deepwiki.com$'
     - '(.*\.)?nixos\.wiki$'
