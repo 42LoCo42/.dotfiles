@@ -1,0 +1,28 @@
+{
+	"Authentication": {
+		"Method": 1,
+		"SaltAdmin": "$SALT_ADMIN",
+		"SaltFiles": "$SALT_FILES",
+		"Username": "leonsch@protonmail.com",
+		"OauthProvider": "https://id.$DOMAIN",
+		"OAuthClientId": "$CLIENT_ID",
+		"OAuthClientSecret": "$CLIENT_SECRET",
+		"OAuthRecheckInterval": 12,
+		"OnlyRegisteredUsers": false
+	},
+	"Port": ":8080",
+	"ServerUrl": "https://fs.$DOMAIN/",
+	"RedirectUrl": "https://fs.$DOMAIN/admin",
+	"PublicName": "Gokapi",
+	"DataDir": "/data",
+	"DatabaseUrl": "sqlite:///data/gokapi.sqlite",
+	"ConfigVersion": 22,
+	"MaxFileSizeMB": 102400,
+	"MaxMemory": 50,
+	"ChunkSize": 45,
+	"MaxParallelUploads": 3,
+	"UseSsl": false,
+	"PicturesAlwaysLocal": false,
+	"SaveIp": false,
+	"IncludeFilename": false
+}

@@ -9,6 +9,7 @@
     ./drasl
     ./element
     ./forgejo
+    ./gokapi
     ./headscale
     ./homepage
     ./immich

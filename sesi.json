@@ -48,6 +48,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "EoszOwNeAakceRCeuE5GCRihjYoNHLRuGakRGXejJjMEEFxZ2yz4FK4MPf5IQyyYtH6AhT7a1Ezm-5lEdAIqr79dOR6ErJRGlQPmUt04VJs"
 		}
 	},
+	"machine/bunny/gokapi": {
+		"enc": "8AH0hxM2B6ff0XthVZalpmaHNDWcF40wVqoBZwGyAwCKpsL9bZYoS8PCrrILMOv1OSAaBd7HhShLkSUD1alPpHF7ug9eadNln0wLSd5ct95ApddS2uc1cZUjHoly6Fdv2g4oJ5bUlrkvWz3avQ58BiAEwwhOCJFlOxAIPSWRHb7L2QOOMoxcPFmiwOvpMWxNqCH-87UzR6ZXhV0ZedazMg62DiuPvtYWVRww9um8kKY8EYXLSMizgOXyzVEq51greY8PaNC0RG45qLA8QJqTKOvaLZN0r2z3pMw",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "l_AynvTtNT6kQQRh0opXxuzmkv1cAMVDjbSxvuPNCiYO8VpJciotH8zTnkGLgFd6aWrvkLF6PcsAzbzfoPXb22CDCpedA2ejmWrkKhp5Ue8",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "UxPzC5TzAGv2t5hhp2GtjaMoMI18oihT_-swhHrIGEoHxXDAP7u2R6st2irw2qbSk6IyJLOeJaxzA25bZlFjeQgO3lJZtfS3GAWLs7i8XK8"
+		}
+	},
 	"machine/bunny/headscale": {
 		"enc": "9CDAl_SuwHmif_VYA-e-L35nlyxuXz5kgS4Fitr8NNnCECAFmnNBMgMLXzsJGN67B72AV8xgTp-yGYeQKagU-bDs7YbPfVCyULfA_vRd1WIfMkDQEhA_fbYvnRn2IpynL4vC01LO",
 		"rcp": {
