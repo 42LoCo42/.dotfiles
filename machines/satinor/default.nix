@@ -65,11 +65,11 @@
               icon = "⛩️";
               autostart = [ "uwsm app anime-game-launcher" ];
               rules = [
-                "class:(moe.launcher.an-anime-game-launcher)"
+                "class moe.launcher.an-anime-game-launcher"
 
                 # libreoffice
-                "class:(soffice)"
-                "initialClass:(libreoffice-startcenter)"
+                "class soffice"
+                "initial_class libreoffice-startcenter"
               ];
             };
           };

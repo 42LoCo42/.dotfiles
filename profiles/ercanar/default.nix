@@ -29,34 +29,34 @@ in
           "1" = {
             icon = "";
             autostart = [ "uwsm app vesktop" ];
-            rules = [ "class:(vesktop)" ];
+            rules = [ "class vesktop" ];
           };
 
           "2" = {
             icon = "";
             autostart = [ "uwsm app steam" ];
-            rules = [ "class:(steam)" "title:(Steam)" ];
+            rules = [ "class steam" "title Steam" ];
           };
 
           "3" = {
             icon = "󰈹";
             autostart = [ "uwsm app librewolf" ];
-            rules = [ "class:(librewolf)" ];
+            rules = [ "class librewolf" ];
           };
 
           "4" = {
             rules = [
-              "class:(soffice)"
-              "initialClass:(libreoffice-startcenter)"
+              "class soffice"
+              "initial_class libreoffice-startcenter"
             ];
           };
 
           "5" = {
             icon = "";
             rules = [
-              "class:(gimp)"
-              "class:(org.musescore.MuseScore)"
-              "class:(googleearth)"
+              "class gimp"
+              "class org.musescore.MuseScore"
+              "class googleearth"
             ];
           };
         };

@@ -42,7 +42,7 @@ in
 
             "2" = {
               icon = "";
-              rules = [ "class:(vesktop)" ];
+              rules = [ "class vesktop" ];
             };
 
             "3" = {
@@ -52,7 +52,7 @@ in
             "9" = {
               icon = "";
               autostart = [ "uwsm app thunderbird" ];
-              rules = [ "initialClass:(thunderbird)" ];
+              rules = [ "initial_class thunderbird" ];
             };
           };
 

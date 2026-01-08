@@ -217,8 +217,8 @@ in
 
           (mkIf (cfg.monitors.secondary != null) ''
             monitor = ${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}
-            monitor = ${cfg.monitors.secondary.name}, disable
             workspace = name:secondary, monitor:${cfg.monitors.secondary.name}, default
+            exec-once = hyprctl keyword monitor '${cfg.monitors.secondary.name}, disable'
 
             bind = $mod      , ssharp, exec, ${secondary-goto}
             bind = $mod SHIFT, ssharp, exec, ${secondary-move}
@@ -229,7 +229,7 @@ in
         postConfig = pipe cfg.workspaces [
           (mapAttrsToList (_: x: pipe [
             (flip map x.rules (y:
-              "windowrulev2 = workspace ${x.internalS}, ${y}"))
+              "windowrule = match:${y}, workspace ${x.internalS}"))
             (flip map x.autostart (y:
               "exec-once = [workspace ${x.internalS} silent] ${y}"))
             [ (x.extra x) ]
