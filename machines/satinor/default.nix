@@ -88,7 +88,7 @@
     };
 
     home.packages = with pkgs; [
-      blender-hip
+      pkgsRocm.blender
     ];
 
     systemd.user.services.microphone-lock = {
