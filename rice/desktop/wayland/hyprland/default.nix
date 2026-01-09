@@ -218,7 +218,7 @@ in
           (mkIf (cfg.monitors.secondary != null) ''
             monitor = ${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}
             workspace = name:secondary, monitor:${cfg.monitors.secondary.name}, default
-            exec-once = hyprctl keyword monitor '${cfg.monitors.secondary.name}, disable'
+            exec-once = sleep 1; hyprctl keyword monitor '${cfg.monitors.secondary.name}, disable'
 
             bind = $mod      , ssharp, exec, ${secondary-goto}
             bind = $mod SHIFT, ssharp, exec, ${secondary-move}
