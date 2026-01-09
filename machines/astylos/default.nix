@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }: {
   imports = [ ../../profiles/leonsch ];
 
   aquaris = {
@@ -15,6 +15,8 @@
   };
 
   rice = {
+    unfreeNames = [ "factorio-space-age" ];
+
     desktop = {
       gpu = {
         intel.enable = true;
@@ -45,7 +47,16 @@
     aquaris.persist = {
       ".cache/JetBrains" = { };
       ".config/JetBrains" = { };
+      ".factorio" = { };
       ".local/share/JetBrains" = { };
     };
+
+    home.packages = with pkgs; [
+      factorio-space-age
+    ];
   }];
+
+  system.extraDependencies = with pkgs; [
+    factorio-space-age.src
+  ];
 }

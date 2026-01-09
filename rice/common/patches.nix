@@ -3,6 +3,12 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.hostPlatform.system}; in {
 
+        factorio-space-age = prev.factorio-space-age.override {
+          makeDesktopItem = { exec, ... }@args: prev.makeDesktopItem (args // {
+            exec = "gamemoderun ${exec}";
+          });
+        };
+
         # TODO https://github.com/NixOS/nixpkgs/pull/476394
         # and wait for next release too
         pocket-id = prev.pocket-id.overrideAttrs (new: old: {
