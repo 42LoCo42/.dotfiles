@@ -32,7 +32,7 @@ in
     {
       environment = {
         systemPackages = [
-          self.inputs.obscura.packages.${pkgs.stdenv.hostPlatform.system}.nvidia.entries.nvtop
+          self.inputs.obscura.packages.${pkgs.stdenv.system}.nvidia.entries.nvtop
         ];
 
         sessionVariables.MOZ_DISABLE_RDD_SANDBOX = "1";

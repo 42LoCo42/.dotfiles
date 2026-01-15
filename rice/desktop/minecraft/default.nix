@@ -6,7 +6,7 @@ let
   cfg = config.rice.desktop.minecraft;
 
   fjord-flake = self.inputs.fjordlauncher;
-  pkgs' = fjord-flake.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  pkgs' = fjord-flake.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.system};
 
   preload = pkgs.writeShellApplication {
     name = "fjordlauncher-preload";
@@ -22,7 +22,7 @@ in
   config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (_: prev: {
-        inherit (fjord-flake.packages.${prev.stdenv.hostPlatform.system}) fjordlauncher;
+        inherit (fjord-flake.packages.${prev.stdenv.system}) fjordlauncher;
       })
     ];
 

@@ -21,7 +21,7 @@ in
       #   sha256 = "";
       # })) {
       #   inherit (pkgs) config;
-      #   inherit (pkgs.stdenv.hostPlatform) system;
+      #   inherit (pkgs.stdenv) system;
       # };
     };
   };

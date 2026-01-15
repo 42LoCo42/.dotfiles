@@ -29,12 +29,7 @@
 
     nix-topology = {
       url = "github:oddlama/nix-topology";
-      inputs = {
-        devshell.follows = "";
-        flake-utils.follows = "aquaris/flake-utils";
-        nixpkgs.follows = "";
-        pre-commit-hooks.follows = "";
-      };
+      inputs.nixpkgs.follows = "";
     };
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
