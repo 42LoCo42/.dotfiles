@@ -161,14 +161,12 @@ in
       openvpn # for corporate VPN
       rustdesk-flutter
 
+      (age.withPlugins (p: with p; [
+        age-plugin-fido2-hmac
+      ]))
+
       (pkgs.writeShellApplication {
         name = "aged"; # age decrypt
-
-        runtimeInputs = with pkgs; [
-          (age.withPlugins (p: with p; [
-            age-plugin-fido2-hmac
-          ]))
-        ];
 
         text = ''
           exec age                                          \
