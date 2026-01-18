@@ -8,6 +8,13 @@
           });
         };
 
+        # TODO https://pr-tracker.bunny/?pr=480983
+        hyprland = prev.hyprland.overrideAttrs (old: {
+          postPatch = builtins.replaceStrings
+            [ ''@PREFIX@ ""'' ] [ ''"@PREFIX@/" ""'' ]
+            old.postPatch;
+        });
+
         # TODO https://github.com/NixOS/nixpkgs/pull/476163
         # HACK this is merged, but it still says version 1.4.8 which is hella sus
         matrix-tuwunel = prev.stdenv.mkDerivation rec {
