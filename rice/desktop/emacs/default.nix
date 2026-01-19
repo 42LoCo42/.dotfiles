@@ -334,7 +334,7 @@ in
             config = "(global-whitespace-mode 1)";
 
             custom = ''
-              (whitespace-style '(face tab-mark trailing missig-newline-at-eof))
+              (whitespace-style '(face tab-mark trailing missing-newline-at-eof))
             '';
           };
 
