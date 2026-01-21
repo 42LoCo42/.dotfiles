@@ -103,7 +103,11 @@
   (my/center-content (propertize "Welcome to Emacs!" 'face '(:height 4.0 :foreground "white")))
 
   (insert-char ?\n 2)
-  (my/center-content (propertize (format "<< Loaded %d packages in %s >>"
+  (my/center-content (propertize (format "<< Loaded %d/%d packages in %s >>"
+                                         (cl-loop
+                                          for p hash-values of use-package-statistics
+                                          if (gethash :config p)
+                                          count p)
                                          (hash-table-count use-package-statistics)
                                          (emacs-init-time))
                                  'face '(:height 1.25 :foreground "gray" :slant italic)))
