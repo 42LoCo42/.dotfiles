@@ -8,12 +8,12 @@
           });
         };
 
-        # TODO https://pr-tracker.bunny/?pr=480983
-        hyprland = prev.hyprland.overrideAttrs (old: {
-          postPatch = builtins.replaceStrings
-            [ ''@PREFIX@ ""'' ] [ ''"@PREFIX@/" ""'' ]
-            old.postPatch;
-        });
+        # TODO https://hydra.nixos.org/job/nixpkgs/unstable/librewolf-unwrapped.x86_64-linux
+        # 147.0-1 fails to build; fallback to 146.0.1-1
+        inherit ((import (builtins.fetchTarball {
+          url = "https://github.com/nixos/nixpkgs/tarball/e4bae1bd10c9c57b2cf517953ab70060a828ee6f";
+          sha256 = "sha256-Kell/SpJYVkHWMvnhqJz/8DqQg2b6PguxVWOuadbHCc=";
+        })) { inherit (prev.stdenv) system; }) librewolf-unwrapped;
 
         # TODO https://github.com/NixOS/nixpkgs/pull/476163
         # HACK this is merged, but it still says version 1.4.8 which is hella sus

@@ -6,7 +6,9 @@ let
     init
     mapAttrs
     mapAttrs'
+    mkForce
     nameValuePair
+    pipe
     splitString
     ;
 
@@ -15,10 +17,13 @@ let
 
   removeExtension = filename: concatStringsSep "." (init (splitString "." filename));
 
-  iconsFromFiles = dir:
-    mapAttrs' (file: _: nameValuePair (removeExtension file) { file = dir + "/${file}"; }) (
-      filterAttrs (_: type: type == "regular") (builtins.readDir dir)
-    );
+  iconsFromFiles = dir: pipe dir [
+    builtins.readDir
+    (filterAttrs (_: t: t == "regular"))
+    (mapAttrs' (file: _: nameValuePair
+      (removeExtension file)
+      { file = mkForce "${dir}/${file}"; }))
+  ];
 in
 {
   imports = [ nix-topology.nixosModules.default ];
@@ -30,8 +35,16 @@ in
       nixosConfigurations = builtins.removeAttrs
         self.nixosConfigurations [ "guanyin" ];
 
-      icons = mapAttrs (n: _: iconsFromFiles ./icons/${n})
-        (filterAttrs (_: v: v == "directory") (builtins.readDir ./icons));
+      icons = pipe ./icons [
+        builtins.readDir
+        (filterAttrs (_: t: t == "directory"))
+        (mapAttrs (n: _: iconsFromFiles ./icons/${n}))
+      ];
+
+      renderers.elk.overviews = {
+        services.enable = false;
+        networks.enable = false;
+      };
 
       nodes = {
         fritzbox = {
