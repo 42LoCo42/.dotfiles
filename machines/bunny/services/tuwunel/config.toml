@@ -16,6 +16,8 @@ encryption_enabled_by_default_for_room_type = "all"
 # protected in caddy
 allow_legacy_media = true
 
+dns_passthru_appservices = true
+
 [global.well_known]
 client = "https://matrix.@domain@"
 server = "matrix.@domain@:443"

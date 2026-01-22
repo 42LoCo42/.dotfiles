@@ -14,6 +14,7 @@
     ./homepage
     ./immich
     ./immich-public-proxy
+    ./mautrix-discord
     ./mount-dcim
     ./msmtpd
     ./pinlist

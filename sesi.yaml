@@ -45,6 +45,7 @@ machine:
     gokapi:
     headscale:
     immich:
+    mautrix-discord:
     msmtpd:
     pinlist:
     pocket-id:
