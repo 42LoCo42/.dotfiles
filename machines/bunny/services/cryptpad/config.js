@@ -5,6 +5,9 @@ module.exports = {
 	httpAddress: "0.0.0.0",
 	httpPort: 8080,
 
+	maxUploadSize: 50 << 20, // 50 MiB
+	premiumUploadSize: 1 << 30, // 1 GiB
+
 	filePath: "./datastore/",
 	archivePath: "./data/archive",
 	pinPath: "./data/pins",
