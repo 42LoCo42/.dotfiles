@@ -96,6 +96,7 @@ in
               ("C-s"             . save-buffer)
 
               ("C-x C-f" . find-file)
+              ("C-x C-l" . scratch-buffer) ; L for Lisp
 
               ("C-#"   . (lambda () (interactive) (select-window (next-window))))
               ("M-#"   . (lambda () (interactive) (select-window (previous-window))))
@@ -188,9 +189,9 @@ in
 
               (fill-column 80)
               (inhibit-startup-screen t)
-              (initial-major-mode 'fundamental-mode)
-              (initial-scratch-message "")
+              (initial-scratch-message ";;; -*- lexical-binding: t -*-\n")
               (native-comp-async-report-warnings-errors nil)
+              (recenter-positions '(middle top))
               (recentf-max-saved-items 100)
               (ring-bell-function 'ignore)
               (use-dialog-box nil)
