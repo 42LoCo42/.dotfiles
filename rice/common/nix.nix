@@ -21,7 +21,7 @@
     };
 
     nix = {
-      package = pkgs.lixPackageSets.lix_2_93.lix;
+      package = pkgs.lixPackageSets.latest.lix;
 
       registry.obscura.to = {
         type = "github";
@@ -34,7 +34,8 @@
         allowed-users = [ "@wheel" ];
 
         auto-allocate-uids = true;
-        experimental-features = [ "auto-allocate-uids" ];
+        use-cgroups = true;
+        experimental-features = [ "auto-allocate-uids" "cgroups" ];
       };
     };
   };
