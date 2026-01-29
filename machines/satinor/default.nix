@@ -50,12 +50,12 @@
           monitors = {
             primary = {
               name = "DP-1";
-              mode = "2560x1440@60, 0x0, 1";
+              mode = "preferred, 0x0, 1";
             };
 
             secondary = {
               name = "HDMI-A-1";
-              mode = "1920x1080@60, 2560x0, 1";
+              mode = "preferred, auto-right, 1";
             };
           };
 

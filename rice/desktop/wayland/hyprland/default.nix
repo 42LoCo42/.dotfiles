@@ -38,6 +38,23 @@ let
 
   cfg = config.rice.desktop.wayland.hyprland;
 
+  statefile = ''"$HOME/.cache/secondary-monitor-enabled"'';
+
+  secondary-state = pkgs.writeShellScript "secondary-state" ''
+    case "$1" in
+      enable)  touch ${statefile} ;;
+      disable) rm -f ${statefile} ;;
+    esac
+
+    if [ -e ${statefile} ]; then
+      hyprctl keyword monitor \
+        '${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}'
+    else
+      hyprctl keyword monitor \
+        '${cfg.monitors.secondary.name}, disable'
+    fi
+  '';
+
   secondary-goto = pkgs.writeShellScript "secondary-goto" ''
     if
       [ -n "$(
@@ -56,13 +73,13 @@ let
   '';
 
   secondary-move = pkgs.writeShellScript "secondary-move" ''
-    hyprctl keyword monitor ${cfg.monitors.secondary.name}
+    ${secondary-state} enable
     hyprctl dispatch movetoworkspace        "name:secondary"
     hyprctl dispatch moveworkspacetomonitor "name:secondary ${cfg.monitors.secondary.name}"
   '';
 
   secondary-quit = pkgs.writeShellScript "secondary-quit" ''
-    hyprctl keyword monitor ${cfg.monitors.secondary.name},disable
+    ${secondary-state} disable
   '';
 in
 {
@@ -218,7 +235,7 @@ in
           (mkIf (cfg.monitors.secondary != null) ''
             monitor = ${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}
             workspace = name:secondary, monitor:${cfg.monitors.secondary.name}, default
-            exec-once = sleep 1; hyprctl keyword monitor '${cfg.monitors.secondary.name}, disable'
+            exec = sleep 1; ${secondary-state}
 
             bind = $mod      , ssharp, exec, ${secondary-goto}
             bind = $mod SHIFT, ssharp, exec, ${secondary-move}
