@@ -1,0 +1,13 @@
+diff --git a/src/logic/code.rs b/src/logic/code.rs
+index e4baa9394c..74a51915ca 100644
+--- a/src/logic/code.rs
++++ b/src/logic/code.rs
+@@ -217,7 +217,7 @@
+         };
+ 
+         match name.as_str() {
+-            "header" | "footer" => Self::FullLine,
++            "header" | "footer" | "hline" => Self::FullLine,
+             "cell" => {
+                 let Some(args) = node.children().find(|node| node.kind() == SyntaxKind::Args)
+                 else {

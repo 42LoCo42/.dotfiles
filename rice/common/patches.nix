@@ -8,6 +8,12 @@
           });
         };
 
+        prettypst = prev.prettypst.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            ./prettypst-hline.patch
+          ];
+        });
+
         # https://pr-tracker.bunny/?pr=483247
         searxng = prev.searxng.overrideAttrs (old: {
           pythonRelaxDeps = old.pythonRelaxDeps ++ [ "markdown-it-py" ];
