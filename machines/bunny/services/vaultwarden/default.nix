@@ -38,6 +38,12 @@
         SMTP_USERNAME = "user";
 
         WEB_VAULT_FOLDER = "${vw.webvault}/share/vaultwarden/vault";
+
+        SSO_ENABLED = "true";
+        SSO_ONLY = "false";
+        SSO_SIGNUPS_MATCH_EMAIL = "true";
+        SSO_AUTHORITY = "https://id.${config.rice.domain}";
+        SSO_PKCE = "true";
       };
 
       environmentFiles = [ (config.aquaris.secret "@machine/vaultwarden") ];
