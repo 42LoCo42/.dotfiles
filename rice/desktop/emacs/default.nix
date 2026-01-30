@@ -894,7 +894,7 @@ in
           };
 
           hyprlang-ts-mode = {
-            defer = true;
+            mode = ''"hypr.*\\.conf\\'"'';
 
             custom = ''
               (hyprlang-ts-mode-indent-offset 4)
