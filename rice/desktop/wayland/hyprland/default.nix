@@ -291,7 +291,6 @@ in
           (x: concatLines [ cfg.preConfig x cfg.postConfig ])
           (flip subs {
             fuzzel = getExe pkgs.fuzzel;
-            ipython = getExe' pkgs.python3Packages.ipython "ipython";
             pulsemixer = getExe pkgs.pulsemixer;
             qalc = getExe pkgs.libqalculate;
 

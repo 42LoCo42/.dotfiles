@@ -93,11 +93,17 @@ user:
       main:
 
   leonsch:
-    age:
     firefox-sync:
-    jameica:
     password:
     u2f-keys:
+
+    age:
+    age-nopin:
+
+    passwords:
+      bitwarden:
+      jameica:
+      server-admin:
 
     ssh:
       fido:

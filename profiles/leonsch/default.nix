@@ -2,6 +2,21 @@
 let
   inherit (lib) getExe mkAfter mkBefore mkMerge;
   inherit (config.rice.ssh) proxy;
+
+  my-age = pkgs.age.withPlugins (p: with p; [
+    age-plugin-fido2-hmac
+  ]);
+
+  password-manager = pkgs.writeShellApplication {
+    name = "password-manager";
+    text = builtins.readFile ./password-manager.sh;
+    runtimeInputs = with pkgs; [
+      fuzzel
+      my-age
+      pstree
+      wtype
+    ];
+  };
 in
 {
   imports = [ ../common ];
@@ -63,8 +78,7 @@ in
               }
             }
 
-            bind = $mod, j, exec, @prompt@ "Enter Jameica password?" \
-              ${getExe pkgs.wtype} - < ${config.aquaris.secret "user/leonsch/jameica"}
+            bind = $mod, p, exec, ${getExe password-manager}
           '';
         };
 
@@ -161,10 +175,7 @@ in
       openvpn # for corporate VPN
       rustdesk-flutter
 
-      (age.withPlugins (p: with p; [
-        age-plugin-fido2-hmac
-      ]))
-
+      my-age
       (pkgs.writeShellApplication {
         name = "aged"; # age decrypt
 
