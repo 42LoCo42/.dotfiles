@@ -50,6 +50,7 @@ machine:
     pocket-id:
     pr-tracker:
     searxng:
+    syncplay:
     tailscale:
     tscaddy:
     tuwunel:

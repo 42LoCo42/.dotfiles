@@ -22,6 +22,7 @@
     ./pr-tracker
     ./searxng
     ./ssh
+    ./syncplay
     ./syncthing
     ./tailscale
     ./tscaddy

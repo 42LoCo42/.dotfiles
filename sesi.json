@@ -111,6 +111,13 @@
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "E8H8V0yrz-c0k_n-4R7UKsnnkZESh3qDdfvaWVa4Rk_H9ker3hffYU7m9vzHGR0P1LRrfDd4F_F1bGvJzfGuEWuhQvA1aN1RjgyKIWvg7eU"
 		}
 	},
+	"machine/bunny/syncplay": {
+		"enc": "pMXNjP55rlNizlxZAi1BTcdx2wGaRIV_Sfdiq4Upidi4Sq0aV9iRYTp6Wnydfqj2v0tYanzZq1R4ZWUnTllcRyGxN1VbonNzIYymdopOpjQpjDeD0Visr9VD_90vDYOgOAc3hw_MnsCcHKDa2kWbO7Wev5upUi8",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "1YHtaazSEkl8QKotyvzz_t3V3q0h6TXnunt8IVz1l00F_hk2EIkFdo9RVYGHrv2tlubWQCoXPfVz1LvuuSvDD2IU2fD5EtVLZdoJJNqBKkc",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "edXvEnerLs3jYliFFCbNrDV66CyvgsWUM2nr0KN29XSY2ObWnQOpoT99dY8Pu2qm3ykkrrAmDVFi8bTic2ymf94hI2IuCNKKUbPGhRpVtNk"
+		}
+	},
 	"machine/bunny/tailscale": {
 		"enc": "NlDqKCnf5WibXhkMqo2R4ZMiBm73nYfM80-8kwjrtr4VlyDeU4SI_BODezpN9GAq2LkzcCZ-ADoxPNp9xcFxcHf6llf5mzee6Fn4z2L4qrcrXra-zlhGXyE",
 		"rcp": {
