@@ -9,6 +9,8 @@ allow_registration = true
 registration_token = "$REGISTRATION_TOKEN"
 new_user_displayname_suffix = ""
 
+single_sso = true
+
 encryption_enabled_by_default_for_room_type = "all"
 
 # protected in caddy
@@ -17,3 +19,10 @@ allow_legacy_media = true
 [global.well_known]
 client = "https://matrix.@domain@"
 server = "matrix.@domain@:443"
+
+[[global.identity_provider]]
+brand = "Pocket ID"
+issuer_url = "https://id.@domain@"
+
+client_id = "$CLIENT_ID"
+client_secret = "$CLIENT_SECRET"

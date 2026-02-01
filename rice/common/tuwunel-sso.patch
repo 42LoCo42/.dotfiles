@@ -1,0 +1,29 @@
+diff --git a/src/api/client/session/sso.rs b/src/api/client/session/sso.rs
+index b80288ab3e..6ebd7034d3 100644
+--- a/src/api/client/session/sso.rs
++++ b/src/api/client/session/sso.rs
+@@ -597,6 +597,11 @@
+ 
+ 	let choices = [
+ 		userinfo
++			.matrix_username
++			.as_deref()
++			.map(str::to_lowercase)
++			.filter(|_| allowed("matrix_username")),
++		userinfo
+ 			.preferred_username
+ 			.as_deref()
+ 			.map(str::to_lowercase)
+diff --git a/src/service/oauth/user_info.rs b/src/service/oauth/user_info.rs
+index 18eda0dbbe..420dcb37ff 100644
+--- a/src/service/oauth/user_info.rs
++++ b/src/service/oauth/user_info.rs
+@@ -13,6 +13,8 @@
+ 	#[serde(alias = "login")]
+ 	pub sub: String,
+ 
++	pub matrix_username: Option<String>,
++
+ 	/// The login username we first consider when defined.
+ 	pub preferred_username: Option<String>,
+ 

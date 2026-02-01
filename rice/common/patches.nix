@@ -19,26 +19,26 @@
           pythonRelaxDeps = old.pythonRelaxDeps ++ [ "markdown-it-py" ];
         });
 
-        # TODO https://github.com/NixOS/nixpkgs/pull/476163
-        # HACK this is merged, but it still says version 1.4.8 which is hella sus
-        matrix-tuwunel = prev.stdenv.mkDerivation rec {
-          pname = "matrix-tuwunel";
-          version = "1.4.9.1";
+        # TODO wait for nixpkgs
+        matrix-tuwunel = prev.matrix-tuwunel.overrideAttrs (new: old: {
+          version = "1.5.0";
 
-          src = prev.fetchurl {
-            url = "https://github.com/matrix-construct/tuwunel/releases/download/v${version}/v${version}-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
-            hash = "sha256-n6o3HTF+Mq7uFuBdw86sIqZMspyEEhXJOYRXSWkyM/I=";
+          src = prev.fetchFromGitHub {
+            inherit (old.src) owner repo;
+            tag = "v${new.version}";
+            hash = "sha256-9+a26OnmnjiR0K26YoKMQ2Vq8umJlwpz22a2eVBwaOk=";
           };
 
-          dontUnpack = true;
+          # HACK we need a permanent solution for this :/
+          patches = (old.patches or [ ]) ++ [ ./tuwunel-sso.patch ];
 
-          nativeBuildInputs = with prev; [ zstd ];
+          cargoDeps = prev.rustPlatform.fetchCargoVendor {
+            inherit (new) src patches;
+            hash = "sha256-Yi+JEo7+17WnpFyblTLecmozfwTwPc20c6MlfSMIFAY=";
+          };
 
-          buildPhase = "unzstd $src -o tuwunel";
-          installPhase = "install -Dm755 {,$out/bin/}tuwunel";
-
-          meta.mainProgram = "tuwunel";
-        };
+          doCheck = false;
+        });
 
         ########## obscura inclusion ##########
 
