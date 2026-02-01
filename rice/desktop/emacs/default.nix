@@ -452,7 +452,10 @@ in
           multiple-cursors = {
             bind' = ''
               ("C-," . mc/mark-previous-like-this)
+              ("C-;" . mc/unmark-previous-like-this)
+
               ("C-." . mc/mark-next-like-this)
+              ("C-:" . mc/unmark-next-like-this)
             '';
           };
 
