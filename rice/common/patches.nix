@@ -8,6 +8,14 @@
           });
         };
 
+        syncplay = prev.syncplay.overrideAttrs (old: {
+          postFixup = (old.postFixup or "") + ''
+            rm $out/share/applications/syncplay-server.desktop
+            sed -Ei 's|(Exec=syncplay .*)|\1 --no-store|' \
+              $out/share/applications/syncplay.desktop
+          '';
+        });
+
         prettypst = prev.prettypst.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [
             ./prettypst-hline.patch
