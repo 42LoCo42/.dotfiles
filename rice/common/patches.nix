@@ -22,10 +22,7 @@
           ];
         });
 
-        # https://pr-tracker.bunny/?pr=483247
-        searxng = prev.searxng.overrideAttrs (old: {
-          pythonRelaxDeps = old.pythonRelaxDeps ++ [ "markdown-it-py" ];
-        });
+        ########################################################################
 
         # TODO wait for nixpkgs
         matrix-tuwunel = prev.matrix-tuwunel.overrideAttrs (new: old: {
