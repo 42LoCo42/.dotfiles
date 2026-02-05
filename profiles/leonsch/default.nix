@@ -33,6 +33,7 @@ in
     # work stuff
     dnscrypt.rules.cloaking = {
       "filer1.planet-ic.local" = "172.16.96.167";
+      "subversion.planet-ic.de" = "172.16.96.79";
       "lbswis.gbv.de" = "127.0.0.1";
       "readers.lakd" = "127.0.0.1";
     };
@@ -310,6 +311,17 @@ in
         hostname = "web03270.pvm.imv.de";
         user = "root";
         setEnv.TERM = "xterm-256color";
+      };
+
+      bonetty = {
+        hostname = "ares-bonetty.p4.net";
+        user = "root";
+        setEnv.TERM = "xterm-256color";
+
+        extraOptions = {
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+        };
       };
     };
   }];
