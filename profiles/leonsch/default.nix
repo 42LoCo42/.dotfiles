@@ -208,7 +208,7 @@ in
           room = "Absolutes Kinori";
 
           playerpath = pkgs.writeShellScript "mpv-gpu" ''
-            exec ${getExe pkgs.mpv} --vo=gpu-next "$@"
+            exec ${getExe pkgs.mpv} --ao=pulse --vo=gpu-next "$@"
           '';
 
           mediasearchdirectories = "['/home/leonsch/tmp']";
