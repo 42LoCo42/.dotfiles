@@ -45,10 +45,20 @@
               "nice.level" = -11;
             };
           };
+
+          quantum = 8192;
+          clock = 192000;
         in
         {
           pipewire = {
-            "00-realtime" = rt;
+            "00-realtime" = rt // {
+              "context.properties" = {
+                "default.clock.max-quantum" = quantum;
+                "default.clock.min-quantum" = quantum;
+                "default.clock.quantum" = quantum;
+                "default.clock.rate" = clock;
+              };
+            };
           };
 
           pipewire-pulse = {
