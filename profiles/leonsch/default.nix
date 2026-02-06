@@ -39,11 +39,7 @@ in
     };
   };
 
-  programs.wireshark = {
-    enable = true;
-    package = pkgs.wireshark-qt;
-  };
-
+  programs.wireshark.enable = true;
   users.users.leonsch.extraGroups = [ "wireshark" ];
 
   rice = {
