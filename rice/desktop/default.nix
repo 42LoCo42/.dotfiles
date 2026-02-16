@@ -34,6 +34,7 @@
       udev.enable = true;
       vesktop.enable = true;
       wayland.enable = true;
+      wego.enable = true;
       xdg.enable = true;
       zenkernel.enable = true;
     };
@@ -66,6 +67,7 @@
     ./udev.nix
     ./vesktop
     ./wayland
+    ./wego.nix
     ./xdg.nix
     ./zenkernel.nix
   ];

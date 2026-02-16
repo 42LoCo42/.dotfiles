@@ -45,6 +45,7 @@ in
   rice = {
     desktop = {
       enable = true;
+      wego.location = "Stralsund";
 
       wayland = {
         hyprland = {
@@ -93,7 +94,6 @@ in
     };
 
     dns.enable = true;
-
     ca.enable = true;
     nixremote.use = true;
     podman.enable = true;
@@ -167,25 +167,27 @@ in
       hyprwinwrap
     ];
 
-    home.packages = with pkgs; [
-      eka
-      jameica
-      openvpn # for corporate VPN
-      rustdesk-flutter
-      sshfs
-      syncplay
+    home = {
+      packages = with pkgs; [
+        eka
+        jameica
+        openvpn # for corporate VPN
+        rustdesk-flutter
+        sshfs
+        syncplay
 
-      my-age
-      (pkgs.writeShellApplication {
-        name = "aged"; # age decrypt
+        my-age
+        (pkgs.writeShellApplication {
+          name = "aged"; # age decrypt
 
-        text = ''
-          exec age                                          \
-            -i ${config.aquaris.secret "user/leonsch/age"}  \
-            -d "$@"
-        '';
-      })
-    ];
+          text = ''
+            exec age                                          \
+              -i ${config.aquaris.secret "user/leonsch/age"}  \
+              -d "$@"
+          '';
+        })
+      ];
+    };
 
     xdg.configFile = {
       "jameica.properties".text = ''
