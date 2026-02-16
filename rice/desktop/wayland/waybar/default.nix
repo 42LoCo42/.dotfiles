@@ -91,11 +91,11 @@ in
           };
 
           "custom/weather" = {
-            format = "{}°";
-            tooltip = true;
-            interval = 3600;
-            exec = getExe pkgs.wttrbar;
+            exec = "${getExe pkgs.waybar-weather} -config ${./waybar-weather.yaml}";
+            format = "{} ";
+            restart-interval = 60;
             return-type = "json";
+            hide-empty-text = true;
           };
 
           mpd = {

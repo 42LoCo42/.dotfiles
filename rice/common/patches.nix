@@ -49,7 +49,6 @@
 
         inherit (obscura)
           avahi-proxy
-          caddyfile-language-server
           chronometer
           datetime
           drasl
@@ -62,6 +61,7 @@
           rustdesk-api
           socket-activate
           vencloud
+          waybar-weather
           zfullfs
           ;
       })

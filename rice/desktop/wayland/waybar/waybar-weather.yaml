@@ -1,0 +1,22 @@
+weather:
+  forecast_hours: 24
+
+templates:
+  tooltip: |-
+    <b>{{.Address.City}}, {{.Address.Country}}</b>
+    At {{timeFormat .Current.InstantTime "15:04"}}: {{.Current.Condition}}
+    {{loc "temp"}}: {{hum .Current.Temperature}}{{.Current.Units.Temperature}}
+    {{loc "apparent"}}: {{hum .Current.ApparentTemperature}}{{.Current.Units.Temperature}}
+    {{loc "humidity"}}: {{.Current.RelativeHumidity}}%
+    {{loc "pressure"}}: {{hum .Current.PressureMSL}} {{.Current.Units.Pressure}}
+    {{loc "wind"}}: {{hum .Current.WindSpeed}} → {{hum .Current.WindGusts}} {{.Current.Units.WindSpeed}} ({{windDirIcon (windDir .Current.WindDirection)}})
+
+    🌅 {{timeFormat .SunriseTime "15:04"}} • 🌇 {{timeFormat .SunsetTime "15:04"}}
+
+    <b>Tomorrow</b>
+    At {{timeFormat .Forecast.InstantTime "15:04"}}: {{.Forecast.Condition}}
+    {{loc "temp"}}: {{hum .Forecast.Temperature}}{{.Forecast.Units.Temperature}}
+    {{loc "apparent"}}: {{hum .Forecast.ApparentTemperature}}{{.Forecast.Units.Temperature}}
+    {{loc "humidity"}}: {{.Forecast.RelativeHumidity}}%
+    {{loc "pressure"}}: {{hum .Forecast.PressureMSL}} {{.Forecast.Units.Pressure}}
+    {{loc "wind"}}: {{hum .Forecast.WindSpeed}} → {{hum .Forecast.WindGusts}} {{.Forecast.Units.WindSpeed}} ({{windDirIcon (windDir .Forecast.WindDirection)}})
