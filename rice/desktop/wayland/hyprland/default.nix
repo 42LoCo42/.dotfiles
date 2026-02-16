@@ -4,7 +4,6 @@ let
     concatLines
     flip
     getExe
-    getExe'
     listToAttrs
     mapAttrs'
     mapAttrsToList
@@ -278,6 +277,14 @@ in
     home-manager.sharedModules = [{
       aquaris.persist = { ".config/qalculate" = { }; };
 
+      home.packages = with pkgs; [
+        brightnessctl
+        fuzzel
+        libqalculate
+        mpc
+        pulsemixer
+      ];
+
       wayland.windowManager.hyprland = {
         enable = true;
 
@@ -290,25 +297,6 @@ in
           readFile
           (x: concatLines [ cfg.preConfig x cfg.postConfig ])
           (flip subs {
-            fuzzel = getExe pkgs.fuzzel;
-            pulsemixer = getExe pkgs.pulsemixer;
-            qalc = getExe pkgs.libqalculate;
-
-            audio-helper = script {
-              file = ./scripts/audio-helper.sh;
-              subs = {
-                pulsemixer = getExe pkgs.pulsemixer;
-                mpc = getExe pkgs.mpc;
-              };
-            };
-
-            brightness-helper = script {
-              file = ./scripts/brightness-helper.sh;
-              subs = {
-                brightnessctl = getExe pkgs.brightnessctl;
-              };
-            };
-
             dropdown = script {
               file = ./scripts/dropdown.sh;
             };
