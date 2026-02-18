@@ -1,6 +1,6 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) getExe mkAfter mkBefore mkMerge;
+  inherit (lib) getExe mkAfter mkBefore mkMerge singleton;
   inherit (lib.generators) toINI;
   inherit (config.rice.ssh) proxy;
 
@@ -105,7 +105,7 @@ in
     tailscale.enable = true;
   };
 
-  home-manager.sharedModules = [{
+  home-manager.sharedModules = singleton (hm: {
     aquaris = {
       firefox = {
         sanitize = {
@@ -209,10 +209,7 @@ in
           name = "nori";
           room = "Absolutes Kinori";
 
-          playerpath = pkgs.writeShellScript "mpv-gpu" ''
-            exec ${getExe pkgs.mpv} --ao=pulse --vo=gpu-next "$@"
-          '';
-
+          playerpath = getExe hm.config.programs.mpv.finalPackage;
           mediasearchdirectories = "['/home/leonsch/tmp']";
         };
 
@@ -326,5 +323,5 @@ in
         };
       };
     };
-  }];
+  });
 }

@@ -22,7 +22,6 @@
           btrfs-progs
           cryptsetup
           feh
-          mpv
           p7zip-rar
           pwgen
           python3
@@ -73,6 +72,21 @@
       };
 
       programs = {
+        mpv = {
+          enable = true;
+
+          config = {
+            ao = "pulse";
+            vo = "gpu-next";
+            hwdec = "auto";
+            ytdl-raw-options = "format-sort=codec:h264";
+          };
+
+          scripts = with pkgs.mpvScripts; [
+            sponsorblock
+          ];
+        };
+
         zathura = {
           enable = true;
           options = {
