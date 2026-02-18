@@ -28,16 +28,22 @@
       wayland = {
         fuzzel.fontSize = 20;
 
-        hyprland.monitors = {
-          primary = {
-            name = "DVI-D-1";
-            mode = "preferred, 0x0, 1";
+        hyprland = {
+          monitors = {
+            primary = {
+              name = "DVI-D-1";
+              mode = "preferred, 0x0, 1";
+            };
+
+            secondary = {
+              name = "DP-1";
+              mode = "preferred, auto-right, 1";
+            };
           };
 
-          secondary = {
-            name = "DP-1";
-            mode = "preferred, auto-right, 1";
-          };
+          postConfig = ''
+            bind = $mod SHIFT, m, exec, toggle-mouse
+          '';
         };
       };
     };
@@ -53,6 +59,25 @@
 
     home.packages = with pkgs; [
       factorio-space-age
+
+      (writeShellApplication {
+        name = "toggle-mouse";
+        text = ''
+          f="$HOME/.cache/mouse-disabled"
+
+          if [ -e "$f" ]; then
+            rm -f "$f"
+            e=true
+            notify-send "Mouse enabled"
+          else
+            touch "$f"
+            e=false
+            notify-send "Mouse disabled"
+          fi
+
+          hyprctl keyword 'device[sigmachip-usb-mouse]:enabled' "$e"
+        '';
+      })
     ];
   }];
 
