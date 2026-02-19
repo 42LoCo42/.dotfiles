@@ -10,10 +10,15 @@ librewolf) pw=bitwarden ;;
 Jameica*) pw=jameica ;;
 foot)
 	pid="$(jq -r .pid <<<"$win")"
-	if pstree "$pid" | grep -Eq 'ssh (bunny|laniakea)'; then
+	pst="$(pstree "$pid")"
+
+	if grep -Eq 'ssh (bunny|laniakea)' <<<"$pst"; then
 		pw=server-admin
+	elif grep -Eq 'cryptsetup open' <<<"$pst"; then
+		pw=ssd
 	fi
 	;;
+foot-main-terminal) pw=ssd ;;
 esac
 
 choose() {

@@ -107,6 +107,7 @@ user:
       bitwarden:
       jameica:
       server-admin:
+      ssd:
 
     ssh:
       fido:
