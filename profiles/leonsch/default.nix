@@ -47,6 +47,8 @@ in
   users.users.leonsch.extraGroups = [ "wireshark" ];
 
   rice = {
+    insecureNames = [ "olm" ];
+
     desktop = {
       enable = true;
       wego.location = "Stralsund";
@@ -155,9 +157,13 @@ in
       git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
 
       persist = {
+        ".cache/gomuks" = { };
+
         ".config/rustdesk" = { };
+        ".config/gomuks" = { };
 
         ".local/share/typst/packages/local" = { };
+        ".local/share/gomuks" = { };
 
         "IU" = { };
         "dev" = { };
@@ -174,6 +180,7 @@ in
     home = {
       packages = with pkgs; [
         eka
+        gomuks
         jameica
         openvpn # for corporate VPN
         rustdesk-flutter
