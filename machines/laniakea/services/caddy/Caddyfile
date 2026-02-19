@@ -22,26 +22,30 @@
 	reverse_proxy unix//caddy/mympd.sock
 }
 
-# reachable from LAN
 laniakea.fritz.box {
 	import mympd
 }
 
-# reachable from VPN
 music.laniakea {
 	import mympd
 }
 
 ##### papra #####
 
-# reachable from VPN
 doc.laniakea {
 	reverse_proxy papra:8080
 }
 
+##### cypht #####
+
+mail.laniakea {
+	root * /srv/cypht/site
+	file_server
+	php_fastcgi tcp/cypht:8080
+}
+
 ##### qbittorrent #####
 
-# reachable from VPN
 qbit.laniakea {
 	# connect to socket activation proxy on host
 	reverse_proxy unix//caddy/qbittorrent.sock
@@ -49,7 +53,6 @@ qbit.laniakea {
 
 ##### syncthing #####
 
-# reachable from VPN
 sync.laniakea {
 	reverse_proxy host.containers.internal:8384
 }

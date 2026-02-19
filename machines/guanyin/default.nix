@@ -31,7 +31,6 @@ let inherit (lib) mkForce; in {
   isoImage.edition = "guanyin";
 
   boot.initrd.systemd.enable = false;
-  networking.wireless.enable = false;
 
   security.sudo.enable = mkForce false;
 

@@ -1,6 +1,7 @@
 {
   imports = [
     ./caddy
+    ./cypht
     ./hydroxide
     ./imapsync
     ./maddy

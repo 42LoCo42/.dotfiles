@@ -67,6 +67,7 @@ machine:
 
     key:
 
+    cypht:
     imapsync:
     paperless:
     papra:

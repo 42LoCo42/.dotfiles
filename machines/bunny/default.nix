@@ -14,10 +14,6 @@ in
       type = package;
       default = import ../../homepage pkgs;
     };
-
-    postgres = mkOption {
-      type = package;
-    };
   };
 
   config = {
