@@ -593,6 +593,7 @@ in
               (haskell-mode    . lsp-deferred)
               (js-mode         . lsp-deferred)
               (nix-mode        . lsp-deferred)
+              (php-mode        . lsp-deferred)
               (rustic-mode     . lsp-deferred)
               (sh-mode         . lsp-deferred)
               (terraform-mode  . lsp-deferred)
@@ -612,6 +613,8 @@ in
 
               ; custom client args
               (lsp-clients-clangd-args '("--header-insertion=never"))
+
+              (lsp-disabled-clients '(php-ls))
             '';
 
             config = ''
@@ -950,6 +953,14 @@ in
 
             extraPackages = with pkgs; [
               just
+            ];
+          };
+
+          php-mode = {
+            defer = true;
+
+            extraPackages = with pkgs; [
+              phpactor
             ];
           };
         };
