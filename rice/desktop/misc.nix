@@ -77,7 +77,7 @@
 
           config = {
             ao = "pulse";
-            vo = "gpu-next";
+            vo = if config.rice.desktop.gpu.nvidia.enable then "gpu-next" else "gpu";
             hwdec = "auto";
             ytdl-raw-options = "format-sort=codec:h264";
           };
