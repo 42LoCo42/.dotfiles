@@ -1,8 +1,9 @@
 {
   imports = [
-    # ./paperless
-
     ./caddy
+    ./hydroxide
+    ./imapsync
+    ./maddy
     ./mympd
     ./papra
     ./qbittorrent

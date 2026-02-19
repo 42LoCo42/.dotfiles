@@ -66,6 +66,8 @@ machine:
       - user/admin
 
     key:
+
+    imapsync:
     paperless:
     papra:
     qbit-stop:
