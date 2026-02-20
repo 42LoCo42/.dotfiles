@@ -1,6 +1,7 @@
 {
   imports = [
     ./chrony.nix
+    ./fastfetch.nix
     ./go-telemetry.nix
     ./nix-locate.nix
     ./nix.nix
