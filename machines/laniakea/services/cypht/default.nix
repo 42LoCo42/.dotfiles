@@ -45,12 +45,12 @@ in
         src = prev.fetchFromGitHub {
           owner = "cypht-org";
           repo = drv.pname;
-          tag = "v${drv.version}";
-          hash = "sha256-OF2ezFKmhbBvmB8OfzySdnezxgXRFiqjSQg6tWAh4eI=";
+          rev = "b715792f603698c17033b3db7273236744a4829b";
+          hash = "sha256-4jnbMuwf7IqCVkjPPdeCgK8wpgxYoga6EsYwTVtHm/w=";
         };
 
         composerStrictValidation = false;
-        vendorHash = "sha256-I+yXTq1DIwOpF0DmwGfNSSD25gRgdTJnQ3mMGP7V9So=";
+        vendorHash = "sha256-rVJ7f2vJD8LfNsUf2KC5tI/V8XHxcnlnoc6uZydMoTc=";
 
         postBuild = ''
           cat << EOF > lib/version.php
