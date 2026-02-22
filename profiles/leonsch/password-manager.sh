@@ -18,7 +18,11 @@ foot)
 		pw=ssd
 	fi
 	;;
-foot-main-terminal) pw=ssd ;;
+foot-main-terminal)
+	if pgrep -af '^cryptsetup open'; then
+		pw=ssd
+	fi
+	;;
 esac
 
 choose() {
