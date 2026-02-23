@@ -15,8 +15,12 @@
           name = "flameshot-run";
           text = ''
             ${lib.getExe pkgs.flameshot} gui -r | wl-copy &
-            sleep 1
+
+            while true; do
+              [ "$(hyprctl activewindow -j | jq -r .initialTitle)" = flameshot ] && break
+            done
             pkill -SIGUSR1 waybar
+
             wait
             pkill -SIGUSR1 waybar
           '';
