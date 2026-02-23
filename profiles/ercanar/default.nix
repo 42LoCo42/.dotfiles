@@ -28,8 +28,8 @@ in
 
           "1" = {
             icon = "";
-            autostart = [ "uwsm app vesktop" ];
-            rules = [ "class vesktop" ];
+            autostart = [ "uwsm app equibop" ];
+            rules = [ "class equibop" ];
           };
 
           "2" = {

@@ -62,7 +62,7 @@ in
 
             "2" = {
               icon = "";
-              rules = [ "class vesktop" ];
+              rules = [ "class equibop" ];
             };
 
             "3" = {

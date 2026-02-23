@@ -16,6 +16,7 @@
     rice.desktop = {
       alarm.enable = true;
       emacs.enable = true;
+      equibop.enable = true;
       firefox.enable = true;
       fonts.enable = true;
       gpu.enable = true;
@@ -32,7 +33,6 @@
       sudo-u2f.enable = true;
       theming.enable = true;
       udev.enable = true;
-      vesktop.enable = true;
       wayland.enable = true;
       wego.enable = true;
       xdg.enable = true;
@@ -49,6 +49,7 @@
   imports = [
     ./alarm
     ./emacs
+    ./equibop.nix
     ./firefox.nix
     ./fonts.nix
     ./gpu.nix
@@ -65,7 +66,6 @@
     ./sudo-u2f.nix
     ./theming.nix
     ./udev.nix
-    ./vesktop
     ./wayland
     ./wego.nix
     ./xdg.nix

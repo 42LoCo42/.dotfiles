@@ -23,7 +23,7 @@ which provides a wealth of default options, tools and functions.
 | Shell          | [[https://www.zsh.org][Zsh]]       |
 | Editor         | [[https://www.gnu.org/software/emacs][GNU Emacs]] |
 | Browser        | [[https://librewolf.net][LibreWolf]] |
-| Messenger      | [[https://github.com/Vencord/Vesktop][Vesktop]]   |
+| Messenger      | [[https://equibop.org][Equibop]]   |
 | Music Player   | [[https://github.com/MusicPlayerDaemon/MPD][MPD]]       |
 
 ** Screenshot

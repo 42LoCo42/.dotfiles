@@ -41,8 +41,8 @@
           sessionVariables.GTK_THEME = "Adwaita-dark";
 
           packages = with pkgs; [
-            kdePackages.qtwayland # qt6
             qt5.qtwayland
+            qt6.qtwayland
           ];
         };
       })
