@@ -24,26 +24,12 @@
 
         ########################################################################
 
-        # TODO wait for nixpkgs
-        matrix-tuwunel = prev.matrix-tuwunel.overrideAttrs (new: old: {
-          version = "1.5.0";
+        # matrix-tuwunel = prev.matrix-tuwunel.overrideAttrs (new: old: {
+        #   # HACK we need a permanent solution for this :/
+        #   patches = (old.patches or [ ]) ++ [ ./tuwunel-sso.patch ];
 
-          src = prev.fetchFromGitHub {
-            inherit (old.src) owner repo;
-            tag = "v${new.version}";
-            hash = "sha256-9+a26OnmnjiR0K26YoKMQ2Vq8umJlwpz22a2eVBwaOk=";
-          };
-
-          # HACK we need a permanent solution for this :/
-          patches = (old.patches or [ ]) ++ [ ./tuwunel-sso.patch ];
-
-          cargoDeps = prev.rustPlatform.fetchCargoVendor {
-            inherit (new) src patches;
-            hash = "sha256-Yi+JEo7+17WnpFyblTLecmozfwTwPc20c6MlfSMIFAY=";
-          };
-
-          doCheck = false;
-        });
+        #   doCheck = false;
+        # });
 
         ########## obscura inclusion ##########
 
