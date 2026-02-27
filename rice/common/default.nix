@@ -12,4 +12,11 @@
     ./topology
     ./zsh
   ];
+
+  # TODO upstream to aquaris (i lazy lul)
+  home-manager.sharedModules = [{
+    home.shellAliases = {
+      "zfclean" = "zfs list -t snapshot -H -o name | grep -v frequent | sudo xargs -I% zfs destroy %";
+    };
+  }];
 }
