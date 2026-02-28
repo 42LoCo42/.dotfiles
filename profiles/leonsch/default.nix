@@ -162,8 +162,10 @@ in
         ".config/rustdesk" = { };
         ".config/gomuks" = { };
 
-        ".local/share/typst/packages/local" = { };
+        ".local/share/Steam/compatibilitytools.d" = { };
         ".local/share/gomuks" = { };
+        ".local/share/typst/packages/local" = { };
+        ".local/share/umu" = { };
 
         "IU" = { };
         "dev" = { };
@@ -186,6 +188,7 @@ in
         rustdesk-flutter
         sshfs
         syncplay
+        umu-launcher
 
         my-age
         (pkgs.writeShellApplication {
