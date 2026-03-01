@@ -25,6 +25,7 @@
 
     environment = {
       DOMAIN = config.rice.domain;
+      GOKAPI_ENABLE_HOTLINK_VIDEOS = "true";
     };
 
     environmentFiles = [ (config.aquaris.secret "@machine/gokapi") ];
