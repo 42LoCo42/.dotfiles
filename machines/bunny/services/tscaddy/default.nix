@@ -27,6 +27,7 @@
 
     environment = {
       HEADSCALE = "https://headscale.${config.rice.domain}";
+      TSNET_FORCE_LOGIN = "1";
       XDG_CONFIG_HOME = "/data/config";
       XDG_DATA_HOME = "/data/data";
     };
