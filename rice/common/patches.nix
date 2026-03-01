@@ -22,6 +22,16 @@
           ];
         });
 
+        # TODO triton is broken on aarch64
+        # https://hydra.nixos.org/job/nixpkgs/unstable/triton-llvm.aarch64-linux
+        immich-machine-learning = prev.immich-machine-learning.override {
+          python3 = prev.python3.override {
+            packageOverrides = (_: ppy: {
+              torch = ppy.torch.override { tritonSupport = false; };
+            });
+          };
+        };
+
         ########################################################################
 
         # matrix-tuwunel = prev.matrix-tuwunel.overrideAttrs (new: old: {
