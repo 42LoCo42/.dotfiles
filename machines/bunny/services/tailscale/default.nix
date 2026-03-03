@@ -1,19 +1,35 @@
 { pkgs, lib, config, ... }:
 let
-  inherit (lib) escapeShellArgs;
+  inherit (lib) escapeShellArgs getExe;
 
   cfg = config.services.tailscale;
 in
 {
   rice.tailscale.enable = true;
 
-  services.tailscale = {
-    extraUpFlags = [
-      "--accept-dns=false"
-      "--advertise-exit-node"
-      "--hostname=exit"
-      "--login-server=https://headscale.${config.rice.domain}"
-    ];
+  services = {
+    networkd-dispatcher = {
+      enable = true;
+      rules."tailscale" = {
+        onState = [ "routable" ];
+        script = ''
+          #!${pkgs.runtimeShell}
+          ${getExe pkgs.ethtool}     \
+            -K enp0s6                \
+            rx-udp-gro-forwarding on \
+            rx-gro-list off
+        '';
+      };
+    };
+
+    tailscale = {
+      extraUpFlags = [
+        "--accept-dns=false"
+        "--advertise-exit-node"
+        "--hostname=exit"
+        "--login-server=https://headscale.${config.rice.domain}"
+      ];
+    };
   };
 
   systemd.services.tailscaled-autoconnect = {
