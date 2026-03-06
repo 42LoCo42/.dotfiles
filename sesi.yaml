@@ -39,6 +39,7 @@ machine:
     key:
 
     attic:
+    coturn:
     cryptpad:
     drasl:
     forgejo:
