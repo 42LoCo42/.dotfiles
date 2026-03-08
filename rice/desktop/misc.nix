@@ -27,19 +27,12 @@
           python3
           scrcpy
           wf-recorder
-          yt-dlp
         ];
 
         shellAliases =
           let join = builtins.concatStringsSep " "; in {
-            ytb = join [
-              "yt-dlp"
-              "--force-ipv4"
-              "--cookies-from-browser=firefox:~/.librewolf/default"
-            ];
-
             ytm = join [
-              "ytb"
+              "yt-dlp"
               "--extract-audio"
               "--embed-metadata"
             ];
@@ -79,12 +72,20 @@
             ao = "pulse";
             vo = if config.rice.desktop.gpu.nvidia.enable then "gpu-next" else "gpu";
             hwdec = "auto";
-            ytdl-raw-options = "format-sort=codec:h264";
           };
 
           scripts = with pkgs.mpvScripts; [
             sponsorblock
           ];
+        };
+
+        yt-dlp = {
+          enable = true;
+
+          settings = {
+            cookies-from-browser = "firefox:~/.librewolf/default";
+            format-sort = "vcodec:h264,quality";
+          };
         };
 
         zathura = {
