@@ -9,6 +9,13 @@ let
   key = "${volumes}/${certs}/turn.${domain}/turn.${domain}.key";
 in
 {
+  topology.nodes.bunny-public.services.coturn = {
+    name = "Coturn";
+    icon = "misc.phone";
+    info = "TURN & STUN server";
+    details.url.text = "turn.eleonora.gay:5349";
+  };
+
   rice.caddy.cfg."turn" = "abort";
 
   systemd = {
