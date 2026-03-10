@@ -1,6 +1,14 @@
 { pkgs, lib, config, aquaris, ... }:
 let
-  inherit (lib) getExe mkAfter mkBefore mkMerge singleton;
+  inherit (lib)
+    getExe
+    mapAttrs
+    mkAfter
+    mkBefore
+    mkMerge
+    singleton
+    ;
+
   inherit (lib.generators) toINI;
   inherit (config.rice.ssh) proxy;
 
@@ -235,7 +243,10 @@ in
       };
     };
 
-    programs.ssh.matchBlocks = {
+    programs.ssh.matchBlocks = (mapAttrs (n: x: x // {
+      controlMaster = "auto";
+      controlPath = "\${HOME}/.ssh/control-${n}";
+    })) {
       ##### private machines #####
 
       bunny = {
