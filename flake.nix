@@ -29,7 +29,10 @@
 
     nix-topology = {
       url = "github:oddlama/nix-topology";
-      inputs.nixpkgs.follows = "";
+      inputs = {
+        nixpkgs.follows = "";
+        flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+      };
     };
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";

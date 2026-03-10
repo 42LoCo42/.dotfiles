@@ -21,7 +21,7 @@
             include = "${pkgs.foot.themes}/share/foot/themes/gruvbox-dark";
           };
 
-          colors = {
+          colors-dark = {
             inherit (config.rice.desktop.wayland.foot) alpha;
           };
         };
