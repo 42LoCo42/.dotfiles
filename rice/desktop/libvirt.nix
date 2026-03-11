@@ -32,14 +32,6 @@
             virt-manager
           ];
 
-          # a cursor theme is required for virt-manager
-          pointerCursor = {
-            name = "Vanilla-DMZ";
-            size = 24;
-            package = pkgs.vanilla-dmz;
-            gtk.enable = true;
-          };
-
           # don't create $HOME/.icons
           file = {
             ".icons/${hm.config.home.pointerCursor.name}".enable = false;
