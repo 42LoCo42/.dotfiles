@@ -5,7 +5,7 @@
     ./go-telemetry.nix
     ./nix-locate.nix
     ./nix.nix
-    ./patches.nix
+    ./patches
     ./pnoc-v2
     ./procfs.nix
     ./speechd.nix

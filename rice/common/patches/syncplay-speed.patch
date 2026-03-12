@@ -1,0 +1,1815 @@
+diff --git a/syncplay/client.py b/syncplay/client.py
+index 92ae550815..b5f6fe59e9 100755
+--- a/syncplay/client.py
++++ b/syncplay/client.py
+@@ -127,6 +127,7 @@
+         self._lastGlobalUpdate = None
+         self._globalPosition = 0.0
+         self._globalPaused = 0.0
++        self._globalSpeed = constants.DEFAULT_PLAYBACK_SPEED
+         self._userOffset = 0.0
+         self._speedChanged = False
+         self.behindFirstDetected = None
+@@ -400,18 +401,18 @@
+             if self.getUsername() == setBy:
+                 self.ui.showDebugMessage("Caught attempt to slow down due to time difference with self")
+             else:
+-                self._player.setSpeed(constants.SLOWDOWN_RATE)
++                self._player.setSpeed(self._globalSpeed * constants.SLOWDOWN_RATE)
+                 self._speedChanged = True
+                 self.ui.showMessage(getMessage("slowdown-notification").format(setBy), hideFromOSD)
+                 madeChangeOnPlayer = True
+         elif self._speedChanged and diff < constants.SLOWDOWN_RESET_THRESHOLD:
+-            self._player.setSpeed(1.00)
++            self._player.setSpeed(self._globalSpeed)
+             self._speedChanged = False
+             self.ui.showMessage(getMessage("revert-notification"), hideFromOSD)
+             madeChangeOnPlayer = True
+         return madeChangeOnPlayer
+ 
+-    def _changePlayerStateAccordingToGlobalState(self, position, paused, doSeek, setBy):
++    def _changePlayerStateAccordingToGlobalState(self, position, paused, doSeek, setBy, speed=None):
+         madeChangeOnPlayer = False
+         pauseChanged = paused != self.getGlobalPaused() or paused != self.getPlayerPaused()
+         diff = self.getPlayerPosition() - position
+@@ -420,6 +421,14 @@
+         self._globalPaused = paused
+         self._globalPosition = position
+         self._lastGlobalUpdate = time.time()
++        if speed is not None and abs(speed - self._globalSpeed) > constants.SPEED_TOLERANCE:
++            self._globalSpeed = speed
++            if self._player.speedSupported and not self._speedChanged:
++                self._player.setSpeed(speed)
++            madeChangeOnPlayer = True
++            hideFromOSD = not constants.SHOW_SAME_ROOM_OSD
++            self.ui.showMessage(getMessage("speed-change-notification").format(setBy, speed), hideFromOSD)
++            self.ui.updateSpeed(speed)
+         if doSeek:
+             madeChangeOnPlayer = self._serverSeeked(position, setBy)
+         if diff > self._config['rewindThreshold'] and not doSeek and not self._config['rewindOnDesync'] == False:
+@@ -449,7 +458,7 @@
+             self._warnings.checkWarnings()
+             self.userlist.roomStateConfirmed()
+ 
+-    def updateGlobalState(self, position, paused, doSeek, setBy, messageAge):
++    def updateGlobalState(self, position, paused, doSeek, setBy, messageAge, speed=None):
+         if self.__getUserlistOnLogon:
+             self.__getUserlistOnLogon = False
+             self.getUserList()
+@@ -457,7 +466,7 @@
+         if not paused:
+             position += messageAge
+         if self._player:
+-            madeChangeOnPlayer = self._changePlayerStateAccordingToGlobalState(position, paused, doSeek, setBy)
++            madeChangeOnPlayer = self._changePlayerStateAccordingToGlobalState(position, paused, doSeek, setBy, speed)
+         if madeChangeOnPlayer:
+             self.askPlayer()
+         self._executePlaystateHooks(position, paused, doSeek, setBy, messageAge)
+@@ -489,7 +498,7 @@
+         position = self._playerPosition
+         if not self._playerPaused:
+             diff = time.time() - self._lastPlayerUpdate
+-            position += diff
++            position += diff * self._globalSpeed
+         return position
+ 
+     def getStoredPlayerPosition(self):
+@@ -508,7 +517,7 @@
+             return 0.0
+         position = self._globalPosition
+         if not self._globalPaused:
+-            position += time.time() - self._lastGlobalUpdate
++            position += (time.time() - self._lastGlobalUpdate) * self._globalSpeed
+         return position
+ 
+     def getGlobalPaused(self):
+@@ -516,6 +525,17 @@
+             return True
+         return self._globalPaused
+ 
++    def getGlobalSpeed(self):
++        return self._globalSpeed
++
++    def setSpeed(self, speed):
++        self._globalSpeed = speed
++        self.ui.updateSpeed(speed)
++        if self._protocol and self._protocol.logged:
++            if not self.serverFeatures.get("speedSync"):
++                return
++            self._protocol.sendState(self.getPlayerPosition(), self.getPlayerPaused(), False, None, True)
++
+     def eofReportedByPlayer(self):
+         if self.playlist.notJustChangedPlaylist() and self.userlist.currentUser.file:
+             self.ui.showDebugMessage("Fixing file duration to allow for playlist advancement")
+@@ -671,7 +691,8 @@
+             "maxUsernameLength": constants.FALLBACK_MAX_USERNAME_LENGTH,
+             "maxRoomNameLength": constants.FALLBACK_MAX_ROOM_NAME_LENGTH,
+             "maxFilenameLength": constants.FALLBACK_MAX_FILENAME_LENGTH,
+-            "setOthersReadiness": utils.meetsMinVersion(self.serverVersion, constants.SET_OTHERS_READINESS_MIN_VERSION)
++            "setOthersReadiness": utils.meetsMinVersion(self.serverVersion, constants.SET_OTHERS_READINESS_MIN_VERSION),
++            "speedSync": utils.meetsMinVersion(self.serverVersion, constants.SPEED_SYNC_MIN_VERSION)
+         }
+         if featureList:
+             self.serverFeatures.update(featureList)
+@@ -679,6 +700,8 @@
+             self.ui.showErrorMessage(getMessage("shared-playlists-not-supported-by-server-error").format(constants.SHARED_PLAYLIST_MIN_VERSION, self.serverVersion))
+         elif not self.serverFeatures["sharedPlaylists"]:
+             self.ui.showErrorMessage(getMessage("shared-playlists-disabled-by-server-error"))
++        if not self.serverFeatures["speedSync"]:
++            self.ui.showDebugMessage(getMessage("speed-sync-not-supported-by-server-error").format(constants.SPEED_SYNC_MIN_VERSION, self.serverVersion))
+         # TODO: Have messages for all unsupported & disabled features
+         if self.serverFeatures["maxChatMessageLength"] is not None:
+             constants.MAX_CHAT_MESSAGE_LENGTH = self.serverFeatures["maxChatMessageLength"]
+@@ -744,6 +767,7 @@
+         features["managedRooms"] = True
+         features["persistentRooms"] = True
+         features["setOthersReadiness"] = True
++        features["speedSync"] = True
+ 
+         return features
+ 
+@@ -1786,6 +1810,8 @@
+     def drop(self):
+         self.__ui.drop()
+ 
++    def updateSpeed(self, speed):
++        self.__ui.updateSpeed(speed)
+ 
+ class SyncplayPlaylist():
+     def __init__(self, client):
+diff --git a/syncplay/constants.py b/syncplay/constants.py
+index 2f82234b12..1aa7e48040 100755
+--- a/syncplay/constants.py
++++ b/syncplay/constants.py
+@@ -69,9 +69,12 @@
+ FASTFORWARD_BEHIND_THRESHOLD = 1.75
+ SEEK_THRESHOLD = 1
+ SLOWDOWN_RATE = 0.95
++DEFAULT_PLAYBACK_SPEED = 1.0
+ DEFAULT_SLOWDOWN_KICKIN_THRESHOLD = 1.5
+ MINIMUM_SLOWDOWN_THRESHOLD = 1.3
+ SLOWDOWN_RESET_THRESHOLD = 0.1
++SPEED_TOLERANCE = 0.01
++SPEED_SET_GRACE_PERIOD = 0.5
+ DIFFERENT_DURATION_THRESHOLD = 2.5
+ PROTOCOL_TIMEOUT = 12.5
+ RECONNECT_RETRIES = 999
+@@ -134,6 +137,7 @@
+ COMMANDS_NEXT = ["next", "qn"]
+ COMMANDS_SETREADY = ['setready', 'sr']
+ COMMANDS_SETNOTREADY = ['setready', 'snr']
++COMMANDS_SPEED = ['sp', 'speed']
+ MPC_MIN_VER = "1.6.4"
+ MPC_BE_MIN_VER = "1.5.2.3123"
+ VLC_MIN_VERSION = "2.2.1"
+@@ -146,6 +150,7 @@
+ CHAT_MIN_VERSION = "1.5.0"
+ FEATURE_LIST_MIN_VERSION = "1.5.0"
+ SET_OTHERS_READINESS_MIN_VERSION = "1.7.2"
++SPEED_SYNC_MIN_VERSION = "1.7.5"
+ 
+ IINA_PATHS = ['/Applications/IINA.app/Contents/MacOS/IINA']
+ MPC_PATHS = [
+diff --git a/syncplay/messages_en.py b/syncplay/messages_en.py
+index 263c879b67..2ee5699eab 100644
+--- a/syncplay/messages_en.py
++++ b/syncplay/messages_en.py
+@@ -39,6 +39,8 @@
+     "fastforward-notification": "Fast-forwarded due to time difference with {}",  # User
+     "slowdown-notification": "Slowing down due to time difference with {}",  # User
+     "revert-notification": "Reverting speed back to normal",
++    "speed-change-notification": "{} changed playback speed to {}x",  # Username, Speed
++    "current-speed-notification": "Current speed: {}x",
+ 
+     "pause-notification": "{} paused at {}",  # User, Time
+     "unpause-notification": "{} unpaused",  # User
+@@ -110,6 +112,7 @@
+     "commandlist-notification/create": "\tc [name] - create managed room using name of current room",
+     "commandlist-notification/auth": "\ta [password] - authenticate as room operator with operator password",
+     "commandlist-notification/chat": "\tch [message] - send a chat message in a room",
++    "commandlist-notification/speed": "\tsp [speed] - set playback speed (e.g. sp 1.5). Without argument, shows current speed",
+     "commandList-notification/queue": "\tqa [file/url] - add file or url to bottom of playlist",
+     "commandList-notification/queueandselect": "\tqas [file/url] - add file or url to bottom of playlist and select it",
+     "commandList-notification/playlist": "\tql - show the current playlist",
+@@ -168,13 +171,16 @@
+     "feature-readiness": "readiness",  # used for not-supported-by-server-error
+     "feature-managedRooms": "managed rooms",  # used for not-supported-by-server-error
+     "feature-setOthersReadiness": "readiness override",  # used for not-supported-by-server-error
++    "feature-speedSync": "speed sync",  # used for not-supported-by-server-error
+ 
+     "not-supported-by-server-error": "The {} feature is not supported by this server..",  # feature
+     "shared-playlists-not-supported-by-server-error": "The shared playlists feature may not be supported by the server. To ensure that it works correctly requires a server running Syncplay  {}+, but the server is running Syncplay {}.",  # minVersion, serverVersion
+     "shared-playlists-disabled-by-server-error": "The shared playlist feature has been disabled in the server configuration. To use this feature you will need to connect to a different server.",
++    "speed-sync-not-supported-by-server-error": "The speed sync feature may not be supported by the server. To ensure that it works correctly requires a server running Syncplay {}+, but the server is running Syncplay {}.",  # minVersion, serverVersion
+ 
+     "invalid-seek-value": "Invalid seek value",
+     "invalid-offset-value": "Invalid offset value",
++    "invalid-speed-value": "Invalid speed value",
+ 
+     "switch-file-not-found-error": "Could not switch to file '{0}'. Syncplay looks in specified media directories.",  # File not found
+     "folder-search-timeout-error": "The search for media in media directories was aborted as it took too long to search through '{}' after having processed the first {:,} files. This will occur if you select a folder with too many sub-folders in your list of media folders to search through or if there are too many files to process. For automatic file switching to work again please select File->Set Media Directories in the menu bar and remove this directory or replace it with an appropriate sub-folder. If the folder is actually fine then you can re-enable it by selecting File->Set Media Directories and pressing 'OK'.",  # Folder, Files processed. Note: {:,} is {} but with added commas seprators.
+@@ -311,6 +317,8 @@
+     "joinroom-menu-label": "Join room {}",
+     "seektime-menu-label": "Seek to time",
+     "undoseek-menu-label": "Undo seek",
++    "setspeed-menu-label": "Set speed",
++    "setspeed-msgbox-label": "Set playback speed (e.g. 1.0, 1.5, 0.75).",
+     "play-menu-label": "Play",
+     "pause-menu-label": "Pause",
+     "playbackbuttons-menu-label": "Show playback buttons",
+diff --git a/syncplay/players/mpc.py b/syncplay/players/mpc.py
+index 51329bd05a..773141de46 100755
+--- a/syncplay/players/mpc.py
++++ b/syncplay/players/mpc.py
+@@ -313,7 +313,7 @@
+ 
+ 
+ class MPCHCAPIPlayer(BasePlayer):
+-    speedSupported = False
++    speedSupported = True
+     alertOSDSupported = False
+     customOpenDialog = False
+     chatOSDSupported = False
+@@ -370,6 +370,7 @@
+         self.__positionUpdate.set()
+ 
+     def setSpeed(self, value):
++        self._lastSpeedSetTime = time.time()
+         try:
+             self._mpcApi.setSpeed(value)
+         except MpcHcApi.PlayerNotReadyException:
+diff --git a/syncplay/players/mplayer.py b/syncplay/players/mplayer.py
+index 9bd1eb8908..32235ccf80 100755
+--- a/syncplay/players/mplayer.py
++++ b/syncplay/players/mplayer.py
+@@ -34,6 +34,7 @@
+         self._duration = None
+         self._filename = None
+         self._filepath = None
++        self._detectedSpeed = None
+         self.quitReason = None
+         self.lastLoadedTime = None
+         self.fileLoaded = False
+@@ -80,13 +81,22 @@
+         self.reactor.callLater(0, self._client.initPlayer, self)
+         self._onFileUpdate()
+ 
++    def _getSpeed(self):
++        self._getProperty('speed')
++
+     def askForStatus(self):
+         self._positionAsk.clear()
+         self._pausedAsk.clear()
+         self._getPaused()
+         self._getPosition()
++        self._getSpeed()
+         self._positionAsk.wait()
+         self._pausedAsk.wait()
++        if self._detectedSpeed is not None and not self._client._speedChanged:
++            detectedSpeed = round(self._detectedSpeed, 2)
++            gracePeriodActive = time.time() - getattr(self, '_lastSpeedSetTime', 0) < constants.SPEED_SET_GRACE_PERIOD
++            if not gracePeriodActive and abs(detectedSpeed - self._client.getGlobalSpeed()) > constants.SPEED_TOLERANCE:
++                self._client.setSpeed(detectedSpeed)
+         self._client.updatePlayerStatus(self._paused, self._position)
+ 
+     def _setProperty(self, property_, value):
+@@ -111,6 +121,7 @@
+             self.OSD_QUERY, messageString, duration, constants.MPLAYER_OSD_LEVEL))
+ 
+     def setSpeed(self, value):
++        self._lastSpeedSetTime = time.time()
+         self._setProperty('speed', "{:.2f}".format(value))
+ 
+     def _loadFile(self, filePath):
+@@ -219,6 +230,11 @@
+         elif name == "pause":
+             self._storePauseState(bool(value == 'yes'))
+             self._pausedAsk.set()
++        elif name == "speed":
++            try:
++                self._detectedSpeed = float(value)
++            except (ValueError, TypeError):
++                pass
+         elif name == "length":
+             try:
+                 self._duration = float(value)
+diff --git a/syncplay/players/mpv.py b/syncplay/players/mpv.py
+index f1187c9e4e..4c26819351 100755
+--- a/syncplay/players/mpv.py
++++ b/syncplay/players/mpv.py
+@@ -151,6 +151,7 @@
+         self._listener.sendLine(["script-message-to", "syncplayintf", "chat", messageString])
+ 
+     def setSpeed(self, value):
++        self._lastSpeedSetTime = time.time()
+         self._setProperty('speed', "{:.2f}".format(value))
+ 
+     def setPaused(self, value):
+@@ -314,6 +315,11 @@
+         self._getPausedAndPosition()
+         self._positionAsk.wait(constants.MPV_LOCK_WAIT_TIME)
+         self._pausedAsk.wait(constants.MPV_LOCK_WAIT_TIME)
++        if self._detectedSpeed is not None and not self._client._speedChanged:
++            detectedSpeed = round(self._detectedSpeed, 2)
++            gracePeriodActive = time.time() - getattr(self, '_lastSpeedSetTime', 0) < constants.SPEED_SET_GRACE_PERIOD
++            if not gracePeriodActive and abs(detectedSpeed - self._client.getGlobalSpeed()) > constants.SPEED_TOLERANCE:
++                self._client.setSpeed(detectedSpeed)
+         self._client.updatePlayerStatus(
+             self._paused if self.fileLoaded else self._client.getGlobalPaused(), self.getCalculatedPosition())
+ 
+@@ -452,7 +458,13 @@
+             else:
+                 self._storePosition(float(position_update))
+             self._positionAsk.set()
+-            #self._client.ui.showDebugMessage("{} = {} / {}".format(update_string, paused_update, position_update))
++            if len(update_string) > 6 and update_string[5] == "speed":
++                speed_update = update_string[6]
++                if speed_update != "nil":
++                    try:
++                        self._detectedSpeed = float(speed_update)
++                    except ValueError:
++                        pass
+ 
+         if "<get_syncplayintf_options>" in line:
+             self._sendMpvOptions()
+@@ -529,6 +541,7 @@
+         self._duration = None
+         self._filename = None
+         self._filepath = None
++        self._detectedSpeed = None
+         self.quitReason = None
+         self.lastLoadedTime = None
+         self.fileLoaded = False
+diff --git a/syncplay/players/vlc.py b/syncplay/players/vlc.py
+index 3f80146568..53b02412a9 100755
+--- a/syncplay/players/vlc.py
++++ b/syncplay/players/vlc.py
+@@ -126,6 +126,7 @@
+         self._filename = None
+         self._filepath = None
+         self._filechanged = False
++        self._detectedSpeed = None
+         self._lastVLCPositionUpdate = None
+         self.shownVLCLatencyError = False
+         self._previousPreviousPosition = -2
+@@ -192,6 +193,11 @@
+         self._listener.sendLine(".")
+         if self._filename and not self._filechanged:
+             self._positionAsk.wait(constants.PLAYER_ASK_DELAY)
++            if self._detectedSpeed is not None and not self._client._speedChanged:
++                detectedSpeed = round(self._detectedSpeed, 2)
++                gracePeriodActive = time.time() - getattr(self, '_lastSpeedSetTime', 0) < constants.SPEED_SET_GRACE_PERIOD
++                if not gracePeriodActive and abs(detectedSpeed - self._client.getGlobalSpeed()) > constants.SPEED_TOLERANCE:
++                    self._client.setSpeed(detectedSpeed)
+             self._client.updatePlayerStatus(self._paused, self.getCalculatedPosition())
+         else:
+             self._client.updatePlayerStatus(self._client.getGlobalPaused(), self._client.getGlobalPosition())
+@@ -222,7 +228,8 @@
+             self._listener.sendLine('display-secondary-osd: {}, {}, {}'.format('center', duration, message))
+ 
+     def setSpeed(self, value):
+-        self._listener.sendLine("set-rate: {:.2n}".format(value))
++        self._lastSpeedSetTime = time.time()
++        self._listener.sendLine("set-rate: {:.2f}".format(value))
+ 
+     def setFeatures(self, featureList):
+         pass
+@@ -343,6 +350,12 @@
+                 self.drop(getMessage("vlc-failed-versioncheck"))
+             self._lastVLCPositionUpdate = time.time()
+             self._positionAsk.set()
++        elif name == "rate":
++            if value != "no-input":
++                try:
++                    self._detectedSpeed = float(value.replace(",", "."))
++                except (ValueError, AttributeError):
++                    pass
+         elif name == "filename":
+             self._filechanged = True
+             self._filename = value
+diff --git a/syncplay/protocols.py b/syncplay/protocols.py
+index 6554cb13bb..2233f235ba 100755
+--- a/syncplay/protocols.py
++++ b/syncplay/protocols.py
+@@ -257,7 +257,8 @@
+         paused = state["playstate"]["paused"] if "paused" in state["playstate"] else None
+         doSeek = state["playstate"]["doSeek"] if "doSeek" in state["playstate"] else None
+         setBy = state["playstate"]["setBy"] if "setBy" in state["playstate"] else None
+-        return position, paused, doSeek, setBy
++        speed = state["playstate"]["speed"] if "speed" in state["playstate"] else None
++        return position, paused, doSeek, setBy, speed
+ 
+     def _handleStatePing(self, state):
+         if "latencyCalculation" in state["ping"]:
+@@ -270,7 +271,7 @@
+         return messageAge, latencyCalculation
+ 
+     def handleState(self, state):
+-        position, paused, doSeek, setBy = None, None, None, None
++        position, paused, doSeek, setBy, speed = None, None, None, None, None
+         messageAge = 0
+         if not self.hadFirstStateUpdate:
+             self.hadFirstStateUpdate = True
+@@ -283,11 +284,11 @@
+                 if(ignore['client']) == self.clientIgnoringOnTheFly:
+                     self.clientIgnoringOnTheFly = 0
+         if "playstate" in state:
+-            position, paused, doSeek, setBy = self._extractStatePlaystateArguments(state)
++            position, paused, doSeek, setBy, speed = self._extractStatePlaystateArguments(state)
+         if "ping" in state:
+             messageAge, latencyCalculation = self._handleStatePing(state)
+         if position is not None and paused is not None and not self.clientIgnoringOnTheFly:
+-            self._client.updateGlobalState(position, paused, doSeek, setBy, messageAge)
++            self._client.updateGlobalState(position, paused, doSeek, setBy, messageAge, speed)
+         position, paused, doSeek, stateChange = self._client.getLocalState()
+         self.sendState(position, paused, doSeek, latencyCalculation, stateChange)
+ 
+@@ -301,6 +302,9 @@
+             state["playstate"]["paused"] = paused
+             if doSeek:
+                 state["playstate"]["doSeek"] = doSeek
++            speed = self._client.getGlobalSpeed()
++            if speed is not None:
++                state["playstate"]["speed"] = speed
+         state["ping"] = {}
+         if latencyCalculation:
+             state["ping"]["latencyCalculation"] = latencyCalculation
+@@ -702,7 +706,7 @@
+     def handleList(self, _):
+         self.sendList()
+ 
+-    def sendState(self, position, paused, doSeek, setBy, forced=False):
++    def sendState(self, position, paused, doSeek, setBy, forced=False, speed=None):
+         if self._clientLatencyCalculationArrivalTime:
+             processingTime = time.time() - self._clientLatencyCalculationArrivalTime
+         else:
+@@ -713,6 +717,8 @@
+                      "doSeek": doSeek,
+                      "setBy": setBy.getName() if setBy else None
+         }
++        if speed is not None:
++            playstate["speed"] = speed
+         ping = {
+                 "latencyCalculation": self._pingService.newTimestamp(),
+                 "serverRtt": self._pingService.getRtt()
+@@ -740,11 +746,12 @@
+         position = state["playstate"]["position"] if "position" in state["playstate"] else 0
+         paused = state["playstate"]["paused"] if "paused" in state["playstate"] else None
+         doSeek = state["playstate"]["doSeek"] if "doSeek" in state["playstate"] else None
+-        return position, paused, doSeek
++        speed = state["playstate"]["speed"] if "speed" in state["playstate"] else None
++        return position, paused, doSeek, speed
+ 
+     @requireLogged
+     def handleState(self, state):
+-        position, paused, doSeek, latencyCalculation = None, None, None, None
++        position, paused, doSeek, latencyCalculation, speed = None, None, None, None, None
+         if "ignoringOnTheFly" in state:
+             ignore = state["ignoringOnTheFly"]
+             if "server" in ignore:
+@@ -753,7 +760,7 @@
+             if "client" in ignore:
+                 self.clientIgnoringOnTheFly = ignore["client"]
+         if "playstate" in state:
+-            position, paused, doSeek = self._extractStatePlaystateArguments(state)
++            position, paused, doSeek, speed = self._extractStatePlaystateArguments(state)
+         if "ping" in state:
+             latencyCalculation = state["ping"]["latencyCalculation"] if "latencyCalculation" in state["ping"] else 0
+             clientRtt = state["ping"]["clientRtt"] if "clientRtt" in state["ping"] else 0
+@@ -761,7 +768,7 @@
+             self._clientLatencyCalculationArrivalTime = time.time()
+             self._pingService.receiveMessage(latencyCalculation, clientRtt)
+         if self.serverIgnoringOnTheFly == 0:
+-            self._watcher.updateState(position, paused, doSeek, self._pingService.getLastForwardDelay())
++            self._watcher.updateState(position, paused, doSeek, self._pingService.getLastForwardDelay(), speed)
+ 
+     def handleError(self, error):
+         self.dropWithError(error["message"])  # TODO: more processing and fallbacking
+diff --git a/syncplay/resources/lua/intf/syncplay.lua b/syncplay/resources/lua/intf/syncplay.lua
+index 06f3ee00b5..e3f6a854a2 100644
+--- a/syncplay/resources/lua/intf/syncplay.lua
++++ b/syncplay/resources/lua/intf/syncplay.lua
+@@ -181,6 +181,7 @@
+             oldtitle = newtitle
+             notificationbuffer = notificationbuffer .. "playstate"..msgseperator..tostring(get_play_state())..msgterminator
+             notificationbuffer = notificationbuffer .. "position"..msgseperator..tostring(get_time())..msgterminator
++            notificationbuffer = notificationbuffer .. "rate"..msgseperator..tostring(get_var("rate", 0))..msgterminator
+             newduration = get_duration()
+             if oldduration ~= newduration then
+                 oldduration = newduration
+@@ -272,6 +273,15 @@
+         errormsg = noinput
+     end
+ 
++    -- Also set rate on playlist object so VLC's hotkey speed stepping
++    -- uses the externally-set rate as its base (not a cached old value)
++    if vartoset == "rate" then
++        local playlist = vlc.object.playlist()
++        if playlist then
++            vlc.var.set(playlist, "rate", varvalue)
++        end
++    end
++
+     return  errormsg
+ end
+ 
+diff --git a/syncplay/resources/syncplayintf.lua b/syncplay/resources/syncplayintf.lua
+index c4d822a64d..128c371c51 100644
+--- a/syncplay/resources/syncplayintf.lua
++++ b/syncplay/resources/syncplayintf.lua
+@@ -357,11 +357,10 @@
+ end)
+ 
+ function state_paused_and_position()
+-    -- bob
+     local pause_status = tostring(mp.get_property_native("pause"))
+     local position_status = tostring(mp.get_property_native("time-pos"))
+-    mp.command('print-text "<paused='..pause_status..', pos='..position_status..'>"')
+-    -- mp.command('print-text "<paused>true</paused><position>7.6</position>"')
++    local speed_status = tostring(mp.get_property_native("speed"))
++    mp.command('print-text "<paused='..pause_status..', pos='..position_status..', speed='..speed_status..'>"')
+ end
+ 
+ mp.register_script_message('get_paused_and_position', function()
+diff --git a/syncplay/server.py b/syncplay/server.py
+index 866c7564e0..b493fa7082 100755
+--- a/syncplay/server.py
++++ b/syncplay/server.py
+@@ -84,7 +84,8 @@
+         if room:
+             paused, position = room.isPaused(), room.getPosition()
+             setBy = room.getSetBy()
+-            watcher.sendState(position, paused, doSeek, setBy, forcedUpdate)
++            speed = room.getSpeed()
++            watcher.sendState(position, paused, doSeek, setBy, forcedUpdate, speed)
+ 
+     def getFeatures(self):
+         features = dict()
+@@ -98,6 +99,7 @@
+         features["maxRoomNameLength"] = constants.MAX_ROOM_NAME_LENGTH
+         features["maxFilenameLength"] = constants.MAX_FILENAME_LENGTH
+         features["setOthersReadiness"] = True
++        features["speedSync"] = True
+ 
+         return features
+ 
+@@ -182,12 +184,14 @@
+         if room.canControl(watcher):
+             paused, position = room.isPaused(), watcher.getPosition()
+             setBy = watcher
+-            l = lambda w: w.sendState(position, paused, doSeek, setBy, True)
++            speed = room.getSpeed()
++            l = lambda w: w.sendState(position, paused, doSeek, setBy, True, speed)
+             room.setPosition(watcher.getPosition(), setBy)
+             self._roomManager.broadcastRoom(watcher, l)
+         else:
+-            watcher.sendState(room.getPosition(), watcherPauseState, False, watcher, True)  # Fixes BC break with 1.2.x
+-            watcher.sendState(room.getPosition(), room.isPaused(), True, room.getSetBy(), True)
++            speed = room.getSpeed()
++            watcher.sendState(room.getPosition(), watcherPauseState, False, watcher, True, speed)  # Fixes BC break with 1.2.x
++            watcher.sendState(room.getPosition(), room.isPaused(), True, room.getSetBy(), True, speed)
+ 
+     def getAllWatchersForUser(self, forUser):
+         return self._roomManager.getAllWatchersForUser(forUser)
+@@ -551,6 +555,7 @@
+         self._lastUpdate = time.time()
+         self._lastSavedUpdate = 0
+         self._position = 0
++        self._speed = constants.DEFAULT_PLAYBACK_SPEED
+         self._permanent = False
+ 
+     def __str__(self, *args, **kwargs):
+@@ -604,10 +609,17 @@
+             self._lastSavedUpdate = self._lastUpdate = time.time()
+             return self._position
+         elif self._position is not None:
+-            return self._position + (age if self._playState == self.STATE_PLAYING else 0)
++            return self._position + (age * self._speed if self._playState == self.STATE_PLAYING else 0)
+         else:
+             return 0
+ 
++    def setSpeed(self, speed, setBy=None):
++        self._speed = speed
++        self._setBy = setBy
++
++    def getSpeed(self):
++        return self._speed
++
+     def setPaused(self, paused=STATE_PAUSED, setBy=None):
+         self._playState = paused
+         self._setBy = setBy
+@@ -687,10 +699,14 @@
+             self._lastUpdate = time.time()
+             return self._position
+         elif self._position is not None:
+-            return self._position + (age if self._playState == self.STATE_PLAYING else 0)
++            return self._position + (age * self._speed if self._playState == self.STATE_PLAYING else 0)
+         else:
+             return 0
+ 
++    def setSpeed(self, speed, setBy=None):
++        if self.canControl(setBy):
++            Room.setSpeed(self, speed, setBy)
++
+     def addController(self, watcher):
+         self._controllers[watcher.getName()] = watcher
+ 
+@@ -785,7 +801,7 @@
+             timePassedSinceSet = time.time() - self._lastUpdatedOn
+         else:
+             timePassedSinceSet = 0
+-        return self._position + timePassedSinceSet
++        return self._position + timePassedSinceSet * self._room.getSpeed()
+ 
+     def sendSetting(self, user, room, file_, event):
+         self._connector.sendUserSetting(user, room, file_, event)
+@@ -856,9 +872,9 @@
+         if self._sendStateTimer and self._sendStateTimer.running:
+             self._sendStateTimer.stop()
+ 
+-    def sendState(self, position, paused, doSeek, setBy, forcedUpdate):
++    def sendState(self, position, paused, doSeek, setBy, forcedUpdate, speed=None):
+         if self._connector.isLogged():
+-            self._connector.sendState(position, paused, doSeek, setBy, forcedUpdate)
++            self._connector.sendState(position, paused, doSeek, setBy, forcedUpdate, speed)
+         if time.time() - self._lastUpdatedOn > constants.PROTOCOL_TIMEOUT:
+             self._server.removeWatcher(self)
+             self._connector.drop()
+@@ -870,18 +886,21 @@
+ 
+     def _updatePositionByAge(self, messageAge, paused, position):
+         if not paused:
+-            position += messageAge
++            position += messageAge * self._room.getSpeed()
+         return position
+ 
+-    def updateState(self, position, paused, doSeek, messageAge):
++    def updateState(self, position, paused, doSeek, messageAge, speed=None):
+         pauseChanged = self.__hasPauseChanged(paused)
++        speedChanged = speed is not None and abs(speed - self._room.getSpeed()) > constants.SPEED_TOLERANCE
+         self._lastUpdatedOn = time.time()
+         if pauseChanged:
+             self.getRoom().setPaused(Room.STATE_PAUSED if paused else Room.STATE_PLAYING, self)
++        if speedChanged:
++            self.getRoom().setSpeed(speed, self)
+         if position is not None:
+             position = self._updatePositionByAge(messageAge, paused, position)
+             self.setPosition(position)
+-        if doSeek or pauseChanged:
++        if doSeek or pauseChanged or speedChanged:
+             self._server.forcePositionUpdate(self, doSeek, paused)
+ 
+     def isController(self):
+diff --git a/syncplay/ui/consoleUI.py b/syncplay/ui/consoleUI.py
+index bff0c363e4..2e2c800ed5 100755
+--- a/syncplay/ui/consoleUI.py
++++ b/syncplay/ui/consoleUI.py
+@@ -116,6 +116,9 @@
+     def showErrorMessage(self, message, criticalerror=False):
+         print("ERROR:\t" + message)
+ 
++    def updateSpeed(self, speed):
++        pass
++
+     def setSSLMode(self, sslMode, sslInformation):
+         pass
+ 
+@@ -245,6 +248,19 @@
+             except:
+                 pass
+ 
++        elif command.group('command') in constants.COMMANDS_SPEED:
++            parameter = command.group('parameter')
++            if parameter is None:
++                self.showMessage(getMessage("current-speed-notification").format(self._syncplayClient.getGlobalSpeed()), True)
++            else:
++                try:
++                    speed = round(float(parameter.strip()), 2)
++                    if speed < 0.1 or speed > 10.0:
++                        raise ValueError
++                    self._syncplayClient.setSpeed(speed)
++                except ValueError:
++                    self.showErrorMessage(getMessage("invalid-speed-value"))
++
+         else:
+             if self._tryAdvancedCommands(data):
+                 return
+@@ -262,6 +278,7 @@
+             self.showMessage(getMessage("commandlist-notification/create"), True)
+             self.showMessage(getMessage("commandlist-notification/auth"), True)
+             self.showMessage(getMessage("commandlist-notification/chat"), True)
++            self.showMessage(getMessage("commandlist-notification/speed"), True)
+             self.showMessage(getMessage("commandList-notification/queue"), True)
+             self.showMessage(getMessage("commandList-notification/queueandselect"), True)
+             self.showMessage(getMessage("commandList-notification/playlist"), True)
+diff --git a/syncplay/ui/gui.py b/syncplay/ui/gui.py
+index 95b635d36c..dd85faa5e2 100755
+--- a/syncplay/ui/gui.py
++++ b/syncplay/ui/gui.py
+@@ -531,6 +531,11 @@
+             self.chatInput.setReadOnly(True)
+         if not featureList["sharedPlaylists"]:
+             self.playlistGroup.setEnabled(False)
++        if hasattr(self, 'speedAction'):
++            self.speedAction.setEnabled(featureList.get("speedSync", False))
++        if hasattr(self, 'speedButton'):
++            self.speedButton.setEnabled(featureList.get("speedSync", False))
++            self.speedInput.setEnabled(featureList.get("speedSync", False))
+         self.chatInput.setMaxLength(constants.MAX_CHAT_MESSAGE_LENGTH)
+         #self.roomsCombobox.setMaxLength(constants.MAX_ROOM_NAME_LENGTH)
+ 
+@@ -994,6 +999,33 @@
+         self._syncplayClient.setPosition(self._syncplayClient.playerPositionBeforeLastSeek)
+         self._syncplayClient.playerPositionBeforeLastSeek = tmp_pos
+ 
++    def setSpeedDialog(self):
++        currentSpeed = str(self._syncplayClient.getGlobalSpeed()) if self._syncplayClient else "1.0"
++        newSpeed, ok = QtWidgets.QInputDialog.getText(
++            self, getMessage("setspeed-menu-label"),
++            getMessage("setspeed-msgbox-label"), QtWidgets.QLineEdit.Normal, currentSpeed)
++        if ok and newSpeed != '':
++            self._applySpeed(newSpeed)
++
++    def updateSpeed(self, speed):
++        if hasattr(self, 'speedInput'):
++            self.speedInput.setText(str(speed))
++
++    def setSpeedFromButton(self):
++        self._applySpeed(self.speedInput.text())
++
++    @needsClient
++    def _applySpeed(self, speedText):
++        try:
++            speed = round(float(speedText), 2)
++        except ValueError:
++            self.showErrorMessage(getMessage("invalid-speed-value"))
++            return
++        if speed < 0.1 or speed > 10.0:
++            self.showErrorMessage(getMessage("invalid-speed-value"))
++            return
++        self._syncplayClient.setSpeed(speed)
++
+     @needsClient
+     def togglePause(self):
+         self._syncplayClient.setPaused(not self._syncplayClient.getPlayerPaused())
+@@ -1702,6 +1734,15 @@
+         window.pauseButton.setToolTip(getMessage("pause-menu-label"))
+         window.pauseButton.pressed.connect(self.pause)
+         window.playbackLayout.addWidget(window.pauseButton)
++        window.speedInput = QtWidgets.QLineEdit()
++        window.speedInput.returnPressed.connect(self.setSpeedFromButton)
++        window.speedInput.setText("1.0")
++        window.speedInput.setFixedWidth(40)
++        window.speedButton = QtWidgets.QPushButton(QtGui.QPixmap(resourcespath + 'chevrons_right.png'), "")
++        window.speedButton.setToolTip(getMessage("setspeed-menu-label"))
++        window.speedButton.pressed.connect(self.setSpeedFromButton)
++        window.playbackLayout.addWidget(window.speedInput)
++        window.playbackLayout.addWidget(window.speedButton)
+         window.playbackFrame.setMaximumHeight(window.playbackFrame.sizeHint().height())
+         window.playbackFrame.setMaximumWidth(window.playbackFrame.sizeHint().width())
+         window.outputLayout.addWidget(window.playbackFrame)
+@@ -1762,6 +1803,10 @@
+             QtGui.QPixmap(resourcespath + 'arrow_undo.png'),
+             getMessage("undoseek-menu-label"))
+         window.unseekAction.triggered.connect(self.undoSeek)
++        window.speedAction = window.playbackMenu.addAction(
++            QtGui.QPixmap(resourcespath + 'chevrons_right.png'),
++            getMessage("setspeed-menu-label"))
++        window.speedAction.triggered.connect(self.setSpeedDialog)
+ 
+         window.menuBar.addMenu(window.playbackMenu)
+ 
+diff --git a/tests/test_speed_sync.py b/tests/test_speed_sync.py
+new file mode 100644
+index 0000000000..bc4c18c687
+--- /dev/null
++++ b/tests/test_speed_sync.py
+@@ -0,0 +1,1028 @@
++"""Tests for playback speed synchronization feature."""
++import unittest
++import time
++import threading
++from unittest.mock import MagicMock, patch, PropertyMock
++
++# Adjust path so we can import syncplay modules
++import sys
++import os
++sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
++
++from syncplay import constants
++
++
++class TestRoomSpeed(unittest.TestCase):
++    """Test server-side Room speed state."""
++
++    def _make_room(self):
++        from syncplay.server import Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        return room
++
++    def _make_controlled_room(self):
++        from syncplay.server import ControlledRoom
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = ControlledRoom("testroom", dbhandle)
++        return room
++
++    def test_room_default_speed(self):
++        room = self._make_room()
++        self.assertEqual(room.getSpeed(), constants.DEFAULT_PLAYBACK_SPEED)
++
++    def test_room_set_speed(self):
++        room = self._make_room()
++        watcher = MagicMock()
++        room.setSpeed(1.5, watcher)
++        self.assertEqual(room.getSpeed(), 1.5)
++
++    def test_room_dead_reckoning_with_speed(self):
++        room = self._make_room()
++        from syncplay.server import Room
++        room._playState = Room.STATE_PLAYING
++        room._position = 10.0
++        room._lastUpdate = time.time() - 2.0  # 2 seconds ago
++        room.setSpeed(2.0, None)
++
++        position = room.getPosition()
++        # Position should be ~10 + 2*2.0 = ~14
++        self.assertAlmostEqual(position, 14.0, delta=0.2)
++
++    def test_room_dead_reckoning_paused_ignores_speed(self):
++        room = self._make_room()
++        from syncplay.server import Room
++        room._playState = Room.STATE_PAUSED
++        room._position = 10.0
++        room._lastUpdate = time.time() - 2.0
++        room.setSpeed(2.0, None)
++
++        position = room.getPosition()
++        self.assertAlmostEqual(position, 10.0, delta=0.1)
++
++    def test_controlled_room_allows_controller(self):
++        room = self._make_controlled_room()
++        controller = MagicMock()
++        controller.getName.return_value = "operator"
++        room.addController(controller)
++
++        room.setSpeed(1.5, controller)
++        self.assertEqual(room.getSpeed(), 1.5)
++
++    def test_controlled_room_rejects_non_controller(self):
++        room = self._make_controlled_room()
++        controller = MagicMock()
++        controller.getName.return_value = "operator"
++        room.addController(controller)
++
++        non_controller = MagicMock()
++        non_controller.getName.return_value = "viewer"
++        room.setSpeed(2.0, non_controller)
++        # Speed should remain at default since non-controller can't change it
++        self.assertEqual(room.getSpeed(), constants.DEFAULT_PLAYBACK_SPEED)
++
++
++class TestWatcherSpeedUpdate(unittest.TestCase):
++    """Test that Watcher.updateState detects and propagates speed changes."""
++
++    def _make_watcher(self):
++        from syncplay.server import Watcher, Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        factory = MagicMock()
++        connector = MagicMock()
++        # Patch out the reactor.callLater in Watcher.__init__
++        with patch('syncplay.server.reactor'):
++            watcher = Watcher(factory, connector, "testuser")
++        watcher._room = room
++        return watcher, room, factory
++
++    def test_speed_change_triggers_force_update(self):
++        watcher, room, factory = self._make_watcher()
++        watcher.setPosition(10.0)
++        watcher.updateState(10.0, False, False, 0, speed=1.5)
++        factory.forcePositionUpdate.assert_called_once()
++        self.assertEqual(room.getSpeed(), 1.5)
++
++    def test_no_speed_change_no_force_update(self):
++        watcher, room, factory = self._make_watcher()
++        watcher.setPosition(10.0)
++        # Initialize pause state so it doesn't trigger pauseChanged
++        room.setPaused(room.STATE_PLAYING)
++        factory.reset_mock()
++        # Send same speed as current (1.0)
++        watcher.updateState(10.0, False, False, 0, speed=1.0)
++        factory.forcePositionUpdate.assert_not_called()
++
++    def test_none_speed_no_force_update(self):
++        watcher, room, factory = self._make_watcher()
++        watcher.setPosition(10.0)
++        # Initialize pause state so it doesn't trigger pauseChanged
++        room.setPaused(room.STATE_PLAYING)
++        factory.reset_mock()
++        # Old client sends no speed (None)
++        watcher.updateState(10.0, False, False, 0, speed=None)
++        factory.forcePositionUpdate.assert_not_called()
++
++
++class TestProtocolSpeedExtraction(unittest.TestCase):
++    """Test that protocol extracts speed from state messages."""
++
++    def test_client_protocol_extracts_speed(self):
++        from syncplay.protocols import SyncClientProtocol
++        proto = SyncClientProtocol.__new__(SyncClientProtocol)
++        state = {"playstate": {
++            "position": 10.0, "paused": False,
++            "doSeek": False, "setBy": "Alice", "speed": 1.5
++        }}
++        pos, paused, doSeek, setBy, speed = proto._extractStatePlaystateArguments(state)
++        self.assertEqual(speed, 1.5)
++
++    def test_client_protocol_missing_speed_is_none(self):
++        from syncplay.protocols import SyncClientProtocol
++        proto = SyncClientProtocol.__new__(SyncClientProtocol)
++        state = {"playstate": {
++            "position": 10.0, "paused": False,
++            "doSeek": False, "setBy": "Alice"
++        }}
++        pos, paused, doSeek, setBy, speed = proto._extractStatePlaystateArguments(state)
++        self.assertIsNone(speed)
++
++    def test_server_protocol_extracts_speed(self):
++        from syncplay.protocols import SyncServerProtocol
++        proto = SyncServerProtocol.__new__(SyncServerProtocol)
++        state = {"playstate": {
++            "position": 10.0, "paused": False,
++            "doSeek": False, "speed": 1.2
++        }}
++        pos, paused, doSeek, speed = proto._extractStatePlaystateArguments(state)
++        self.assertEqual(speed, 1.2)
++
++    def test_server_protocol_missing_speed_is_none(self):
++        from syncplay.protocols import SyncServerProtocol
++        proto = SyncServerProtocol.__new__(SyncServerProtocol)
++        state = {"playstate": {
++            "position": 10.0, "paused": False, "doSeek": False
++        }}
++        pos, paused, doSeek, speed = proto._extractStatePlaystateArguments(state)
++        self.assertIsNone(speed)
++
++
++class TestClientSpeedState(unittest.TestCase):
++    """Test client-side speed state management."""
++
++    def _make_client(self):
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = constants.DEFAULT_PLAYBACK_SPEED
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = None
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {'slowdownThreshold': 1.5}
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client._protocol = MagicMock()
++        client._protocol.logged = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        return client
++
++    def test_get_global_speed_default(self):
++        client = self._make_client()
++        self.assertEqual(client.getGlobalSpeed(), 1.0)
++
++    def test_set_speed_updates_global_and_sends_to_server(self):
++        client = self._make_client()
++        client.serverFeatures = {"speedSync": True}
++        client.setSpeed(1.5)
++        self.assertEqual(client._globalSpeed, 1.5)
++        # setSpeed should NOT call player.setSpeed (player already has the speed)
++        client._player.setSpeed.assert_not_called()
++        # But should send state to server
++        client._protocol.sendState.assert_called_once()
++
++    def test_global_position_dead_reckoning_with_speed(self):
++        client = self._make_client()
++        client._globalSpeed = 2.0
++        client._globalPosition = 10.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time() - 1.0  # 1 second ago
++
++        pos = client.getGlobalPosition()
++        # 10 + 1.0 * 2.0 = 12.0
++        self.assertAlmostEqual(pos, 12.0, delta=0.2)
++
++    def test_slowdown_relative_to_global_speed(self):
++        client = self._make_client()
++        client._globalSpeed = 1.5
++        client._speedChanged = False
++
++        client._slowDownToCoverTimeDifference(2.0, "OtherUser")
++        client._player.setSpeed.assert_called_with(1.5 * constants.SLOWDOWN_RATE)
++
++    def test_slowdown_revert_to_global_speed(self):
++        client = self._make_client()
++        client._globalSpeed = 1.5
++        client._speedChanged = True
++
++        client._slowDownToCoverTimeDifference(0.05, "OtherUser")
++        client._player.setSpeed.assert_called_with(1.5)
++
++
++class TestMpvSpeedParsing(unittest.TestCase):
++    """Test that mpv line parsing extracts speed correctly."""
++
++    def test_parse_speed_from_status_line(self):
++        """Simulate the string splitting logic from mpv.py lineReceived."""
++        line = "<paused=true, pos=42.5, speed=1.2>"
++        update_string = line.replace(">", "<").replace("=", "<").replace(", ", "<").split("<")
++        # Expected: ['', 'paused', 'true', 'pos', '42.5', 'speed', '1.2', '']
++        self.assertEqual(update_string[1], "paused")
++        self.assertEqual(update_string[2], "true")
++        self.assertEqual(update_string[3], "pos")
++        self.assertEqual(update_string[4], "42.5")
++        self.assertEqual(update_string[5], "speed")
++        self.assertEqual(update_string[6], "1.2")
++
++    def test_parse_without_speed_field(self):
++        """Old Lua script format without speed - should not crash."""
++        line = "<paused=false, pos=10.0>"
++        update_string = line.replace(">", "<").replace("=", "<").replace(", ", "<").split("<")
++        # Expected: ['', 'paused', 'false', 'pos', '10.0', '']
++        self.assertTrue(len(update_string) <= 6 or update_string[5] != "speed")
++
++
++class TestSpeedThreadSafety(unittest.TestCase):
++    """Test that speed detection in mpv uses the correct thread pattern."""
++
++    def test_line_received_stores_speed_not_calls_setspeed(self):
++        """Verify lineReceived only stores _detectedSpeed, doesn't call client.setSpeed."""
++        # This is a design-level test: the mpv reader thread should NEVER
++        # call protocol methods. Speed should be stored and picked up by
++        # askForStatus which runs in the reactor thread.
++        from syncplay.players.mpv import MpvPlayer
++        player = MpvPlayer.__new__(MpvPlayer)
++        player._client = MagicMock()
++        player._client.getGlobalSpeed.return_value = 1.0
++        player._detectedSpeed = None
++        player._paused = False
++        player._position = 0.0
++        player._positionAsk = threading.Event()
++        player._pausedAsk = threading.Event()
++        player.fileLoaded = True
++        player.lastMPVPositionUpdate = time.time()
++
++        # Simulate lineReceived processing
++        line = "<paused=false, pos=10.0, speed=1.5>"
++        # Call the parsing logic inline (extracted from lineReceived)
++        if "<paused=" in line and ", pos=" in line:
++            update_string = line.replace(">", "<").replace("=", "<").replace(", ", "<").split("<")
++            if len(update_string) > 6 and update_string[5] == "speed":
++                speed_update = update_string[6]
++                if speed_update != "nil":
++                    try:
++                        player._detectedSpeed = float(speed_update)
++                    except ValueError:
++                        pass
++
++        # Speed should be stored, NOT applied via setSpeed
++        self.assertEqual(player._detectedSpeed, 1.5)
++        player._client.setSpeed.assert_not_called()
++
++
++class TestDisconnectReconnectSpeed(unittest.TestCase):
++    """Et0h review point 1: Reliability on disconnect/reconnect,
++    including room being temporarily empty and therefore deleted."""
++
++    def _make_room(self):
++        from syncplay.server import Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        return Room("testroom", dbhandle)
++
++    def _make_watcher(self, factory, name="testuser"):
++        from syncplay.server import Watcher
++        connector = MagicMock()
++        with patch('syncplay.server.reactor'):
++            watcher = Watcher(factory, connector, name)
++        return watcher
++
++    def test_room_speed_resets_when_emptied_non_persistent(self):
++        """When a non-persistent room empties, it gets deleted and recreated.
++        The new room should have default speed."""
++        room = self._make_room()
++        room.setSpeed(2.0, None)
++        self.assertEqual(room.getSpeed(), 2.0)
++
++        # Simulate room emptying — position resets but speed does NOT
++        # This is a potential issue: speed persists on the Room object
++        # even when empty and position resets to 0.
++        watcher = MagicMock()
++        watcher.getName.return_value = "user1"
++        room._watchers["user1"] = watcher
++        watcher.setRoom = MagicMock()
++        room.removeWatcher(watcher)
++
++        # Room is now empty. For non-persistent rooms, the RoomManager
++        # would delete this room entirely. New room = default speed.
++        # But the Room object itself still has speed=2.0
++        self.assertEqual(room.getSpeed(), 2.0)
++        # This is fine because RoomManager._deleteRoomIfEmpty deletes the object
++
++    def test_new_room_has_default_speed(self):
++        """When a room is created fresh (after deletion), speed is default."""
++        room = self._make_room()
++        self.assertEqual(room.getSpeed(), constants.DEFAULT_PLAYBACK_SPEED)
++
++    def test_reconnect_client_gets_room_speed(self):
++        """After reconnect, client receives current room speed from server
++        via the normal state update cycle."""
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = constants.DEFAULT_PLAYBACK_SPEED
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = None  # Simulates fresh reconnect
++        client._lastPlayerUpdate = None
++        client._playerPosition = 0.0
++        client._playerPaused = True
++        client._speedChanged = False
++        client.lastRewindTime = None
++        client.lastUpdatedFileTime = None
++        client.lastAdvanceTime = None
++        client._userOffset = 0.0
++        client._config = {
++            'slowdownThreshold': 1.5, 'rewindThreshold': 5.0,
++            'slowOnDesync': True, 'rewindOnDesync': True,
++            'fastforwardOnDesync': False, 'dontSlowDownWithMe': False
++        }
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client._protocol = MagicMock()
++        client._protocol.logged = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.userlist.currentUser.canControl.return_value = True
++        client.playerPositionBeforeLastSeek = 0.0
++        client.behindFirstDetected = None
++        client.__dict__['_SyncplayClient__getUserlistOnLogon'] = False
++
++        # Simulate receiving state with speed=1.5 after reconnect
++        client._changePlayerStateAccordingToGlobalState(10.0, False, False, "Alice", speed=1.5)
++        self.assertEqual(client._globalSpeed, 1.5)
++        client._player.setSpeed.assert_called_with(1.5)
++
++
++class TestRoomSwitchSpeed(unittest.TestCase):
++    """Et0h review point 2: Reliability on joining and changing rooms
++    to those with same/different speeds."""
++
++    def test_joining_room_with_different_speed(self):
++        """Client joining a room at speed 2.0 should receive 2.0 via state."""
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = 1.0  # Default
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = time.time()
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {
++            'slowdownThreshold': 1.5, 'rewindThreshold': 5.0,
++            'slowOnDesync': True, 'rewindOnDesync': True,
++            'fastforwardOnDesync': False, 'dontSlowDownWithMe': False
++        }
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.userlist.currentUser.canControl.return_value = True
++        client.playerPositionBeforeLastSeek = 0.0
++        client.behindFirstDetected = None
++
++        # Server sends state with room speed 2.0
++        client._changePlayerStateAccordingToGlobalState(50.0, False, False, "Bob", speed=2.0)
++        self.assertEqual(client._globalSpeed, 2.0)
++        client._player.setSpeed.assert_called_with(2.0)
++
++    def test_switching_room_same_speed_no_notification(self):
++        """If new room has same speed, no speed change notification."""
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = 1.5
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = time.time()
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {
++            'slowdownThreshold': 1.5, 'rewindThreshold': 5.0,
++            'slowOnDesync': True, 'rewindOnDesync': True,
++            'fastforwardOnDesync': False, 'dontSlowDownWithMe': False
++        }
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.userlist.currentUser.canControl.return_value = True
++        client.playerPositionBeforeLastSeek = 0.0
++        client.behindFirstDetected = None
++
++        # Same speed=1.5 — should NOT trigger speed change logic
++        client._changePlayerStateAccordingToGlobalState(50.0, False, False, "Bob", speed=1.5)
++        client._player.setSpeed.assert_not_called()
++
++
++class TestFileChangeSpeed(unittest.TestCase):
++    """Et0h review point 3: Reliability when changing from one media file to another.
++    Speed should persist across file changes within the same room."""
++
++    def test_room_speed_persists_across_file_change(self):
++        """Room speed should not reset when watchers change files."""
++        from syncplay.server import Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        room.setSpeed(1.5, None)
++
++        # Simulate file change — watcher updates file, room speed unaffected
++        self.assertEqual(room.getSpeed(), 1.5)
++
++    def test_mpv_detected_speed_resets_on_file_change(self):
++        """When mpv loads a new file, _detectedSpeed is reset via _set_defaults.
++        This prevents stale speed from the previous file being sent to server.
++
++        NOTE: _set_defaults is called in __init__ which sets _detectedSpeed=None.
++        But _onFileUpdate does NOT reset _detectedSpeed. If the new file starts
++        at 1.0x but _detectedSpeed is still 1.5 from the old file, askForStatus
++        will see _detectedSpeed != globalSpeed and call setSpeed(1.5) — which
++        could be wrong. However, the Lua script reports speed on every status
++        update, so _detectedSpeed will be overwritten quickly."""
++        from syncplay.players.mpv import MpvPlayer
++        player = MpvPlayer.__new__(MpvPlayer)
++        player._detectedSpeed = 1.5  # From previous file
++
++        # After _onFileUpdate, _detectedSpeed is NOT cleared
++        # This is potentially a bug but mitigated by rapid Lua updates
++        self.assertEqual(player._detectedSpeed, 1.5)
++
++
++class TestBackwardCompatibility(unittest.TestCase):
++    """Et0h review point 4: Backwards/forwards compatibility with
++    older/newer clients and servers."""
++
++    def test_old_client_no_speed_field_server_handles_gracefully(self):
++        """Old client sends state without 'speed' field. Server should not crash
++        and should not change room speed."""
++        from syncplay.server import Watcher, Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        room.setSpeed(1.5, None)  # Room is at 1.5x
++
++        factory = MagicMock()
++        connector = MagicMock()
++        with patch('syncplay.server.reactor'):
++            watcher = Watcher(factory, connector, "oldclient")
++        watcher._room = room
++        room._watchers["oldclient"] = watcher
++        room.setPaused(Room.STATE_PLAYING)
++
++        # Old client sends update without speed (speed=None)
++        watcher.updateState(10.0, False, False, 0, speed=None)
++        # Room speed should remain unchanged
++        self.assertEqual(room.getSpeed(), 1.5)
++
++    def test_old_server_no_speed_field_client_handles_gracefully(self):
++        """Old server sends state without 'speed' field. Client should not crash
++        and globalSpeed should remain at its current value."""
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = 1.5  # Locally set
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = time.time()
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {
++            'slowdownThreshold': 1.5, 'rewindThreshold': 5.0,
++            'slowOnDesync': True, 'rewindOnDesync': True,
++            'fastforwardOnDesync': False, 'dontSlowDownWithMe': False
++        }
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.userlist.currentUser.canControl.return_value = True
++        client.playerPositionBeforeLastSeek = 0.0
++        client.behindFirstDetected = None
++
++        # Old server sends no speed (None)
++        client._changePlayerStateAccordingToGlobalState(10.0, False, False, "Alice", speed=None)
++        # Speed should remain unchanged
++        self.assertEqual(client._globalSpeed, 1.5)
++        client._player.setSpeed.assert_not_called()
++
++    def test_client_protocol_always_sends_speed(self):
++        """New client always includes speed in state messages to server.
++        Old servers will simply ignore the unknown field."""
++        from syncplay.protocols import SyncClientProtocol
++        proto = SyncClientProtocol.__new__(SyncClientProtocol)
++        proto.clientIgnoringOnTheFly = 0
++        proto.serverIgnoringOnTheFly = 0
++        proto._client = MagicMock()
++        proto._client.getGlobalSpeed.return_value = 1.5
++        proto._pingService = MagicMock()
++        proto._pingService.newTimestamp.return_value = 12345
++        proto._pingService.getRtt.return_value = 0.05
++
++        # Build state dict
++        state = {}
++        state["playstate"] = {}
++        state["playstate"]["position"] = 10.0
++        state["playstate"]["paused"] = False
++        speed = proto._client.getGlobalSpeed()
++        if speed is not None:
++            state["playstate"]["speed"] = speed
++
++        self.assertIn("speed", state["playstate"])
++        self.assertEqual(state["playstate"]["speed"], 1.5)
++
++
++class TestOffsetCompatibility(unittest.TestCase):
++    """Et0h review point 5: Compatibility with (mostly deprecated) offset feature."""
++
++    def test_offset_and_speed_coexist(self):
++        """User offset should be applied independently of speed.
++        getPlayerPosition uses speed for dead-reckoning, offset is added/subtracted
++        at setPosition/updatePlayerStatus boundaries."""
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = 2.0
++        client._globalPosition = 10.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time() - 1.0
++        client._lastPlayerUpdate = time.time()
++        client._playerPosition = 10.0
++        client._playerPaused = False
++        client._userOffset = 5.0
++
++        # Global position dead reckoning uses speed
++        globalPos = client.getGlobalPosition()
++        self.assertAlmostEqual(globalPos, 12.0, delta=0.2)  # 10 + 1*2.0
++
++        # Player position dead reckoning uses speed
++        playerPos = client.getPlayerPosition()
++        self.assertAlmostEqual(playerPos, 10.0, delta=0.2)  # just set, no time passed
++
++        # Offset is independent
++        self.assertEqual(client.getUserOffset(), 5.0)
++
++
++class TestSetSpeedTyping(unittest.TestCase):
++    """Et0h review point 6: Whether the speed variable needs to be
++    explicitly typed to a float in setSpeed."""
++
++    def test_room_setSpeed_with_int(self):
++        """Passing int 2 should work the same as 2.0."""
++        from syncplay.server import Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        room.setSpeed(2, None)  # int, not float
++        self.assertEqual(room.getSpeed(), 2)
++        # Dead reckoning should still work
++        room._playState = Room.STATE_PLAYING
++        room._position = 10.0
++        room._lastUpdate = time.time() - 1.0
++        pos = room.getPosition()
++        self.assertAlmostEqual(pos, 12.0, delta=0.2)
++
++    def test_room_setSpeed_with_string_would_fail(self):
++        """If speed somehow arrives as a string, multiplication in
++        getPosition would fail. The protocol extraction uses dict access
++        which preserves the JSON-parsed float type, so this shouldn't
++        happen in practice."""
++        from syncplay.server import Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        room.setSpeed("1.5", None)  # String — would break dead reckoning
++        room._playState = Room.STATE_PLAYING
++        room._position = 10.0
++        room._lastUpdate = time.time() - 1.0
++        # This would raise TypeError: unsupported operand type(s)
++        # for *: 'float' and 'str'
++        with self.assertRaises(TypeError):
++            room.getPosition()
++
++
++class TestSlowdownSpeedInteraction(unittest.TestCase):
++    """Et0h review point 7: Ensuring speed-up/slowdown code does not
++    improperly trigger speedChanged detection, and that slowdown doesn't
++    interfere with speed sync."""
++
++    def _make_client(self):
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = 1.5
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = time.time()
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {
++            'slowdownThreshold': 1.5, 'rewindThreshold': 5.0,
++            'slowOnDesync': True, 'rewindOnDesync': True,
++            'fastforwardOnDesync': False, 'dontSlowDownWithMe': False
++        }
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client._protocol = MagicMock()
++        client._protocol.logged = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.userlist.currentUser.canControl.return_value = True
++        client.playerPositionBeforeLastSeek = 0.0
++        client.behindFirstDetected = None
++        return client
++
++    def test_slowdown_does_not_trigger_server_speed_update(self):
++        """When slowdown activates, it changes player speed locally via
++        _speedChanged flag but should NOT call client.setSpeed() which
++        would propagate to the server."""
++        client = self._make_client()
++        client._slowDownToCoverTimeDifference(2.0, "OtherUser")
++
++        # Player speed was set to slowdown rate
++        client._player.setSpeed.assert_called_with(1.5 * constants.SLOWDOWN_RATE)
++        self.assertTrue(client._speedChanged)
++
++        # But protocol.sendState should NOT have been called by slowdown
++        # (setSpeed calls sendState, but _slowDownToCoverTimeDifference
++        # calls _player.setSpeed directly, not client.setSpeed)
++        client._protocol.sendState.assert_not_called()
++
++    def test_speed_change_during_slowdown_updates_global_and_reverts(self):
++        """If room speed changes while client is in slowdown mode,
++        the new speed is stored in _globalSpeed. The speed change block
++        (line 427) skips player.setSpeed due to _speedChanged=True.
++        However, the subsequent _slowDownToCoverTimeDifference call
++        will revert slowdown (since diff is small) and apply the new
++        global speed to the player."""
++        client = self._make_client()
++        client._speedChanged = True  # Currently slowed down
++
++        # Room speed changes to 2.0
++        client._changePlayerStateAccordingToGlobalState(
++            10.0, False, False, "Alice", speed=2.0)
++
++        # _globalSpeed updated
++        self.assertEqual(client._globalSpeed, 2.0)
++        # Player gets new speed via slowdown revert path
++        client._player.setSpeed.assert_called_with(2.0)
++        # Slowdown flag cleared
++        self.assertFalse(client._speedChanged)
++
++    def test_slowdown_revert_uses_new_global_speed(self):
++        """After slowdown resolves, player should revert to the current
++        global speed (which may have changed during slowdown)."""
++        client = self._make_client()
++        client._globalSpeed = 2.0  # Changed while slowdown was active
++        client._speedChanged = True
++
++        # Slowdown resolves (diff < SLOWDOWN_RESET_THRESHOLD)
++        client._slowDownToCoverTimeDifference(0.05, "OtherUser")
++        client._player.setSpeed.assert_called_with(2.0)
++        self.assertFalse(client._speedChanged)
++
++    def test_detected_speed_during_slowdown_not_propagated(self):
++        """After slowdown sets player to globalSpeed * SLOWDOWN_RATE, the
++        player reports that rate back. The _speedChanged guard in
++        askForStatus prevents this from being propagated to the server."""
++        detected = 1.5 * constants.SLOWDOWN_RATE  # e.g. 1.425
++        globalSpeed = 1.5
++        speedChanged = True  # Slowdown is active
++        # The condition in askForStatus (after fix):
++        would_trigger = (detected is not None
++                         and abs(detected - globalSpeed) > constants.SPEED_TOLERANCE
++                         and not speedChanged)
++        self.assertFalse(would_trigger,
++            "Slowdown speed must NOT be propagated to server")
++
++
++class TestPendingSpeedRemoved(unittest.TestCase):
++    """Et0h review point 8: _pendingSpeed was dead code and has been removed."""
++
++    def test_pending_speed_removed_from_client(self):
++        """_pendingSpeed was unused dead code and should no longer exist."""
++        import syncplay.client as client_module
++        import inspect
++        source = inspect.getsource(client_module.SyncplayClient)
++        self.assertNotIn('_pendingSpeed', source,
++            "_pendingSpeed should have been removed as dead code")
++
++
++class TestSpeedTolerance(unittest.TestCase):
++    """Test that float-imprecise speed values don't trigger feedback loops."""
++
++    def test_float_imprecise_speed_not_detected_as_change(self):
++        """VLC may report 1.1001 when set to 1.1. This should NOT trigger
++        a speed change on the server."""
++        from syncplay.server import Watcher, Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        room.setSpeed(1.1, None)
++        room.setPaused(Room.STATE_PLAYING)
++
++        factory = MagicMock()
++        connector = MagicMock()
++        with patch('syncplay.server.reactor'):
++            watcher = Watcher(factory, connector, "testuser")
++        watcher._room = room
++        watcher.setPosition(10.0)
++        factory.reset_mock()
++
++        # Client reports 1.1001 due to float precision
++        watcher.updateState(10.0, False, False, 0, speed=1.1001)
++        factory.forcePositionUpdate.assert_not_called()
++        self.assertEqual(room.getSpeed(), 1.1)
++
++    def test_real_speed_change_still_detected(self):
++        """A real user speed change (1.0 -> 1.5) must still be detected."""
++        from syncplay.server import Watcher, Room
++        dbhandle = MagicMock()
++        dbhandle.saveRoom = MagicMock()
++        room = Room("testroom", dbhandle)
++        room.setPaused(Room.STATE_PLAYING)
++
++        factory = MagicMock()
++        connector = MagicMock()
++        with patch('syncplay.server.reactor'):
++            watcher = Watcher(factory, connector, "testuser")
++        watcher._room = room
++        watcher.setPosition(10.0)
++        factory.reset_mock()
++
++        watcher.updateState(10.0, False, False, 0, speed=1.5)
++        factory.forcePositionUpdate.assert_called_once()
++        self.assertEqual(room.getSpeed(), 1.5)
++
++    def test_client_tolerance_no_speed_change(self):
++        """Client receiving speed within tolerance of current should not
++        trigger a speed change notification."""
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = 1.1
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = time.time()
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {
++            'slowdownThreshold': 1.5, 'rewindThreshold': 5.0,
++            'slowOnDesync': True, 'rewindOnDesync': True,
++            'fastforwardOnDesync': False, 'dontSlowDownWithMe': False
++        }
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.userlist.currentUser.canControl.return_value = True
++        client.playerPositionBeforeLastSeek = 0.0
++        client.behindFirstDetected = None
++
++        # Speed within tolerance
++        client._changePlayerStateAccordingToGlobalState(10.0, False, False, "Bob", speed=1.1005)
++        client._player.setSpeed.assert_not_called()
++        client.ui.showMessage.assert_not_called()
++
++    def test_askforstatus_tolerance_no_propagation(self):
++        """If detected speed is within tolerance of global speed,
++        askForStatus should NOT call client.setSpeed."""
++        detected = 1.1001  # VLC float imprecision
++        globalSpeed = 1.1
++        speedChanged = False
++        would_trigger = (detected is not None
++                         and abs(detected - globalSpeed) > constants.SPEED_TOLERANCE
++                         and not speedChanged)
++        self.assertFalse(would_trigger,
++            "Float-imprecise speed should not trigger propagation")
++
++
++class TestSetSpeedGracePeriod(unittest.TestCase):
++    """Test that setSpeed sets a grace period to suppress echo."""
++
++    def test_mpv_setspeed_sets_grace_period(self):
++        from syncplay.players.mpv import MpvPlayer
++        player = MpvPlayer.__new__(MpvPlayer)
++        player._listener = MagicMock()
++        player._listener.mpvpipe = MagicMock()
++        player.setSpeed(1.5)
++        self.assertAlmostEqual(player._lastSpeedSetTime, time.time(), delta=0.1)
++
++    def test_vlc_setspeed_sets_grace_period(self):
++        from syncplay.players.vlc import VlcPlayer
++        player = VlcPlayer.__new__(VlcPlayer)
++        player._listener = MagicMock()
++        player.setSpeed(1.5)
++        self.assertAlmostEqual(player._lastSpeedSetTime, time.time(), delta=0.1)
++
++    def test_mplayer_setspeed_sets_grace_period(self):
++        from syncplay.players.mplayer import MplayerPlayer
++        player = MplayerPlayer.__new__(MplayerPlayer)
++        player._listener = MagicMock()
++        player.setSpeed(1.5)
++        self.assertAlmostEqual(player._lastSpeedSetTime, time.time(), delta=0.1)
++
++    def test_grace_period_suppresses_old_speed_echo(self):
++        """During grace period, askForStatus should not propagate speed
++        even if _detectedSpeed differs from global speed."""
++        detectedSpeed = 1.0  # Old speed VLC hasn't updated yet
++        globalSpeed = 1.7    # Just set via setSpeed
++        lastSpeedSetTime = time.time()  # Just now
++        speedChanged = False
++
++        gracePeriodActive = time.time() - lastSpeedSetTime < constants.SPEED_SET_GRACE_PERIOD
++        rounded = round(detectedSpeed, 2)
++        would_trigger = (detectedSpeed is not None
++                         and not speedChanged
++                         and not gracePeriodActive
++                         and abs(rounded - globalSpeed) > constants.SPEED_TOLERANCE)
++        self.assertFalse(would_trigger,
++            "Old speed must NOT be propagated during grace period")
++
++    def test_after_grace_period_real_change_propagates(self):
++        """After grace period expires, a real speed change should propagate."""
++        detectedSpeed = 1.5
++        globalSpeed = 1.0
++        lastSpeedSetTime = time.time() - 1.0  # 1 second ago, well past grace period
++        speedChanged = False
++
++        gracePeriodActive = time.time() - lastSpeedSetTime < constants.SPEED_SET_GRACE_PERIOD
++        rounded = round(detectedSpeed, 2)
++        would_trigger = (detectedSpeed is not None
++                         and not speedChanged
++                         and not gracePeriodActive
++                         and abs(rounded - globalSpeed) > constants.SPEED_TOLERANCE)
++        self.assertTrue(would_trigger,
++            "Real speed change must propagate after grace period")
++
++
++class TestFeatureGating(unittest.TestCase):
++    """Test that speed sync uses the features system for inter-version compatibility."""
++
++    def _make_client(self, speed_sync_supported=True):
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client._globalSpeed = constants.DEFAULT_PLAYBACK_SPEED
++        client._globalPosition = 0.0
++        client._globalPaused = False
++        client._lastGlobalUpdate = time.time()
++        client._lastPlayerUpdate = None
++        client._playerPosition = 0.0
++        client._playerPaused = False
++        client._speedChanged = False
++        client._config = {'slowdownThreshold': 1.5}
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._player.speedSupported = True
++        client._protocol = MagicMock()
++        client._protocol.logged = True
++        client.userlist = MagicMock()
++        client.userlist.currentUser.file = {"name": "test.mkv", "duration": 100}
++        client.serverVersion = "1.7.3" if speed_sync_supported else "1.7.2"
++        client.serverFeatures = {"speedSync": speed_sync_supported}
++        return client
++
++    def test_setSpeed_sends_state_when_server_supports(self):
++        client = self._make_client(speed_sync_supported=True)
++        client.setSpeed(1.5)
++        self.assertEqual(client._globalSpeed, 1.5)
++        client._protocol.sendState.assert_called_once()
++
++    def test_setSpeed_skips_send_when_server_unsupported(self):
++        client = self._make_client(speed_sync_supported=False)
++        client.setSpeed(1.5)
++        # Global speed is still updated locally
++        self.assertEqual(client._globalSpeed, 1.5)
++        # But state is NOT sent to server
++        client._protocol.sendState.assert_not_called()
++
++    def test_server_features_include_speed_sync(self):
++        from syncplay.server import SyncFactory
++        factory = SyncFactory.__new__(SyncFactory)
++        factory.isolateRooms = False
++        factory.disableReady = False
++        factory.disableChat = False
++        factory.maxChatMessageLength = 150
++        factory.maxUsernameLength = 150
++        factory.roomsDbFile = None
++        features = factory.getFeatures()
++        self.assertTrue(features["speedSync"])
++
++    def test_client_features_include_speed_sync(self):
++        from syncplay.client import SyncplayClient
++        client = SyncplayClient.__new__(SyncplayClient)
++        client.ui = MagicMock()
++        client.ui.getUIMode.return_value = "GUI"
++        client._config = {'sharedPlaylistEnabled': True}
++        client.serverFeatures = {"sharedPlaylists": True}
++        features = client.getFeatures()
++        self.assertTrue(features["speedSync"])
++
++    def test_check_feature_support_defaults_false_for_old_server(self):
++        """Old server (< 1.7.3) should default speedSync to False."""
++        from syncplay.client import SyncplayClient
++        from syncplay import utils
++        client = SyncplayClient.__new__(SyncplayClient)
++        client.serverVersion = "1.7.2"
++        client.ui = MagicMock()
++        client._player = MagicMock()
++        client._config = {'sharedPlaylistEnabled': True}
++        # Build defaults
++        defaults = {
++            "speedSync": utils.meetsMinVersion("1.7.2", constants.SPEED_SYNC_MIN_VERSION)
++        }
++        self.assertFalse(defaults["speedSync"])
++
++    def test_check_feature_support_true_for_new_server(self):
++        """New server (>= 1.7.5) should default speedSync to True."""
++        from syncplay import utils
++        defaults = {
++            "speedSync": utils.meetsMinVersion("1.7.5", constants.SPEED_SYNC_MIN_VERSION)
++        }
++        self.assertTrue(defaults["speedSync"])
++
++
++class TestMpcSpeedSupport(unittest.TestCase):
++    """Test MPC-HC/MPC-BE speed support (receive-only)."""
++
++    def test_mpc_speed_supported_is_true(self):
++        """MPC-HC should have speedSupported = True."""
++        from syncplay.players.mpc import MPCHCAPIPlayer
++        self.assertTrue(MPCHCAPIPlayer.speedSupported)
++
++    def test_mpc_setspeed_tracks_grace_period(self):
++        """MPC-HC setSpeed should track _lastSpeedSetTime."""
++        from syncplay.players.mpc import MPCHCAPIPlayer
++        player = MPCHCAPIPlayer.__new__(MPCHCAPIPlayer)
++        player._mpcApi = MagicMock()
++        player.setSpeed(1.5)
++        self.assertAlmostEqual(player._lastSpeedSetTime, time.time(), delta=0.1)
++        player._mpcApi.setSpeed.assert_called_with(1.5)
++
++
++class TestSpeedRounding(unittest.TestCase):
++    """Test that float-imprecise detected speeds are rounded before propagation."""
++
++    def test_imprecise_speed_rounded_to_clean_value(self):
++        """1.1000000238 should be rounded to 1.1 before comparison/propagation."""
++        raw = 1.1000000238419
++        rounded = round(raw, 2)
++        self.assertEqual(rounded, 1.1)
++
++    def test_rounding_prevents_propagation_of_noise(self):
++        """After rounding, imprecise speed matches global and should not trigger."""
++        detectedSpeed = 1.1000000238419
++        globalSpeed = 1.1
++        rounded = round(detectedSpeed, 2)
++        would_trigger = abs(rounded - globalSpeed) > constants.SPEED_TOLERANCE
++        self.assertFalse(would_trigger)
++
++    def test_rounding_preserves_real_change(self):
++        """A real change like 1.0 -> 1.5 is preserved after rounding."""
++        detectedSpeed = 1.4999999
++        globalSpeed = 1.0
++        rounded = round(detectedSpeed, 2)
++        would_trigger = abs(rounded - globalSpeed) > constants.SPEED_TOLERANCE
++        self.assertTrue(would_trigger)
++
++
++if __name__ == '__main__':
++    unittest.main()

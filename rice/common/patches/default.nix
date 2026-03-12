@@ -50,6 +50,10 @@
         };
 
         syncplay = prev.syncplay.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            ./syncplay-speed.patch
+          ];
+
           postFixup = (old.postFixup or "") + ''
             rm $out/share/applications/syncplay-server.desktop
             sed -Ei 's|(Exec=syncplay .*)|\1 --no-store|' \
