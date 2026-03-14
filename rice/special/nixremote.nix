@@ -9,8 +9,6 @@ let
     User nixremote
     Compression yes
     IdentityFile ${config.aquaris.secret "svc/nixremote"}
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
     ConnectTimeout 1
   '';
 in
@@ -50,16 +48,26 @@ in
     })
 
     (mkIf cfg.use {
-      programs.ssh.extraConfig = ''
-        Host nixremote-satinor
-        HostName satinor.bunny.vpn
-        ${base}
+      programs.ssh = {
+        extraConfig = ''
+          Host nixremote-satinor
+          HostName satinor.bunny.vpn
+          ${base}
 
-        Host nixremote-bunny
-        HostName exit.bunny.vpn
-        Port 18213
-        ${base}
-      '';
+          Host nixremote-bunny
+          HostName exit.bunny.vpn
+          Port 18213
+          ${base}
+        '';
+
+        knownHosts = {
+          "satinor.bunny.vpn".publicKey =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHeh7gzbN20eVPDPbOJh9KvY/NUvGM5JI9vlrrPsAFoD";
+
+          "[exit.bunny.vpn]:18213".publicKey =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbsL7HyOCM56ejtlWqEBG1YzQwX2KmZ3S5KzoGnWh/j";
+        };
+      };
 
       nix = {
         distributedBuilds = true;
