@@ -29,6 +29,10 @@ turn_secret = "$TURN_SECRET"
 client = "https://matrix.@domain@"
 server = "matrix.@domain@:443"
 
+[[global.well_known.rtc_transports]]
+type = "livekit"
+livekit_service_url = "https://matrix-rtc.@domain@"
+
 [[global.identity_provider]]
 brand = "Pocket ID"
 issuer_url = "https://id.@domain@"

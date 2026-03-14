@@ -40,17 +40,23 @@ in
     };
   };
 
+  networking.firewall.allowedUDPPortRanges = [{ from = 50201; to = 65535; }];
+
   virtualisation.pnoc.coturn = {
-    path = with pkgs; [ envsubst coturn ];
+    path = with pkgs; [ coreutils coturn ];
 
     script = ''
-      # shellcheck disable=SC2016
-      envsubst <<< 'static-auth-secret=$SECRET' > /tmp/coturn.conf
+      cat << EOF > /tmp/coturn.conf
+      static-auth-secret=$MATRIX_SECRET
+      static-auth-secret=$LIVEKIT_SECRET
+      EOF
 
       exec turnserver          \
         --realm turn.${domain} \
         --listening-ip 0.0.0.0 \
         --listening-ip ::      \
+        --min-port 50201       \
+        --max-port 65535       \
         --cert /data/turn.crt  \
         --pkey /data/turn.key  \
         --use-auth-secret      \

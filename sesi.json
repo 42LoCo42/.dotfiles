@@ -28,7 +28,7 @@
 		}
 	},
 	"machine/bunny/coturn": {
-		"enc": "Su5Jd9wJ6XCq0yik1fPOaE35dV_dxyQwhaDI3Dvm0xS2Yptqx4I6KNpViAQ4f51Feb9l44B8UqE-UAnQHfmxWutjfV_s8JrS30KPSNnihp86zzFaUk9nmVQokoyaM0Vey1pOhoNWsuTePFNgfnDJTA",
+		"enc": "BZdDsgkNP5k5sb_cYLvuGmn8FwtDgKuwh0uOgmkOdg5VkrNZ95tB0BoGfy5rBqvnvr0CKz-aGSaeDQX7nOshGRBI0LGN7GqBAlAgVmWdmfBMFJzsIRS9NnBdqOUnRzwh2PEZ4ANX78MDR4EB3PjHMFD56j-bgUNAUviZR_3g1L5Ah9NHoFbaPy2e4R-67TuTQyX22IQoBI1vwgZlPJadJwx4971kBzkyJRJp8-v-tPz3f7xwAQPA_Zy5Ca_WGhh0bYnP4uVOIQ",
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "vvJ8UiM_HB-BPgdYt3ij8V0ysWFtLg9TmbASHBV-HBxN3Tv8GUX-EmwUC0JHfYulPQ4NAfBEOyPQm4G8kPQlW1oR2IGcvc8r-w15xRAadyU",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "deGgfqyZhg5_2yaM0ILV8nLqWBK-gEF4n-1VHDDlwW_bPolXtndB5bwY237afm3vfeFzv1DUjjlQE4UEFCAhcMNqikJnTRjQBwWosyAQJv8"
@@ -81,6 +81,13 @@
 		"rcp": {
 			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "JcB4gcTTrAdp8pfchOYq3EyyLGe3IMthStlpgC1SMlW8x-W1fkMCAQRCAoBz4xOTYiU51EgVthUvfhWl5D6CrQuS3GD89iCpeUqIbNMXT0A",
 			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "BXmHbJdak16f5niqFx2fBKlNG4g1S2xG9GDirY3i_jPFPzW1NGXhkzjBShr4Ec6z3qlPbMtie_93ZhckyaM5AmJy5jhBDtJSFxISVST3U38"
+		}
+	},
+	"machine/bunny/livekit": {
+		"enc": "Iu9IKwpAdchGyoNCSE-lbLdF3Qwz4g3zDP_DErOhkivhw22bIXSWHNAbbJAssp0PB9eo8Hd8nyb7BsS0Zl4SqiroV9YQQP3ILbvEap2DKUlPYlWvedXB1aB5JR2pIJQKupt7Q3-nmKmLfzNRrVyOuPfFeyO5ifeaDQLavxWPL63TWvMJtUv8zcjnuL65DPOxSl7v4R4ZziRVxU0BhRT03Um3YjrK8ZskNWYjnBRSoqkWO7xx1AY2SKRK_Ype0en2JTtag0cKLlydiMP-D5hlI3hhz-Oh_Up8CqBeFt2ZPASQ7rrTC0I",
+		"rcp": {
+			"XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs": "9kUiMLtEGawBKzHDtk0HCWcRxE9haPVpgoQ54ObHfFrjpsJzm02905IvS68L0w_-eBxTVo2TAceAqD5gQpEjy5sbuqZe1LBagpuIbAo6YZI",
+			"k2QPmktD7CmwJTXtvGfYxTfmoT_2dgrWb4oLykzBf0s": "_022W2PkEmOf8SMnwEeFDDMyDZYK8oxzXVKrSe3r-R9ymwtCUqtBmhViUxAIHoGlFy1iM4sm7KQ5U0KM1BQVQn-kQ0fGSU5NzU1bfJed9xs"
 		}
 	},
 	"machine/bunny/mautrix-discord": {

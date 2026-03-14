@@ -46,6 +46,7 @@ machine:
     gokapi:
     headscale:
     immich:
+    livekit:
     mautrix-discord:
     msmtpd:
     pinlist:

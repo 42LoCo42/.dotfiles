@@ -15,6 +15,7 @@
     ./homepage
     ./immich
     ./immich-public-proxy
+    ./livekit
     ./mautrix-discord
     ./mount-dcim
     ./msmtpd
