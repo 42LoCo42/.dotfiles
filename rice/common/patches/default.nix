@@ -17,10 +17,7 @@
         inherit ((import (fetchTarball {
           url = "https://github.com/nixos/nixpkgs/tarball/dd9b079222d43e1943b6ebd802f04fd959dc8e61";
           sha256 = "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=";
-        })) {
-          inherit (prev) config;
-          inherit (prev.stdenv) system;
-        }) hyprland;
+        })) { inherit (prev.stdenv) system; }) hyprland hyprlandPlugins;
 
         ########## obscura inclusion ##########
 

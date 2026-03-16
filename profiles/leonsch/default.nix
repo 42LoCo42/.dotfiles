@@ -54,6 +54,17 @@ in
 
   users.users.leonsch.extraGroups = [ "wireshark" ];
 
+  virtualisation.pnoc = {
+    gomuks-web = {
+      path = with pkgs; [ gomuks-web ];
+      script = "exec gomuks-web";
+
+      environment.GOMUKS_ROOT = "/data";
+      ports = [ "29325:29325" ];
+      volumes = [ "gomuks-web:/data" ];
+    };
+  };
+
   rice = {
     insecureNames = [ "olm" ];
 
@@ -107,8 +118,8 @@ in
       };
     };
 
-    dns.enable = true;
     ca.enable = true;
+    dns.enable = true;
     nixremote.use = true;
     podman.enable = true;
     syncthing.enable = true;
@@ -165,13 +176,9 @@ in
       git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
 
       persist = {
-        ".cache/gomuks" = { };
-
         ".config/rustdesk" = { };
-        ".config/gomuks" = { };
 
         ".local/share/Steam/compatibilitytools.d" = { };
-        ".local/share/gomuks" = { };
         ".local/share/typst/packages/local" = { };
         ".local/share/umu" = { };
 
@@ -188,6 +195,10 @@ in
     ];
 
     home = {
+      sessionVariables = {
+        GOMUKS_ROOT = "/persist/home/leonsch/gomuks";
+      };
+
       packages = with pkgs; [
         eka
         gomuks
