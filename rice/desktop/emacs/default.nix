@@ -227,6 +227,11 @@ in
             defer = true;
           };
 
+          gcmh = {
+            init = "(gcmh-mode 1)";
+            custom = "(gcmh-verbose t)";
+          };
+
           ##### Appearance #####
 
           "00-theme" = {
