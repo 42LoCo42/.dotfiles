@@ -56,7 +56,7 @@ in
 
   virtualisation.pnoc = {
     gomuks-web = {
-      path = with pkgs; [ gomuks-web ];
+      path = with pkgs; [ gomuks-web-2603 ];
       script = "exec gomuks-web";
 
       environment.GOMUKS_ROOT = "/data";

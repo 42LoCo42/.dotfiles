@@ -27,6 +27,7 @@
           datetime
           drasl
           eka
+          gomuks-web-2603
           immich-folder-album-creator
           papra
           pinlist
