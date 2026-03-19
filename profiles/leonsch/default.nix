@@ -57,7 +57,13 @@ in
   virtualisation.pnoc = {
     gomuks-web = {
       path = with pkgs; [ gomuks-web-2603 ];
-      script = "exec gomuks-web";
+
+      script = ''
+        exec gomuks-web << EOF
+        admin
+        admin
+        EOF
+      '';
 
       environment.GOMUKS_ROOT = "/data";
       ports = [ "29325:29325" ];
@@ -141,6 +147,7 @@ in
             "https://youtube.com"
 
             # personal
+            "http://localhost:29325"
             "https://chat.eleonora.gay"
             "https://id.eleonora.gay"
             "https://vw.eleonora.gay"
