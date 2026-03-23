@@ -277,6 +277,11 @@ in
         user = "admin";
       };
 
+      xenon = {
+        hostname = "xenon.bunny.vpn";
+        user = "ercanar";
+      };
+
       ##### people #####
 
       hannes = {

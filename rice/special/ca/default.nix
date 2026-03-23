@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 let
   inherit (lib) getExe mkIf mkOption pipe;
-  inherit (lib.types) bool coercedTo package pathInStore;
+  inherit (lib.types) bool pathInStore;
 
   cfg = config.rice.ca;
 in
@@ -13,8 +13,8 @@ in
     };
 
     file = mkOption {
-      type = coercedTo pathInStore (x: builtins.path { path = x; }) package;
-      default = ./main.crt;
+      type = pathInStore;
+      default = builtins.path { path = ./main.crt; };
     };
   };
 

@@ -164,6 +164,11 @@ in
         port = 12345;
       };
 
+      xenon = {
+        hostname = "xenon.bunny.vpn";
+        user = "ercanar";
+      };
+
       pizza = {
         hostname = "exit.bunny.vpn";
         port = 18213;

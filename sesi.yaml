@@ -6,11 +6,13 @@ admin:
       - machine/astylos
       - machine/bunny
       - machine/laniakea
+      - machine/xenon
 
   ercanar:
     :key: j60WZLTyJYEVNQB3RGqSXW8sbrM3Wpy0nFPAe4lx6yc
     :import:
       - machine/satinor
+      - machine/xenon
 
 machine:
   akyuro:
@@ -82,6 +84,12 @@ machine:
       - user/ercanar
 
     key:
+
+  xenon:
+    :key: zEcOcgtuF8h8wEw3a3ubXRyB0_2DUpPn7MAUTDDRJzs
+    :import:
+      - svc/nixremote
+      - user/ercanar
 
 svc:
   ca:
