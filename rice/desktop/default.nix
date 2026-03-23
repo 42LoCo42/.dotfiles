@@ -19,6 +19,7 @@
       equibop.enable = true;
       firefox.enable = true;
       fonts.enable = true;
+      gomuks.enable = true;
       gpu.enable = true;
       greetd.enable = true;
       hrtrack.enable = true;
@@ -52,6 +53,7 @@
     ./equibop.nix
     ./firefox.nix
     ./fonts.nix
+    ./gomuks.nix
     ./gpu.nix
     ./greetd.nix
     ./hrtrack

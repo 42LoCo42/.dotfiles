@@ -54,26 +54,7 @@ in
 
   users.users.leonsch.extraGroups = [ "wireshark" ];
 
-  virtualisation.pnoc = {
-    gomuks-web = {
-      path = with pkgs; [ gomuks-web-2603 ];
-
-      script = ''
-        exec gomuks-web << EOF
-        admin
-        admin
-        EOF
-      '';
-
-      environment.GOMUKS_ROOT = "/data";
-      ports = [ "29325:29325" ];
-      volumes = [ "gomuks-web:/data" ];
-    };
-  };
-
   rice = {
-    insecureNames = [ "olm" ];
-
     desktop = {
       enable = true;
       wego.location = "Stralsund";
@@ -147,7 +128,6 @@ in
             "https://youtube.com"
 
             # personal
-            "http://localhost:29325"
             "https://chat.eleonora.gay"
             "https://id.eleonora.gay"
             "https://vw.eleonora.gay"
@@ -202,13 +182,8 @@ in
     ];
 
     home = {
-      sessionVariables = {
-        GOMUKS_ROOT = "/persist/home/leonsch/gomuks";
-      };
-
       packages = with pkgs; [
         eka
-        gomuks
         jameica
         openvpn # for corporate VPN
         rustdesk-flutter
