@@ -1,8 +1,6 @@
 { pkgs, aquaris, ... }: {
   imports = [ ../../profiles/common ];
 
-  # TODO config topology
-
   aquaris = {
     users = pkgs.lib.mkMerge [
       { inherit (aquaris.cfg.users) ercanar; }
