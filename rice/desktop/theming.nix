@@ -7,7 +7,7 @@
   config = lib.mkIf config.rice.desktop.theming.enable {
     home-manager.sharedModules = [
       (hm: {
-        gtk = {
+        gtk = rec {
           enable = true;
 
           theme = {
@@ -22,6 +22,8 @@
 
           gtk2.configLocation =
             "${hm.config.xdg.configHome}/gtk-2.0/settings.ini";
+
+          gtk4 = { inherit theme; };
         };
 
         qt = {

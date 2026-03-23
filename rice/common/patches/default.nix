@@ -3,16 +3,6 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.system}; in {
 
-        # TODO triton is broken on aarch64
-        # https://hydra.nixos.org/job/nixpkgs/unstable/triton-llvm.aarch64-linux
-        immich-machine-learning = prev.immich-machine-learning.override {
-          python3 = prev.python3.override {
-            packageOverrides = (_: ppy: {
-              torch = ppy.torch.override { tritonSupport = false; };
-            });
-          };
-        };
-
         # TODO hyprlandPlugins aren't compatible with 0.54.* yet
         inherit ((import (fetchTarball {
           url = "https://github.com/nixos/nixpkgs/tarball/dd9b079222d43e1943b6ebd802f04fd959dc8e61";

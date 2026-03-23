@@ -3,13 +3,17 @@
 
   nixpkgs.overlays = [
     (_: pkgs: {
-      tscaddy = (pkgs.caddy.withPlugins {
+      tscaddy = ((pkgs.caddy.withPlugins {
         plugins = [
           "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
         ];
 
-        hash = "sha256-oOW8PmJnqZkiDoU1eDFuMH2DNzd1O0oguQJgP3IdnDs=";
-      }).overrideAttrs { doCheck = false; };
+        hash = "sha256-JergBCe1TiZY2yn/trW9e24uwVoUt0UcLzgfQ+ONpJY=";
+      }).override {
+        buildGo125Module = pkgs.buildGo126Module;
+      }).overrideAttrs {
+        doCheck = false;
+      };
     })
   ];
 
