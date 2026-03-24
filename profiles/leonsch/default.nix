@@ -68,7 +68,7 @@ in
 
             "2" = {
               icon = "";
-              rules = [ "class equibop" ];
+              rules = [ "initial_title Discord.*" ];
             };
 
             "3" = {

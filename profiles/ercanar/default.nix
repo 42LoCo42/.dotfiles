@@ -29,7 +29,7 @@ in
           "1" = {
             icon = "";
             autostart = [ "uwsm app equibop" ];
-            rules = [ "class equibop" ];
+            rules = [ "initial_title Discord.*" ];
           };
 
           "2" = {

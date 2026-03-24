@@ -22,7 +22,7 @@ in
 
     virtualisation.pnoc = {
       gomuks-web = {
-        path = with pkgs; [ gomuks-web-2603 ];
+        path = with pkgs; [ gomuks-web ];
 
         script = ''
           exec gomuks-web << EOF
