@@ -26,6 +26,31 @@ let
       wtype
     ];
   };
+
+  sync-manager = pkgs.writeShellApplication {
+    name = "sync-manager";
+
+    text = aquaris.lib.subsT ./sync-manager.sh {
+      config = pkgs.writeText "lsyncd.conf" ''
+        sync {
+          default.rsync,
+          source = "/home/leonsch/config/",
+          target = "bunny:config/",
+          delay = 0.25,
+          exclude = "keys",
+          rsync = {
+            archive = true,
+            compress = true,
+            verbose = true,
+          },
+        }
+      '';
+    };
+
+    runtimeInputs = with pkgs; [
+      lsyncd
+    ];
+  };
 in
 {
   imports = [ ../common ];
@@ -90,6 +115,7 @@ in
             }
 
             bind = $mod, p, exec, ${getExe password-manager}
+            bind = $mod, s, exec, ${getExe sync-manager}
           '';
         };
 
