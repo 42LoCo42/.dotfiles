@@ -40,17 +40,17 @@ in
       # TODO upstream to obscura
       cypht = php'.buildComposerProject2 (drv: {
         pname = "cypht";
-        version = "2.6.0";
+        version = "2.7.0";
 
         src = prev.fetchFromGitHub {
           owner = "cypht-org";
           repo = drv.pname;
-          rev = "b715792f603698c17033b3db7273236744a4829b";
-          hash = "sha256-4jnbMuwf7IqCVkjPPdeCgK8wpgxYoga6EsYwTVtHm/w=";
+          tag = "v${drv.version}";
+          hash = "sha256-2U9l+s2aw4tgGEpVHBxcPw5HP77NEdZ1hpTFWdv3WOs=";
         };
 
         composerStrictValidation = false;
-        vendorHash = "sha256-rVJ7f2vJD8LfNsUf2KC5tI/V8XHxcnlnoc6uZydMoTc=";
+        vendorHash = "sha256-HC4ETiQs8sL9JGXJzQafel2uzDVwFMjcsyupiowtrD0=";
 
         postBuild = ''
           cat << EOF > lib/version.php

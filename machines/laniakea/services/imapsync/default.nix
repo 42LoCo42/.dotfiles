@@ -6,7 +6,7 @@
       : >> /data/args
       mapfile -t args < /data/args
 
-      exec imapsync                    \
+      imapsync                         \
         --host1 hydroxide:1143         \
         --user1 leonsch                \
         --host2 maddy:1143             \
@@ -14,9 +14,9 @@
         --exclude 'All Mail'           \
         --tmpdir /data/tmp             \
         --logdir /data/log             \
-        --minage 7                     \
+        --minage 1                     \
         --useuid                       \
-        "''${args[@]}"
+        "''${args[@]}" || :
     '';
 
     environmentFiles = [ (config.aquaris.secret "@machine/imapsync") ];
