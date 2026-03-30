@@ -91,7 +91,7 @@ in
               ("C-a" . my/smart-home)
             '';
 
-            bind' = ''(
+            bind' = ''
               ("C-M-<backspace>" . my/join-line)
               ("C-s"             . save-buffer)
 
@@ -130,7 +130,7 @@ in
               :map minibuffer-local-shell-command-map
               ("C-n" . next-line-or-history-element)
               ("C-p" . previous-line-or-history-element)
-            )'';
+            '';
 
             hook = ''
               ; delete trailing whitespace on save
@@ -517,10 +517,10 @@ in
               (sp-local-pair 'prog-mode "{" nil :post-handlers '((indent-between-pair "RET")))
             '';
 
-            bind' = ''(
+            bind' = ''
               :map minibuffer-mode-map
               ("M-DEL" . sp-backward-kill-symbol)
-            )'';
+            '';
           };
 
           ##### Completion #####
@@ -703,10 +703,10 @@ in
           };
 
           haskell-mode = {
-            bind' = ''(
+            bind' = ''
               :map haskell-mode-map
               ("C-c C-p" . haskell-interactive-switch)
-            )'';
+            '';
 
             hook = ''
               (haskell-interactive-mode . (lambda ()
