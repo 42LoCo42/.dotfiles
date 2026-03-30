@@ -93,7 +93,7 @@ in
 
             "2" = {
               icon = "";
-              rules = [ "initial_title Discord.*" ];
+              rules = [ "title Discord.*" ];
             };
 
             "3" = {
