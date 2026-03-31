@@ -9,6 +9,22 @@
           sha256 = "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=";
         })) { inherit (prev.stdenv) system; }) hyprland hyprlandPlugins;
 
+        ########## TODO move to obscura ##########
+
+        hydroxide = prev.hydroxide.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            ./hydroxide-pagesize.patch
+          ];
+
+          vendorHash = "sha256-8THUFE72wiWiC1CJJDShja3ucpkpAdw/D+OILj8iqMk=";
+        });
+
+        prettypst = prev.prettypst.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            ./prettypst-hline.patch
+          ];
+        });
+
         ########## obscura inclusion ##########
 
         inherit (obscura)
@@ -45,12 +61,6 @@
             sed -Ei 's|(Exec=syncplay .*)|\1 --no-store|' \
               $out/share/applications/syncplay.desktop
           '';
-        });
-
-        prettypst = prev.prettypst.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [
-            ./prettypst-hline.patch
-          ];
         });
       })
   ];
