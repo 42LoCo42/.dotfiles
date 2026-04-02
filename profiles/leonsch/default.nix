@@ -209,6 +209,7 @@ in
 
     home = {
       packages = with pkgs; [
+        catgirl
         eka
         jameica
         openvpn # for corporate VPN
@@ -231,6 +232,13 @@ in
     };
 
     xdg.configFile = {
+      "catgirl/eleonora.gay".text = ''
+        host = irc.eleonora.gay
+        cert = ${config.aquaris.secret "user/leonsch/irc"}
+        sasl-external
+        debug
+      '';
+
       "jameica.properties".text = ''
         ask=false
         dir=/persist/home/leonsch/sync/jameica
