@@ -10,13 +10,34 @@ let
     (imap1 (i: x: "DNS.${toString i}:${x}"))
     (join ",")
   ];
+
+  gamja = pkgs.gamja.override {
+    gamjaConfig = {
+      server = {
+        url = "wss://irc.${config.rice.domain}";
+        auth = "mandatory";
+      };
+    };
+  };
 in
 {
   networking.firewall.allowedTCPPorts = [ 6697 ];
 
-  rice.caddy.cfg."irc" = ''
-    reverse_proxy ergo:8080
-  '';
+  rice.caddy = {
+    cfg."irc" = ''
+      @websockets {
+        header Connection *Upgrade*
+        header Upgrade    websocket
+      }
+
+      reverse_proxy @websockets ergo:8080
+
+      root * /srv/gamja
+      file_server
+    '';
+
+    volumes = [ "${gamja}:/srv/gamja:ro" ];
+  };
 
   virtualisation.pnoc.ergo = {
     path = with pkgs; [
