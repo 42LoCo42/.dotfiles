@@ -9,6 +9,22 @@
           sha256 = "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=";
         })) { inherit (prev.stdenv) system; }) hyprland hyprlandPlugins;
 
+        # TODO https://pr-tracker.bunny/?pr=502133
+        ergochat = prev.ergochat.overrideAttrs (new: old: {
+          version = "2.18.0";
+
+          src = prev.fetchFromGitHub {
+            inherit (old.src) owner repo;
+            tag = "v${new.version}";
+            hash = "sha256-6aibQ4dq3zkRoeLLrAc3OXXQWRZIQ7mPMSnWhz8LJsM=";
+          };
+
+          tags = (old.tags or [ ]) ++ [
+            "i18n"
+            "postgresql"
+          ];
+        });
+
         ########## TODO move to obscura ##########
 
         hydroxide = prev.hydroxide.overrideAttrs (old: {

@@ -9,6 +9,7 @@
     ./datetime
     ./drasl
     ./element
+    ./ergo
     ./forgejo
     ./gokapi
     ./headscale
