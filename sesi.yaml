@@ -23,6 +23,7 @@ machine:
 
     key:
     recovery:
+    tailscale:
 
   astylos:
     :key: w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI
@@ -31,6 +32,7 @@ machine:
       - user/leonsch
 
     key:
+    tailscale:
 
   bunny:
     :key: XWoKHGExV00G8lDsdZdfWkv99PDNUH0ukt-xjuv8Lzs
@@ -77,6 +79,7 @@ machine:
     paperless:
     papra:
     qbit-stop:
+    tailscale:
 
   satinor:
     :key: ow1SvzI5RFVro8k71KpKMtt-TCnQun4FMy6l0Bt-dSg
@@ -85,12 +88,16 @@ machine:
       - user/ercanar
 
     key:
+    tailscale:
 
   xenon:
     :key: zEcOcgtuF8h8wEw3a3ubXRyB0_2DUpPn7MAUTDDRJzs
     :import:
       - svc/nixremote
       - user/ercanar
+
+    key:
+    tailscale:
 
 svc:
   ca:

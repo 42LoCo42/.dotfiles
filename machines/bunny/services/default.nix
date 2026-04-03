@@ -28,7 +28,6 @@
     ./ssh
     ./syncplay
     ./syncthing
-    ./tailscale
     ./tscaddy
     ./tuwunel
     ./vaultwarden

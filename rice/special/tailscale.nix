@@ -1,11 +1,78 @@
-{ config, lib, ... }: {
-  options.rice.tailscale.enable = lib.mkOption {
-    type = lib.types.bool;
-    default = false;
+{ pkgs, config, lib, ... }:
+let
+  inherit (lib)
+    getExe'
+    ifEnable
+    join
+    makeBinPath
+    mkIf
+    mkOption
+    mkOverride
+    pipe
+    toJSON
+    ;
+
+  inherit (lib.types)
+    bool
+    str
+    port
+    ;
+
+  cfg = config.rice.tailscale;
+
+  tscfg = (pipe {
+    version = "alpha0";
+
+    serverURL = "https://headscale.eleonora.gay";
+    authKey = "file:${config.aquaris.secret "@machine/tailscale"}";
+
+    inherit (cfg) hostname locked;
+    acceptDNS = false;
+
+    advertiseRoutes = ifEnable cfg.isExit [
+      "0.0.0.0/0"
+      "::/0"
+    ];
+  }) [
+    toJSON
+    (pkgs.writeText "tailscaled.json")
+  ];
+in
+{
+  options.rice.tailscale = {
+    enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    hostname = mkOption {
+      type = str;
+      default = config.networking.hostName;
+    };
+
+    port = mkOption {
+      type = port;
+      default = 41641;
+    };
+
+    isExit = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    locked = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    interface = mkOption {
+      type = str;
+      default = "tailscale0";
+    };
   };
 
-  config = lib.mkIf config.rice.tailscale.enable {
-    topology.self.interfaces."tailscale0" = {
+  config = mkIf cfg.enable {
+    topology.self.interfaces.${cfg.interface} = {
       type = "wireguard";
       virtual = true;
       network = "vpn";
@@ -16,15 +83,83 @@
       }];
     };
 
-    services.tailscale = {
+    aquaris.persist.dirs = {
+      "/var/lib/tailscale" = { m = "0700"; };
+    };
+
+    environment.systemPackages = [ pkgs.tailscale ];
+
+    boot.kernel.sysctl = {
+      "net.ipv4.conf.all.forwarding" = mkOverride 97 true;
+      "net.ipv6.conf.all.forwarding" = mkOverride 97 true;
+    };
+
+    networking.firewall = {
+      checkReversePath = "loose";
+      allowedUDPPorts = [ cfg.port ];
+    };
+
+    services.networkd-dispatcher = mkIf cfg.isExit {
       enable = true;
-      openFirewall = true;
-      useRoutingFeatures = "client";
+      rules."tailscale" = {
+        onState = [ "routable" ];
+        script = (pipe (with pkgs; [
+          ethtool
+          iproute2
+          jq
+        ])) [
+          makeBinPath
+          (x: ''
+            #!${pkgs.runtimeShell}
+            set -euo pipefail
+            PATH=${x}
+
+            dev=$(ip --json route get 1.1.1.1 | jq -r '.[0].dev')
+            ethtool -K "$dev"          \
+              rx-udp-gro-forwarding on \
+              rx-gro-list off
+          '')
+        ];
+      };
     };
 
     systemd = {
-      network.wait-online.ignoredInterfaces = [ "tailscale0" ];
-      services.NetworkManager-wait-online.enable = false;
+      network = {
+        networks."50-tailscale" = {
+          matchConfig.Name = cfg.interface;
+          linkConfig = {
+            Unmanaged = true;
+            ActivationPolicy = "manual";
+          };
+        };
+
+        wait-online.ignoredInterfaces = [ cfg.interface ];
+      };
+
+      services = {
+        NetworkManager-wait-online.enable = false;
+
+        tailscaled = {
+          wantedBy = [ "default.target" ];
+          serviceConfig = {
+            ExecStart = join " " [
+              (getExe' pkgs.tailscale "tailscaled")
+              "-config   ${tscfg}"
+              "-port     ${toString cfg.port}"
+              "-socket   /run/tailscale/tailscaled.sock"
+              "-statedir /var/lib/tailscale"
+              "-tun      ${cfg.interface}"
+            ];
+
+            Restart = "on-failure";
+            Type = "notify";
+
+            RuntimeDirectory = "tailscale";
+            StateDirectory = "tailscale";
+            StateDirectoryMode = "0700";
+          };
+        };
+      };
     };
   };
 }

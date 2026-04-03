@@ -49,33 +49,17 @@ in
 
     rice = {
       domain = "eleonora.gay";
+
       nixremote.act = true;
+
+      tailscale = {
+        enable = true;
+        isExit = true;
+        hostname = "exit";
+      };
     };
 
     networking.networkmanager.enable = false;
-
-    # if caddy or headscale restarts, our tailscale nodes drop out of the network
-    # and need to be restarted (including the autoconnect oneshot on the host)
-    systemd.services =
-      let
-        units = [
-          "podman-tscaddy.service"
-          "tailscaled-autoconnect.service"
-          "tailscaled.service"
-        ];
-
-        cfg = {
-          before = units;
-          requiredBy = units;
-        };
-      in
-      {
-        podman-caddy = cfg;
-        podman-headscale = cfg;
-
-        # so it actually gets restarted properly
-        tailscaled-autoconnect.serviceConfig.RemainAfterExit = true;
-      };
 
     environment.systemPackages = with pkgs; [
       (writeShellApplication {
