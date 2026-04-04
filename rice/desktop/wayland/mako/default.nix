@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }: {
+{ self, pkgs, lib, config, aquaris, ... }: {
   options.rice.desktop.wayland.mako.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -6,6 +6,10 @@
 
   config = lib.mkIf config.rice.desktop.wayland.mako.enable {
     home-manager.sharedModules = [{
+      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
+        "services/mako.nix"
+      ];
+
       services.mako = {
         enable = true;
 

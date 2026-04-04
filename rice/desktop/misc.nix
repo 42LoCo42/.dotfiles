@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ self, pkgs, lib, config, ... }: {
   options.rice.desktop.misc.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -14,6 +14,12 @@
     rice.unfreeNames = [ "p7zip" ];
 
     home-manager.sharedModules = [{
+      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
+        "programs/mpv.nix"
+        "programs/yt-dlp.nix"
+        "programs/zathura.nix"
+      ];
+
       aquaris.persist.".android" = { }; # for ADB
 
       home = {

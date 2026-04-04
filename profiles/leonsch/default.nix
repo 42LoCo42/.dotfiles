@@ -139,243 +139,247 @@ in
     tailscale.enable = true;
   };
 
-  home-manager.sharedModules = singleton (hm: {
-    aquaris = {
-      firefox = {
-        sanitize = {
-          enable = true;
-          exceptions = [
-            "https://auride.xyz"
-            "https://github.com"
-            "https://iu.org"
-            "https://mynixos.com"
-            "https://proton.me"
-            "https://reddit.com"
-            "https://youtube.com"
+  home-manager = {
+    minimal = true;
 
-            # personal
-            "https://chat.eleonora.gay"
-            "https://id.eleonora.gay"
-            "https://irc.eleonora.gay"
-            "https://vw.eleonora.gay"
+    sharedModules = singleton (hm: {
+      aquaris = {
+        firefox = {
+          sanitize = {
+            enable = true;
+            exceptions = [
+              "https://auride.xyz"
+              "https://github.com"
+              "https://iu.org"
+              "https://mynixos.com"
+              "https://proton.me"
+              "https://reddit.com"
+              "https://youtube.com"
 
-            # banking
-            "https://spk-vorpommern.de"
-            "https://vbvorpommern.de"
-          ];
-        };
+              # personal
+              "https://chat.eleonora.gay"
+              "https://id.eleonora.gay"
+              "https://irc.eleonora.gay"
+              "https://vw.eleonora.gay"
 
-        preRun = mkBefore ''
-          if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
-            hyprctl keyword decoration:blur:new_optimizations false
-            foot -a background-wrap -o colors.alpha=0 \
-              rsync -azvP --delete                    \
-                "firefox-sync:" "$FIREFOX_PROFILE_DIR"
-            hyprctl keyword decoration:blur:new_optimizations true
-          fi
-        '';
+              # banking
+              "https://spk-vorpommern.de"
+              "https://vbvorpommern.de"
+            ];
+          };
 
-        postRun = mkAfter ''
-          if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
-            hyprctl keyword decoration:blur:new_optimizations false
-            foot -a background-wrap -o colors.alpha=0 \
-              rsync -azvP --delete                    \
-                "$FIREFOX_PROFILE_DIR" "firefox-sync:"
-            hyprctl keyword decoration:blur:new_optimizations true
-          fi
-        '';
-      };
-
-      # default key is fido, but we don't want it for git signing
-      git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
-
-      persist = {
-        ".config/rustdesk" = { };
-
-        ".local/share/Steam/compatibilitytools.d" = { };
-        ".local/share/typst/packages/local" = { };
-        ".local/share/umu" = { };
-
-        "IU" = { };
-        "dev" = { };
-        "doc" = { };
-        "img" = { };
-        "work" = { };
-      };
-    };
-
-    wayland.windowManager.hyprland.plugins = with pkgs.hyprlandPlugins; [
-      hyprwinwrap
-    ];
-
-    home = {
-      packages = with pkgs; [
-        catgirl
-        eka
-        jameica
-        openvpn # for corporate VPN
-        rustdesk-flutter
-        sshfs
-        syncplay
-        umu-launcher
-
-        my-age
-        (pkgs.writeShellApplication {
-          name = "aged"; # age decrypt
-
-          text = ''
-            exec age                                          \
-              -i ${config.aquaris.secret "user/leonsch/age"}  \
-              -d "$@"
+          preRun = mkBefore ''
+            if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
+              hyprctl keyword decoration:blur:new_optimizations false
+              foot -a background-wrap -o colors.alpha=0 \
+                rsync -azvP --delete                    \
+                  "firefox-sync:" "$FIREFOX_PROFILE_DIR"
+              hyprctl keyword decoration:blur:new_optimizations true
+            fi
           '';
-        })
+
+          postRun = mkAfter ''
+            if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
+              hyprctl keyword decoration:blur:new_optimizations false
+              foot -a background-wrap -o colors.alpha=0 \
+                rsync -azvP --delete                    \
+                  "$FIREFOX_PROFILE_DIR" "firefox-sync:"
+              hyprctl keyword decoration:blur:new_optimizations true
+            fi
+          '';
+        };
+
+        # default key is fido, but we don't want it for git signing
+        git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
+
+        persist = {
+          ".config/rustdesk" = { };
+
+          ".local/share/Steam/compatibilitytools.d" = { };
+          ".local/share/typst/packages/local" = { };
+          ".local/share/umu" = { };
+
+          "IU" = { };
+          "dev" = { };
+          "doc" = { };
+          "img" = { };
+          "work" = { };
+        };
+      };
+
+      wayland.windowManager.hyprland.plugins = with pkgs.hyprlandPlugins; [
+        hyprwinwrap
       ];
-    };
 
-    xdg.configFile = {
-      "catgirl/eleonora.gay".text = ''
-        host = irc.eleonora.gay
-        cert = ${config.aquaris.secret "user/leonsch/irc"}
-        sasl-external
-        debug
-      '';
+      home = {
+        packages = with pkgs; [
+          catgirl
+          eka
+          jameica
+          openvpn # for corporate VPN
+          rustdesk-flutter
+          sshfs
+          syncplay
+          umu-launcher
 
-      "jameica.properties".text = ''
-        ask=false
-        dir=/persist/home/leonsch/sync/jameica
-      '';
+          my-age
+          (pkgs.writeShellApplication {
+            name = "aged"; # age decrypt
 
-      "syncplay.ini".text = toINI { } {
-        server_data = {
-          host = "exit.bunny.vpn";
-          port = 8999;
-        };
-
-        client_settings = {
-          name = "nori";
-          room = "Absolutes Kinori";
-
-          playerpath = getExe hm.config.programs.mpv.finalPackage;
-          mediasearchdirectories = "['/home/leonsch/tmp']";
-        };
-
-        general = {
-          checkforupdatesautomatically = false;
-        };
+            text = ''
+              exec age                                          \
+                -i ${config.aquaris.secret "user/leonsch/age"}  \
+                -d "$@"
+            '';
+          })
+        ];
       };
 
-      "Syncplay/MoreSettings.conf".text = toINI { } {
-        MoreSettings = {
-          ShowMoreSettings = true;
+      xdg.configFile = {
+        "catgirl/eleonora.gay".text = ''
+          host = irc.eleonora.gay
+          cert = ${config.aquaris.secret "user/leonsch/irc"}
+          sasl-external
+          debug
+        '';
+
+        "jameica.properties".text = ''
+          ask=false
+          dir=/persist/home/leonsch/sync/jameica
+        '';
+
+        "syncplay.ini".text = toINI { } {
+          server_data = {
+            host = "exit.bunny.vpn";
+            port = 8999;
+          };
+
+          client_settings = {
+            name = "nori";
+            room = "Absolutes Kinori";
+
+            playerpath = getExe hm.config.programs.mpv.finalPackage;
+            mediasearchdirectories = "['/home/leonsch/tmp']";
+          };
+
+          general = {
+            checkforupdatesautomatically = false;
+          };
         };
-      };
-    };
 
-    programs.ssh.matchBlocks = (mapAttrs (n: x: x // {
-      controlMaster = "auto";
-      controlPath = "\${HOME}/.ssh/control-${n}";
-    })) {
-      ##### private machines #####
-
-      bunny = {
-        hostname = "exit.bunny.vpn";
-        port = 18213;
-        user = "admin";
-      };
-
-      bunny-fallback = {
-        hostname = "eleonora.gay";
-        addressFamily = "inet";
-        port = 18213;
-        user = "admin";
-      };
-
-      firefox-sync = {
-        hostname = "exit.bunny.vpn";
-        port = 18213;
-        user = "admin";
-
-        extraOptions = {
-          AddKeysToAgent = "no";
-          IdentitiesOnly = "yes";
-          IdentityAgent = "/dev/null";
-          IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
+        "Syncplay/MoreSettings.conf".text = toINI { } {
+          MoreSettings = {
+            ShowMoreSettings = true;
+          };
         };
       };
 
-      forgejo = proxy "git.bunny:22" {
-        user = "forgejo";
-      };
+      programs.ssh.matchBlocks = (mapAttrs (n: x: x // {
+        controlMaster = "auto";
+        controlPath = "\${HOME}/.ssh/control-${n}";
+      })) {
+        ##### private machines #####
 
-      laniakea = {
-        hostname = "laniakea.bunny.vpn";
-        user = "admin";
-      };
+        bunny = {
+          hostname = "exit.bunny.vpn";
+          port = 18213;
+          user = "admin";
+        };
 
-      xenon = {
-        hostname = "xenon.bunny.vpn";
-        user = "ercanar";
-      };
+        bunny-fallback = {
+          hostname = "eleonora.gay";
+          addressFamily = "inet";
+          port = 18213;
+          user = "admin";
+        };
 
-      ##### people #####
+        firefox-sync = {
+          hostname = "exit.bunny.vpn";
+          port = 18213;
+          user = "admin";
 
-      hannes = {
-        hostname = "satinor.bunny.vpn";
-        user = "ercanar";
-      };
+          extraOptions = {
+            AddKeysToAgent = "no";
+            IdentitiesOnly = "yes";
+            IdentityAgent = "/dev/null";
+            IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
+          };
+        };
 
-      hapi = {
-        hostname = "owo-ercanar-senpai.duckdns.org";
-        port = 12345;
-        user = "ercanar";
-      };
+        forgejo = proxy "git.bunny:22" {
+          user = "forgejo";
+        };
 
-      jana = {
-        hostname = "primula25.duckdns.org";
-        port = 22000;
-        user = "jana";
-      };
+        laniakea = {
+          hostname = "laniakea.bunny.vpn";
+          user = "admin";
+        };
 
-      ##### work - PIC #####
+        xenon = {
+          hostname = "xenon.bunny.vpn";
+          user = "ercanar";
+        };
 
-      lbmvweb = {
-        hostname = "www1.d11121.lbmv.de";
-        user = "www-data";
-      };
+        ##### people #####
 
-      meeting2 = {
-        hostname = "meeting2.planet-ic.de";
-        user = "root";
-        setEnv.TERM = "xterm-256color";
-      };
+        hannes = {
+          hostname = "satinor.bunny.vpn";
+          user = "ercanar";
+        };
 
-      freepbx = {
-        hostname = "195.98.195.10";
-        user = "root";
-        setEnv.TERM = "xterm-256color";
+        hapi = {
+          hostname = "owo-ercanar-senpai.duckdns.org";
+          port = 12345;
+          user = "ercanar";
+        };
 
-        extraOptions = {
-          HostKeyAlgorithms = "+ssh-rsa";
-          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+        jana = {
+          hostname = "primula25.duckdns.org";
+          port = 22000;
+          user = "jana";
+        };
+
+        ##### work - PIC #####
+
+        lbmvweb = {
+          hostname = "www1.d11121.lbmv.de";
+          user = "www-data";
+        };
+
+        meeting2 = {
+          hostname = "meeting2.planet-ic.de";
+          user = "root";
+          setEnv.TERM = "xterm-256color";
+        };
+
+        freepbx = {
+          hostname = "195.98.195.10";
+          user = "root";
+          setEnv.TERM = "xterm-256color";
+
+          extraOptions = {
+            HostKeyAlgorithms = "+ssh-rsa";
+            PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          };
+        };
+
+        greifswald = {
+          hostname = "web03270.pvm.imv.de";
+          user = "root";
+          setEnv.TERM = "xterm-256color";
+        };
+
+        bonetty = {
+          hostname = "ares-bonetty.p4.net";
+          user = "root";
+          setEnv.TERM = "xterm-256color";
+
+          extraOptions = {
+            HostKeyAlgorithms = "+ssh-rsa";
+            PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          };
         };
       };
-
-      greifswald = {
-        hostname = "web03270.pvm.imv.de";
-        user = "root";
-        setEnv.TERM = "xterm-256color";
-      };
-
-      bonetty = {
-        hostname = "ares-bonetty.p4.net";
-        user = "root";
-        setEnv.TERM = "xterm-256color";
-
-        extraOptions = {
-          HostKeyAlgorithms = "+ssh-rsa";
-          PubkeyAcceptedKeyTypes = "+ssh-rsa";
-        };
-      };
-    };
-  });
+    });
+  };
 }

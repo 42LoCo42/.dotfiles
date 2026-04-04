@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ self, config, lib, ... }:
 let
   inherit (lib)
     mkIf
@@ -37,6 +37,10 @@ in
     };
 
     home-manager.sharedModules = [{
+      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
+        "services/syncthing.nix"
+      ];
+
       aquaris.persist = { ".local/state/syncthing" = { }; };
       services.syncthing.enable = true;
     }];

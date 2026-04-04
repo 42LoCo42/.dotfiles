@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }:
+{ self, pkgs, lib, config, aquaris, ... }:
 let
   inherit (lib)
     concatLines
@@ -275,6 +275,10 @@ in
     };
 
     home-manager.sharedModules = [{
+      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
+        "services/window-managers/hyprland.nix"
+      ];
+
       aquaris.persist = { ".config/qalculate" = { }; };
 
       home.packages = with pkgs; [
