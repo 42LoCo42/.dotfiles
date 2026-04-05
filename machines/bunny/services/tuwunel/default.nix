@@ -14,6 +14,9 @@
     "matrix.{$DOMAIN}, matrix.{$DOMAIN}:8448" = ''
       import default
 
+      # workaround for gomuks-web querying //_matrix/... on SSO login
+      uri path_regexp /{2,} /
+
       # https://github.com/matrix-construct/tuwunel/blob/v1.4.6/src/api/router.rs#L268
       @legacy_media {
         path /_matrix/media/v1/*
