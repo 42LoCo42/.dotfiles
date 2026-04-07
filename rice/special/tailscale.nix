@@ -27,7 +27,7 @@ let
     authKey = "file:${config.aquaris.secret "@machine/tailscale"}";
 
     inherit (cfg) hostname locked;
-    acceptDNS = false;
+    acceptDNS = true;
 
     advertiseRoutes = ifEnable cfg.isExit [
       "0.0.0.0/0"
@@ -67,7 +67,7 @@ in
 
     interface = mkOption {
       type = str;
-      default = "tailscale0";
+      default = "tailscale";
     };
   };
 
@@ -141,6 +141,11 @@ in
 
         tailscaled = {
           wantedBy = [ "default.target" ];
+
+          path = mkIf config.networking.resolvconf.enable (with pkgs; [
+            openresolv
+          ]);
+
           serviceConfig = {
             ExecStart = join " " [
               (getExe' pkgs.tailscale "tailscaled")

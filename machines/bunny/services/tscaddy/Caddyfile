@@ -3,7 +3,7 @@
 
 	tailscale {
 		control_url {$HEADSCALE}
-		ephemeral true
+		state_dir /data/tailscale
 	}
 
 	pki {
