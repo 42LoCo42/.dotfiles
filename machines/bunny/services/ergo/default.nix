@@ -28,6 +28,13 @@ let
   };
 in
 {
+  topology.nodes.bunny-public.services.ergo = {
+    name = "Ergo";
+    icon = "misc.hash";
+    info = "Modern IRC server";
+    details.url.text = "https://irc.${config.rice.domain}";
+  };
+
   networking.firewall.allowedTCPPorts = [ 6697 ];
 
   rice.caddy = {
