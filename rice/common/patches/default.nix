@@ -25,6 +25,21 @@
           ];
         });
 
+        # TODO https://codeberg.org/emersion/gamja/pulls/210
+        gamja = prev.gamja.overrideAttrs (new: _: {
+          src = prev.fetchFromCodeberg {
+            owner = "irenes";
+            repo = "gamja";
+            rev = "43f715ee798c8453e13cf1616b3f06e2198c3701";
+            hash = "sha256-7nJxkKjZg0fIkX6nMrw07scCNEZtDyo5614rw+NeA5o=";
+          };
+
+          npmDeps = prev.fetchNpmDeps {
+            inherit (new) src;
+            hash = "sha256-2cahHSJq56w7GAMXZQeu9s/fgcOlEwNBoJFGxNVN75U=";
+          };
+        });
+
         ########## TODO move to obscura ##########
 
         hydroxide = prev.hydroxide.overrideAttrs (old: {

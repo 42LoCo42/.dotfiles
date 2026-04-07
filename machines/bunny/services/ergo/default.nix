@@ -15,7 +15,14 @@ let
     gamjaConfig = {
       server = {
         url = "wss://irc.${config.rice.domain}";
-        auth = "mandatory";
+        auth = "oauth2";
+        autoconnect = true;
+      };
+
+      oauth2 = {
+        url = "https://id.${config.rice.domain}";
+        client_id = "7b9d0ad3-76b4-48a4-a572-a0293955e29c";
+        scope = "openid profile email offline_access";
       };
     };
   };
@@ -43,6 +50,7 @@ in
     path = with pkgs; [
       ergochat
       openssl
+      python3
 
       # for administration
       catgirl
@@ -75,6 +83,7 @@ in
         -CAkey /ca.key                          \
         -out /data/ergo.crt
 
+      python ${./introspect.py} &
       exec ergo run --conf ${./config.yaml}
     '';
 

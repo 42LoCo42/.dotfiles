@@ -110,6 +110,13 @@ accounts:
 
   default-user-modes: +i
 
+  oauth2:
+    enabled: true
+    autocreate: true
+    introspection-url: "http://127.0.0.1:8000"
+    introspection-timeout: 10s
+    client-id: "7b9d0ad3-76b4-48a4-a572-a0293955e29c"
+
 channels:
   # modes that are set when new channels are created
   # +n is no-external-messages
