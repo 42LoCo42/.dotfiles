@@ -369,9 +369,11 @@ in
 
           flycheck = {
             hook = "prog-mode";
+
             custom = ''
               (flycheck-check-syntax-automatically '(mode-enabled save))
-              (flycheck-display-errors-delay 0)
+              (flycheck-display-errors-function nil)
+              (flycheck-help-echo-function nil)
             '';
           };
 
@@ -550,6 +552,12 @@ in
             custom = "(completion-in-region-function 'consult-completion-in-region)";
           };
 
+          consult-flycheck = {
+            bind' = ''
+              ("C-x C-c" . consult-flycheck)
+            '';
+          };
+
           marginalia = {
             config = "(marginalia-mode 1)";
           };
@@ -606,14 +614,20 @@ in
               (typst-ts-mode   . lsp-deferred)
               (web-mode        . lsp-deferred)
               (zig-mode        . lsp-deferred)
+
+              (lsp-managed-mode . (lambda ()
+                (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc 90 t)))
             '';
 
             custom = ''
               (eldoc-idle-delay 0)
+              (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+
               (lsp-headerline-breadcrumb-enable nil)
               (lsp-idle-delay 0)
               (lsp-inlay-hint-enable t)
               (lsp-log-io nil)
+              (lsp-modeline-diagnostics-scope :file)
               (read-process-output-max (* 1024 1024))
 
               ; custom client args
@@ -626,12 +640,8 @@ in
               (advice-add 'lsp-mode :before
                 #'lsp-inline-completion-company-integration-mode)
 
-              (advice-add (if (progn (require 'json)
-                                     (fboundp 'json-parse-buffer))
-                            'json-parse-buffer
-                            'json-read)
-                          :around
-                          #'lsp-booster--advice-json-parse)
+              (advice-add 'json-parse-buffer :around
+                #'lsp-booster--advice-json-parse)
 
               (advice-add 'lsp-resolve-final-command :around
                 #'lsp-booster--advice-final-command)
