@@ -1,4 +1,5 @@
-{
+{ lib, ... }:
+let disk = "nvme-eui.8ce38e0400d8442a"; in {
   imports = [ ../../profiles/leonsch ];
 
   aquaris = {
@@ -6,13 +7,9 @@
     secrets.pub = "IIZ7WIULG2jlmL9zKJogbfjVysqd4iPDh9cLoU2lAHI";
 
     filesystems = { fs, ... }: {
-      disks."/dev/disk/by-id/nvme-eui.8ce38e0400d8442a".partitions = [
+      disks."/dev/disk/by-id/${disk}".partitions = [
         fs.defaultBoot
-        {
-          content = fs.luks {
-            content = fs.zpool (p: p.rpool);
-          };
-        }
+        { content = fs.luks { content = fs.zpool (p: p.rpool); }; }
       ];
     };
 
@@ -20,6 +17,31 @@
       "/var/lib/bluetooth" = { m = "0700"; };
     };
   };
+
+  boot.initrd.luks.devices."${disk}-part2" = {
+    allowDiscards = true;
+    bypassWorkqueues = true;
+
+    crypttabExtraOpts = [
+      "tpm2-device=auto"
+      "tpm2-measure-pcr=yes"
+    ];
+  };
+
+  services = {
+    getty = {
+      autologinOnce = true;
+      autologinUser = "leonsch";
+    };
+
+    greetd.enable = lib.mkForce false;
+  };
+
+  environment.shellInit = ''
+    if [ "$TTY" = "/dev/tty1" ]; then
+      exec uwsm start hyprland.desktop
+    fi
+  '';
 
   hardware.bluetooth = {
     enable = true;

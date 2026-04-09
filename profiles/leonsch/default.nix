@@ -140,7 +140,7 @@ in
   };
 
   home-manager = {
-    minimal = true;
+    # minimal = true;
 
     sharedModules = singleton (hm: {
       aquaris = {
