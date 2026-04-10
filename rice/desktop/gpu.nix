@@ -75,7 +75,14 @@ in
     ############################################################################
 
     (mkIf cfg.amd.enable {
-      hardware.amdgpu.opencl.enable = true;
+      hardware.amdgpu = {
+        initrd.enable = true;
+        opencl.enable = true;
+      };
+
+      environment.variables = {
+        ROC_ENABLE_PRE_VEGA = "1";
+      };
     })
 
     (mkIf cfg.intel.enable {

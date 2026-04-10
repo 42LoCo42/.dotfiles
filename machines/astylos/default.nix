@@ -2,7 +2,11 @@
   imports = [ ../../profiles/leonsch ];
 
   aquaris = {
-    machine.id = "c426b77d7a1940ba98f0cdcf669cd11c";
+    machine = {
+      id = "c426b77d7a1940ba98f0cdcf669cd11c";
+      secureboot = false;
+    };
+
     secrets.pub = "w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI";
 
     filesystems = { fs, ... }: {
@@ -19,8 +23,8 @@
 
     desktop = {
       gpu = {
+        amd.enable = true;
         intel.enable = true;
-        nvidia.enable = true;
       };
 
       udev.cpuTemperatureSelector = ''KERNELS=="coretemp.0"'';
@@ -36,7 +40,7 @@
             };
 
             secondary = {
-              name = "DP-1";
+              name = "DP-3";
               mode = "preferred, auto-right, 1";
             };
           };
@@ -48,6 +52,10 @@
       };
     };
   };
+
+  hardware.opengl.extraPackages = with pkgs; [
+    mesa.opencl
+  ];
 
   home-manager.sharedModules = [{
     aquaris.persist = {
