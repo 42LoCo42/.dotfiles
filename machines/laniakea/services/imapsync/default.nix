@@ -14,7 +14,7 @@
         --exclude 'All Mail'           \
         --tmpdir /data/tmp             \
         --logdir /data/log             \
-        --minage 1                     \
+        --minage 30                    \
         --useuid                       \
         "''${args[@]}" || :
     '';
