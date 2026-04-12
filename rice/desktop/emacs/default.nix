@@ -978,6 +978,14 @@ in
               phpactor
             ];
           };
+
+          markdown-mode = {
+            defer = true;
+
+            hook = ''
+              (markdown-mode . (lambda () (indent-tabs-mode 0)))
+            '';
+          };
         };
       };
     }];
