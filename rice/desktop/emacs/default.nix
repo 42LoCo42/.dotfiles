@@ -404,7 +404,7 @@ in
               bibtex-tidy
               black # python-mode
               isort # python-mode
-              nodePackages.prettier # JS and others
+              prettier # JS and others
               shfmt # shell
             ];
           };
@@ -813,7 +813,7 @@ in
           typescript-mode = {
             defer = true;
 
-            extraPackages = with pkgs.nodePackages; [
+            extraPackages = with pkgs; [
               typescript
               typescript-language-server
             ];
