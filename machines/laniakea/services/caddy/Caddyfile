@@ -15,33 +15,10 @@
 	}
 }
 
-##### mympd #####
-
-(mympd) {
-	# connect to socket activation proxy on host
-	reverse_proxy unix//caddy/mympd.sock
-}
-
-laniakea.fritz.box {
-	import mympd
-}
-
-music.laniakea {
-	import mympd
-}
-
 ##### papra #####
 
 doc.laniakea {
 	reverse_proxy papra:8080
-}
-
-##### cypht #####
-
-mail.laniakea {
-	root * /srv/cypht/site
-	file_server
-	php_fastcgi tcp/cypht:8080
 }
 
 ##### qbittorrent #####

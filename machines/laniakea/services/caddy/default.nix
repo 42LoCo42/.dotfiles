@@ -26,7 +26,6 @@
     volumes = [
       "caddy:/caddy"
       "${config.rice.ca.file}:/ca.crt:ro"
-      "${pkgs.cypht}/share/php/cypht:/srv/cypht:ro"
     ];
   };
 }
