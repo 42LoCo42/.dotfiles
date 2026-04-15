@@ -114,6 +114,8 @@ in
               }
             }
 
+            windowrule = match:class background-wrap, float 1, move 0 0, size monitor_w monitor_h
+
             bind = $mod, p, exec, ${getExe password-manager}
             bind = $mod, s, exec, ${getExe sync-manager}
           '';

@@ -3,11 +3,9 @@
     (_: prev:
       let obscura = self.inputs.obscura.packages.${prev.stdenv.system}; in {
 
-        # TODO hyprlandPlugins aren't compatible with 0.54.* yet
-        inherit ((import (fetchTarball {
-          url = "https://github.com/nixos/nixpkgs/tarball/dd9b079222d43e1943b6ebd802f04fd959dc8e61";
-          sha256 = "sha256-I45esRSssFtJ8p/gLHUZ1OUaaTaVLluNkABkk6arQwE=";
-        })) { inherit (prev.stdenv) system; }) hyprland hyprlandPlugins;
+        # TODO upstream hyprlandPlugins aren't compatible with 0.54.* yet
+        inherit (self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}) hyprland;
+        hyprlandPlugins = obscura.my-hypr-plugins.entries;
 
         # TODO https://pr-tracker.bunny/?pr=502133
         ergochat = prev.ergochat.overrideAttrs (new: old: {
