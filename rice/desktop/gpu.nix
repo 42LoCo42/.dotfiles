@@ -68,6 +68,7 @@ in
           suppress_event = activatefocus
           move = 0 0
           size = 1 1
+          max_size = 1 1
         }
       '';
     })

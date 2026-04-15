@@ -140,6 +140,7 @@ in
         ".config/unity3d/Klei/Oxygen Not Included" = { };
         ".factorio" = { };
         ".local/share/Celeste" = { };
+        ".local/share/Paradox Interactive/Stellaris" = { };
         ".local/share/Rocket League" = { };
         ".local/share/Surviving Mars" = { };
       };

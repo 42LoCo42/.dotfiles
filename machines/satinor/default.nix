@@ -2,7 +2,11 @@
   imports = [ ../../profiles/ercanar ];
 
   aquaris = {
-    machine.id = "d637e5e346d34ccaa49d9994aafeba4a";
+    machine = {
+      id = "d637e5e346d34ccaa49d9994aafeba4a";
+      secureboot = false;
+    };
+
     secrets.pub = "ow1SvzI5RFVro8k71KpKMtt-TCnQun4FMy6l0Bt-dSg";
 
     filesystems = { fs, ... }: {
@@ -15,6 +19,7 @@
 
   fileSystems."/home/ercanar/esuesudesu" = {
     device = "/dev/disk/by-id/ata-JAJM600M1TB_AA202100000000000773-part1";
+    fsType = "auto";
   };
 
   networking.firewall = {
