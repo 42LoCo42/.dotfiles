@@ -53,7 +53,7 @@
     };
   };
 
-  hardware.opengl.extraPackages = with pkgs; [
+  hardware.graphics.extraPackages = with pkgs; [
     mesa.opencl
   ];
 

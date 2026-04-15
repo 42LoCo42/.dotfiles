@@ -4,6 +4,7 @@
     ./fastfetch.nix
     ./go-telemetry.nix
     ./nix-locate.nix
+    ./nix-search-tv
     ./nix.nix
     ./patches
     ./pnoc-v2
