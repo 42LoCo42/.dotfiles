@@ -62,6 +62,7 @@
           datetime
           drasl
           eka
+          grimmory
           immich-folder-album-creator
           papra
           pinlist
