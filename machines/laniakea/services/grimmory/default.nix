@@ -1,4 +1,11 @@
 { pkgs, config, ... }: {
+  topology.self.services.grimmory = {
+    name = "Grimmory";
+    icon = "services.grimmory";
+    info = "Personal library management";
+    details.url.text = "https://books.laniakea";
+  };
+
   virtualisation.pnoc.grimmory = {
     path = with pkgs; [ temurin-jre-bin-25 ];
 

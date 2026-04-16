@@ -1,4 +1,10 @@
 { pkgs, ... }: {
+  topology.self.services.mariadb = {
+    name = "MariaDB";
+    icon = "services.mariadb";
+    info = "Sadly not Postgres...";
+  };
+
   virtualisation.pnoc.mariadb = {
     path = with pkgs; [
       coreutils
