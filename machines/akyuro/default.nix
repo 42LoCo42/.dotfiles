@@ -9,7 +9,14 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/${disk}".partitions = [
         fs.defaultBoot
-        { content = fs.luks { content = fs.zpool (p: p.rpool); }; }
+        {
+          content = fs.luks {
+            content = fs.zpool (p: p.rpool);
+
+            tpmDecrypt = true;
+            tpmMeasure = true;
+          };
+        }
       ];
     };
 
@@ -19,12 +26,8 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
   };
 
   boot.initrd.luks.devices."${disk}-part2" = {
-    allowDiscards = true;
-    bypassWorkqueues = true;
-
     crypttabExtraOpts = [
-      "tpm2-device=auto"
-      "tpm2-measure-pcr=yes"
+      "fixate-volume-key=9743cb09e4f997eeede22763472b554b2bf3181d2b107af7e816a7d181a69103"
     ];
   };
 
