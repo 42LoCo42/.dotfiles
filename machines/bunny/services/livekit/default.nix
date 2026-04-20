@@ -16,12 +16,17 @@
 
   networking.firewall = {
     allowedTCPPorts = [ 7881 ];
-    allowedUDPPortRanges = [{ from = 50100; to = 50200; }];
+    allowedUDPPorts = [ 3478 ];
+    allowedUDPPortRanges = [
+      { from = 50100; to = 50200; } # WebRTC
+      { from = 50300; to = 65535; } # TURN
+    ];
   };
 
   virtualisation.pnoc = {
     livekit = {
       path = with pkgs; [ envsubst livekit ];
+
       script = ''
         # shellcheck disable=SC2153
         export LIVEKIT_KEYS="$LIVEKIT_KEY: $LIVEKIT_SECRET"
@@ -33,7 +38,12 @@
       environment.DOMAIN = config.rice.domain;
       environmentFiles = [ (config.aquaris.secret "@machine/livekit") ];
 
-      ports = [ "7881:7881" ];
+      ports = [
+        "7881:7881"
+        "3478:3478/udp"
+        "50100-50200:50100-50200/udp" # WebRTC
+        "50300-65535:50300-65535/udp" # TURN
+      ];
     };
 
     lk-jwt-service = {

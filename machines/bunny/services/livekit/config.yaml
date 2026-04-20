@@ -8,8 +8,10 @@ rtc:
   port_range_end: 50200
   use_external_ip: true
   enable_loopback_candidate: false
-  turn_servers:
-    - host: "turn.$DOMAIN"
-      port: 5349
-      protocol: tls
-      secret: "$TURN_SECRET"
+
+turn:
+  enabled: true
+  udp_port: 3478
+  relay_range_start: 50300
+  relay_range_end: 65535
+  domain: "matrix-rtc.$DOMAIN"
