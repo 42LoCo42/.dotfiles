@@ -98,6 +98,12 @@
           enable = true;
           options = {
             selection-clipboard = "clipboard";
+            guioptions = "";
+
+            recolor = true;
+            recolor-keephue = true;
+            recolor-lightcolor = "#282828";
+            recolor-darkcolor = "#ebdbb2";
           };
         };
       };
