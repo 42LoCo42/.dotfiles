@@ -543,6 +543,7 @@ in
               ("C-x C-m" . consult-minor-mode-menu)
               ("C-x C-r" . consult-ripgrep)
               ("C-x C-s" . consult-buffer)
+              ("C-x C-v" . consult-fd)
               ("M-l"     . consult-goto-line)
               ("M-s"     . consult-line)
               ("M-v"     . consult-yank-from-kill-ring)
@@ -550,6 +551,11 @@ in
 
             init = "(recentf-mode 1)";
             custom = "(completion-in-region-function 'consult-completion-in-region)";
+
+            extraPackages = with pkgs; [
+              fd
+              ripgrep
+            ];
           };
 
           consult-flycheck = {
