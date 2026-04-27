@@ -19,13 +19,19 @@ in
     services.systemd-lock-handler.enable = true;
 
     home-manager.sharedModules = [{
-      xdg.configFile."swaylock/config".text = ''
-        screenshots
-        effect-scale=0.5
-        effect-pixelate=3
-        effect-custom=${effect}
-        effect-scale=2
+      # xdg.configFile."swaylock/config".text = ''
+      #   screenshots
+      #   effect-scale=0.5
+      #   effect-pixelate=3
+      #   effect-custom=${effect}
+      #   effect-scale=2
 
+      #   clock
+      #   fade-in=0.5
+      # '';
+
+      xdg.configFile."swaylock/config".text = ''
+        color=282828
         clock
         fade-in=0.5
       '';
