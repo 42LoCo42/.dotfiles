@@ -341,6 +341,18 @@ in
           user = "jana";
         };
 
+        deimos = {
+          hostname = "deimos.bunny.vpn";
+          user = "melinda";
+          forwardAgent = false;
+        };
+
+        phobos = {
+          hostname = "phobos.bunny.vpn";
+          user = "melinda";
+          forwardAgent = false;
+        };
+
         ##### work - PIC #####
 
         lbmvweb = {
