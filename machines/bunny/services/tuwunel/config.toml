@@ -18,13 +18,6 @@ allow_legacy_media = true
 
 dns_passthru_appservices = true
 
-turn_uris = [
-	"turns:turn.@domain@?transport=udp",
-	"turns:turn.@domain@?transport=tcp",
-]
-
-turn_secret = "$TURN_SECRET"
-
 [global.well_known]
 client = "https://matrix.@domain@"
 server = "matrix.@domain@:443"

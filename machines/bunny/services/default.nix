@@ -4,7 +4,6 @@
     ./avh
     ./caddy
     ./chronometer
-    # ./coturn
     ./cryptpad
     ./datetime
     ./drasl
