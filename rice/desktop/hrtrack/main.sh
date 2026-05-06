@@ -7,7 +7,7 @@ if [ "$has" = "$now" ]; then
 	notify-send "HRT already taken!"
 else
 	extra=""
-	if (($(date +%s --date "$now") / 86400 % 4 == 0)); then
+	if (($(date +%s --date "$now") / 86400 % 6 == 0)); then
 		extra=" and Cypro"
 	fi
 
