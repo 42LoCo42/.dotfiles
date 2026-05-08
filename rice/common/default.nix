@@ -8,7 +8,7 @@
     ./nix.nix
     ./patches
     ./pnoc-v2
-    ./procfs.nix
+    ./security.nix
     ./speechd.nix
     ./topology
     ./zsh
