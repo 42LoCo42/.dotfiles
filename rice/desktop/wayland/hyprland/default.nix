@@ -47,6 +47,9 @@ let
 
     if [ -e ${statefile} ]; then
       hyprctl keyword monitor \
+        '${cfg.monitors.secondary.name}, 1600x900, auto-right, 1'
+
+      hyprctl keyword monitor \
         '${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}'
     else
       hyprctl keyword monitor \
