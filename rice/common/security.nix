@@ -1,19 +1,11 @@
-{ lib, ... }:
-let
-  inherit (lib)
-    mkForce
-    mkMerge
-    pipe
-    ;
-in
-{
+{ lib, ... }: {
   fileSystems."/proc" = {
     device = "proc";
     fsType = "proc";
     options = [ "nosuid" "hidepid=invisible" "gid=1" ]; # GID 1 is wheel
   };
 
-  security.wrappers = pipe [
+  security.wrappers = lib.pipe [
     "fusermount"
     "fusermount3"
     "mount"
@@ -26,7 +18,7 @@ in
     "sudoedit"
     "umount"
   ] [
-    (map (x: { ${x}.enable = mkForce false; }))
-    mkMerge
+    (map (x: { ${x}.enable = false; }))
+    lib.mkMerge
   ];
 }

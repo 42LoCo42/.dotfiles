@@ -11,6 +11,11 @@
       (_: _: { extraGroups = [ "adbusers" "gamemode" ]; })
       config.aquaris.users;
 
+    security.wrappers = {
+      newuidmap.enable = lib.mkForce true;
+      newgidmap.enable = lib.mkForce true;
+    };
+
     rice.unfreeNames = [ "p7zip" ];
 
     home-manager.sharedModules = [{
