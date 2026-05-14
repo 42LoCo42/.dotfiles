@@ -69,6 +69,11 @@ in
       type = str;
       default = "tailscale";
     };
+
+    ephemeral = mkOption {
+      type = bool;
+      default = false;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -83,7 +88,7 @@ in
       }];
     };
 
-    aquaris.persist.dirs = {
+    aquaris.persist.dirs = mkIf (!cfg.ephemeral) {
       "/var/lib/tailscale" = { m = "0700"; };
     };
 
@@ -149,19 +154,19 @@ in
           serviceConfig = {
             ExecStart = join " " [
               (getExe' pkgs.tailscale "tailscaled")
-              "-config   ${tscfg}"
-              "-port     ${toString cfg.port}"
-              "-socket   /run/tailscale/tailscaled.sock"
-              "-statedir /var/lib/tailscale"
-              "-tun      ${cfg.interface}"
+              "-config ${tscfg}"
+              "-port   ${toString cfg.port}"
+              "-socket /run/tailscale/tailscaled.sock"
+              "-state  ${if cfg.ephemeral then "mem:" else "/var/lib/tailscale/tailscaled.state"}"
+              "-tun    ${cfg.interface}"
             ];
 
             Restart = "on-failure";
             Type = "notify";
 
             RuntimeDirectory = "tailscale";
-            StateDirectory = "tailscale";
-            StateDirectoryMode = "0700";
+            StateDirectory = mkIf (!cfg.ephemeral) "tailscale";
+            StateDirectoryMode = mkIf (!cfg.ephemeral) "0700";
           };
         };
       };
