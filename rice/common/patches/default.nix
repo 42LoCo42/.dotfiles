@@ -40,7 +40,7 @@
           ./hydroxide-pagesize.patch
         ];
 
-        vendorHash.__assign = "sha256-8THUFE72wiWiC1CJJDShja3ucpkpAdw/D+OILj8iqMk=";
+        vendorHash.__assign = "sha256-rqeQCsQLbsa90YyZfjVoYFaJRCJXXMsAW8Qm9yYjbFE=";
       };
 
       prettypst.__output.patches.__append = [

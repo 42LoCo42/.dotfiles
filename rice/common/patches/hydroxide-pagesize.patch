@@ -5,11 +5,11 @@ index fd8a2290b6..327ab8a305 100644
 @@ -14,6 +14,7 @@
  	github.com/emersion/go-webdav v0.7.0
  	go.etcd.io/bbolt v1.4.3
- 	golang.org/x/crypto v0.46.0
+ 	golang.org/x/crypto v0.48.0
 +	golang.org/x/sync v0.19.0
- 	golang.org/x/term v0.38.0
+ 	golang.org/x/term v0.40.0
  )
- 
+
 diff --git a/imap/mailbox.go b/imap/mailbox.go
 index d3e74a173f..3afbf7520c 100644
 --- a/imap/mailbox.go
@@ -17,15 +17,15 @@ index d3e74a173f..3afbf7520c 100644
 @@ -7,6 +7,8 @@
  	"sync"
  	"time"
- 
+
 +	"golang.org/x/sync/errgroup"
 +
  	"github.com/emersion/go-imap"
  	imapbackend "github.com/emersion/go-imap/backend"
- 
+
 @@ -116,7 +118,7 @@
  	}
- 
+
  	filter := &protonmail.MessageFilter{
 -		PageSize: 150,
 +		PageSize: protonmail.MaxMessagePageSize,
@@ -34,7 +34,7 @@ index d3e74a173f..3afbf7520c 100644
  		Asc:      true,
 @@ -481,50 +483,57 @@
  	}
- 
+
  	// TODO: imap.SetFlags should remove currently set flags
 -
 -	for _, flag := range flags {
@@ -128,13 +128,13 @@ index d3e74a173f..3afbf7520c 100644
 +	if err := g.Wait(); err != nil {
 +		return err
 +	}
- 
+
  	return mbox.Poll()
  }
 @@ -544,9 +553,19 @@
  		return imapbackend.ErrNoSuchMailbox
  	}
- 
+
 -	if err := mbox.u.c.LabelMessages(dest.label, apiIDs); err != nil {
 +	g := new(errgroup.Group)
 +	for i := 0; i < len(apiIDs); i += protonmail.MaxMessagePageSize {
@@ -151,11 +151,11 @@ index d3e74a173f..3afbf7520c 100644
 +
  	return mbox.Poll()
  }
- 
+
 @@ -565,12 +584,20 @@
  		return imapbackend.ErrNoSuchMailbox
  	}
- 
+
 -	if err := mbox.u.c.LabelMessages(dest.label, apiIDs); err != nil {
 -		return err
 +	g := new(errgroup.Group)
@@ -175,11 +175,11 @@ index d3e74a173f..3afbf7520c 100644
 +
  	return mbox.Poll()
  }
- 
+
 @@ -592,7 +619,16 @@
  	}
  	mbox.Unlock()
- 
+
 -	if err := mbox.u.c.DeleteMessages(apiIDs); err != nil {
 +	g := new(errgroup.Group)
 +	for i := 0; i < len(apiIDs); i += protonmail.MaxMessagePageSize {
@@ -193,7 +193,7 @@ index d3e74a173f..3afbf7520c 100644
 +	if err := g.Wait(); err != nil {
  		return err
  	}
- 
+
 diff --git a/protonmail/messages.go b/protonmail/messages.go
 index 9a3de8528c..751f2845e7 100644
 --- a/protonmail/messages.go
@@ -201,10 +201,10 @@ index 9a3de8528c..751f2845e7 100644
 @@ -15,6 +15,9 @@
  	"github.com/ProtonMail/go-crypto/openpgp/packet"
  )
- 
+
 +// MaxMessagePageSize are enforced by the ProtonMail server for all message operations
 +const MaxMessagePageSize = 150
 +
  type MessageType int
- 
+
  const (

@@ -7,13 +7,13 @@
   };
 
   virtualisation.pnoc.grimmory = {
-    path = with pkgs; [ temurin-jre-bin-25 ];
+    path = with pkgs; [
+      grimmory
+      temurin-jre-bin-25
+    ];
 
     script = ''
-      exec java                              \
-        -Dapp.path-config=/data/app          \
-        -Dapp.bookdrop-folder=/data/bookdrop \
-        -jar ${pkgs.grimmory}/grimmory.jar
+      exec grimmory /data
     '';
 
     environment = {

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   imports = [
     ../../profiles/server
     ./kboot-conf
@@ -30,10 +30,14 @@
     cache_neg_max_ttl = 0;
   };
 
-  boot = rec {
+  boot = {
     loader.kboot-conf.enable = true;
-    kernelPackages = pkgs.linuxPackages;
-    extraModulePackages = with kernelPackages; [
+
+    kernelPackages = pkgs.linuxPackages_6_12; # newer kernel versions cause boot failures
+    kernelParams = [ "console=tty0" ]; # force graphical console
+    initrd.kernelModules = [ "rockchipdrm" ]; # force early graphics
+
+    extraModulePackages = with config.boot.kernelPackages; [
       # rtl8821au # currenctly broken
       rtw88 # replacement?
     ];
