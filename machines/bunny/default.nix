@@ -72,6 +72,27 @@ in
       immich-folder-album-creator
     ];
 
+    systemd.services.tailscaled = {
+      after = [ "podman-headscale.service" ];
+      wants = [ "podman-headscale.service" ];
+
+      serviceConfig.ExecStartPre = getExe (pkgs.writeShellApplication {
+        name = "tailscale-cleanup";
+
+        runtimeInputs = with pkgs; [
+          findutils # xargs
+          jq
+          podman
+        ];
+
+        text = ''
+          podman exec headscale headscale nodes list --output json \
+          | jq '.[] | select(.name == "exit").id' \
+          | xargs -I% podman exec headscale headscale nodes delete --force -i %
+        '';
+      });
+    };
+
     home-manager.sharedModules = [{
       aquaris.persist = {
         "hidden" = { };
