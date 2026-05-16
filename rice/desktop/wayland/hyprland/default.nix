@@ -295,6 +295,8 @@ in
       wayland.windowManager.hyprland = {
         enable = true;
 
+        configType = "hyprlang";
+
         plugins = with pkgs.hyprlandPlugins; [
           hypr-dynamic-cursors
           hyprfocus

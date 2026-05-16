@@ -6,6 +6,8 @@
 		state_dir /data/tailscale
 	}
 
+	default_bind tailscale/bunny
+
 	pki {
 		ca local {
 			root {
@@ -19,10 +21,6 @@
 	skip_install_trust
 }
 
-(bind) {
-	bind tailscale/bunny
-}
-
 (connect) {
 	reverse_proxy localhost:12345 {
 		header_up +to {args[0]}
@@ -32,55 +30,46 @@
 ################################################################################
 
 drasl.bunny {
-	import bind
 	reverse_proxy drasl:8080
 }
 
 ################################################################################
 
 git.bunny:22 {
-	import bind
 	import connect forgejo:2222
 }
 
 git.bunny {
-	import bind
 	reverse_proxy forgejo:8080
 }
 
 ################################################################################
 
 img.bunny {
-	import bind
 	reverse_proxy immich:8080
 }
 
 ################################################################################
 
 pin.bunny {
-	import bind
 	reverse_proxy pinlist:8080
 }
 
 ################################################################################
 
 pr-tracker.bunny {
-	import bind
 	reverse_proxy pr-tracker:8081
 }
 
 ################################################################################
 
 rd.bunny {
-	import bind
 	reverse_proxy rustdesk:21114
 }
 
 ################################################################################
 
 searx.bunny {
-	import bind
-
 	respond /opensearch.xml <<EOF
 		<?xml version="1.0" encoding="utf-8"?>
 		<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
@@ -104,14 +93,12 @@ searx.bunny {
 ################################################################################
 
 sync.bunny {
-	import bind
 	reverse_proxy syncthing:8080
 }
 
 ################################################################################
 
 vencloud.bunny {
-	import bind
 	header ?Access-Control-Allow-Origin *
 	reverse_proxy vencloud:8080
 }
@@ -119,8 +106,6 @@ vencloud.bunny {
 ################################################################################
 
 vw.bunny {
-	import bind
-
 	reverse_proxy vaultwarden:8080 {
 		header_up X-Real-IP {remote_host}
 	}

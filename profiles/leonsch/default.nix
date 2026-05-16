@@ -173,7 +173,7 @@ in
           preRun = mkBefore ''
             if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
               hyprctl keyword decoration:blur:new_optimizations false
-              foot -a background-wrap -o colors.alpha=0 \
+              foot -a background-wrap -o colors-dark.alpha=0 \
                 rsync -azvP --delete                    \
                   "firefox-sync:" "$FIREFOX_PROFILE_DIR"
               hyprctl keyword decoration:blur:new_optimizations true
@@ -183,7 +183,7 @@ in
           postRun = mkAfter ''
             if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
               hyprctl keyword decoration:blur:new_optimizations false
-              foot -a background-wrap -o colors.alpha=0 \
+              foot -a background-wrap -o colors-dark.alpha=0 \
                 rsync -azvP --delete                    \
                   "$FIREFOX_PROFILE_DIR" "firefox-sync:"
               hyprctl keyword decoration:blur:new_optimizations true

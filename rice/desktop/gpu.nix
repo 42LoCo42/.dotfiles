@@ -78,7 +78,10 @@ in
     (mkIf cfg.amd.enable {
       hardware.amdgpu = {
         initrd.enable = true;
-        opencl.enable = true;
+
+        # TODO reenable when clang-rocm builds again
+        # https://hydra.nixos.org/job/nixpkgs/unstable/rocmPackages.llvm.clang-unwrapped.x86_64-linux
+        opencl.enable = builtins.trace "AMD: OpenCL is temporarily disabled!" false;
       };
 
       environment.variables = {
