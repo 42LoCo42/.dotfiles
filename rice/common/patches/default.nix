@@ -57,6 +57,8 @@
 
       ########## permanent overrides ##########
 
+      fastfetch.__assign = obscura.my-fastfetch;
+
       factorio-space-age.__input.makeDesktopItem.__hijack = {
         exec.__prepend = "gamemoderun ";
       };

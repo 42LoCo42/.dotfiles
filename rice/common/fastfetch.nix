@@ -1,11 +1,7 @@
-{ pkgs, ... }: {
+{
   home-manager.sharedModules = [{
     programs.fastfetch = {
       enable = true;
-
-      package = pkgs.fastfetch.override {
-        zfsSupport = true;
-      };
 
       settings = {
         modules = [
@@ -37,8 +33,6 @@
           "zpool"
           "localip"
           "battery"
-          "poweradapter"
-          "locale"
           "break"
           "colors"
         ];
