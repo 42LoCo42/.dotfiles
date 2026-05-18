@@ -22,7 +22,6 @@
       imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
         "programs/mpv.nix"
         "programs/yt-dlp.nix"
-        "programs/zathura.nix"
       ];
 
       aquaris.persist.".android" = { }; # for ADB
@@ -96,19 +95,6 @@
           settings = {
             cookies-from-browser = "firefox:~/.librewolf/default";
             format-sort = "vcodec:h264,quality";
-          };
-        };
-
-        zathura = {
-          enable = true;
-          options = {
-            selection-clipboard = "clipboard";
-            guioptions = "";
-
-            recolor = true;
-            recolor-keephue = true;
-            recolor-lightcolor = "#282828";
-            recolor-darkcolor = "#ebdbb2";
           };
         };
       };

@@ -37,6 +37,7 @@
       wayland.enable = true;
       wego.enable = true;
       xdg.enable = true;
+      zathura.enable = true;
       zenkernel.enable = true;
     };
 
@@ -71,6 +72,7 @@
     ./wayland
     ./wego.nix
     ./xdg.nix
+    ./zathura.nix
     ./zenkernel.nix
   ];
 }
