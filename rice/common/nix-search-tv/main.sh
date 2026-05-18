@@ -3,8 +3,8 @@
 # adapted from https://github.com/3timeslazy/nix-search-tv/blob/main/nixpkgs.sh
 
 declare -a INDEXES=(
-	"nixos ctrl-o" # nix[o]s
-	"noogle ctrl-l" # [l]ib
+	"nixos ctrl-o"   # nix[o]s
+	"noogle ctrl-l"  # [l]ib
 	"nixpkgs ctrl-i" # n[i]xpkgs
 	"home-manager ctrl-h"
 	"all ctrl-a"
@@ -102,7 +102,7 @@ PREVIEW_WINDOW='
 
 eval "$CMD print | fzf \
     --preview '$CMD preview \$(cat $STATE_FILE) {}' \
-    --bind '$OPEN_SOURCE_KEY:execute($CMD source \$(cat $STATE_FILE) {} | xargs $OPENER)' \
+    --bind '$OPEN_SOURCE_KEY:execute($CMD source \$(cat $STATE_FILE) {} | cut -d/ -f8- | sed \"s|^|/etc/nix/channel/|\" | if [ -v DISPLAY ]; then xargs emacsclient -nc; else xargs vi; fi)' \
     --bind '$OPEN_HOMEPAGE_KEY:execute($CMD homepage \$(cat $STATE_FILE) {} | xargs $OPENER)' \
     --bind $'$SEARCH_SNIPPET_KEY:execute($SEARCH_SNIPPET_CMD | xargs $OPENER)' \
     --bind $'$NIX_SHELL_KEY:become($NIX_SHELL_CMD)' \
