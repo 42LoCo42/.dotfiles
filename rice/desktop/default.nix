@@ -47,32 +47,4 @@
       daemonIOSchedClass = "idle";
     };
   };
-
-  imports = [
-    ./alarm
-    ./emacs
-    ./equibop.nix
-    ./firefox.nix
-    ./fonts.nix
-    ./gomuks.nix
-    ./gpu.nix
-    ./greetd.nix
-    ./hrtrack
-    ./keyd.nix
-    ./libvirt.nix
-    ./mail.nix
-    ./minecraft
-    ./misc.nix
-    ./mpd.nix
-    ./pipewire
-    ./scx.nix
-    ./sudo-u2f.nix
-    ./theming.nix
-    ./udev.nix
-    ./wayland
-    ./wego.nix
-    ./xdg.nix
-    ./zathura.nix
-    ./zenkernel.nix
-  ];
 }

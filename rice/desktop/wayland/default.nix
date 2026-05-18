@@ -19,18 +19,4 @@
       wlsunset.enable = true;
     };
   };
-
-  imports = [
-    ./flameshot.nix
-    ./foot.nix
-    ./fuzzel
-    ./hypridle.nix
-    ./hyprland
-    ./mako
-    ./sway-audio-idle-inhibit.nix
-    ./swaybg.nix
-    ./swaylock
-    ./waybar
-    ./wlsunset.nix
-  ];
 }
