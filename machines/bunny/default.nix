@@ -4,10 +4,7 @@ let
   inherit (lib.types) package;
 in
 {
-  imports = [
-    ../../profiles/server
-    ./services
-  ];
+  imports = [ ../../profiles/server ];
 
   options.rice = {
     homepage = mkOption {

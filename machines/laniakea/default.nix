@@ -1,9 +1,5 @@
 { pkgs, config, ... }: {
-  imports = [
-    ../../profiles/server
-    ./kboot-conf
-    ./services
-  ];
+  imports = [ ../../profiles/server ];
 
   aquaris = {
     machine = {
