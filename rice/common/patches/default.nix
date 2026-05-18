@@ -1,18 +1,7 @@
 { self, lib, ... }: {
   nixpkgs.overlays = lib.singleton (_: prev:
-    let
-      infuse = import ./infuse.nix {
-        inherit lib;
-
-        sugars = infuse.v1.default-sugars ++ lib.attrsToList {
-          __hijack = _: infusion: target: args:
-            target (infuse.v1.infuse args infusion);
-        };
-      };
-
-      obscura = self.inputs.obscura.packages.${prev.stdenv.system};
-    in
-    infuse.v1.infuse prev ({
+    let obscura = self.inputs.obscura.packages.${prev.stdenv.system}; in
+    self.inputs.obscura.lib.infuse prev ({
       ########## TODO move to obscura ##########
 
       # TODO https://pr-tracker.bunny/?pr=502133
