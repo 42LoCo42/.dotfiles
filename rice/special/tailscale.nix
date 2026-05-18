@@ -27,7 +27,7 @@ let
     authKey = "file:${config.aquaris.secret "@machine/tailscale"}";
 
     inherit (cfg) hostname locked;
-    acceptDNS = true;
+    acceptDNS = false;
 
     advertiseRoutes = ifEnable cfg.isExit [
       "0.0.0.0/0"
