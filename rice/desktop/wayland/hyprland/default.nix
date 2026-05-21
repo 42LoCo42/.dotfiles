@@ -15,8 +15,10 @@ let
     pipe
     range
     readFile
+    replaceString
     toInt
     ;
+
   inherit (lib.types)
     attrsOf
     bool
@@ -28,6 +30,7 @@ let
     str
     submodule
     ;
+
   inherit (aquaris.lib) subsF;
 
   join = builtins.concatStringsSep "";
@@ -37,37 +40,29 @@ let
 
   cfg = config.rice.desktop.wayland.hyprland;
 
-  statefile = ''"$HOME/.cache/secondary-monitor-enabled"'';
+  secondary-enabled = replaceString "\n" "" ''
+    "$(hyprctl monitors all -j | jq '.[] | select(
+      .name == "${cfg.monitors.secondary.name}").disabled | not')"
+  '';
 
   secondary-state = pkgs.writeShellScript "secondary-state" ''
-    case "$1" in
-      enable)  touch ${statefile} ;;
-      disable) rm -f ${statefile} ;;
-    esac
-
-    if [ -e ${statefile} ]; then
-      hyprctl keyword monitor \
-        '${cfg.monitors.secondary.name}, 1600x900, auto-right, 1'
-
-      hyprctl keyword monitor \
-        '${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}'
+    if ${secondary-enabled}; then
+      if [ "$1" = disable ]; then
+        hyprctl keyword monitor '${cfg.monitors.secondary.name}, disable'
+      fi
     else
-      hyprctl keyword monitor \
-        '${cfg.monitors.secondary.name}, disable'
+      if [ "$1" = enable ]; then
+        hyprctl keyword monitor '${cfg.monitors.secondary.name}, 1600x900, auto-right, 1'
+        hyprctl keyword monitor '${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}'
+      fi
     fi
   '';
 
   secondary-goto = pkgs.writeShellScript "secondary-goto" ''
-    if
-      [ -n "$(
+    if [ -n "$(
         hyprctl workspaces -j \
         | jq '.[] | select(.name == "secondary")'
-      )" ] ||
-      "$(
-        hyprctl monitors all -j | jq -r '
-          .[] | select(.name == "${cfg.monitors.secondary.name}")
-          | .disabled | not'
-      )"
+      )" ] || ${secondary-enabled}
     then
       hyprctl dispatch workspace              "name:secondary"
       hyprctl dispatch moveworkspacetomonitor "name:secondary ${cfg.monitors.secondary.name}"
@@ -237,7 +232,7 @@ in
           (mkIf (cfg.monitors.secondary != null) ''
             monitor = ${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}
             workspace = name:secondary, monitor:${cfg.monitors.secondary.name}, default
-            exec = sleep 1; ${secondary-state}
+            exec = sleep 1; ${secondary-state} disable
 
             bind = $mod      , ssharp, exec, ${secondary-goto}
             bind = $mod SHIFT, ssharp, exec, ${secondary-move}
