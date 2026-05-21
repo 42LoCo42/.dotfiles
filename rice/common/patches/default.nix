@@ -2,40 +2,6 @@
   nixpkgs.overlays = lib.singleton (_: prev:
     let obscura = self.inputs.obscura.packages.${prev.stdenv.system}; in
     self.inputs.obscura.lib.infuse prev ({
-      ########## TODO move to obscura ##########
-
-      # TODO https://pr-tracker.bunny/?pr=502133
-      ergochat.__output = {
-        version.__assign = "2.18.0";
-
-        src.__output.hash.__assign = "sha256-6aibQ4dq3zkRoeLLrAc3OXXQWRZIQ7mPMSnWhz8LJsM=";
-
-        tags.__append = [
-          "i18n"
-          "postgresql"
-        ];
-      };
-
-      # TODO https://codeberg.org/emersion/gamja/pulls/210
-      gamja.__output.patches.__append = [
-        (prev.fetchpatch {
-          url = "https://codeberg.org/emersion/gamja/pulls/210.diff";
-          hash = "sha256-ZMiJbwHsHhmYCQko6BWHQU9ck/3pc3mJTyVQVLze76s=";
-        })
-      ];
-
-      hydroxide.__output = {
-        patches.__append = [
-          ./hydroxide-pagesize.patch
-        ];
-
-        vendorHash.__assign = "sha256-rqeQCsQLbsa90YyZfjVoYFaJRCJXXMsAW8Qm9yYjbFE=";
-      };
-
-      prettypst.__output.patches.__append = [
-        ./prettypst-hline.patch
-      ];
-
       ########## temporary overrides ##########
 
       # TODO upstream hyprlandPlugins aren't compatible with 0.54.* yet
@@ -43,6 +9,11 @@
       # https://hydra.nixos.org/job/nixpkgs/unstable/hyprlandPlugins.hyprwinwrap.x86_64-linux
       hyprland.__assign = self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}.hyprland;
       hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
+
+      ergochat  .__assign = obscura.my-ergochat; ## TODO https://pr-tracker.bunny/?pr=502133
+      gamja     .__assign = obscura.my-gamja; ##### TODO https://codeberg.org/emersion/gamja/pulls/210
+      hydroxide .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
+      prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 
       ########## permanent overrides ##########
 
