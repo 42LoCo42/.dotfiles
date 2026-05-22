@@ -298,14 +298,20 @@ in
           };
 
           telephone-line = {
-            config = "(telephone-line-mode 1)";
+            config = ''
+              (require 'lsp-headerline)
+              (telephone-line-mode 1)
+            '';
 
             custom = ''
+              (telephone-line-secondary-left-separator my/telephone-line-space)
+
               (telephone-line-lhs
                '((accent . (telephone-line-vc-segment
                             telephone-line-process-segment))
                  (nil    . (my/telephone-line-project-cached-segment
-                            my/telephone-line-buffer-segment))))
+                            my/telephone-line-buffer-segment
+                            my/telephone-line-symbol-segment))))
             '';
           };
 

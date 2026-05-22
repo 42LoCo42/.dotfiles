@@ -118,11 +118,13 @@
 (require 'telephone-line)
 (require 'project)
 
+(defvar my/telephone-line-space
+  (make-instance 'telephone-line-unicode-separator :char 32))
+
 (telephone-line-defsegment my/telephone-line-project-cached-segment ()
   (if (boundp 'my/project-cached) my/project-cached
     (let ((result (funcall (funcall #'telephone-line-project-segment) face)))
-      (setq-local my/project-cached result)
-      result)))
+      (setq-local my/project-cached result))))
 
 (telephone-line-defsegment my/telephone-line-buffer-segment ()
   (if (boundp 'my/buffer-segment-cached) my/buffer-segment-cached
@@ -138,7 +140,7 @@
          mode-line-modified
          mode-line-client
          mode-line-remote
-         mode-line-frame-identification
+         " "
          ,(cond
            ((not name) (propertize (buffer-name) 'face 'bold))
            (proj (funcall prop (string-remove-prefix
@@ -146,6 +148,9 @@
            (t (funcall prop (if (string-prefix-p my/home-dir name)
                               (concat "~/" (string-remove-prefix my/home-dir name))
                               name)))))))))
+
+(telephone-line-defsegment my/telephone-line-symbol-segment ()
+  (string-trim (lsp-headerline--build-symbol-string)))
 
 ;; https://github.com/blahgeek/emacs-lsp-booster
 
