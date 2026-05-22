@@ -232,7 +232,7 @@ in
           (mkIf (cfg.monitors.secondary != null) ''
             monitor = ${cfg.monitors.secondary.name}, ${cfg.monitors.secondary.mode}
             workspace = name:secondary, monitor:${cfg.monitors.secondary.name}, default
-            exec = sleep 1; ${secondary-state} disable
+            exec-once = sleep 1; ${secondary-state} disable
 
             bind = $mod      , ssharp, exec, ${secondary-goto}
             bind = $mod SHIFT, ssharp, exec, ${secondary-move}
