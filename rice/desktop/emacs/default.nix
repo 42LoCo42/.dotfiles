@@ -89,6 +89,7 @@ in
           emacs = {
             bind = ''
               ("C-a" . my/smart-home)
+              ("M-=" . count-words)
             '';
 
             bind' = ''
