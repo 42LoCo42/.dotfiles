@@ -55,3 +55,8 @@
 		level ERROR
 	}
 }
+
+16bytes.duckdns.org {
+	root * /srv/homepage/foo
+	file_server
+}
