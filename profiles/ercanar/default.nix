@@ -161,32 +161,30 @@ in
       rustdesk-flutter
     ];
 
-    programs.ssh.matchBlocks = {
+    programs.ssh.settings = {
       forgejo = proxy "git.bunny:22" {
-        user = "forgejo";
+        User = "forgejo";
       };
 
       pi = {
-        hostname = "owo-ercanar-senpai.duckdns.org";
-        port = 12345;
+        HostName = "owo-ercanar-senpai.duckdns.org";
+        Port = 12345;
       };
 
       xenon = {
-        hostname = "xenon.bunny.vpn";
-        user = "ercanar";
+        HostName = "xenon.bunny.vpn";
+        User = "ercanar";
       };
 
       pizza = {
-        hostname = "exit.bunny.vpn";
-        port = 18213;
-        user = "admin";
+        HostName = "exit.bunny.vpn";
+        Port = 18213;
+        User = "admin";
 
-        extraOptions = {
-          AddKeysToAgent = "no";
-          IdentitiesOnly = "yes";
-          IdentityAgent = "/dev/null";
-          IdentityFile = config.aquaris.secret "user/ercanar/pizza";
-        };
+        AddKeysToAgent = "no";
+        IdentitiesOnly = "yes";
+        IdentityAgent = "/dev/null";
+        IdentityFile = config.aquaris.secret "user/ercanar/pizza";
       };
     };
   }];

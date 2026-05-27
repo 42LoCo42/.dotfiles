@@ -276,122 +276,116 @@ in
         };
       };
 
-      programs.ssh.matchBlocks = (mapAttrs (n: x: x // {
-        controlMaster = "auto";
-        controlPath = "\${HOME}/.ssh/control-${n}";
+      programs.ssh.settings = (mapAttrs (n: x: x // {
+        ControlMaster = "auto";
+        ControlPath = "\${HOME}/.ssh/control-${n}";
       })) {
         ##### private machines #####
 
         bunny = {
-          hostname = "exit.bunny.vpn";
-          port = 18213;
-          user = "admin";
+          HostName = "exit.bunny.vpn";
+          Port = 18213;
+          User = "admin";
         };
 
         bunny-fallback = {
-          hostname = "eleonora.gay";
-          addressFamily = "inet";
-          port = 18213;
-          user = "admin";
+          HostName = "eleonora.gay";
+          AddressFamily = "inet";
+          Port = 18213;
+          User = "admin";
         };
 
         firefox-sync = {
-          hostname = "exit.bunny.vpn";
-          port = 18213;
-          user = "admin";
+          HostName = "exit.bunny.vpn";
+          Port = 18213;
+          User = "admin";
 
-          extraOptions = {
-            AddKeysToAgent = "no";
-            IdentitiesOnly = "yes";
-            IdentityAgent = "/dev/null";
-            IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
-          };
+          AddKeysToAgent = "no";
+          IdentitiesOnly = "yes";
+          IdentityAgent = "/dev/null";
+          IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
         };
 
         forgejo = proxy "git.bunny:22" {
-          user = "forgejo";
+          User = "forgejo";
         };
 
         laniakea = {
-          hostname = "laniakea.bunny.vpn";
-          user = "admin";
+          HostName = "laniakea.bunny.vpn";
+          User = "admin";
         };
 
         xenon = {
-          hostname = "xenon.bunny.vpn";
-          user = "ercanar";
+          HostName = "xenon.bunny.vpn";
+          User = "ercanar";
         };
 
         ##### people #####
 
         hannes = {
-          hostname = "satinor.bunny.vpn";
-          user = "ercanar";
+          HostName = "satinor.bunny.vpn";
+          User = "ercanar";
         };
 
         hapi = {
-          hostname = "owo-ercanar-senpai.duckdns.org";
-          port = 12345;
-          user = "ercanar";
+          HostName = "owo-ercanar-senpai.duckdns.org";
+          Port = 12345;
+          User = "ercanar";
         };
 
         jana = {
-          hostname = "primula25.duckdns.org";
-          port = 22000;
-          user = "jana";
+          HostName = "primula25.duckdns.org";
+          Port = 22000;
+          User = "jana";
         };
 
         deimos = {
-          hostname = "deimos.bunny.vpn";
-          user = "melinda";
-          forwardAgent = false;
+          HostName = "deimos.bunny.vpn";
+          User = "melinda";
+          ForwardAgent = false;
         };
 
         phobos = {
-          hostname = "phobos.bunny.vpn";
-          user = "melinda";
-          forwardAgent = false;
+          HostName = "phobos.bunny.vpn";
+          User = "melinda";
+          ForwardAgent = false;
         };
 
         ##### work - PIC #####
 
         lbmvweb = {
-          hostname = "www1.d11121.lbmv.de";
-          user = "www-data";
+          HostName = "www1.d11121.lbmv.de";
+          User = "www-data";
         };
 
         meeting2 = {
-          hostname = "meeting2.planet-ic.de";
-          user = "root";
-          setEnv.TERM = "xterm-256color";
+          HostName = "meeting2.planet-ic.de";
+          User = "root";
+          SetEnv.TERM = "xterm-256color";
         };
 
         freepbx = {
-          hostname = "195.98.195.10";
-          user = "root";
-          setEnv.TERM = "xterm-256color";
+          HostName = "195.98.195.10";
+          User = "root";
+          SetEnv.TERM = "xterm-256color";
 
-          extraOptions = {
-            HostKeyAlgorithms = "+ssh-rsa";
-            PubkeyAcceptedKeyTypes = "+ssh-rsa";
-          };
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
         };
 
         greifswald = {
-          hostname = "web03270.pvm.imv.de";
-          user = "root";
-          setEnv.TERM = "xterm-256color";
+          HostName = "web03270.pvm.imv.de";
+          User = "root";
+          SetEnv.TERM = "xterm-256color";
         };
 
         bonetty = {
-          hostname = "ares-bonetty.p4.net";
-          user = "root";
-          setEnv.TERM = "xterm-256color";
+          HostName = "ares-bonetty.p4.net";
+          User = "root";
+          SetEnv.TERM = "xterm-256color";
 
-          extraOptions = {
-            HostKeyAlgorithms = "+ssh-rsa";
-            PubkeyAcceptedKeyTypes = "+ssh-rsa";
-          };
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
         };
       };
     });

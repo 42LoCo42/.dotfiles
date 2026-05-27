@@ -9,7 +9,7 @@ in
   options.rice.ssh.proxy = mkOption {
     type = anything;
     default = to: x: {
-      proxyCommand = "${getExe pkgs.websocat} --binary wss://${to}";
+      ProxyCommand = "${getExe pkgs.websocat} --binary wss://${to}";
     } // x;
   };
 

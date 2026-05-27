@@ -41,6 +41,19 @@ in
             export LSP_USE_PLISTS=true
           '' + (old.buildPhase or "");
         });
+
+        # stub out reformatter (zig-mode wants it, but we use apheleia)
+        reformatter = epkgs.trivialBuild {
+          pname = "reformatter";
+          version = "0";
+
+          src = pkgs.writeText "reformatter.el" ''
+            (defmacro reformatter-define (&rest args)
+              '(defun zig-format-on-save-mode (&rest args)))
+
+            (provide 'reformatter)
+          '';
+        };
       };
 
       services.emacs = {
@@ -844,24 +857,6 @@ in
 
           zig-mode = {
             defer = true;
-
-            package = epkgs: epkgs.zig-mode.overrideAttrs {
-              # stub out reformatter (zig-mode wants it, but we use apheleia)
-              packageRequires = [
-                (epkgs.trivialBuild {
-                  pname = "reformatter";
-                  version = "0";
-
-                  src = pkgs.writeText "reformatter.el" ''
-                    (defmacro reformatter-define (&rest args)
-                      '(defun zig-format-on-save-mode (&rest args)))
-
-                    (provide 'reformatter)
-                  '';
-                })
-              ];
-            };
-
             extraPackages = with pkgs; [ zls ];
           };
 
