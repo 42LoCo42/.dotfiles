@@ -215,10 +215,13 @@ in
 
       home = {
         packages = with pkgs; [
+          # work
+          cifs-utils
+          openvpn
+
           catgirl
           eka
           jameica
-          openvpn # for corporate VPN
           rustdesk-flutter
           sshfs
           syncplay
