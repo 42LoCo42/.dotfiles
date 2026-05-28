@@ -6,6 +6,7 @@
   };
 
   security.wrappers = lib.pipe [
+    "Hyprland"
     "fusermount"
     "fusermount3"
     "mount"
