@@ -197,6 +197,7 @@ in
           ".config/steamguard-cli" = { };
 
           ".local/share/Steam/compatibilitytools.d" = { };
+          ".local/share/chatterino" = { };
           ".local/share/typst/packages/local" = { };
           ".local/share/umu" = { };
 
@@ -219,6 +220,7 @@ in
           openvpn
 
           catgirl
+          chatterino7
           eka
           jameica
           rsyncy
