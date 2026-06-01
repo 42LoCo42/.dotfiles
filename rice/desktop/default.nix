@@ -29,8 +29,8 @@
       minecraft.enable = true;
       misc.enable = true;
       mpd.enable = true;
+      performance.enable = true;
       pipewire.enable = true;
-      scx.enable = true;
       sudo-u2f.enable = true;
       theming.enable = true;
       udev.enable = true;

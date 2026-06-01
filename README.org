@@ -14,18 +14,18 @@ which provides a wealth of default options, tools and functions.
 | [[file:machines/xenon/default.nix][xenon]]    | Server of [[https://github.com/Ercanar][Ercanar]]  |
 
 ** Software
-| Kernel         | [[https://github.com/zen-kernel/zen-kernel][Zen]]       |
-| Scheduler      | [[https://github.com/sched-ext/scx/tree/main/scheds/rust/scx_lavd][scx_lavd]]  |
-| Greeter        | [[https://github.com/apognu/tuigreet][tuigreet]]  |
-| Window manager | [[https://github.com/hyprwm/Hyprland][Hyprland]]  |
-| Bar            | [[https://github.com/Alexays/Waybar][Waybar]]    |
-| Font           | [[https://typeof.net/Iosevka][Iosevka]]   |
-| Terminal       | [[https://codeberg.org/dnkl/foot][foot]]      |
-| Shell          | [[https://www.zsh.org][Zsh]]       |
-| Editor         | [[https://www.gnu.org/software/emacs][GNU Emacs]] |
-| Browser        | [[https://librewolf.net][LibreWolf]] |
-| Messenger      | [[https://equibop.org][Equibop]]   |
-| Music Player   | [[https://github.com/MusicPlayerDaemon/MPD][MPD]]       |
+| Kernel         | [[https://github.com/zen-kernel/zen-kernel][Zen]]         |
+| Scheduler      | [[https://github.com/sched-ext/scx/tree/main/scheds/rust/scx_pandemonium][pandemonium]] |
+| Greeter        | [[https://github.com/apognu/tuigreet][tuigreet]]    |
+| Window manager | [[https://github.com/hyprwm/Hyprland][Hyprland]]    |
+| Bar            | [[https://github.com/Alexays/Waybar][Waybar]]      |
+| Font           | [[https://typeof.net/Iosevka][Iosevka]]     |
+| Terminal       | [[https://codeberg.org/dnkl/foot][foot]]        |
+| Shell          | [[https://www.zsh.org][Zsh]]         |
+| Editor         | [[https://www.gnu.org/software/emacs][GNU Emacs]]   |
+| Browser        | [[https://librewolf.net][LibreWolf]]   |
+| Messenger      | [[https://equibop.org][Equibop]]     |
+| Music Player   | [[https://github.com/MusicPlayerDaemon/MPD][MPD]]         |
 
 ** Screenshot
 [[file:images/astylos.png]]
