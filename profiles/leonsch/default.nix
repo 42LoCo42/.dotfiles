@@ -194,6 +194,7 @@ in
 
         persist = {
           ".config/rustdesk" = { };
+          ".config/steamguard-cli" = { };
 
           ".local/share/Steam/compatibilitytools.d" = { };
           ".local/share/typst/packages/local" = { };
@@ -223,6 +224,7 @@ in
           rsyncy
           rustdesk-flutter
           sshfs
+          steamguard-cli
           syncplay
           umu-launcher
 
