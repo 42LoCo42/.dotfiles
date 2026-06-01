@@ -174,8 +174,7 @@ in
             if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
               hyprctl keyword decoration:blur:new_optimizations false
               foot -a background-wrap -o colors-dark.alpha=0 \
-                rsync -azvP --delete                    \
-                  "firefox-sync:" "$FIREFOX_PROFILE_DIR"
+                rsyncy -az --delete "firefox-sync:" "$FIREFOX_PROFILE_DIR"
               hyprctl keyword decoration:blur:new_optimizations true
             fi
           '';
@@ -184,8 +183,7 @@ in
             if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
               hyprctl keyword decoration:blur:new_optimizations false
               foot -a background-wrap -o colors-dark.alpha=0 \
-                rsync -azvP --delete                    \
-                  "$FIREFOX_PROFILE_DIR" "firefox-sync:"
+                rsyncy -az --delete "$FIREFOX_PROFILE_DIR" "firefox-sync:"
               hyprctl keyword decoration:blur:new_optimizations true
             fi
           '';
@@ -222,6 +220,7 @@ in
           catgirl
           eka
           jameica
+          rsyncy
           rustdesk-flutter
           sshfs
           syncplay
