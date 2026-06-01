@@ -280,116 +280,123 @@ in
         };
       };
 
-      programs.ssh.settings = (mapAttrs (n: x: x // {
-        ControlMaster = "auto";
-        ControlPath = "\${HOME}/.ssh/control-${n}";
-      })) {
-        ##### private machines #####
+      programs = {
+        zsh.initContent = ''
+          alias rsync=rsyncy
+          compdef rsyncy=rsync
+        '';
 
-        bunny = {
-          HostName = "exit.bunny.vpn";
-          Port = 18213;
-          User = "admin";
-        };
+        ssh.settings = (mapAttrs (n: x: x // {
+          ControlMaster = "auto";
+          ControlPath = "\${HOME}/.ssh/control-${n}";
+        })) {
+          ##### private machines #####
 
-        bunny-fallback = {
-          HostName = "eleonora.gay";
-          AddressFamily = "inet";
-          Port = 18213;
-          User = "admin";
-        };
+          bunny = {
+            HostName = "exit.bunny.vpn";
+            Port = 18213;
+            User = "admin";
+          };
 
-        firefox-sync = {
-          HostName = "exit.bunny.vpn";
-          Port = 18213;
-          User = "admin";
+          bunny-fallback = {
+            HostName = "eleonora.gay";
+            AddressFamily = "inet";
+            Port = 18213;
+            User = "admin";
+          };
 
-          AddKeysToAgent = "no";
-          IdentitiesOnly = "yes";
-          IdentityAgent = "/dev/null";
-          IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
-        };
+          firefox-sync = {
+            HostName = "exit.bunny.vpn";
+            Port = 18213;
+            User = "admin";
 
-        forgejo = proxy "git.bunny:22" {
-          User = "forgejo";
-        };
+            AddKeysToAgent = "no";
+            IdentitiesOnly = "yes";
+            IdentityAgent = "/dev/null";
+            IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
+          };
 
-        laniakea = {
-          HostName = "laniakea.bunny.vpn";
-          User = "admin";
-        };
+          forgejo = proxy "git.bunny:22" {
+            User = "forgejo";
+          };
 
-        xenon = {
-          HostName = "xenon.bunny.vpn";
-          User = "ercanar";
-        };
+          laniakea = {
+            HostName = "laniakea.bunny.vpn";
+            User = "admin";
+          };
 
-        ##### people #####
+          xenon = {
+            HostName = "xenon.bunny.vpn";
+            User = "ercanar";
+          };
 
-        hannes = {
-          HostName = "satinor.bunny.vpn";
-          User = "ercanar";
-        };
+          ##### people #####
 
-        hapi = {
-          HostName = "owo-ercanar-senpai.duckdns.org";
-          Port = 12345;
-          User = "ercanar";
-        };
+          hannes = {
+            HostName = "satinor.bunny.vpn";
+            User = "ercanar";
+          };
 
-        jana = {
-          HostName = "primula25.duckdns.org";
-          Port = 22000;
-          User = "jana";
-        };
+          hapi = {
+            HostName = "owo-ercanar-senpai.duckdns.org";
+            Port = 12345;
+            User = "ercanar";
+          };
 
-        deimos = {
-          HostName = "deimos.bunny.vpn";
-          User = "melinda";
-          ForwardAgent = false;
-        };
+          jana = {
+            HostName = "primula25.duckdns.org";
+            Port = 22000;
+            User = "jana";
+          };
 
-        phobos = {
-          HostName = "phobos.bunny.vpn";
-          User = "melinda";
-          ForwardAgent = false;
-        };
+          deimos = {
+            HostName = "deimos.bunny.vpn";
+            User = "melinda";
+            ForwardAgent = false;
+          };
 
-        ##### work - PIC #####
+          phobos = {
+            HostName = "phobos.bunny.vpn";
+            User = "melinda";
+            ForwardAgent = false;
+          };
 
-        lbmvweb = {
-          HostName = "www1.d11121.lbmv.de";
-          User = "www-data";
-        };
+          ##### work - PIC #####
 
-        meeting2 = {
-          HostName = "meeting2.planet-ic.de";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
-        };
+          lbmvweb = {
+            HostName = "www1.d11121.lbmv.de";
+            User = "www-data";
+          };
 
-        freepbx = {
-          HostName = "195.98.195.10";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
+          meeting2 = {
+            HostName = "meeting2.planet-ic.de";
+            User = "root";
+            SetEnv.TERM = "xterm-256color";
+          };
 
-          HostKeyAlgorithms = "+ssh-rsa";
-          PubkeyAcceptedKeyTypes = "+ssh-rsa";
-        };
+          freepbx = {
+            HostName = "195.98.195.10";
+            User = "root";
+            SetEnv.TERM = "xterm-256color";
 
-        greifswald = {
-          HostName = "web03270.pvm.imv.de";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
-        };
+            HostKeyAlgorithms = "+ssh-rsa";
+            PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          };
 
-        bonetty = {
-          HostName = "ares-bonetty.p4.net";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
+          greifswald = {
+            HostName = "web03270.pvm.imv.de";
+            User = "root";
+            SetEnv.TERM = "xterm-256color";
+          };
 
-          HostKeyAlgorithms = "+ssh-rsa";
-          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          bonetty = {
+            HostName = "ares-bonetty.p4.net";
+            User = "root";
+            SetEnv.TERM = "xterm-256color";
+
+            HostKeyAlgorithms = "+ssh-rsa";
+            PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          };
         };
       };
     });
