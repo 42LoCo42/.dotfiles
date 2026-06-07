@@ -327,11 +327,6 @@ in
             User = "admin";
           };
 
-          xenon = {
-            HostName = "xenon.bunny.vpn";
-            User = "ercanar";
-          };
-
           ##### people #####
 
           hannes = {
@@ -345,11 +340,20 @@ in
             User = "ercanar";
           };
 
+          xenon = {
+            HostName = "xenon.bunny.vpn";
+            User = "ercanar";
+          };
+
+          ######
+
           jana = {
             HostName = "primula25.duckdns.org";
             Port = 22000;
             User = "jana";
           };
+
+          #####
 
           deimos = {
             HostName = "deimos.bunny.vpn";
@@ -360,6 +364,20 @@ in
           phobos = {
             HostName = "phobos.bunny.vpn";
             User = "melinda";
+            ForwardAgent = false;
+          };
+
+          #####
+
+          logan = {
+            HostName = "strontium.bunny.vpn";
+            User = "logan";
+            ForwardAgent = false;
+          };
+
+          strontium = {
+            HostName = "strontium.bunny.vpn";
+            User = "root";
             ForwardAgent = false;
           };
 
