@@ -101,6 +101,7 @@ PREVIEW_WINDOW='
 '
 
 eval "$CMD print | fzf \
+    --exact \
     --preview '$CMD preview \$(cat $STATE_FILE) {}' \
     --bind '$OPEN_SOURCE_KEY:execute($CMD source \$(cat $STATE_FILE) {} | cut -d/ -f8- | sed \"s|^|/etc/nix/channel/|\" | if [ -v DISPLAY ]; then xargs emacsclient -nc; else xargs vi; fi)' \
     --bind '$OPEN_HOMEPAGE_KEY:execute($CMD homepage \$(cat $STATE_FILE) {} | xargs $OPENER)' \
