@@ -39,6 +39,8 @@
 
   nix.gc.dates = "05:00";
 
+  networking.networkmanager.enable = false;
+
   rice = {
     pam-rssh.enable = true;
     podman.enable = true;
