@@ -101,6 +101,12 @@ in
       default = "";
     };
 
+    prepwr = mkOption {
+      type = str;
+      description = "Command to run before power actions";
+      default = ":";
+    };
+
     monitors = {
       primary = {
         name = mkOption { type = str; };
@@ -301,6 +307,8 @@ in
           readFile
           (x: concatLines [ cfg.preConfig x cfg.postConfig ])
           (flip subs {
+            inherit (cfg) prepwr;
+
             dropdown = script {
               file = ./scripts/dropdown.sh;
             };

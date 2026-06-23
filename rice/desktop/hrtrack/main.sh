@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
-src="$HOME/doc/trans/hrtrack"
-has="$(<"$src")"
-now="$(date -I)"
+set -euo pipefail
 
-if [ "$has" = "$now" ]; then
-	notify-send "HRT already taken!"
-else
-	extra=""
-	if (($(date +%s --date "$now") / 86400 % 6 == 0)); then
-		extra=" and Cypro"
-	fi
+# only activate in the evening
+if (($(date +%H) <= 20)); then exit; fi
 
-	if (($(date +%u --date "$now") == 6)); then
-		extra="$extra and Vitamin D"
-	fi
-
-	notify-send -u critical -t 5000 "Take Estrogen$extra today!"
-	echo "$now" >"$src"
+extra=""
+if (($(date +%s) / 86400 % 6 == 0)); then
+	extra=" and Cypro"
 fi
+
+mesg="$(printf 'Take Estrogen%s!' "$extra")"
+echo -e 'Done\0icon\x1fhrtrack' | fuzzel -d \
+	--mesg "$mesg" --mesg-mode expand \
+	--message-color '#ebdbb2ff' \
+	--hide-prompt --minimal-lines
