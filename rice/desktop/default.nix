@@ -29,6 +29,8 @@
       minecraft.enable = true;
       misc.enable = true;
       mpd.enable = true;
+      nix-locate.enable = true;
+      nix-search-tv.enable = true;
       performance.enable = true;
       pipewire.enable = true;
       sudo-u2f.enable = true;
