@@ -14,6 +14,8 @@ in
     options = [ "nosuid" "hidepid=invisible" "gid=1" ]; # GID 1 is wheel
   };
 
+  security.polkit.enablePkexecWrapper = false;
+
   systemd.services = {
     polkit.enable = false;
 

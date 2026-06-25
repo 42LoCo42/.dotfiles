@@ -700,22 +700,11 @@ in
             defer = true;
 
             hook = ''
-              (caddyfile-mode . (lambda ()
-                (setq-local tab-width 4)))
-            '';
-
-            config = ''
-              (require 'lsp-mode)
-              (add-to-list 'lsp-language-id-configuration '(caddyfile-mode . "caddyfile"))
-              (lsp-register-client (make-lsp-client
-                                    :new-connection (lsp-stdio-connection '("caddyfile-language-server" "--stdio"))
-                                    :activation-fn (lsp-activate-on "caddyfile")
-                                    :server-id 'caddyfile-language-server))
+              (caddyfile-mode . (lambda () (setq-local tab-width 4)))
             '';
 
             extraPackages = with pkgs; [
               caddy # formatting
-              caddyfile-language-server
             ];
           };
 

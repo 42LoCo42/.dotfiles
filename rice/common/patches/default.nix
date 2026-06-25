@@ -4,6 +4,19 @@
     self.inputs.obscura.lib.infuse prev ({
       ########## temporary overrides ##########
 
+      # TODO https://hydra.nixos.org/job/nixpkgs/unstable/matrix-tuwunel.aarch64-linux
+      matrix-tuwunel.__assign = (prev.runCommand "matrix-tuwunel" {
+        src = prev.fetchurl {
+          url = "https://github.com/matrix-construct/tuwunel/releases/download/v1.7.1/v1.7.1-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
+          hash = "sha256-Wtk/uvrAx8hDr20oQQKSZXBpL8vhCmXenpU3WQReUpc=";
+        };
+
+        nativeBuildInputs = with prev; [ zstd ];
+      }) ''
+        unzstd $src -o tuwunel
+        install -Dm555 {,$out/bin/}tuwunel
+      '';
+
       # TODO upstream hyprlandPlugins aren't compatible with 0.54.* yet
       # https://hydra.nixos.org/job/nixpkgs/unstable/hyprlandPlugins.hyprfocus.x86_64-linux
       # https://hydra.nixos.org/job/nixpkgs/unstable/hyprlandPlugins.hyprwinwrap.x86_64-linux
