@@ -5,17 +5,23 @@
       ########## temporary overrides ##########
 
       # TODO https://hydra.nixos.org/job/nixpkgs/unstable/matrix-tuwunel.aarch64-linux
-      matrix-tuwunel.__assign = (prev.runCommand "matrix-tuwunel" {
+      matrix-tuwunel.__assign = prev.stdenv.mkDerivation (drv: {
+        pname = "matrix-tuwunel";
+        version = "1.8.0";
+
         src = prev.fetchurl {
-          url = "https://github.com/matrix-construct/tuwunel/releases/download/v1.7.1/v1.7.1-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
-          hash = "sha256-Wtk/uvrAx8hDr20oQQKSZXBpL8vhCmXenpU3WQReUpc=";
+          url = "https://github.com/matrix-construct/tuwunel/releases/download/v${drv.version}/v${drv.version}-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
+          hash = "sha256-RDDyDYTKVg1Jwz7VmsGOBzsZoZciCqYhAnkn/TSnmE8=";
         };
 
         nativeBuildInputs = with prev; [ zstd ];
-      }) ''
-        unzstd $src -o tuwunel
-        install -Dm555 {,$out/bin/}tuwunel
-      '';
+
+        dontUnpack = true;
+        installPhase = ''
+          unzstd $src -o tuwunel
+          install -Dm555 {,$out/bin/}tuwunel
+        '';
+      });
 
       # TODO upstream hyprlandPlugins aren't compatible with 0.54.* yet
       # https://hydra.nixos.org/job/nixpkgs/unstable/hyprlandPlugins.hyprfocus.x86_64-linux
