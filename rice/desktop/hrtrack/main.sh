@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # only activate in the evening
-if (($(date +%H) <= 20)); then exit; fi
+hour="$(date +%-H)"
+if ((4 < hour && hour < 20)); then exit; fi
 
 extra=""
 if (($(date +%s) / 86400 % 6 == 0)); then
