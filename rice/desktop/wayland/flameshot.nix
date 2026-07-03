@@ -23,6 +23,16 @@
           '';
         })
       ];
+
+      xdg.configFile."flameshot/flameshot.ini".source =
+        (pkgs.formats.ini { }).generate "flameshot.ini" {
+          General = {
+            predefinedColorPaletteLarge = true;
+            showAbortNotification = false;
+            showDesktopNotification = false;
+            showQuitPrompt = true;
+          };
+        };
     }];
   };
 }
