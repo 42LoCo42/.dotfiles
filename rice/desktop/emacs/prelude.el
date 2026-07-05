@@ -152,6 +152,15 @@
 (telephone-line-defsegment my/telephone-line-symbol-segment ()
   (string-trim (lsp-headerline--build-symbol-string)))
 
+(telephone-line-defsegment my/telephone-line-crdt-segment ()
+  (if-let* ((_ (boundp 'crdt-mode))
+            (_ crdt-mode)
+            (session (crdt--read-session-maybe))
+            (contacts (crdt--session-contact-table session))
+            (follow-id (crdt--session-follow-user-id session))
+            (follow-name (crdt--contact-metadata-name (gethash follow-id contacts))))
+      `("" ,(propertize (format "Following: %s" follow-name) 'face '(bold :foreground "red")))))
+
 ;; https://github.com/blahgeek/emacs-lsp-booster
 
 (defun lsp-booster--advice-json-parse (old-fn &rest args)

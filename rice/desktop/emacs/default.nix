@@ -325,6 +325,7 @@ in
                             telephone-line-process-segment))
                  (nil    . (my/telephone-line-project-cached-segment
                             my/telephone-line-buffer-segment
+                            my/telephone-line-crdt-segment
                             my/telephone-line-symbol-segment))))
             '';
           };
@@ -552,6 +553,26 @@ in
             bind' = ''
               :map minibuffer-mode-map
               ("M-DEL" . sp-backward-kill-symbol)
+            '';
+          };
+
+          crdt = {
+            bind' = ''
+              ("C-r C-c" . crdt-connect)
+              ("C-r C-f" . crdt-follow-user)
+              ("C-r C-g" . crdt-goto-user)
+              ("C-r C-l" . crdt-list-buffers)
+              ("C-r C-o" . crdt-share-buffer) ; "open"
+              ("C-r C-s" . crdt-switch-to-buffer)
+              ("C-r C-u" . crdt-stop-follow) ; "unfollow"
+            '';
+
+            custom = ''
+              (crdt-default-name "nori")
+            '';
+
+            config = ''
+              (advice-add #'crdt-follow-user :after #'crdt-goto-user)
             '';
           };
 
