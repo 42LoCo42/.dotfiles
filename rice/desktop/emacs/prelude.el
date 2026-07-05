@@ -68,6 +68,8 @@
     (call-interactively #'align-regexp)
     (indent-tabs-mode (if state 1 -1))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defvar my/splash (create-image "@splash@"))
 
 (defun my/center-content (content)
@@ -115,6 +117,8 @@
   (read-only-mode 1)
   (message nil))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (require 'telephone-line)
 (require 'project)
 
@@ -161,6 +165,8 @@
             (follow-name (crdt--contact-metadata-name (gethash follow-id contacts))))
       `("" ,(propertize (format "Following: %s" follow-name) 'face '(bold :foreground "red")))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; https://github.com/blahgeek/emacs-lsp-booster
 
 (defun lsp-booster--advice-json-parse (old-fn &rest args)
@@ -187,6 +193,8 @@
         (cons "emacs-lsp-booster" orig-result))
       orig-result)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; https://www.masteringemacs.org/article/seamlessly-merge-multiple-documentation-sources-eldoc
 (defun my/flycheck-eldoc (callback &rest _ignored)
   "Print flycheck messages at point by calling CALLBACK."
@@ -206,3 +214,68 @@
                            (flycheck-error-group err))
                 :face 'font-lock-doc-face))
      flycheck-errors)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/flycheck-deadnix (output checker _)
+  (if (string-empty-p output) '()
+    (let* ((parsed (json-parse-string output))
+           (results (gethash "results" parsed)))
+      (mapcar (lambda (item)
+                (flycheck-error-new-at
+                 (gethash "line" item)
+                 (gethash "column" item)
+                 'warning
+                 (gethash "message" item)
+                 :end-column (gethash "endColumn" item)
+                 :checker checker))
+              results))))
+
+(defun my/flycheck-statix (output checker _)
+  (if (string-empty-p output) '()
+    (let* ((parsed (json-parse-string output))
+           (results (gethash "report" parsed)))
+      (mapcar (lambda (item)
+                (let* ((diag (aref (gethash "diagnostics" item) 0))
+                       (at (gethash "at" diag))
+                       (from (gethash "from" at))
+                       (to (gethash "to" at)))
+                  (flycheck-error-new-at
+                   (gethash "line" from)
+                   (gethash "column" from)
+                   'warning
+                   (gethash "note" item)
+                   :end-line (gethash "line" to)
+                   :end-column (gethash "column" to)
+                   :checker checker)))
+              results))))
+
+;; https://github.com/flycheck/flycheck/issues/1762#issuecomment-750458442
+(defvar-local my/flycheck-local-cache nil)
+
+(defun my/flycheck-checker-get (fn checker property)
+  (or (alist-get property (alist-get checker my/flycheck-local-cache))
+      (funcall fn checker property)))
+
+(defun my/flycheck-setup ()
+  (flycheck-define-checker deadnix
+    "deadnix"
+    :modes nix-mode
+    :command ("deadnix" "-o" "json" source-original)
+    :error-parser my/flycheck-deadnix
+    :next-checkers (statix))
+
+  ;; for some reason, deadnix is not registered in flycheck-checkers
+  (add-to-list 'flycheck-checkers 'deadnix)
+
+  (flycheck-define-checker statix
+    "statix"
+    :modes nix-mode
+    :command ("statix" "check" "-o" "json" source-original)
+    :error-parser my/flycheck-statix)
+
+  (advice-add #'flycheck-checker-get :around #'my/flycheck-checker-get))
+
+(defmacro my/chain (mode &rest checkers)
+  `(when (derived-mode-p ',mode)
+     (setq my/flycheck-local-cache '((lsp . ((next-checkers . ,checkers)))))))

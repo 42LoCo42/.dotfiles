@@ -416,6 +416,10 @@ in
               (flycheck-display-errors-function nil)
               (flycheck-help-echo-function nil)
             '';
+
+            config = ''
+              (my/flycheck-setup)
+            '';
           };
 
           jinx = {
@@ -699,7 +703,8 @@ in
               (zig-mode        . lsp-deferred)
 
               (lsp-managed-mode . (lambda ()
-                (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc 90 t)))
+                (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc 90 t)
+                (my/chain nix-mode deadnix)))
             '';
 
             custom = ''
