@@ -626,7 +626,6 @@ in
             hook = ''
               (c++-mode        . lsp-deferred)
               (c-mode          . lsp-deferred)
-              (caddyfile-mode  . lsp-deferred)
               (glsl-mode       . lsp-deferred)
               (go-mode         . lsp-deferred)
               (haskell-mode    . lsp-deferred)
