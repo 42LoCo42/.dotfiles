@@ -7,6 +7,7 @@
   };
 
   rice.caddy.cfg.fs = ''
+    import default
     reverse_proxy gokapi:8080
   '';
 

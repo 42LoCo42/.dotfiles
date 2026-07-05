@@ -8,6 +8,7 @@
 
   rice.caddy = {
     cfg.chat = ''
+      import default
       root * /srv/element
       file_server
     '';

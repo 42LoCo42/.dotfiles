@@ -57,6 +57,7 @@
 }
 
 16bytes.duckdns.org {
+	import default
 	root * /srv/homepage/foo
 	file_server
 }

@@ -39,6 +39,8 @@ in
 
   rice.caddy = {
     cfg."irc" = ''
+      import default
+
       @websockets {
         header Connection *Upgrade*
         header Upgrade    websocket
