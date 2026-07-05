@@ -368,6 +368,16 @@ in
             hook = "org-mode";
           };
 
+          dimmer = {
+            custom = ''
+              (dimmer-fraction 0.3)
+            '';
+
+            config = ''
+              (dimmer-mode 1)
+            '';
+          };
+
           ##### Behaviour #####
 
           ace-window = {
