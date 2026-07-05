@@ -69,6 +69,7 @@ in
       "subversion.planet-ic.de" = "172.16.96.79";
       "lbswis.gbv.de" = "127.0.0.1";
       "readers.lakd" = "127.0.0.1";
+      "odin.planet-ic.de" = "192.168.183.91";
     };
   };
 
