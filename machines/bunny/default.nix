@@ -53,7 +53,6 @@ in
         enable = true;
         isExit = true;
         hostname = "exit";
-        ephemeral = true;
       };
     };
 
