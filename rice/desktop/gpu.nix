@@ -30,6 +30,8 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
+      hardware.graphics.enable32Bit = true;
+
       environment = {
         systemPackages = [
           self.inputs.obscura.packages.${pkgs.stdenv.system}.nvidia.entries.nvtop
