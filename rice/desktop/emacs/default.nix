@@ -61,9 +61,20 @@ in
         startWithUserSession = "graphical";
       };
 
-      systemd.user.services.emacs.Service = {
-        Environment = [ "LSP_USE_PLISTS=true" ];
-        Restart = mkForce "always";
+      systemd.user = {
+        tmpfiles.rules = lib.pipe [ "en_US-large" "de_DE" ] [
+          (map (x: pkgs.hunspellDicts.${x}))
+          (x: pkgs.symlinkJoin {
+            name = "hunspell-dicts";
+            paths = x;
+          })
+          (x: [ "L+ %h/.config/enchant/hunspell - - - - ${x}/share/hunspell" ])
+        ];
+
+        services.emacs.Service = {
+          Environment = [ "LSP_USE_PLISTS=true" ];
+          Restart = mkForce "always";
+        };
       };
 
       xdg.configFile."fourmolu.yaml".source = ./fourmolu.yaml;
@@ -72,7 +83,7 @@ in
 
       aquaris.emacs = {
         enable = true;
-        package = pkgs.emacs30-pgtk;
+        package = pkgs.emacs-pgtk;
 
         extraPackages = epkgs: with epkgs; [
           (treesit-grammars.with-grammars (g: with g; [
@@ -119,7 +130,6 @@ in
               ("M-n"   . scroll-up-command)
               ("M-p"   . scroll-down-command)
 
-              ("C-M-i"   . ispell-buffer)
               ("C-x C-a" . mark-whole-buffer)
               ("C-x C-k" . (lambda () (interactive) (kill-buffer (current-buffer))))
 
@@ -405,6 +415,23 @@ in
               (flycheck-check-syntax-automatically '(mode-enabled save))
               (flycheck-display-errors-function nil)
               (flycheck-help-echo-function nil)
+            '';
+          };
+
+          jinx = {
+            hook = "typst-ts-mode org-mode text-mode";
+
+            bind' = ''
+              ("C-M-i" . jinx-correct)
+            '';
+
+            config = ''
+              (require 'vertico-multiform)
+
+              (add-to-list 'vertico-multiform-categories
+                '(jinx grid (vertico-grid-annotate . 20) (vertico-count . 4)))
+
+              (vertico-multiform-mode)
             '';
           };
 
