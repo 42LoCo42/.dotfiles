@@ -214,12 +214,17 @@ in
         hyprwinwrap
       ];
 
+      systemd.user.tmpfiles.rules = map
+        (x: "L+ %h/.asn/${x} - - - - ${config.aquaris.secret "user/leonsch/asn/${x}"}")
+        [ "cloudflare_token" "ipinfo_token" "iqs_token" ];
+
       home = {
         packages = with pkgs; [
           # work
           cifs-utils
           openvpn
 
+          asn
           catgirl
           chatterino7
           eka
