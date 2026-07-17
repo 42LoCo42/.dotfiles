@@ -14,7 +14,7 @@
     };
 
     fjordlauncher = {
-      url = "github:unmojang/FjordLauncher/11.0.2.0";
+      url = "github:unmojang/FjordLauncher/11.0.3.0";
     };
 
     home-manager = {

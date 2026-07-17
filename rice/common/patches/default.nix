@@ -7,11 +7,11 @@
       # TODO https://hydra.nixos.org/job/nixpkgs/unstable/matrix-tuwunel.aarch64-linux
       matrix-tuwunel.__assign = prev.stdenv.mkDerivation (drv: {
         pname = "matrix-tuwunel";
-        version = "1.8.0";
+        version = "1.8.2";
 
         src = prev.fetchurl {
           url = "https://github.com/matrix-construct/tuwunel/releases/download/v${drv.version}/v${drv.version}-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
-          hash = "sha256-RDDyDYTKVg1Jwz7VmsGOBzsZoZciCqYhAnkn/TSnmE8=";
+          hash = "sha256-4IfuHbHvXGj0MLZHbEM/XBsCi/DCVxJ4jSVbcv1vNZc=";
         };
 
         nativeBuildInputs = with prev; [ zstd ];
@@ -34,6 +34,14 @@
       hydroxide          .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
       nix-output-monitor .__assign = obscura.my-nom; ####### TODO nom needs new release
       prettypst          .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
+
+      # https://github.com/3timeslazy/nix-search-tv/pull/30
+      nix-search-tv.__output.src.__assign = prev.fetchFromGitHub {
+        owner = "42LoCo42";
+        repo = "nix-search-tv";
+        rev = "3d4e8d6d6a3b2a8a857690378bfd03ef2856f72e";
+        hash = "sha256-FLiUAztKoFScjg4gfnPfo1jSfIn8xQuJNKrgYhUDo0k=";
+      };
 
       ########## permanent overrides ##########
 

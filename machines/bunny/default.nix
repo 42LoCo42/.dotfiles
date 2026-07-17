@@ -56,6 +56,9 @@ in
       };
     };
 
+    # disable pasta, it massively slows down & timeouts tscaddy's src fetch
+    nix.settings.pasta-path = "";
+
     networking.networkmanager.enable = false;
 
     environment.systemPackages = with pkgs; [
