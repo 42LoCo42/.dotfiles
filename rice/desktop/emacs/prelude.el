@@ -217,38 +217,43 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun my/flycheck-deadnix (output checker _)
-  (if (string-empty-p output) '()
-    (let* ((parsed (json-parse-string output))
-           (results (gethash "results" parsed)))
-      (mapcar (lambda (item)
-                (flycheck-error-new-at
-                 (gethash "line" item)
-                 (gethash "column" item)
-                 'warning
-                 (gethash "message" item)
-                 :end-column (gethash "endColumn" item)
-                 :checker checker))
-              results))))
+(require 'dash)
 
-(defun my/flycheck-statix (output checker _)
-  (if (string-empty-p output) '()
-    (let* ((parsed (json-parse-string output))
-           (results (gethash "report" parsed)))
-      (mapcar (lambda (item)
-                (let* ((diag (aref (gethash "diagnostics" item) 0))
-                       (at (gethash "at" diag))
-                       (from (gethash "from" at))
-                       (to (gethash "to" at)))
-                  (flycheck-error-new-at
-                   (gethash "line" from)
-                   (gethash "column" from)
-                   'warning
-                   (gethash "note" item)
-                   :end-line (gethash "line" to)
-                   :end-column (gethash "column" to)
-                   :checker checker)))
-              results))))
+(defun my/flycheck-deadnix (output checker _)
+  (->> output
+       (flycheck-parse-json)
+       (car)
+       (alist-get 'results)
+       (mapcar (lambda (item)
+                 (let-alist item
+                   (flycheck-error-new-at
+                    .line
+                    .column
+                    'warning
+                    .message
+                    :end-column .endColumn
+                    :checker checker))))))
+
+(defun my/flycheck-zlint (output checker _)
+  (->> output
+       (string-trim)
+       (string-replace "\n" ",")
+       (format "[%s]")
+       (flycheck-parse-json)
+       (car)
+       (mapcar (lambda (item)
+                 (let-alist item
+                   (let-alist (car .labels)
+                     (flycheck-error-new-at
+                      .start.line
+                      .start.column
+                      'warning
+                      (format "%s - %s"
+                              (alist-get 'message item)
+                              (alist-get 'help item))
+                      :end-line .end.line
+                      :end-column .end.column
+                      :checker checker)))))))
 
 ;; https://github.com/flycheck/flycheck/issues/1762#issuecomment-750458442
 (defvar-local my/flycheck-local-cache nil)
@@ -265,14 +270,14 @@
     :error-parser my/flycheck-deadnix
     :next-checkers (statix))
 
-  ;; for some reason, deadnix is not registered in flycheck-checkers
-  (add-to-list 'flycheck-checkers 'deadnix)
+  (flycheck-define-checker zlint
+    "zlint"
+    :modes zig-mode
+    :command ("my-zlint" source-original)
+    :error-parser my/flycheck-zlint)
 
-  (flycheck-define-checker statix
-    "statix"
-    :modes nix-mode
-    :command ("statix" "check" "-o" "json" source-original)
-    :error-parser my/flycheck-statix)
+  (mapc (lambda (x) (add-to-list 'flycheck-checkers x))
+        '(deadnix zlint))
 
   (advice-add #'flycheck-checker-get :around #'my/flycheck-checker-get))
 

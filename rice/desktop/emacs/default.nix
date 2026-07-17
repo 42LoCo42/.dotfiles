@@ -704,7 +704,8 @@ in
 
               (lsp-managed-mode . (lambda ()
                 (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc 90 t)
-                (my/chain nix-mode deadnix)))
+                (my/chain nix-mode deadnix)
+                (my/chain zig-mode zlint)))
             '';
 
             custom = ''
@@ -908,7 +909,14 @@ in
 
           zig-mode = {
             defer = true;
-            extraPackages = with pkgs; [ zls ];
+            extraPackages = with pkgs; [
+              zls
+
+              zig-zlint
+              (writeShellScriptBin "my-zlint" ''
+                echo "$1" | zlint --stdin --format json
+              '')
+            ];
           };
 
           # Lisp
