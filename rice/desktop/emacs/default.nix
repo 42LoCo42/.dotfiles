@@ -323,7 +323,6 @@ in
 
           telephone-line = {
             config = ''
-              (require 'lsp-headerline)
               (telephone-line-mode 1)
             '';
 
@@ -703,6 +702,7 @@ in
               (zig-mode        . lsp-deferred)
 
               (lsp-managed-mode . (lambda ()
+                (require 'lsp-headerline)
                 (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc 90 t)
                 (my/chain nix-mode deadnix)
                 (my/chain zig-mode zlint)))

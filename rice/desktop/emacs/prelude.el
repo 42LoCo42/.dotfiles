@@ -154,11 +154,11 @@
                               name)))))))))
 
 (telephone-line-defsegment my/telephone-line-symbol-segment ()
-  (string-trim (lsp-headerline--build-symbol-string)))
+  (if-let* ((_ (fboundp 'lsp-headerline--build-symbol-string)))
+      (string-trim (lsp-headerline--build-symbol-string))))
 
 (telephone-line-defsegment my/telephone-line-crdt-segment ()
-  (if-let* ((_ (boundp 'crdt-mode))
-            (_ crdt-mode)
+  (if-let* ((_ (boundp 'crdt-mode)) (_ crdt-mode)
             (session (crdt--read-session-maybe))
             (contacts (crdt--session-contact-table session))
             (follow-id (crdt--session-follow-user-id session))
