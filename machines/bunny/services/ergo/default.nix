@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (lib) imap1 join pipe;
 

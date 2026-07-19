@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   topology.nodes.bunny-public.services.datetime = {
     name = "Datetime";
     icon = "misc.calendar";

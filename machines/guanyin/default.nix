@@ -1,4 +1,4 @@
-{ pkgs, lib, modulesPath, aquaris, ... }:
+{ aquaris, lib, modulesPath, pkgs, ... }:
 let inherit (lib) mkForce; in {
   nixpkgs.hostPlatform = "x86_64-linux";
 

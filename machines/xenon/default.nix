@@ -1,4 +1,4 @@
-{ pkgs, aquaris, ... }: {
+{ aquaris, pkgs, ... }: {
   imports = [ ../../profiles/common ];
 
   aquaris = {

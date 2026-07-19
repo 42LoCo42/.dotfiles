@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.self.services.qbittorrent = {
     name = "qBittorrent";
     icon = "services.qbittorrent";

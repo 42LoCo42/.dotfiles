@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   topology.nodes.bunny-public.services.tuwunel = {
     name = "Tuwunel";
     icon = "services.matrix";

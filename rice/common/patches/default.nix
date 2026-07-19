@@ -1,4 +1,4 @@
-{ self, lib, ... }: {
+{ lib, self, ... }: {
   nixpkgs.overlays = lib.singleton (_: prev:
     let obscura = self.inputs.obscura.packages.${prev.stdenv.system}; in
     self.inputs.obscura.lib.infuse prev ({
@@ -35,13 +35,30 @@
       nix-output-monitor .__assign = obscura.my-nom; ####### TODO nom needs new release
       prettypst          .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 
-      # https://github.com/3timeslazy/nix-search-tv/pull/30
+      # TODO https://github.com/3timeslazy/nix-search-tv/pull/30
       nix-search-tv.__output.src.__assign = prev.fetchFromGitHub {
         owner = "42LoCo42";
         repo = "nix-search-tv";
         rev = "3d4e8d6d6a3b2a8a857690378bfd03ef2856f72e";
         hash = "sha256-FLiUAztKoFScjg4gfnPfo1jSfIn8xQuJNKrgYhUDo0k=";
       };
+
+      # TODO https://pr-tracker.bunny/?pr=543458
+      pedantix.__assign = prev.rustPlatform.buildRustPackage (drv: {
+        pname = "pedantix";
+        version = "1.0.0";
+
+        src = prev.fetchFromGitHub {
+          owner = "Swarsel";
+          repo = drv.pname;
+          tag = "v${drv.version}";
+          hash = "sha256-ibouDGnFOfkeUvM9oOL+0a9T93jSKqUfWCGY8CfpkTg=";
+        };
+
+        cargoHash = "sha256-PwmWZEPQFknvBnK/Rtt9gl4wWq8c6hjfrcMfbhqldKw=";
+
+        meta.mainProgram = drv.pname;
+      });
 
       ########## permanent overrides ##########
 

@@ -1,4 +1,4 @@
-{ self, pkgs, lib, config, ... }:
+{ config, lib, pkgs, self, ... }:
 let
   inherit (lib) getExe mkIf mkOption;
   inherit (lib.types) bool;

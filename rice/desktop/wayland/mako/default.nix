@@ -1,4 +1,4 @@
-{ self, pkgs, lib, config, aquaris, ... }: {
+{ aquaris, config, lib, pkgs, self, ... }: {
   options.rice.desktop.wayland.mako.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;

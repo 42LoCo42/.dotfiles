@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ lib, pkgs, ... }: {
   topology.nodes.bunny-private.services.syncthing = {
     name = "Syncthing";
     icon = "services.syncthing";

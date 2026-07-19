@@ -1,4 +1,4 @@
-{ self, aquaris, pkgs, config, lib, ... }: {
+{ aquaris, config, lib, pkgs, self, ... }: {
   options.rice.desktop.wayland.swaybg = {
     enable = lib.mkOption {
       type = lib.types.bool;

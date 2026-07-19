@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ config, lib, ... }: {
   options.rice.desktop.sudo-u2f = {
     enable = lib.mkOption {
       type = lib.types.bool;

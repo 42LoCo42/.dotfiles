@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.nodes.bunny-private.services."00-tscaddy" = {
     name = "Caddy (Tailscale)";
     icon = "services.caddy";

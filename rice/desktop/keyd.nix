@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ config, lib, ... }: {
   options.rice.desktop.keyd.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;

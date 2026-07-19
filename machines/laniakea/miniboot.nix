@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ config, lib, ... }: {
   nixpkgs.overlays = lib.singleton (_: pkgs: {
     miniboot =
       let

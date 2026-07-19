@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (lib) getExe mkDefault mkOption;
   inherit (lib.types) anything;

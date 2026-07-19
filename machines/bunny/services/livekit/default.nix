@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   rice.caddy.cfg."matrix-rtc" = ''
     @jwt_service {
       path /sfu/get* /healthz* /get_token*

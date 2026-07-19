@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.desktop.mail = {
     enable = lib.mkOption {
       type = lib.types.bool;

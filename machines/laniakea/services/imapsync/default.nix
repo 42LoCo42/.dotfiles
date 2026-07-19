@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   virtualisation.pnoc.imapsync = {
     path = with pkgs; [ imapsync ];
 

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (lib) flip mapAttrs' mkIf mkOption;
   inherit (lib.types) bool str;

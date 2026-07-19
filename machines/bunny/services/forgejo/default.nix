@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.nodes.bunny-private.services.forgejo = {
     name = "Forgejo";
     icon = "services.forgejo";

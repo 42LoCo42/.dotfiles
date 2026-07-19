@@ -1,4 +1,4 @@
-{ self, pkgs, lib, ... }: {
+{ lib, pkgs, self, ... }: {
   aquaris.caches = [{
     url = "https://ezkea.cachix.org";
     key = "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=";

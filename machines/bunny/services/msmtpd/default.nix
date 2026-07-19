@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.self.services.msmtpd = {
     name = "msmtp daemon";
     icon = "misc.mail";

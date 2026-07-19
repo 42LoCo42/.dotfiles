@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   topology.self.services.papra = {
     name = "Papra";
     icon = "services.papra";

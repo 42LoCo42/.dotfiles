@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }:
+{ aquaris, config, lib, pkgs, ... }:
 let
   inherit (lib) mkForce mkMerge;
   inherit (config.rice.ssh) proxy;

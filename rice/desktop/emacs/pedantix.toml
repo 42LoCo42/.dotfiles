@@ -1,0 +1,16 @@
+formatter = "nixpkgs-fmt"
+
+[args]
+sort = true
+
+[attrs]
+sort = false
+
+[lets]
+sort = true
+
+[inherits]
+sort = true
+
+[lists]
+sort = false

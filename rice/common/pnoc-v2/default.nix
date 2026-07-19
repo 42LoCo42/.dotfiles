@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }:
+{ aquaris, config, lib, pkgs, ... }:
 let
   inherit (lib)
     concatLines
@@ -293,7 +293,7 @@ in
                     src = toInt (elemAt parts 3);
                     dst = pipe (elemAt parts 5) [ (mapNullable toInt) (defaultTo src) ];
 
-                    mk = ipv: { inherit ipv typ src dst; };
+                    mk = ipv: { inherit dst ipv src typ; };
                   in
                   if ipv == null then [ (mk 4) (mk 6) ] else [ (mk ipv) ]))
                 (listOf (submodule {

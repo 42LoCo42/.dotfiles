@@ -1,4 +1,4 @@
-{ lib, config, aquaris, ... }: {
+{ aquaris, config, lib, ... }: {
   options.rice.desktop.wayland.fuzzel = {
     enable = lib.mkOption {
       type = lib.types.bool;

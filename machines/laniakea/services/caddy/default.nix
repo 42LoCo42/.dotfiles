@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.self.services."00-caddy" = {
     name = "Caddy";
     icon = "services.caddy";

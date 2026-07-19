@@ -1,4 +1,4 @@
-{ self, pkgs, lib, config, ... }: {
+{ config, lib, pkgs, self, ... }: {
   options.rice.desktop.wayland.foot = {
     enable = lib.mkOption {
       type = lib.types.bool;

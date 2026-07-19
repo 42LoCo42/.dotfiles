@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.desktop.pipewire = {
     enable = lib.mkOption {
       type = lib.types.bool;

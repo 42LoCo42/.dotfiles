@@ -1,4 +1,4 @@
-{ self, pkgs, lib, config, aquaris, ... }:
+{ aquaris, config, lib, pkgs, self, ... }:
 let
   inherit (lib)
     concatLines
@@ -126,7 +126,7 @@ in
     };
 
     workspaces = mkOption {
-      type = attrsOf (submodule ({ name, config, ... }: {
+      type = attrsOf (submodule ({ config, name, ... }: {
         options = {
           indexN = mkOption {
             type = int;

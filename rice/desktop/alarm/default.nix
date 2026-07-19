@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }:
+{ aquaris, config, lib, pkgs, ... }:
 let inherit (lib) flip mkIf mkOption pipe; in {
   options.rice.desktop.alarm.enable = mkOption {
     type = lib.types.bool;

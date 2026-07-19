@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   # protect these from garbage collection
   system.extraDependencies = with pkgs; [
     elk-to-svg

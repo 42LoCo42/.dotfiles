@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   topology.nodes.bunny-public.services.headscale = {
     name = "Headscale";
     icon = "services.headscale1";

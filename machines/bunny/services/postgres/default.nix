@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ lib, pkgs, ... }:
 let
   postgres = pkgs.postgresql_17.withPackages (p: with p; [
     pgvector # required by vectorchord

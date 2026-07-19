@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   topology.self.services.grimmory = {
     name = "Grimmory";
     icon = "services.grimmory";

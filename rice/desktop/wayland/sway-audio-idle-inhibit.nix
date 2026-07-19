@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.desktop.wayland.sway-audio-idle-inhibit.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;

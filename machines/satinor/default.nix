@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   imports = [ ../../profiles/ercanar ];
 
   aquaris = {

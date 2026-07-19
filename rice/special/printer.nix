@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.printer.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;

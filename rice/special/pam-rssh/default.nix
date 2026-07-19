@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }: {
+{ aquaris, config, lib, pkgs, ... }: {
   options.rice.pam-rssh.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;

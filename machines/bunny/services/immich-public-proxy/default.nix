@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.nodes.bunny-public.services.immich-public-proxy = {
     name = "Immich Public Proxy";
     icon = "services.ipp";

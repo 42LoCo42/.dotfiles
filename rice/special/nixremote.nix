@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ config, lib, ... }:
 let
   inherit (lib) filter ifEnable mkIf mkMerge mkOption;
   inherit (lib.types) bool;

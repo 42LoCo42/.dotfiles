@@ -1,4 +1,4 @@
-{ self, pkgs, lib, config, ... }: {
+{ config, lib, pkgs, self, ... }: {
   options.rice = {
     insecureNames = lib.mkOption {
       type = lib.types.listOf lib.types.str;

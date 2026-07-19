@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }:
+{ aquaris, config, lib, pkgs, ... }:
 let
   inherit (lib) getExe mkForce mkIf mkOption remove;
   inherit (lib.types) bool str;
@@ -77,7 +77,10 @@ in
         };
       };
 
-      xdg.configFile."fourmolu.yaml".source = ./fourmolu.yaml;
+      xdg.configFile = {
+        "fourmolu.yaml".source = ./fourmolu.yaml;
+        "pedantix/pedantix.toml".source = ./pedantix.toml;
+      };
 
       aquaris.persist = { ".config/emacs" = { }; };
 
@@ -852,12 +855,13 @@ in
             extraPackages = with pkgs; [
               nil
               nixpkgs-fmt
+              pedantix
             ];
 
             config = ''
               (require 'apheleia)
-              (add-to-list 'apheleia-mode-alist '(nix-mode . nixpkgs-fmt))
-              (add-to-list 'apheleia-formatters '(nixpkgs-fmt "nixpkgs-fmt"))
+              (add-to-list 'apheleia-mode-alist '(nix-mode . pedantix))
+              (add-to-list 'apheleia-formatters '(pedantix "pedantix"))
             '';
           };
 

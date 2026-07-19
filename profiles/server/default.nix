@@ -1,4 +1,4 @@
-{ pkgs, lib, config, aquaris, ... }: {
+{ aquaris, config, lib, pkgs, ... }: {
   imports = [ ../common ./options.nix ];
 
   nixpkgs.overlays = [

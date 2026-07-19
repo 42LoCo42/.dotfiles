@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ config, lib, ... }:
 let
   inherit (lib) mkIf mkOption;
   inherit (lib.types) bool;

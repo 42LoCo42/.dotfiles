@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ config, pkgs, ... }: {
   topology.nodes.bunny-public.services.searxng = {
     name = "SearXNG";
     icon = "services.searxng";

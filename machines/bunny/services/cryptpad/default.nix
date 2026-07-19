@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ config, lib, pkgs, ... }:
 let
   plugins = "${pkgs.cryptpad}/lib/node_modules/cryptpad/lib/plugins";
 

@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (lib)
     getExe'
@@ -13,9 +13,7 @@ let
     ;
 
   inherit (lib.types)
-    bool
-    str
-    port
+    bool port str
     ;
 
   cfg = config.rice.tailscale;

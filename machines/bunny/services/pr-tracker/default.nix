@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }: {
+{ config, lib, pkgs, ... }: {
   topology.nodes.bunny-public.services.pr-tracker = {
     name = "Nixpkgs Pull Request Tracker";
     icon = "devices.nixos";
