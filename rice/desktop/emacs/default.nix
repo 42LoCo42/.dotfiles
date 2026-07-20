@@ -210,6 +210,7 @@ in
 
               (backward-delete-char-untabify-method nil)
               (c-backspace-function 'delete-backward-char)
+
               (c-basic-offset 4)
               (sgml-basic-offset 4)
               (tab-width 4)
@@ -220,6 +221,7 @@ in
               (native-comp-async-report-warnings-errors nil)
               (recenter-positions '(middle top))
               (recentf-max-saved-items 100)
+              (require-final-newline t)
               (ring-bell-function 'ignore)
               (use-dialog-box nil)
 
