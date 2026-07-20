@@ -475,28 +475,14 @@ in
             ];
           };
 
-          avy = {
+          flash = {
             bind' = ''
-              ("M-c"   . avy-goto-char)
-              ("C-M-c" . avy-goto-char-timer)
+              ("M-c" . flash-jump)
             '';
 
             custom = ''
-              (avy-keys
-               (nconc
-                (number-sequence ?a ?z)
-                (number-sequence ?0 ?9)))
-
-              (avy-background t)
-              (avy-case-fold-search nil) ; only caps trigger case matching
-              (avy-style 'de-bruijn)
-            '';
-
-            config = ''
-              (set-face-attribute 'avy-lead-face   nil :foreground "#fb4934" :background "#282828" :bold t) ; first
-              (set-face-attribute 'avy-lead-face-0 nil :foreground "#b8bb26" :background "#282828" :bold t) ; second
-              (set-face-attribute 'avy-lead-face-1 nil :foreground "#282828" :background "#282828" :bold t) ; matched
-              (set-face-attribute 'avy-lead-face-2 nil :foreground "#83a598" :background "#282828" :bold t) ; third
+              (flash-rainbow       t)
+              (flash-rainbow-shade 5)
             '';
           };
 
