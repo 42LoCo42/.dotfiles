@@ -4,31 +4,6 @@
     self.inputs.obscura.lib.infuse prev ({
       ########## temporary overrides ##########
 
-      # TODO https://hydra.nixos.org/job/nixpkgs/unstable/matrix-tuwunel.aarch64-linux
-      matrix-tuwunel.__assign = prev.stdenv.mkDerivation (drv: {
-        pname = "matrix-tuwunel";
-        version = "1.8.2";
-
-        src = prev.fetchurl {
-          url = "https://github.com/matrix-construct/tuwunel/releases/download/v${drv.version}/v${drv.version}-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
-          hash = "sha256-4IfuHbHvXGj0MLZHbEM/XBsCi/DCVxJ4jSVbcv1vNZc=";
-        };
-
-        nativeBuildInputs = with prev; [ zstd ];
-
-        dontUnpack = true;
-        installPhase = ''
-          unzstd $src -o tuwunel
-          install -Dm555 {,$out/bin/}tuwunel
-        '';
-      });
-
-      # TODO upstream hyprlandPlugins aren't compatible with 0.54.* yet
-      # https://hydra.nixos.org/job/nixpkgs/unstable/hyprlandPlugins.hyprfocus.x86_64-linux
-      # https://hydra.nixos.org/job/nixpkgs/unstable/hyprlandPlugins.hyprwinwrap.x86_64-linux
-      hyprland.__assign = self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}.hyprland;
-      hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
-
       ergochat           .__assign = obscura.my-ergochat; ## TODO https://pr-tracker.bunny/?pr=502133
       gamja              .__assign = obscura.my-gamja; ##### TODO https://codeberg.org/emersion/gamja/pulls/210
       hydroxide          .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
@@ -43,23 +18,6 @@
         hash = "sha256-FLiUAztKoFScjg4gfnPfo1jSfIn8xQuJNKrgYhUDo0k=";
       };
 
-      # TODO https://pr-tracker.bunny/?pr=543458
-      pedantix.__assign = prev.rustPlatform.buildRustPackage (drv: {
-        pname = "pedantix";
-        version = "1.0.0";
-
-        src = prev.fetchFromGitHub {
-          owner = "Swarsel";
-          repo = drv.pname;
-          tag = "v${drv.version}";
-          hash = "sha256-ibouDGnFOfkeUvM9oOL+0a9T93jSKqUfWCGY8CfpkTg=";
-        };
-
-        cargoHash = "sha256-PwmWZEPQFknvBnK/Rtt9gl4wWq8c6hjfrcMfbhqldKw=";
-
-        meta.mainProgram = drv.pname;
-      });
-
       ########## permanent overrides ##########
 
       fastfetch.__assign = obscura.my-fastfetch;
@@ -68,7 +26,11 @@
         exec.__prepend = "gamemoderun ";
       };
 
+      hyprland.__assign = self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}.hyprland;
+      hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
+
       syncplay.__output = {
+        # TODO https://github.com/Syncplay/syncplay/pull/754
         patches.__append = [
           ./syncplay-speed.patch
         ];

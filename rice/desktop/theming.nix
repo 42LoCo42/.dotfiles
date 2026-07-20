@@ -35,10 +35,12 @@
 
         home = {
           pointerCursor = {
+            enable = true;
+            gtk.enable = true;
+
+            package = pkgs.vanilla-dmz;
             name = "Vanilla-DMZ";
             size = 24;
-            package = pkgs.vanilla-dmz;
-            gtk.enable = true;
           };
 
           packages = with pkgs; [
