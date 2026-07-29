@@ -1,12 +1,5 @@
-{ lib, pkgs, ... }:
-let
-  inherit (lib)
-    escapeShellArgs
-    mkForce
-    mkMerge
-    pipe
-    ;
-in
+{ config, lib, ... }:
+let inherit (lib) mkMerge pipe; in
 {
   fileSystems."/proc" = {
     device = "proc";
@@ -14,54 +7,29 @@ in
     options = [ "nosuid" "hidepid=invisible" "gid=1" ]; # GID 1 is wheel
   };
 
-  security.polkit.enablePkexecWrapper = false;
+  security.polkit = {
+    enable =
+      config.rice.desktop.enable ||
+      config.networking.networkmanager.enable;
 
-  systemd.services = {
-    polkit.enable = false;
-
-    libvirtd.environment.LIBVIRTD_ARGS = mkForce (escapeShellArgs [
-      "--config"
-      (pkgs.writeText "libvirtd.conf" ''
-        unix_sock_group    = "libvirtd"
-        unix_sock_ro_perms = "0770"
-        unix_sock_rw_perms = "0770"
-        auth_unix_ro       = "none"
-        auth_unix_rw       = "none"
-      '').outPath
-
-      "--timeout=120"
-    ]);
+    enablePkexecWrapper = false;
   };
 
-  security = {
-    sudo-rs.extraRules = [{
-      groups = [ "wheel" ];
-      commands = (map (x: {
-        command = "/run/current-system/sw/bin/systemctl ${x}";
-        options = [ "NOPASSWD" ];
-      })) [
-        "poweroff"
-        "reboot"
-        "suspend"
-      ];
-    }];
+  security.wrappers = pipe [
+    "Hyprland"
+    "fusermount"
+    "fusermount3"
+    "mount"
+    "newgidmap"
+    "newgrp"
+    "newuidmap"
+    "sg"
+    "su"
+    "sudoedit"
+    "umount"
+  ] [
+    (map (x: { ${x}.enable = false; }))
+    mkMerge
+  ];
 
-    wrappers = pipe [
-      "Hyprland"
-      "fusermount"
-      "fusermount3"
-      "mount"
-      "newgidmap"
-      "newgrp"
-      "newuidmap"
-      "pkexec"
-      "sg"
-      "su"
-      "sudoedit"
-      "umount"
-    ] [
-      (map (x: { ${x}.enable = false; }))
-      mkMerge
-    ];
-  };
 }
