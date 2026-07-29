@@ -16,7 +16,7 @@ html(lang = "en")
     link(href = "/style.css" rel = "stylesheet")
 
   body
-    div(id = "terminal" class = "mobile-vbox", style = "display: none")
+    div(id = "terminal" style = "display: none")
       mixin prompt(dir, cmd)
         x-prompt
           span eleonora@bunny
@@ -39,7 +39,20 @@ html(lang = "en")
         block
         br
 
-      block content
+      div(id = "term-main" class = "mobile-vbox")
+        block content
+
+      div(id = "term-foot")
+        x-typw(hidec = "")
+        h6(style = "text-align: center; color: gray")
+          | This is @hash@
+          br
+          a(href = "https://nixwebr.ing/prev/nori") ←
+          a(href = "https://nixwebr.ing") nixwebr.ing
+          a(href = "https://nixwebr.ing/rand") (random)
+          a(href = "https://nixwebr.ing/next/nori") →
+
+
     script(src = "/age.js")
     script(src = "/oneko.js")
     script(src = "/typewriter.js")

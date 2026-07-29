@@ -22,6 +22,9 @@ let
     ];
 
     buildPhase = ''
+      substituteInPlace layout.pug \
+        --replace-fail @hash@ $out
+
       cp -r static $out
       for i in ${font}/*; do ln -s $i $out; done
       bash processStuff.sh
