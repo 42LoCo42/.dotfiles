@@ -441,6 +441,10 @@ in
 
               (vertico-multiform-mode)
             '';
+
+            custom = ''
+              (jinx-languages "en_US de_DE")
+            '';
           };
 
           apheleia = {
