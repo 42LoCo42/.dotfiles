@@ -7,7 +7,7 @@ sort = true
 sort = false
 
 [lets]
-sort = true
+sort = false
 
 [inherits]
 sort = true
