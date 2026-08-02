@@ -15,6 +15,7 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
 
             tpmDecrypt = true;
             tpmMeasure = true;
+            fixate = "9743cb09e4f997eeede22763472b554b2bf3181d2b107af7e816a7d181a69103";
           };
         }
       ];
@@ -23,12 +24,6 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
     persist.dirs = {
       "/var/lib/bluetooth" = { m = "0700"; };
     };
-  };
-
-  boot.initrd.luks.devices."${disk}-part2" = {
-    crypttabExtraOpts = [
-      "fixate-volume-key=9743cb09e4f997eeede22763472b554b2bf3181d2b107af7e816a7d181a69103"
-    ];
   };
 
   services = {

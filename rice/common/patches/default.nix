@@ -7,7 +7,6 @@
       ergochat           .__assign = obscura.my-ergochat; ## TODO https://pr-tracker.bunny/?pr=502133
       gamja              .__assign = obscura.my-gamja; ##### TODO https://codeberg.org/emersion/gamja/pulls/210
       hydroxide          .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
-      nix-output-monitor .__assign = obscura.my-nom; ####### TODO nom needs new release
       prettypst          .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 
       # TODO https://github.com/3timeslazy/nix-search-tv/pull/30
