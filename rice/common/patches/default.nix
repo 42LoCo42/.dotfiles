@@ -17,6 +17,20 @@
         hash = "sha256-FLiUAztKoFScjg4gfnPfo1jSfIn8xQuJNKrgYhUDo0k=";
       };
 
+      # TODO https://github.com/openzfs/zfs/issues/18760
+      linuxPackages_zen.__extend.zfs_2_4.__output = {
+        configureFlags.__append = [ "--enable-linux-experimental" ];
+
+        patches.__append = [
+          (prev.fetchpatch {
+            url = "https://github.com/openzfs/zfs/commit/223b8bc446851e5e796e5446ac24d03bbf468f43.diff";
+            hash = "sha256-I29A+NLYLzy7cMC8FQpBdSYbjFu/kscgTW8mAauPVf4=";
+          })
+        ];
+
+        meta.broken.__assign = false;
+      };
+
       ########## permanent overrides ##########
 
       fastfetch.__assign = obscura.my-fastfetch;
