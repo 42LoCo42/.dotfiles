@@ -62,7 +62,7 @@
       };
 
       leonsch = {
-        description = "Leon Schumacher";
+        description = "Eleonora";
         sshKeys = with ssh; [ leonsch ];
         git = {
           email = "leonsch@protonmail.com";
