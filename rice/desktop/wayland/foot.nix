@@ -27,6 +27,7 @@
 
           colors-dark = {
             inherit (config.rice.desktop.wayland.foot) alpha;
+            blur = true;
           };
         };
       };
