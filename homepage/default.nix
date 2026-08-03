@@ -1,13 +1,15 @@
 pkgs:
 let
-  font = pkgs.lib.pipe pkgs.nerd-fonts [
-    (x: x.iosevka)
+  python = pkgs.python3.withPackages (p: with p; [ fonttools ]);
+
+  font = pkgs.lib.pipe pkgs.nerd-fonts.iosevka [
     (x: "${x}/share/fonts/truetype/NerdFonts/Iosevka/IosevkaNerdFont-Regular.ttf")
     (x: (pkgs.runCommand "iosevka" {
-      nativeBuildInputs = with pkgs; [ woff2 ];
+      nativeBuildInputs = with pkgs; [ python woff2 ];
     }) ''
-      install -D ${x} $out/iosevka.ttf
-      woff2_compress  $out/iosevka.ttf
+      mkdir -p $out
+      python ${./subset.py} ${x} $out/iosevka.ttf
+      woff2_compress $out/iosevka.ttf
     '')
   ];
 
