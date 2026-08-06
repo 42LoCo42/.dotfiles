@@ -9,6 +9,25 @@
       hydroxide          .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
       prettypst          .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 
+      # TODO tuwunel needs nixpkgs update
+      matrix-tuwunel.__assign = prev.stdenv.mkDerivation (drv: {
+        pname = "matrix-tuwunel";
+        version = "1.8.3";
+
+        src = prev.fetchurl {
+          url = "https://github.com/matrix-construct/tuwunel/releases/download/v${drv.version}/v${drv.version}-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
+          hash = "sha256-ywcGCBZjJt3Rfz4e5OgiM8ZGOU+xtMMa7sGONWxeEc8=";
+        };
+
+        nativeBuildInputs = with prev; [ zstd ];
+
+        dontUnpack = true;
+        installPhase = ''
+          unzstd $src -o tuwunel
+          install -Dm555 {,$out/bin/}tuwunel
+        '';
+      });
+
       # TODO https://github.com/3timeslazy/nix-search-tv/pull/30
       nix-search-tv.__output.src.__assign = prev.fetchFromGitHub {
         owner = "42LoCo42";
