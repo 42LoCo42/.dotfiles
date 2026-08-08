@@ -34,25 +34,18 @@
 
         hyprland = {
           monitors = {
-            primary = {
-              name = "DVI-D-1";
-              mode = "preferred, 0x0, 1";
-            };
-
-            secondary = {
-              name = "DP-3";
-              mode = "preferred, auto-right, 1";
-            };
+            DVI-D-1 = { };
+            DP-3 = { position = "auto-right"; };
           };
 
-          postConfig = ''
-            bind = $mod SHIFT, m, exec, toggle-mouse
+          binds = f: with f; {
+            S-m = exec toggle-mouse;
+          };
 
-            device {
-              name = genps/2-genius-mouse
-              accel_profile = custom 0.1372465604 0.000 0.344 0.687 1.204 1.721 2.238 2.801 3.586 4.372 5.157 5.943 6.728 7.514 8.299 9.084 9.870 10.655 11.441 12.226 13.849
-            }
-          '';
+          settings.device = {
+            name = "genps/2-genius-mouse";
+            accel_profile = "custom 0.1372465604 0.000 0.344 0.687 1.204 1.721 2.238 2.801 3.586 4.372 5.157 5.943 6.728 7.514 8.299 9.084 9.870 10.655 11.441 12.226 13.849";
+          };
         };
       };
     };

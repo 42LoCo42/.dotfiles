@@ -24,9 +24,8 @@
       ];
     }];
 
-    rice.desktop.wayland.hyprland.postConfig = ''
-      windowrule = match:class nix-search-tv, fullscreen_state 1 0
-      bind = $mod ctrl, n, exec, foot -a nix-search-tv ntv
-    '';
+    rice.desktop.wayland.hyprland.binds = f: with f; {
+      C-n = execR "foot ntv" { fullscreen_state = "2 0"; };
+    };
   };
 }

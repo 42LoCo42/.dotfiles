@@ -5,6 +5,10 @@
   };
 
   config = lib.mkIf config.rice.desktop.wayland.flameshot.enable {
+    rice.desktop.wayland.hyprland.binds = f: with f; {
+      Print = raw (exec "flameshot-run");
+    };
+
     home-manager.sharedModules = [{
       home.packages = with pkgs; [
         flameshot

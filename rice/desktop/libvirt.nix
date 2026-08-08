@@ -5,9 +5,9 @@
   };
 
   config = lib.mkIf config.rice.desktop.libvirt.enable {
-    rice.desktop.wayland.hyprland.postConfig = ''
-      bind = $mod, v, exec, virt-manager
-    '';
+    rice.desktop.wayland.hyprland.binds = f: with f; {
+      v = exec "virt-manager";
+    };
 
     networking.firewall.trustedInterfaces = [ "virbr0" ];
 

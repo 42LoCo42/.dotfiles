@@ -686,6 +686,7 @@ in
               (go-mode         . lsp-deferred)
               (haskell-mode    . lsp-deferred)
               (js-mode         . lsp-deferred)
+              (lua-mode        . lsp-deferred)
               (nix-mode        . lsp-deferred)
               (php-mode        . lsp-deferred)
               (rustic-mode     . lsp-deferred)
@@ -714,8 +715,9 @@ in
               (lsp-modeline-diagnostics-scope :file)
               (read-process-output-max (* 1024 1024))
 
-              ; custom client args
+              ; custom client settings
               (lsp-clients-clangd-args '("--header-insertion=never"))
+              (lsp-clients-lua-language-server-command "lua-language-server")
 
               (lsp-disabled-clients '(php-ls))
             '';
@@ -729,6 +731,9 @@ in
 
               (advice-add 'lsp-resolve-final-command :around
                 #'lsp-booster--advice-final-command)
+
+              (advice-add 'lsp-clients-lua-language-server-test :override
+                (lambda () t))
             '';
 
             extraPackages = with pkgs; [
@@ -1048,6 +1053,14 @@ in
             hook = ''
               (markdown-mode . (lambda () (indent-tabs-mode 0)))
             '';
+          };
+
+          lua-mode = {
+            defer = true;
+            extraPackages = with pkgs; [
+              lua-language-server
+              stylua
+            ];
           };
         };
       };

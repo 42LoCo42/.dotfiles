@@ -5,9 +5,16 @@
   };
 
   config = lib.mkIf config.rice.desktop.equibop.enable {
-    rice.desktop.wayland.hyprland.postConfig = ''
-      bind = $mod CTRL, m, exec, equibop --toggle-mic
-    '';
+    rice.desktop.wayland.hyprland = {
+      binds = f: with f; {
+        c = exec "uwsm app equibop";
+      };
+
+      settings.window_rule = [{
+        match.class = "equibop";
+        workspace = "3 silent";
+      }];
+    };
 
     home-manager.sharedModules = [{
       aquaris.persist = { ".config/equibop" = { }; };

@@ -1,0 +1,48 @@
+---@diagnostic disable: lowercase-global
+
+fmt = string.format
+
+function dropdown(cmd)
+	return function()
+		ws = hl.get_active_workspace()
+		class = fmt("dropdown_%s", string.match(cmd, "%S+"))
+		window = hl.get_windows({ class = class })[1]
+
+		if window == nil then
+			hl.dispatch(hl.dsp.exec_cmd(
+				fmt("foot -a %s %s", class, cmd), --
+				{ float = true, dim_around = true }
+			))
+		elseif window.workspace == ws then
+			hl.dispatch(hl.dsp.window.move({
+				window = window,
+				workspace = "special:dropdown",
+				follow = false,
+			}))
+		else
+			hl.dispatch(hl.dsp.window.move({
+				window = window,
+				workspace = ws,
+			}))
+		end
+	end
+end
+
+for _, dir in pairs({ "left", "right", "up", "down" }) do
+	hl.bind(fmt("SUPER + %s", dir), hl.dsp.focus({ direction = dir }))
+	hl.bind(fmt("SUPER + SHIFT + %s", dir), hl.dsp.window.swap({ direction = dir }))
+end
+
+for i = 1, 10 do
+	key = i - 1
+
+	hl.bind(fmt("SUPER + %s", key), function()
+		offset = hl.get_active_monitor().id * 100
+		hl.dispatch(hl.dsp.focus({ workspace = i + offset }))
+	end)
+
+	hl.bind(fmt("SUPER + SHIFT + %s", key), function()
+		offset = hl.get_active_monitor().id * 100
+		hl.dispatch(hl.dsp.window.move({ workspace = i + offset }))
+	end)
+end

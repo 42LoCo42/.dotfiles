@@ -87,39 +87,32 @@ in
 
       wayland = {
         hyprland = {
-          workspaces = {
-            "1" = {
-              icon = "";
-            };
+          # TODO hyprland
+          # workspaces = {
+          #   "1" = {
+          #     icon = "";
+          #   };
 
-            "2" = {
-              icon = "";
-              rules = [ "title Discord.*" ];
-            };
+          #   "2" = {
+          #     icon = "";
+          #     rules = [ "title Discord.*" ];
+          #   };
 
-            "3" = {
-              icon = "";
-            };
+          #   "3" = {
+          #     icon = "";
+          #   };
 
-            "9" = {
-              icon = "";
-              autostart = [ "uwsm app thunderbird" ];
-              rules = [ "initial_class thunderbird" ];
-            };
+          #   "9" = {
+          #     icon = "";
+          #     autostart = [ "uwsm app thunderbird" ];
+          #     rules = [ "initial_class thunderbird" ];
+          #   };
+          # };
+
+          binds = f: with f; {
+            p = exec (getExe password-manager);
+            s = exec (getExe sync-manager);
           };
-
-          postConfig = ''
-            plugin {
-              hyprwinwrap {
-                class = background-wrap
-              }
-            }
-
-            windowrule = match:class background-wrap, float 1, move 0 0, size monitor_w monitor_h
-
-            bind = $mod, p, exec, ${getExe password-manager}
-            bind = $mod, s, exec, ${getExe sync-manager}
-          '';
         };
 
         waybar.syncstat = {
@@ -170,19 +163,15 @@ in
 
         preRun = mkBefore ''
           if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
-            hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors-dark.alpha=0 \
               rsyncy -az --delete "firefox-sync:" "$FIREFOX_PROFILE_DIR"
-            hyprctl keyword decoration:blur:new_optimizations true
           fi
         '';
 
         postRun = mkAfter ''
           if ((LAUNCHER)) && [ "''${CAPTIVE_PORTAL+x}" = "" ]; then
-            hyprctl keyword decoration:blur:new_optimizations false
             foot -a background-wrap -o colors-dark.alpha=0 \
               rsyncy -az --delete "$FIREFOX_PROFILE_DIR" "firefox-sync:"
-            hyprctl keyword decoration:blur:new_optimizations true
           fi
         '';
       };
@@ -206,10 +195,6 @@ in
         "work" = { };
       };
     };
-
-    wayland.windowManager.hyprland.plugins = with pkgs.hyprlandPlugins; [
-      hyprwinwrap
-    ];
 
     systemd.user.tmpfiles.rules = map
       (x: "L+ %h/.asn/${x} - - - - ${config.aquaris.secret "user/leonsch/asn/${x}"}")

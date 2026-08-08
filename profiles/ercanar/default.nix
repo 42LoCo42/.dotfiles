@@ -28,51 +28,54 @@ in
       hrtrack.enable = mkForce false;
 
       wayland = {
-        hyprland.workspaces = {
-          "0" = {
-            autostart = [ "@terminal@" ];
-          };
+        hyprland = {
+          # TODO hyprland
+          # workspaces = {
+          #   "0" = {
+          #     autostart = [ "@terminal@" ];
+          #   };
 
-          "1" = {
-            icon = "";
-            autostart = [ "uwsm app equibop" ];
-            rules = [ "title Discord.*" ];
-          };
+          #   "1" = {
+          #     icon = "";
+          #     autostart = [ "uwsm app equibop" ];
+          #     rules = [ "title Discord.*" ];
+          #   };
 
-          "2" = {
-            icon = "";
-            autostart = [ "uwsm app steam" ];
-            rules = [ "class steam" "title Steam" ];
-          };
+          #   "2" = {
+          #     icon = "";
+          #     autostart = [ "uwsm app steam" ];
+          #     rules = [ "class steam" "title Steam" ];
+          #   };
 
-          "3" = {
-            icon = "󰈹";
-            autostart = [ "uwsm app librewolf" ];
-            rules = [ "class librewolf" ];
-          };
+          #   "3" = {
+          #     icon = "󰈹";
+          #     autostart = [ "uwsm app librewolf" ];
+          #     rules = [ "class librewolf" ];
+          #   };
 
-          "4" = {
-            rules = [
-              "class soffice"
-              "initial_class libreoffice-startcenter"
-            ];
-          };
+          #   "4" = {
+          #     rules = [
+          #       "class soffice"
+          #       "initial_class libreoffice-startcenter"
+          #     ];
+          #   };
 
-          "5" = {
-            icon = "";
-            rules = [
-              "class gimp"
-              "class org.musescore.MuseScore"
-              "class googleearth"
-            ];
+          #   "5" = {
+          #     icon = "";
+          #     rules = [
+          #       "class gimp"
+          #       "class org.musescore.MuseScore"
+          #       "class googleearth"
+          #     ];
+          #   };
+          # };
+
+          binds = f: with f; {
+            l = exec "libreoffice";
+            S-g = exec "gimp";
+            S-w = exec "uwsm app librewolf";
           };
         };
-
-        hyprland.postConfig = ''
-          bind = $mod      , l, exec, libreoffice
-          bind = $mod SHIFT, g, exec, gimp
-          bind = $mod SHIFT, w, exec, uwsm app librewolf
-        '';
 
         hypridle.timeouts = {
           lock = 900; # 15 min

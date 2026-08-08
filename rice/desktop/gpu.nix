@@ -1,6 +1,6 @@
 { config, lib, pkgs, self, ... }:
 let
-  inherit (lib) mkBefore mkIf mkMerge mkOption;
+  inherit (lib) mkIf mkMerge mkOption;
   inherit (lib.types) bool;
 
   cfg = config.rice.desktop.gpu;
@@ -58,21 +58,34 @@ in
     }
 
     (mkIf cfg.baseload {
-      rice.desktop.wayland.hyprland.postConfig = ''
-        # fix GPU spikes by providing a constant baseload
-        exec-once = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
-        windowrule {
-          name = hide-vkcube
-          match:title = vkcube
+      rice.desktop.wayland.hyprland = {
+        settings.window_rule = {
+          match.title = "vkcube";
 
-          float = 1
-          pin = 1
-          suppress_event = activatefocus
-          move = 0 0
-          size = 1 1
-          max_size = 1 1
-        }
-      '';
+          float = 1;
+          pin = 1;
+          no_focus = true;
+          move = [ 0 0 ];
+          size = [ 1 1 ];
+          max_size = [ 1 1 ];
+        };
+      };
+
+      # rice.desktop.wayland.hyprland.postConfig = ''
+      #   # fix GPU spikes by providing a constant baseload
+      #   exec-once = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
+      #   windowrule {
+      #     name = hide-vkcube
+      #     match:title = vkcube
+
+      #     float = 1
+      #     pin = 1
+      #     suppress_event = activatefocus
+      #     move = 0 0
+      #     size = 1 1
+      #     max_size = 1 1
+      #   }
+      # '';
     })
 
     ############################################################################
@@ -115,18 +128,16 @@ in
       rice = {
         unfreeNames = [ "nvidia-x11" ];
 
-        desktop.wayland.hyprland.preConfig = mkBefore ''
-          env = GBM_BACKEND,nvidia-drm
-          env = LIBVA_DRIVER_NAME,nvidia
-          env = NVD_BACKEND,direct
-          env = VDPAU_DRIVER,nvidia
-          env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-          env = __NV_PRIME_RENDER_OFFLOAD,1
-          env = __NV_PRIME_RENDER_OFFLOAD_PROVIDER,NVIDIA-G0
-          env = __VK_LAYER_NV_optimus,NVIDIA_only
-
-          cursor:no_hardware_cursors = 1
-        '';
+        desktop.wayland.hyprland.env = {
+          GBM_BACKEND = "nvidia-drm";
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+          VDPAU_DRIVER = "nvidia";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          __NV_PRIME_RENDER_OFFLOAD = "1";
+          __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
+          __VK_LAYER_NV_optimus = "NVIDIA_only";
+        };
       };
 
       hardware.nvidia = {
