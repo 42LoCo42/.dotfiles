@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.desktop.zathura.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -6,10 +6,6 @@
 
   config = lib.mkIf config.rice.desktop.zathura.enable {
     home-manager.sharedModules = [{
-      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
-        "programs/zathura.nix"
-      ];
-
       aquaris.persist = {
         ".local/share/zathura" = { };
       };

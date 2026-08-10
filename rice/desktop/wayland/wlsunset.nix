@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (lib) getExe mkForce;
   cfg = config.rice.desktop.wayland.wlsunset;
@@ -21,10 +21,6 @@ in
 
   config = lib.mkIf cfg.enable {
     home-manager.sharedModules = [{
-      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
-        "services/hyprsunset.nix"
-      ];
-
       services.hyprsunset.enable = true;
 
       systemd.user.services.wlsunset = {

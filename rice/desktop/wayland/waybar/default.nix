@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }:
+{ config, lib, pkgs, ... }:
 let
   inherit (lib) getExe getExe' mkIf mkOption;
   inherit (lib.types) attrsOf bool int nullOr str;
@@ -38,10 +38,6 @@ in
     };
 
     home-manager.sharedModules = [{
-      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
-        "programs/waybar.nix"
-      ];
-
       # sometimes waybar starts before hyprland and then crashes
       # fix: just restart it until it works
       systemd.user.services.waybar = {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.desktop.mpd.enable = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -6,11 +6,6 @@
 
   config = lib.mkIf config.rice.desktop.mpd.enable {
     home-manager.sharedModules = lib.singleton (hm: {
-      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
-        "programs/ncmpcpp.nix"
-        "services/mpd.nix"
-      ];
-
       aquaris.persist = { "music" = { }; };
 
       home.packages = with pkgs; [

@@ -1,4 +1,4 @@
-{ config, lib, self, ... }:
+{ config, lib, ... }:
 let
   inherit (lib) mkIf mkOption;
   inherit (lib.types) bool int;
@@ -31,10 +31,6 @@ in
 
   config = mkIf cfg.enable {
     home-manager.sharedModules = [{
-      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
-        "services/hypridle.nix"
-      ];
-
       services.hypridle = {
         enable = true;
         settings = {

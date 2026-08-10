@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }: {
+{ config, lib, pkgs, ... }: {
   options.rice.desktop.wayland.foot = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -13,10 +13,6 @@
 
   config = lib.mkIf config.rice.desktop.wayland.foot.enable {
     home-manager.sharedModules = [{
-      imports = map (x: "${self.inputs.home-manager}/modules/${x}") [
-        "programs/foot.nix"
-      ];
-
       programs.foot = {
         enable = true;
         settings = {
