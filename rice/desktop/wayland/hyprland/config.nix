@@ -222,15 +222,15 @@
         hl.config({ cursor = { zoom_factor = 1 }})'';
 
       ##### media keys #####
-      XF86AudioLowerVolume = exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-";
-      XF86AudioRaiseVolume = exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+";
-      XF86AudioMute = exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-      XF86AudioMicMute = exec "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-      XF86AudioPlay = exec "mpc toggle";
-      XF86AudioPrev = exec "mpc prev";
-      XF86AudioNext = exec "mpc next";
-      XF86MonBrightnessDown = exec "brightnessctl set 10%-";
-      XF86MonBrightnessUp = exec "brightnessctl set 10%+";
+      XF86AudioLowerVolume = raw (exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-");
+      XF86AudioRaiseVolume = raw (exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+");
+      XF86AudioMute = raw (exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle");
+      XF86AudioMicMute = raw (exec "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle");
+      XF86AudioPlay = raw (exec "mpc toggle");
+      XF86AudioPrev = raw (exec "mpc prev");
+      XF86AudioNext = raw (exec "mpc next");
+      XF86MonBrightnessDown = raw (exec "brightnessctl set 10%-");
+      XF86MonBrightnessUp = raw (exec "brightnessctl set 10%+");
 
       ##### fullscreen #####
       f = fullscreen 1 0; # almost fullscreen, keep bar
