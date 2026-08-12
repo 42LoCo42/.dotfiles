@@ -136,17 +136,17 @@
         { leaf = "workspaces"; speed = 6; }
       ];
 
-      workspace_rule = {
+      workspace_rule = [{
         workspace = "w[tv1]";
         gaps_out = 0;
         gaps_in = 0;
-      };
+      }];
 
-      window_rule = {
+      window_rule = [{
         match = { float = false; workspace = "w[tv1]"; };
         border_size = 0;
         rounding = 0;
-      };
+      }];
 
       "plugin.hyprwinwrap.window" = {
         class = "background-wrap";
