@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) attrValues defaultTo elemAt flatten flip genList length
-    listToAttrs mapAttrsToList match mkIf pipe readFile replaceStrings;
+  inherit (lib) attrValues defaultTo elemAt filterAttrs flatten flip genList
+    length listToAttrs mapAttrsToList match mkIf pipe readFile replaceStrings;
 
   cfg = config.rice.desktop.wayland.hyprland;
 
@@ -76,6 +76,35 @@ in
               })))
             flatten
           ];
+
+          animation = pipe cfg.animations [
+            (x: x (with cfg._util.curveRef.mk; {
+              bezier = name: bezier { inherit name; };
+              spring = name: spring { inherit name; };
+            }))
+            (mapAttrsToList (k: v: {
+              leaf = k;
+              inherit (v) enabled speed style;
+              ${v.curve._tag} = v.curve.name;
+            }))
+            (map (filterAttrs (_: x: x != null)))
+          ];
+
+          curve = pipe cfg.curves [
+            (x: x cfg._util.curveDef.mk)
+            (mapAttrsToList (k: v: {
+              _args = [
+                k
+                (pipe v [
+                  (x: x // { type = x._tag; })
+                  (flip removeAttrs [ "_tag" ])
+                ])
+              ];
+            }))
+          ];
+
+          window_rule = cfg.windowRules;
+          workspace_rule = cfg.workspaceRules;
         };
       };
 

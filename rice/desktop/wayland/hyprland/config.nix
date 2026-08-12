@@ -116,38 +116,6 @@
         };
       };
 
-      curve._args = [
-        "myBezier"
-        {
-          type = "bezier";
-          points = [
-            [ 0.05 0.9 ]
-            [ 0.1 1.05 ]
-          ];
-        }
-      ];
-
-      animation = map (x: { enabled = true; bezier = "default"; } // x) [
-        { leaf = "border"; speed = 10; }
-        { leaf = "borderangle"; speed = 8; }
-        { leaf = "fade"; speed = 7; }
-        { leaf = "windows"; speed = 7; bezier = "myBezier"; }
-        { leaf = "windowsOut"; speed = 7; style = "popin 80%"; }
-        { leaf = "workspaces"; speed = 6; }
-      ];
-
-      workspace_rule = [{
-        workspace = "w[tv1]";
-        gaps_out = 0;
-        gaps_in = 0;
-      }];
-
-      window_rule = [{
-        match = { float = false; workspace = "w[tv1]"; };
-        border_size = 0;
-        rounding = 0;
-      }];
-
       "plugin.hyprwinwrap.window" = {
         class = "background-wrap";
         pos_x = 0;
@@ -277,5 +245,35 @@
         end
       '';
     };
+
+    animations = f: with f; {
+      border = { speed = 10; };
+      borderangle = { speed = 8; };
+      fade = { speed = 7; };
+      windows = { speed = 7; curve = bezier "myBezier"; };
+      windowsOut = { speed = 7; style = "popin 80%"; };
+      workspaces = { speed = 6; };
+    };
+
+    curves = f: with f; {
+      myBezier = bezier {
+        points = [
+          [ 0.05 0.9 ]
+          [ 0.1 1.05 ]
+        ];
+      };
+    };
+
+    windowRules = [{
+      match = { float = false; workspace = "w[tv1]"; };
+      border_size = 0;
+      rounding = 0;
+    }];
+
+    workspaceRules = [{
+      workspace = "w[tv1]";
+      gaps_out = 0;
+      gaps_in = 0;
+    }];
   };
 }
