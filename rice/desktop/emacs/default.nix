@@ -117,6 +117,9 @@ in
             bind = ''
               ("C-a" . my/smart-home)
               ("M-=" . count-words)
+
+              ;; delete a Nix sha256 hash
+              ("C-M-d" . (lambda () (interactive) (delete-char 51)))
             '';
 
             bind' = ''
