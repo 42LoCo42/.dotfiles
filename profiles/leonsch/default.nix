@@ -1,14 +1,6 @@
 { aquaris, config, lib, pkgs, ... }:
 let
-  inherit (lib)
-    getExe
-    mapAttrs
-    mkAfter
-    mkBefore
-    mkMerge
-    singleton
-    ;
-
+  inherit (lib) getExe join mapAttrs mkAfter mkBefore mkMerge pipe singleton;
   inherit (lib.generators) toINI;
   inherit (config.rice.ssh) proxy;
 
@@ -53,7 +45,7 @@ let
   };
 in
 {
-  imports = [ ../common ];
+  imports = [ ../common ./qbit.nix ];
 
   aquaris = {
     users = mkMerge [
@@ -230,7 +222,6 @@ in
         jameica
         rsyncy
         rustdesk-flutter
-        sshfs
         steamguard-cli
         syncplay
         umu-launcher
@@ -272,7 +263,11 @@ in
           room = "Absolutes Kinori";
 
           playerpath = getExe hm.config.programs.mpv.finalPackage;
-          mediasearchdirectories = "['/home/leonsch/tmp']";
+          mediasearchdirectories = pipe [ "qbit" "tmp" ] [
+            (map (x: "'${x}'"))
+            (join ",")
+            (x: "[${x}]")
+          ];
         };
 
         general = {
@@ -433,5 +428,4 @@ in
       };
     };
   });
-
 }
