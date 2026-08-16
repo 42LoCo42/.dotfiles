@@ -37,7 +37,7 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
 
   environment.shellInit = ''
     if [ "$TTY" = "/dev/tty1" ]; then
-      exec uwsm start hyprland-uwsm.desktop
+      exec start-hyprland
     fi
   '';
 
