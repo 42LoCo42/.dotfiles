@@ -72,6 +72,11 @@ in
 
   users.users.leonsch.extraGroups = [ "wireshark" ];
 
+  fonts.packages = with pkgs; [
+    merriweather # aisle3 font
+    overused-grotesk # my bae <3
+  ];
+
   rice = {
     desktop = {
       enable = true;
