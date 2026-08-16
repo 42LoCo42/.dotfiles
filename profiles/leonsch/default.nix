@@ -112,6 +112,9 @@ in
           binds = f: with f; {
             p = exec (getExe password-manager);
             s = exec (getExe sync-manager);
+
+            C-m = execR "feh ~/doc/mel-org/school/timetable.png"
+              { fullscreen_state = "1 0"; };
           };
         };
 
