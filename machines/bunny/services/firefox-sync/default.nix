@@ -8,7 +8,7 @@ let url = "https://firefox-sync.bunny"; in {
   };
 
   virtualisation.pnoc.firefox-sync = {
-    path = with pkgs; [ syncstorage-rs ];
+    path = with pkgs; [ syncstorage-rs-pgsql ];
 
     script = ''
       declare DB

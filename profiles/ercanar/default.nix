@@ -116,7 +116,6 @@ in
 
         ".config/GIMP" = { };
         ".config/libreoffice" = { };
-        ".config/rustdesk" = { };
 
         # musescore
         ".config/MuseScore" = { };
@@ -149,7 +148,6 @@ in
       imagemagick
       libreoffice-fresh
       musescore
-      rustdesk-flutter
     ];
 
     programs.ssh.settings = {

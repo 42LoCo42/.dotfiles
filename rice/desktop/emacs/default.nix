@@ -967,6 +967,7 @@ in
 
             custom = ''
               (typst-ts-mode-indent-offset 2)
+              (typst-ts-mode-enable-raw-blocks-highlight)
             '';
           };
 

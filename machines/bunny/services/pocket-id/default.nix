@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, pkgs, ... }: {
   topology.nodes.bunny-public.services.pocket-id = {
     name = "Pocket ID";
     icon = "services.pocket-id";

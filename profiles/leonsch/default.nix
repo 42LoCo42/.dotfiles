@@ -194,7 +194,6 @@ in
       git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
 
       persist = {
-        ".config/rustdesk" = { };
         ".config/steamguard-cli" = { };
 
         ".local/share/Steam/compatibilitytools.d" = { };
@@ -223,10 +222,8 @@ in
         asn
         catgirl
         chatterino7
-        eka
         jameica
         rsyncy
-        rustdesk-flutter
         steamguard-cli
         syncplay
         umu-launcher

@@ -69,12 +69,6 @@ pr-tracker.bunny {
 
 ################################################################################
 
-rd.bunny {
-	reverse_proxy rustdesk:21114
-}
-
-################################################################################
-
 searx.bunny {
 	respond /opensearch.xml <<EOF
 		<?xml version="1.0" encoding="utf-8"?>
