@@ -10,7 +10,7 @@
         c = exec "uwsm app equibop";
       };
 
-      settings.window_rule = [{
+      windowRules = [{
         match.class = "equibop";
         workspace = "3 silent";
       }];

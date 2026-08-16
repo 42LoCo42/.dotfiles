@@ -106,6 +106,8 @@ in
           window_rule = cfg.windowRules;
           workspace_rule = cfg.workspaceRules;
         };
+
+        precfg = builtins.readFile ./lib.lua;
       };
 
       waybar.icons = pipe cfg.monitors [
@@ -149,7 +151,7 @@ in
 
         extraLuaFiles.lib = {
           autoLoad = true;
-          content = readFile ./lib.lua;
+          content = cfg.precfg;
         };
 
         inherit (cfg) settings;

@@ -38,9 +38,9 @@
             DP-3 = { position = "auto-right"; };
           };
 
-          binds = f: with f; {
-            S-m = exec toggle-mouse;
-          };
+          precfg = ''
+            mouse = "genps/2-genius-mouse"
+          '';
 
           settings.device = {
             name = "genps/2-genius-mouse";
@@ -65,25 +65,6 @@
 
     home.packages = with pkgs; [
       factorio-space-age
-
-      (writeShellApplication {
-        name = "toggle-mouse";
-        text = ''
-          f="$HOME/.cache/mouse-disabled"
-
-          if [ -e "$f" ]; then
-            rm -f "$f"
-            e=true
-            notify-send "Mouse enabled"
-          else
-            touch "$f"
-            e=false
-            notify-send "Mouse disabled"
-          fi
-
-          hyprctl keyword 'device[sigmachip-usb-mouse]:enabled' "$e"
-        '';
-      })
     ];
   }];
 

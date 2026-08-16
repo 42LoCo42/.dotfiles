@@ -2,7 +2,8 @@
 let
   inherit (aquaris.lib) adt;
   inherit (lib) mkOption;
-  inherit (lib.types) anything attrsOf bool coercedTo functionTo listOf luaInline nullOr number str submodule;
+  inherit (lib.types) anything attrsOf bool coercedTo functionTo lines listOf
+    luaInline nullOr number str submodule;
 
   # https://github.com/nix-community/home-manager/blob/c30c7955cec30d664a9baced6bc0112e263d4647/modules/services/window-managers/hyprland/default.nix#L18
   settingValueType =
@@ -99,6 +100,11 @@ in
         })));
 
       default = { };
+    };
+
+    precfg = mkOption {
+      type = lines;
+      default = "";
     };
 
     prepwr = mkOption {

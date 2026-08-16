@@ -59,7 +59,7 @@ in
 
     (mkIf cfg.baseload {
       rice.desktop.wayland.hyprland = {
-        settings.window_rule = {
+        windowRules = [{
           match.title = "vkcube";
 
           float = 1;
@@ -68,23 +68,13 @@ in
           move = [ 0 0 ];
           size = [ 1 1 ];
           max_size = [ 1 1 ];
-        };
+        }];
       };
 
+      # TODO hyprland
       # rice.desktop.wayland.hyprland.postConfig = ''
       #   # fix GPU spikes by providing a constant baseload
       #   exec-once = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
-      #   windowrule {
-      #     name = hide-vkcube
-      #     match:title = vkcube
-
-      #     float = 1
-      #     pin = 1
-      #     suppress_event = activatefocus
-      #     move = 0 0
-      #     size = 1 1
-      #     max_size = 1 1
-      #   }
       # '';
     })
 

@@ -115,6 +115,21 @@ in
 
             C-m = execR "feh ~/doc/mel-org/school/timetable.png"
               { fullscreen_state = "1 0"; };
+
+            S-m = function ''
+              on = not state("mouse-disabled").tgl()
+
+              hl.device({
+                name = mouse,
+                enabled = on,
+              })
+
+              hl.notification.create({
+                text = fmt("Mouse is %s", on and "enabled" or "disabled"),
+                time = 2000,
+                icon = "info",
+              })
+            '';
           };
         };
 

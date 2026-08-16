@@ -2,6 +2,39 @@
 
 fmt = string.format
 
+function state(name)
+	file = fmt("%s/.cache/hyprstate-%s", os.getenv("HOME"), name)
+
+	get = function()
+		h = io.open(file, "r")
+		if h == nil then
+			return false
+		else
+			io.close(h)
+			return true
+		end
+	end
+
+	set = function(val)
+		if val then
+			io.close(io.open(file, "w"))
+		else
+			os.remove(file)
+		end
+
+		return val
+	end
+
+	return {
+		get = get,
+		set = set,
+
+		tgl = function()
+			return set(not get())
+		end,
+	}
+end
+
 function dropdown(cmd)
 	return function()
 		ws = hl.get_active_workspace()
