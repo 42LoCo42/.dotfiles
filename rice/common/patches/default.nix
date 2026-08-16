@@ -4,20 +4,36 @@
     self.inputs.obscura.lib.infuse prev ({
       ########## temporary overrides ##########
 
-      ergochat       .__assign = obscura.my-ergochat; ## TODO https://pr-tracker.bunny/?pr=502133
-      gamja          .__assign = obscura.my-gamja; ##### TODO https://codeberg.org/emersion/gamja/pulls/210
-      hydroxide      .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
-      prettypst      .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
+      ergochat  .__assign = obscura.my-ergochat; ## TODO https://pr-tracker.bunny/?pr=502133
+      gamja     .__assign = obscura.my-gamja; ##### TODO https://codeberg.org/emersion/gamja/pulls/210
+      hydroxide .__assign = obscura.my-hydroxide; # TODO https://github.com/emersion/hydroxide/pull/138
+      prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 
-      # TODO https://github.com/3timeslazy/nix-search-tv/pull/30
-      nix-search-tv.__output.src.__assign = prev.fetchFromGitHub {
-        owner = "42LoCo42";
-        repo = "nix-search-tv";
-        rev = "3d4e8d6d6a3b2a8a857690378bfd03ef2856f72e";
-        hash = "sha256-FLiUAztKoFScjg4gfnPfo1jSfIn8xQuJNKrgYhUDo0k=";
+      matrix-tuwunel.__assign = prev.stdenv.mkDerivation {
+        pname = "matrix-tuwunel";
+        version = "1.9.0";
+
+        src = prev.fetchurl {
+          url = "https://github.com/matrix-construct/tuwunel/releases/download/v1.9.0/v1.9.0-release-all-aarch64-v8-linux-gnu-tuwunel.zst";
+          hash = "sha256-gbGB+06aa6TSVDze1iZhGe3sMGqtDNI3BTpAlcuVTSc=";
+        };
+
+        nativeBuildInputs = with prev; [ zstd ];
+
+        dontUnpack = true;
+        installPhase = ''
+          unzstd $src -o tuwunel
+          install -Dm755 {,$out/bin/}tuwunel
+        '';
       };
 
-      # TODO https://github.com/openzfs/zfs/issues/18760
+      # DONE https://pr-tracker.bunny/?pr=553769
+      nix-search-tv.__output.src.__output = {
+        tag.__assign = "v2.2.9";
+        hash.__assign = "sha256-FLiUAztKoFScjg4gfnPfo1jSfIn8xQuJNKrgYhUDo0k=";
+      };
+
+      # TODO https://pr-tracker.bunny/?pr=555231
       linuxPackages_zen.__extend.zfs_2_4.__output = {
         configureFlags.__append = [ "--enable-linux-experimental" ];
 
@@ -31,7 +47,7 @@
         meta.broken.__assign = false;
       };
 
-      # TODO https://pr-tracker.bunny/?pr=552075
+      # DONE https://pr-tracker.bunny/?pr=552075
       # required by bunny's topology generator
       jetbrains-mono.__input = {
         python313Packages.__scope = {
@@ -46,10 +62,10 @@
       # TODO https://pr-tracker.bunny/?pr=548953
       gruvbox-gtk-theme.__assign = prev.callPackage ./gruvbox-gtk-theme.nix { };
 
-      # TODO https://pr-tracker.bunny/?pr=552231
+      # DONE https://pr-tracker.bunny/?pr=552231
       wf-recorder.__input.ffmpeg.__assign = prev.ffmpeg_8;
 
-      # TODO https://pr-tracker.bunny/?pr=552211
+      # DONE https://pr-tracker.bunny/?pr=552211
       ananicy-cpp.__output = {
         patches.__append = [
           (prev.fetchpatch {
