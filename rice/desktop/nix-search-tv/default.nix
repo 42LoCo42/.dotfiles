@@ -6,8 +6,12 @@
 
   config = lib.mkIf config.rice.desktop.nix-search-tv.enable {
     home-manager.sharedModules = [{
-      aquaris.persist = {
-        ".cache/nix-search-tv" = { };
+      aquaris = {
+        persist = { ".cache/nix-search-tv" = { }; };
+
+        hyprland.binds = f: with f; {
+          C-n = execR "foot ntv" { fullscreen_state = "2 0"; };
+        };
       };
 
       home.packages = [
@@ -23,9 +27,5 @@
         })
       ];
     }];
-
-    rice.desktop.wayland.hyprland.binds = f: with f; {
-      C-n = execR "foot ntv" { fullscreen_state = "2 0"; };
-    };
   };
 }

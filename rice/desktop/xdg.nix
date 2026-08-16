@@ -5,6 +5,11 @@
   };
 
   config = lib.mkIf config.rice.desktop.xdg.enable {
+    environment.pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+    ];
+
     home-manager.sharedModules = [{
       # used to store device access permissions
       aquaris.persist = { ".local/share/flatpak" = { }; };

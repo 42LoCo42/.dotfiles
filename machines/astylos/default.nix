@@ -31,22 +31,6 @@
 
       wayland = {
         fuzzel.fontSize = 20;
-
-        hyprland = {
-          monitors = {
-            DVI-D-1 = { };
-            DP-3 = { position = "auto-right"; };
-          };
-
-          precfg = ''
-            mouse = "genps/2-genius-mouse"
-          '';
-
-          settings.device = {
-            name = "genps/2-genius-mouse";
-            accel_profile = "custom 0.1372465604 0.000 0.344 0.687 1.204 1.721 2.238 2.801 3.586 4.372 5.157 5.943 6.728 7.514 8.299 9.084 9.870 10.655 11.441 12.226 13.849";
-          };
-        };
       };
     };
   };
@@ -56,11 +40,35 @@
   ];
 
   home-manager.sharedModules = [{
-    aquaris.persist = {
-      ".cache/JetBrains" = { };
-      ".config/JetBrains" = { };
-      ".factorio" = { };
-      ".local/share/JetBrains" = { };
+    aquaris = {
+      persist = {
+        ".cache/JetBrains" = { };
+        ".config/JetBrains" = { };
+        ".factorio" = { };
+        ".local/share/JetBrains" = { };
+      };
+
+      hyprland = {
+        monitors = {
+          primary = {
+            output = "DVI-D-1";
+          };
+
+          secondary = {
+            output = "DP-3";
+            position = "auto-right";
+          };
+        };
+
+        precfg = ''
+          mouse = "genps/2-genius-mouse"
+        '';
+
+        settings.device = {
+          name = "genps/2-genius-mouse";
+          accel_profile = "custom 0.1372465604 0.000 0.344 0.687 1.204 1.721 2.238 2.801 3.586 4.372 5.157 5.943 6.728 7.514 8.299 9.084 9.870 10.655 11.441 12.226 13.849";
+        };
+      };
     };
 
     home.packages = with pkgs; [

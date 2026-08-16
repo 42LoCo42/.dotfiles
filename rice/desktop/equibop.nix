@@ -5,20 +5,17 @@
   };
 
   config = lib.mkIf config.rice.desktop.equibop.enable {
-    rice.desktop.wayland.hyprland = {
-      binds = f: with f; {
-        c = exec "uwsm app equibop";
+    home-manager.sharedModules = [{
+      aquaris = {
+        persist = { ".config/equibop" = { }; };
+
+        hyprland.binds = f: with f; {
+          c = exec "equibop";
+        };
       };
 
-      windowRules = [{
-        match.class = "equibop";
-        workspace = "3 silent";
-      }];
-    };
-
-    home-manager.sharedModules = [{
-      aquaris.persist = { ".config/equibop" = { }; };
       home.packages = with pkgs; [ equibop ];
+
       xdg.configFile."equibop-flags.conf".text = ''
         --wayland
       '';

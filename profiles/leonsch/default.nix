@@ -86,53 +86,6 @@ in
       wego.location = "Stralsund";
 
       wayland = {
-        hyprland = {
-          # TODO hyprland
-          # workspaces = {
-          #   "1" = {
-          #     icon = "";
-          #   };
-
-          #   "2" = {
-          #     icon = "";
-          #     rules = [ "title Discord.*" ];
-          #   };
-
-          #   "3" = {
-          #     icon = "";
-          #   };
-
-          #   "9" = {
-          #     icon = "";
-          #     autostart = [ "uwsm app thunderbird" ];
-          #     rules = [ "initial_class thunderbird" ];
-          #   };
-          # };
-
-          binds = f: with f; {
-            p = exec (getExe password-manager);
-            s = exec (getExe sync-manager);
-
-            C-m = execR "feh ~/doc/mel-org/school/timetable.png"
-              { fullscreen_state = "1 0"; };
-
-            S-m = function ''
-              on = not state("mouse-disabled").tgl()
-
-              hl.device({
-                name = mouse,
-                enabled = on,
-              })
-
-              hl.notification.create({
-                text = fmt("Mouse is %s", on and "enabled" or "disabled"),
-                time = 2000,
-                icon = "info",
-              })
-            '';
-          };
-        };
-
         waybar.syncstat = {
           enable = true;
           folder = "cw6hv-bpaei"; # main
@@ -192,6 +145,52 @@ in
               rsyncy -az --delete "$FIREFOX_PROFILE_DIR" "firefox-sync:"
           fi
         '';
+      };
+
+      hyprland = {
+        workspaces = {
+          "1" = {
+            icon = "";
+          };
+
+          "2" = {
+            icon = "";
+            rules = [{ class = "equibop"; }];
+          };
+
+          "3" = {
+            icon = "";
+          };
+
+          "9" = {
+            icon = "";
+            rules = [{ class = "thunderbird"; }];
+            autostart = f: with f; [ (exec "thunderbird") ];
+          };
+        };
+
+        binds = f: with f; {
+          p = exec (getExe password-manager);
+          s = exec (getExe sync-manager);
+
+          C-m = execR "feh ~/doc/mel-org/school/timetable.png"
+            { fullscreen_state = "1 0"; };
+
+          S-m = function ''
+            on = not state("mouse-disabled").tgl()
+
+            hl.device({
+              name = mouse,
+              enabled = on,
+            })
+
+            hl.notification.create({
+              text = fmt("Mouse is %s", on and "enabled" or "disabled"),
+              time = 2000,
+              icon = "info",
+            })
+          '';
+        };
       };
 
       # default key is fido, but we don't want it for git signing

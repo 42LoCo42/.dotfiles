@@ -28,55 +28,6 @@ in
       hrtrack.enable = mkForce false;
 
       wayland = {
-        hyprland = {
-          # TODO hyprland
-          # workspaces = {
-          #   "0" = {
-          #     autostart = [ "@terminal@" ];
-          #   };
-
-          #   "1" = {
-          #     icon = "";
-          #     autostart = [ "uwsm app equibop" ];
-          #     rules = [ "title Discord.*" ];
-          #   };
-
-          #   "2" = {
-          #     icon = "";
-          #     autostart = [ "uwsm app steam" ];
-          #     rules = [ "class steam" "title Steam" ];
-          #   };
-
-          #   "3" = {
-          #     icon = "󰈹";
-          #     autostart = [ "uwsm app librewolf" ];
-          #     rules = [ "class librewolf" ];
-          #   };
-
-          #   "4" = {
-          #     rules = [
-          #       "class soffice"
-          #       "initial_class libreoffice-startcenter"
-          #     ];
-          #   };
-
-          #   "5" = {
-          #     icon = "";
-          #     rules = [
-          #       "class gimp"
-          #       "class org.musescore.MuseScore"
-          #       "class googleearth"
-          #     ];
-          #   };
-          # };
-
-          binds = f: with f; {
-            l = exec "libreoffice";
-            S-g = exec "gimp";
-            S-w = exec "uwsm app librewolf";
-          };
-        };
-
         hypridle.timeouts = {
           lock = 900; # 15 min
           suspend = 2700; # 45 min
@@ -117,6 +68,43 @@ in
         pagePrev = true;
         tabNext = true;
         tabPrev = true;
+      };
+
+      hyprland = {
+        workspaces = {
+          "1" = {
+            icon = "";
+            autostart = f: with f; [ (exec "equibop") ];
+            rules = [{ class = "equibop"; }];
+          };
+
+          "2" = {
+            icon = "";
+            autostart = f: with f; [ (exec "steam") ];
+            rules = [{ class = "steam"; } { title = "Steam"; }];
+          };
+
+          "3" = {
+            icon = "󰈹";
+            autostart = f: with f; [ (exec "librewolf") ];
+            rules = [{ class = "librewolf"; }];
+          };
+
+          "5" = {
+            icon = "";
+            rules = [
+              { class = "gimp"; }
+              { class = "org.musescore.MuseScore"; }
+              { class = "googleearth"; }
+            ];
+          };
+        };
+
+        binds = f: with f; {
+          l = exec "libreoffice";
+          S-g = exec "gimp";
+          S-w = exec "librewolf";
+        };
       };
 
       git.sshKeyFile = _: config.aquaris.secret "user/ercanar/ssh/main";

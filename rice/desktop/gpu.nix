@@ -1,6 +1,6 @@
 { config, lib, pkgs, self, ... }:
 let
-  inherit (lib) mkIf mkMerge mkOption;
+  inherit (lib) getExe' mkIf mkMerge mkOption;
   inherit (lib.types) bool;
 
   cfg = config.rice.desktop.gpu;
@@ -58,24 +58,25 @@ in
     }
 
     (mkIf cfg.baseload {
-      rice.desktop.wayland.hyprland = {
-        windowRules = [{
-          match.title = "vkcube";
+      home-manager.sharedModules = [{
+        aquaris.hyprland = {
+          windowRules = [{
+            match.title = "vkcube";
 
-          float = 1;
-          pin = 1;
-          no_focus = true;
-          move = [ 0 0 ];
-          size = [ 1 1 ];
-          max_size = [ 1 1 ];
-        }];
-      };
+            float = 1;
+            pin = 1;
+            no_focus = true;
+            move = [ 0 0 ];
+            size = [ 1 1 ];
+            max_size = [ 1 1 ];
+          }];
 
-      # TODO hyprland
-      # rice.desktop.wayland.hyprland.postConfig = ''
-      #   # fix GPU spikes by providing a constant baseload
-      #   exec-once = ${lib.getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland
-      # '';
+          events = f: with f; {
+            "hyprland.start" =
+              exec "${getExe' pkgs.vulkan-tools "vkcube"} --wsi wayland";
+          };
+        };
+      }];
     })
 
     ############################################################################
@@ -115,20 +116,7 @@ in
     })
 
     (mkIf cfg.nvidia.enable {
-      rice = {
-        unfreeNames = [ "nvidia-x11" ];
-
-        desktop.wayland.hyprland.env = {
-          GBM_BACKEND = "nvidia-drm";
-          LIBVA_DRIVER_NAME = "nvidia";
-          NVD_BACKEND = "direct";
-          VDPAU_DRIVER = "nvidia";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          __NV_PRIME_RENDER_OFFLOAD = "1";
-          __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
-          __VK_LAYER_NV_optimus = "NVIDIA_only";
-        };
-      };
+      rice.unfreeNames = [ "nvidia-x11" ];
 
       hardware.nvidia = {
         package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
@@ -139,6 +127,19 @@ in
       };
 
       services.xserver.videoDrivers = [ "nvidia" ];
+
+      home-manager.sharedModules = [{
+        aquaris.hyprland.env = {
+          GBM_BACKEND = "nvidia-drm";
+          LIBVA_DRIVER_NAME = "nvidia";
+          NVD_BACKEND = "direct";
+          VDPAU_DRIVER = "nvidia";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          __NV_PRIME_RENDER_OFFLOAD = "1";
+          __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
+          __VK_LAYER_NV_optimus = "NVIDIA_only";
+        };
+      }];
     })
   ]);
 }

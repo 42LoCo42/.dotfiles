@@ -5,10 +5,6 @@
   };
 
   config = lib.mkIf config.rice.desktop.libvirt.enable {
-    rice.desktop.wayland.hyprland.binds = f: with f; {
-      v = exec "virt-manager";
-    };
-
     networking.firewall.trustedInterfaces = [ "virbr0" ];
 
     virtualisation.libvirtd = {
@@ -25,23 +21,27 @@
       (_: _: { extraGroups = [ "libvirtd" ]; })
       config.aquaris.users;
 
-    home-manager.sharedModules = [
-      (hm: {
-        home = {
-          packages = with pkgs; [
-            virt-manager
-          ];
-
-          # don't create $HOME/.icons
-          file = {
-            ".icons/${hm.config.home.pointerCursor.name}".enable = false;
-            ".icons/default/index.theme".enable = false;
-          };
-        };
-
+    home-manager.sharedModules = lib.singleton (hm: {
+      aquaris = {
         # virt-manager stores stuff in dconf
-        aquaris.persist = { ".config/dconf" = { }; };
-      })
-    ];
+        persist = { ".config/dconf" = { }; };
+
+        hyprland.binds = f: with f; {
+          v = exec "virt-manager";
+        };
+      };
+
+      home = {
+        packages = with pkgs; [
+          virt-manager
+        ];
+
+        # don't create $HOME/.icons
+        file = {
+          ".icons/${hm.config.home.pointerCursor.name}".enable = false;
+          ".icons/default/index.theme".enable = false;
+        };
+      };
+    });
   };
 }

@@ -5,11 +5,16 @@
   };
 
   config = lib.mkIf config.rice.desktop.wayland.flameshot.enable {
-    rice.desktop.wayland.hyprland.binds = f: with f; {
-      Print = raw (exec "flameshot-run");
-    };
-
     home-manager.sharedModules = [{
+      aquaris.hyprland.binds = f: with f; {
+        Print = raw (execR "flameshot-run" {
+          decorate = false;
+          dim_around = true;
+          floating = true;
+          stay_focused = true;
+        });
+      };
+
       home.packages = with pkgs; [
         flameshot
         grim

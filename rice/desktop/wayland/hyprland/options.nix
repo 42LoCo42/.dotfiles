@@ -1,149 +1,78 @@
-{ aquaris, lib, ... }:
+{ lib, ... }:
 let
-  inherit (aquaris.lib) adt;
-  inherit (lib) mkOption;
-  inherit (lib.types) anything attrsOf bool coercedTo functionTo lines listOf
-    luaInline nullOr number str submodule;
-
-  # https://github.com/nix-community/home-manager/blob/c30c7955cec30d664a9baced6bc0112e263d4647/modules/services/window-managers/hyprland/default.nix#L18
-  settingValueType =
-    with lib.types;
-    nullOr
-      (oneOf [
-        bool
-        int
-        float
-        str
-        path
-        (attrsOf settingValueType)
-        (listOf settingValueType)
-      ])
-    // {
-      description = "Hyprland configuration value";
-    };
-
-  curveRef = adt {
-    bezier.options.name = mkOption { type = str; };
-    spring.options.name = mkOption { type = str; };
-  };
-
-  curveDef = adt {
-    bezier.options = {
-      points = mkOption { type = listOf (listOf number); };
-    };
-
-    spring.options = {
-      mass = mkOption { type = number; };
-      stiffness = mkOption { type = number; };
-      dampening = mkOption { type = number; };
-    };
-  };
+  inherit (lib) genList listToAttrs mkOption pipe;
+  inherit (lib.types) attrsOf bool functionTo listOf luaInline nullOr number
+    oneOf str submodule;
 in
 {
-  options.rice.desktop.wayland.hyprland = {
-    _util = mkOption {
-      type = anything;
-      readOnly = true;
-      default = { inherit curveDef curveRef; };
-    };
+  home-manager.sharedModules = [{
+    options.aquaris.hyprland = {
+      prepwr = mkOption {
+        type = str;
+        description = "Command to run before power actions";
+        default = ":";
+      };
 
-    enable = mkOption {
-      type = bool;
-      default = false;
-    };
+      monitors =
+        let
+          monitor = submodule {
+            options = {
+              output = mkOption {
+                type = str;
+              };
 
-    settings = mkOption {
-      type = settingValueType;
-      default = { };
-    };
+              mode = mkOption {
+                type = str;
+                default = "preferred";
+              };
 
-    env = mkOption {
-      type = attrsOf str;
-      default = { };
-    };
+              position = mkOption {
+                type = str;
+                default = "auto";
+              };
 
-    monitors = mkOption {
-      type = attrsOf (submodule {
-        options = {
-          mode = mkOption {
-            type = str;
-            default = "preferred";
+              scale = mkOption {
+                type = number;
+                default = 1.0;
+              };
+            };
           };
-
-          position = mkOption {
-            type = str;
-            default = "auto";
-          };
-
-          scale = mkOption {
-            type = number;
-            default = 1.0;
-          };
+        in
+        {
+          primary = mkOption { type = monitor; };
+          secondary = mkOption { type = nullOr monitor; default = null; };
         };
-      });
 
-      default = { "" = { }; };
+      workspaces = pipe 10 [
+        (genList (x:
+          let s = toString x; in {
+            name = s;
+
+            value = {
+              index = mkOption {
+                type = str;
+                readOnly = true;
+                default = toString (x + 1);
+              };
+
+              icon = mkOption {
+                type = str;
+                default = s;
+              };
+
+              rules = mkOption {
+                type = listOf (attrsOf (oneOf [ bool number str ]));
+                default = [ ];
+              };
+
+              autostart = mkOption {
+                type = functionTo (listOf luaInline);
+                default = _: [ ];
+              };
+            };
+          }))
+        listToAttrs
+      ];
     };
-
-    mod = mkOption {
-      type = str;
-      default = "SUPER";
-    };
-
-    binds = mkOption {
-      type = functionTo (attrsOf
-        (coercedTo luaInline (act: { inherit act; }) (submodule {
-          options = {
-            act = mkOption { type = luaInline; };
-            raw = mkOption { type = bool; default = false; };
-          };
-        })));
-
-      default = { };
-    };
-
-    precfg = mkOption {
-      type = lines;
-      default = "";
-    };
-
-    prepwr = mkOption {
-      type = str;
-      description = "Command to run before power actions";
-      default = ":";
-    };
-
-    events = mkOption {
-      type = attrsOf (coercedTo str (x: [ x ]) (listOf str));
-      default = { };
-    };
-
-    animations = mkOption {
-      type = functionTo (attrsOf (submodule {
-        options = {
-          enabled = mkOption { type = bool; default = true; };
-          speed = mkOption { type = number; };
-          curve = mkOption { inherit (curveRef) type; default = curveRef.mk.bezier { name = "default"; }; };
-          style = mkOption { type = nullOr str; default = null; };
-        };
-      }));
-
-      default = _: { };
-    };
-
-    curves = mkOption {
-      type = functionTo (attrsOf curveDef.type);
-      default = _: { };
-    };
-
-    windowRules = mkOption {
-      type = listOf settingValueType;
-      default = [ ];
-    };
-
-    workspaceRules = mkOption {
-      type = listOf settingValueType;
-      default = [ ];
-    };
-  };
+  }];
 }

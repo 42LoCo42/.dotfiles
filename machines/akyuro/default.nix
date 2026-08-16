@@ -59,16 +59,16 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
 
     wayland = {
       fuzzel.fontSize = 14;
-
-      hyprland = {
-        monitors = {
-          eDP-1 = { };
-        };
-
-        precfg = ''
-          mouse = "synaptics-tm3336-004"
-        '';
-      };
     };
   };
+
+  home-manager.sharedModules = [{
+    aquaris.hyprland = {
+      monitors.primary.output = "eDP-1";
+
+      precfg = ''
+        mouse = "synaptics-tm3336-004"
+      '';
+    };
+  }];
 }

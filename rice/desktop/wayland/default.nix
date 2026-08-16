@@ -10,7 +10,6 @@
       foot.enable = true;
       fuzzel.enable = true;
       hypridle.enable = true;
-      hyprland.enable = true;
       mako.enable = true;
       sway-audio-idle-inhibit.enable = true;
       swaybg.enable = true;
@@ -18,5 +17,9 @@
       waybar.enable = true;
       wlsunset.enable = true;
     };
+
+    home-manager.sharedModules = [{
+      aquaris.hyprland.enable = true;
+    }];
   };
 }

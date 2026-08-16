@@ -1,161 +1,104 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 let
-  inherit (lib) attrValues defaultTo elemAt filterAttrs flatten flip genList
-    length listToAttrs mapAttrsToList match mkIf pipe readFile replaceStrings;
-
-  cfg = config.rice.desktop.wayland.hyprland;
-
-  ##############################################################################
-
-  binders = rec {
-    lua = lib.mkLuaInline;
-    toLua = lib.generators.toLua { };
-
-    dsp = x: lua "hl.dsp.${x}";
-    function = x: lua "function() ${x} end";
-    raw = act: { inherit act; raw = true; };
-
-    exec = cmd: execR cmd { };
-    execR = cmd: rules: dsp "exec_cmd(${toLua cmd}, ${toLua rules})";
-
-    dropdown = cmd: lua "dropdown(${toLua cmd})";
-    focus = args: dsp "focus(${toLua args})";
-    move = args: dsp "window.move(${toLua args})";
-
-    prompt = text: cmd: exec ''
-      echo -e 'No\nYes' \
-      | fuzzel -d -p '${text}? ' --minimal-lines \
-      | grep Yes && ${cmd}
-    '';
-
-    power = text: cmd: prompt text "sh -c '${cfg.prepwr}; ${cmd}'";
-
-    fullscreen = internal: client: dsp ''
-      window.fullscreen_state({
-        action = "toggle",
-        internal = ${toString internal},
-        client = ${toString client},
-      })
-    '';
-  };
+  inherit (lib) attrValues flip id mapAttrs' mapAttrsToList mkIf mkMerge pipe
+    remove singleton;
 in
 {
-  config = mkIf cfg.enable {
-    rice.desktop.wayland = {
-      hyprland = {
-        settings = {
-          env = mapAttrsToList (k: v: { _args = [ k v ]; }) cfg.env;
-
-          monitor = mapAttrsToList
-            (output: cfg: { inherit output; } // cfg)
-            cfg.monitors;
-
-          bind = pipe cfg.binds [
-            (x: x binders)
-            (mapAttrsToList (k: v: pipe k [
-              (replaceStrings
-                [ "A-" "C-" "S-" ]
-                [ "ALT + " "CTRL + " "SHIFT + " ])
-              (k: if v.raw then k else "${cfg.mod} + ${k}")
-              (k: { _args = [ k v.act ]; })
-            ]))
+  home-manager.sharedModules = singleton ({ config, ... }:
+    let cfg = config.aquaris.hyprland; in {
+      aquaris.hyprland = mkMerge ([
+        {
+          settings.monitor = pipe cfg.monitors [
+            (mapAttrsToList (_: id))
+            (remove null)
           ];
 
-          on = pipe cfg.events [
-            (mapAttrsToList (k: map (v:
-              let
-                parts = match "([^ ]+)( .*)?" k;
-                event = elemAt parts 0;
-                args = defaultTo "" (elemAt parts 1);
-              in
-              {
-                _args = [
-                  event
-                  (binders.lua "function(${args}) ${v} end")
-                ];
-              })))
-            flatten
-          ];
+          precfg = builtins.readFile ./lib.lua;
+        }
 
-          animation = pipe cfg.animations [
-            (x: x (with cfg._util.curveRef.mk; {
-              bezier = name: bezier { inherit name; };
-              spring = name: spring { inherit name; };
-            }))
-            (mapAttrsToList (k: v: {
-              leaf = k;
-              inherit (v) enabled speed style;
-              ${v.curve._tag} = v.curve.name;
-            }))
-            (map (filterAttrs (_: x: x != null)))
-          ];
+        (
+          let
+            snd = cfg.monitors.secondary;
 
-          curve = pipe cfg.curves [
-            (x: x cfg._util.curveDef.mk)
-            (mapAttrsToList (k: v: {
-              _args = [
-                k
-                (pipe v [
-                  (x: x // { type = x._tag; })
-                  (flip removeAttrs [ "_tag" ])
-                ])
-              ];
-            }))
-          ];
+            activate = pkgs.writeShellScript "activate-secondary-monitor" ''
+              hyprctl eval 'hl.monitor({
+                output = "${snd.output}",
+                mode = "1600x800",
+                disabled = false,
+              })'
 
-          window_rule = cfg.windowRules;
-          workspace_rule = cfg.workspaceRules;
+              hyprctl eval 'hl.monitor({
+                output = "${snd.output}",
+                mode = "${snd.mode}",
+                position = "${snd.position}",
+                disabled = false,
+              })'
+            '';
+          in
+          mkIf (snd != null) {
+            binds = f: with f; {
+              ssharp = function ''
+                if hl.get_workspace("name:secondary") ~= nil then
+                  hl.dispatch(hl.dsp.focus({ workspace = "name:secondary" }))
+                end
+              '';
+
+              S-ssharp = function ''
+                state("secondary").set(true)
+
+                if hl.get_monitor("${snd.output}") == nil then
+                   hl.dispatch(hl.dsp.exec_cmd("${activate}"))
+                end
+
+                hl.dispatch(hl.dsp.window.move({
+                  workspace = "name:secondary",
+                  follow = false,
+                }))
+              '';
+
+              C-ssharp = function ''
+                state("secondary").set(false)
+                hl.monitor({output = "${snd.output}", disabled = true})
+              '';
+            };
+
+            events = f: with f; {
+              "config.reloaded" = lua ''
+                hl.monitor({
+                  output = "${snd.output}",
+                  disabled = not state("secondary").get(),
+                })
+              '';
+            };
+
+            workspaceRules = [{
+              workspace = "name:secondary";
+              monitor = snd.output;
+              default = true;
+            }];
+          }
+        )
+      ] ++ flip mapAttrsToList cfg.workspaces (_: v: {
+        windowRules = flip map v.rules
+          (r: { match = r; workspace = "${v.index} silent"; });
+
+        workspaceRules = [{
+          workspace = v.index;
+          monitor = cfg.monitors.primary.output;
+        }];
+
+        events = f: {
+          "hyprland.start" = v.autostart f;
         };
-
-        precfg = builtins.readFile ./lib.lua;
-      };
-
-      waybar.icons = pipe cfg.monitors [
-        attrValues
-        length
-        (genList (mon: flip genList 10 (i: {
-          name = toString ((i + 1) + mon * 100);
-          value = toString i;
-        })))
-        flatten
-        listToAttrs
-      ];
-    };
-
-    programs = {
-      hyprland = {
-        enable = true;
-        withUWSM = true;
-      };
-
-      uwsm.package = pkgs.uwsm.override {
-        uuctlSupport = false; # would pull in dmenu
-      };
-    };
-
-    home-manager.sharedModules = [{
-      aquaris.persist = { ".config/qalculate" = { }; };
-
-      home.packages = with pkgs; [
-        brightnessctl
-        fuzzel
-        libqalculate
-        mpc
-        pulsemixer
-      ];
+      }));
 
       wayland.windowManager.hyprland = {
-        enable = true;
-        configType = "lua";
         plugins = attrValues pkgs.hyprlandPlugins;
-
-        extraLuaFiles.lib = {
-          autoLoad = true;
-          content = cfg.precfg;
-        };
-
-        inherit (cfg) settings;
       };
-    }];
-  };
+
+      programs.waybar.settings.default = {
+        "hyprland/workspaces".format-icons = flip mapAttrs' cfg.workspaces
+          (_: v: { name = v.index; value = v.icon; });
+      };
+    });
 }

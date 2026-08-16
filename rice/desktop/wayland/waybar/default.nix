@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   inherit (lib) getExe getExe' mkIf mkOption;
-  inherit (lib.types) attrsOf bool int nullOr str;
+  inherit (lib.types) bool int nullOr str;
 
   cfg = config.rice.desktop.wayland.waybar;
 in
@@ -10,10 +10,6 @@ in
     enable = mkOption {
       type = bool;
       default = false;
-    };
-
-    icons = mkOption {
-      type = attrsOf str;
     };
 
     temperatureWarn = mkOption {
@@ -51,7 +47,7 @@ in
         systemd.targets = [ "graphical-session.target" ];
         style = ./style.css;
 
-        settings.mainBar = {
+        settings.default = {
           layer = "top";
           position = "top";
           spacing = 2;
@@ -85,7 +81,6 @@ in
             all-outputs = false;
             sort-by-number = true;
             format = "{icon}";
-            format-icons = cfg.icons;
           };
 
           "custom/weather" = {

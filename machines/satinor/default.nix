@@ -51,33 +51,6 @@
       wayland = {
         fuzzel.fontSize = 20;
 
-        hyprland = {
-          monitors = {
-            DP-1 = { };
-            HDMI-A-1 = { position = "auto-right"; };
-          };
-
-          # TODO hyprland
-
-          # preConfig = ''
-          #   workspace = 9, monitor:${monitors.secondary.name}, default:true
-          # '';
-
-          # workspaces = {
-          #   "4" = {
-          #     icon = "⛩️";
-          #     autostart = [ "uwsm app anime-game-launcher" ];
-          #     rules = [
-          #       "class moe.launcher.an-anime-game-launcher"
-
-          #       # libreoffice
-          #       "class soffice"
-          #       "initial_class libreoffice-startcenter"
-          #     ];
-          #   };
-          # };
-        };
-
         swaybg.image = config.aquaris.secret "user/ercanar/wallpaper";
       };
     };
@@ -87,6 +60,35 @@
     aquaris = {
       persist = {
         ".config/blender" = { };
+      };
+
+      hyprland = {
+        monitors = {
+          primary = {
+            output = "DP-1";
+          };
+
+          secondary = {
+            output = "HDMI-A-1";
+            position = "auto-right";
+          };
+        };
+
+        workspaces = {
+          "4" = {
+            icon = "⛩️";
+
+            autostart = f: with f; [ (exec "anime-game-launcher") ];
+
+            rules = [
+              { class = "moe.launcher.an-anime-game-launcher"; }
+
+              # libreoffice
+              { class = "soffice"; }
+              { initial_class = "libreoffice-startcenter"; }
+            ];
+          };
+        };
       };
     };
 

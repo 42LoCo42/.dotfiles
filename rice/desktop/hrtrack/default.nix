@@ -5,17 +5,19 @@
   };
 
   config = lib.mkIf config.rice.desktop.hrtrack.enable {
-    environment.systemPackages = lib.pipe ./main.sh [
-      builtins.readFile
-      (pkgs.writeShellScriptBin "hrtrack")
-      (x: x.overrideAttrs (old: {
-        buildCommand = old.buildCommand + ''
-          install -Dm444 ${./icon.png} $out/share/icons/hrtrack.png
-        '';
-      }))
-      lib.singleton
-    ];
+    home-manager.sharedModules = [{
+      aquaris.hyprland.prepwr = "hrtrack";
 
-    rice.desktop.wayland.hyprland.prepwr = "hrtrack";
+      home.packages = lib.pipe ./main.sh [
+        builtins.readFile
+        (pkgs.writeShellScriptBin "hrtrack")
+        (x: x.overrideAttrs (old: {
+          buildCommand = old.buildCommand + ''
+            install -Dm444 ${./icon.png} $out/share/icons/hrtrack.png
+          '';
+        }))
+        lib.singleton
+      ];
+    }];
   };
 }

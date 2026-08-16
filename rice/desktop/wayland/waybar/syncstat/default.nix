@@ -44,7 +44,7 @@ in
     ];
 
     home-manager.sharedModules = [{
-      programs.waybar.settings.mainBar = {
+      programs.waybar.settings.default = {
         modules-left = mkAfter [ "custom/syncstat" ];
 
         "custom/syncstat" = {
