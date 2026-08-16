@@ -26,6 +26,12 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
     };
   };
 
+  boot.kernelParams = [
+    # ¿fix? random freezing
+    "processor.max_cstate=5"
+    "intel_idle.max_cstate=0"
+  ];
+
   services = {
     getty = {
       autologinOnce = true;
