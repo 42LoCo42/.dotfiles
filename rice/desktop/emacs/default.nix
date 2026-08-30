@@ -86,13 +86,10 @@ in
 
       aquaris.emacs = {
         enable = true;
-        package = pkgs.emacs-pgtk;
+        package = pkgs.emacs31-pgtk;
 
         extraPackages = epkgs: with epkgs; [
-          (treesit-grammars.with-grammars (g: with g; [
-            tree-sitter-hyprlang
-            tree-sitter-typst
-          ]))
+          treesit-grammars.with-all-grammars
         ];
 
         usePackage.statistics = true;
@@ -226,6 +223,7 @@ in
               (recentf-max-saved-items 100)
               (require-final-newline t)
               (ring-bell-function 'ignore)
+              (treesit-font-lock-level 4)
               (use-dialog-box nil)
 
               ; case-insensitive completion
@@ -392,6 +390,9 @@ in
             '';
 
             config = ''
+              (advice-add #'dimmer-filtered-face-list :filter-return (lambda (result)
+                (seq-difference result '(whitespace-page-delimiter))))
+
               (dimmer-mode 1)
             '';
           };
@@ -632,6 +633,17 @@ in
             '';
           };
 
+          posframe = {
+            defer = true;
+
+            config = ''
+              (advice-add #'posframe-show :filter-args (lambda (args)
+                (push '(alpha-background . 100)
+                       (plist-get (cdr args) :override-parameters))
+                args))
+            '';
+          };
+
           ##### Completion #####
 
           prescient = {
@@ -744,6 +756,7 @@ in
               (lsp-inlay-hint-enable t)
               (lsp-log-io nil)
               (lsp-modeline-diagnostics-scope :file)
+              (lsp-semantic-tokens-enable t)
               (read-process-output-max (* 1024 1024))
 
               ; custom client settings
@@ -778,6 +791,7 @@ in
 
           lsp-ui = {
             hook = "lsp-mode";
+
             custom = ''
               (lsp-ui-sideline-show-code-actions t)
               (lsp-ui-sideline-show-diagnostics t)
@@ -785,6 +799,12 @@ in
               (lsp-ui-sideline-delay 0)
               (lsp-ui-doc-delay 0)
               (lsp-ui-doc-show-with-cursor t)
+            '';
+
+            config = ''
+              (mapc (lambda (x) (add-to-list 'lsp-ui-doc-frame-parameters x))
+                '((alpha-background . 100)
+                  (background-color . "#3c3836")))
             '';
           };
 
@@ -971,7 +991,29 @@ in
           # Typst
 
           typst-ts-mode = {
-            defer = true;
+            # TODO https://codeberg.org/meow_king/typst-ts-mode/pulls/106
+            # elpaBuild, with which typst-ts-mode is built by default,
+            # (afaik) does not support adding patches,
+            # because it fetches & compiles the source in installPhase
+            # fix: declare the entire package as trivialBuild
+            package = ep: ep.trivialBuild {
+              pname = "typst-ts-mode";
+              version = "0.12.2";
+
+              src = pkgs.fetchurl {
+                url = "https://elpa.nongnu.org/nongnu/typst-ts-mode-0.12.2.tar";
+                sha256 = "170q09ma08cksyg9bapfhid28f0xi46ssdv7bzdyiy3gc4x61i4b";
+              };
+
+              patches = [
+                (pkgs.fetchpatch {
+                  url = "https://codeberg.org/meow_king/typst-ts-mode/pulls/106.diff";
+                  hash = "sha256-fKEN4+ZT9IMicd4ZSjSUhzHMwi1RM/IFglaVbkNB5/A=";
+                })
+              ];
+            };
+
+            mode = ''"\\.typ\\'"'';
 
             extraPackages = with pkgs; [
               prettypst # formatter
@@ -994,8 +1036,8 @@ in
             '';
 
             custom = ''
-              (typst-ts-mode-indent-offset 2)
-              (typst-ts-mode-enable-raw-blocks-highlight)
+              (typst-ts-indent-offset 2)
+              (typst-ts-enable-raw-blocks-highlight t)
             '';
           };
 
