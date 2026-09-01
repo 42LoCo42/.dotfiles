@@ -27,6 +27,7 @@
           btrfs-progs
           cryptsetup
           feh
+          gucharmap
           p7zip-rar
           pwgen
           python3
