@@ -159,10 +159,15 @@ in
             icon = "";
           };
 
+          "4" = {
+            icon = "󱗼";
+            rules = [{ title = ".*gomuks web.*"; }];
+          };
+
           "9" = {
-            icon = "";
+            icon = "";
             rules = [{ class = "thunderbird"; }];
-            autostart = f: with f; [ (exec "thunderbird") ];
+            autostart = [ "thunderbird" ];
           };
         };
 

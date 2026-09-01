@@ -78,7 +78,7 @@
           "4" = {
             icon = "⛩️";
 
-            autostart = f: with f; [ (exec "anime-game-launcher") ];
+            autostart = [ "anime-game-launcher" ];
 
             rules = [
               { class = "moe.launcher.an-anime-game-launcher"; }

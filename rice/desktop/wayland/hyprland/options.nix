@@ -1,8 +1,8 @@
 { lib, ... }:
 let
   inherit (lib) genList listToAttrs mkOption pipe;
-  inherit (lib.types) attrsOf bool functionTo listOf luaInline nullOr number
-    oneOf str submodule;
+  inherit (lib.types) attrsOf bool coercedTo functionTo listOf luaInline nullOr
+    number oneOf str submodule;
 in
 {
   home-manager.sharedModules = [{
@@ -66,7 +66,10 @@ in
               };
 
               autostart = mkOption {
-                type = functionTo (listOf luaInline);
+                type = coercedTo
+                  (listOf str)
+                  (x: f: map f.exec x)
+                  (functionTo (listOf luaInline));
                 default = _: [ ];
               };
             };

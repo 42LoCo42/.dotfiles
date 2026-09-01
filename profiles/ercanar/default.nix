@@ -74,19 +74,19 @@ in
         workspaces = {
           "1" = {
             icon = "";
-            autostart = f: with f; [ (exec "equibop") ];
+            autostart = [ "equibop" ];
             rules = [{ class = "equibop"; }];
           };
 
           "2" = {
             icon = "";
-            autostart = f: with f; [ (exec "steam") ];
+            autostart = [ "steam" ];
             rules = [{ class = "steam"; } { title = "Steam"; }];
           };
 
           "3" = {
             icon = "󰈹";
-            autostart = f: with f; [ (exec "librewolf") ];
+            autostart = [ "librewolf" ];
             rules = [{ class = "librewolf"; }];
           };
 
