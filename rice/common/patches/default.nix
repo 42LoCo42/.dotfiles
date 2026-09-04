@@ -9,6 +9,10 @@
       hydroxide .__assign = obscura.my-hydroxide; # TODO https://codeberg.org/emersion/hydroxide/pulls/138
       prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 
+      lice.__python.dependencies.__append = with prev.python3.pkgs; [
+        pkg-resources-backport
+      ];
+
       ########## permanent overrides ##########
 
       fastfetch.__assign = obscura.my-fastfetch;
