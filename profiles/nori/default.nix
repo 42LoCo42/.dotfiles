@@ -26,7 +26,7 @@ let
       config = pkgs.writeText "lsyncd.conf" ''
         sync {
           default.rsync,
-          source = "/home/leonsch/config/",
+          source = "/home/nori/config/",
           target = "bunny:config/",
           delay = 0.25,
           exclude = "keys",
@@ -49,11 +49,9 @@ in
 
   aquaris = {
     users = mkMerge [
-      { inherit (aquaris.cfg.users) leonsch; }
-      { leonsch.admin = true; }
+      { inherit (aquaris.cfg.users) nori; }
+      { nori.admin = true; }
     ];
-
-    secrets.rules."@machine/syncstat".user = "leonsch";
 
     # work stuff
     dnscrypt.rules.cloaking = {
@@ -70,7 +68,7 @@ in
     package = pkgs.wireshark;
   };
 
-  users.users.leonsch.extraGroups = [ "wireshark" ];
+  users.users.nori.extraGroups = [ "wireshark" ];
 
   fonts.packages = with pkgs; [
     merriweather # aisle3 font
@@ -161,7 +159,6 @@ in
 
           "4" = {
             icon = "󱗼";
-            rules = [{ title = ".*gomuks web.*"; }];
           };
 
           "9" = {
@@ -196,7 +193,7 @@ in
       };
 
       # default key is fido, but we don't want it for git signing
-      git.sshKeyFile = _: config.aquaris.secret "user/leonsch/ssh/main";
+      git.sshKeyFile = _: config.aquaris.secret "user/nori/ssh/main";
 
       persist = {
         ".config/steamguard-cli" = { };
@@ -215,7 +212,7 @@ in
     };
 
     systemd.user.tmpfiles.rules = map
-      (x: "L+ %h/.asn/${x} - - - - ${config.aquaris.secret "user/leonsch/asn/${x}"}")
+      (x: "L+ %h/.asn/${x} - - - - ${config.aquaris.secret "user/nori/asn/${x}"}")
       [ "cloudflare_token" "ipinfo_token" "iqs_token" ];
 
     home = {
@@ -239,7 +236,7 @@ in
 
           text = ''
             exec age                                          \
-              -i ${config.aquaris.secret "user/leonsch/age"}  \
+              -i ${config.aquaris.secret "user/nori/age"}  \
               -d "$@"
           '';
         })
@@ -249,14 +246,14 @@ in
     xdg.configFile = {
       "catgirl/eleonora.gay".text = ''
         host = irc.eleonora.gay
-        cert = ${config.aquaris.secret "user/leonsch/irc"}
+        cert = ${config.aquaris.secret "user/nori/irc"}
         sasl-external
         debug
       '';
 
       "jameica.properties".text = ''
         ask=false
-        dir=/persist/home/leonsch/sync/jameica
+        dir=/persist/home/nori/sync/jameica
       '';
 
       "syncplay.ini".text = toINI { } {
@@ -290,7 +287,7 @@ in
 
       # use my stupid baka deadname for work repos X_X
       "jj/conf.d/work.toml".text = ''
-        --when.workspaces = ["/persist/home/leonsch/sync/work"]
+        --when.workspaces = ["/persist/home/nori/sync/work"]
 
         [user]
         name = "Leon Schumacher"
@@ -330,7 +327,7 @@ in
           AddKeysToAgent = "no";
           IdentitiesOnly = "yes";
           IdentityAgent = "/dev/null";
-          IdentityFile = config.aquaris.secret "user/leonsch/firefox-sync";
+          IdentityFile = config.aquaris.secret "user/nori/firefox-sync";
         };
 
         forgejo = proxy "git.bunny:22" {

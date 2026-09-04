@@ -10,7 +10,7 @@
 
   systemd =
     let
-      dst = "/home/leonsch/qbit/mnt";
+      dst = "/home/nori/qbit/mnt";
       pfx = utils.escapeSystemdPath dst;
     in
     {
@@ -26,7 +26,7 @@
           "allow_other"
           "default_permissions"
           "follow_symlinks"
-          "identityfile=${config.aquaris.secret "user/leonsch/ssh/fido"}"
+          "identityfile=${config.aquaris.secret "user/nori/ssh/fido"}"
         ];
       }];
 

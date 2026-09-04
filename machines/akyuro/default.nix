@@ -1,6 +1,6 @@
 { lib, ... }:
 let disk = "nvme-eui.8ce38e0400d8442a"; in {
-  imports = [ ../../profiles/leonsch ];
+  imports = [ ../../profiles/nori ];
 
   aquaris = {
     machine.id = "86b0e292e1fc27eb4168defa65cb41fd";
@@ -35,7 +35,7 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
   services = {
     getty = {
       autologinOnce = true;
-      autologinUser = "leonsch";
+      autologinUser = "nori";
     };
 
     greetd.enable = lib.mkForce false;

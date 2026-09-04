@@ -43,30 +43,30 @@
   outputs = { aquaris, self, ... }: aquaris self rec {
     ssh = {
       ercanar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvIf8izKUWon2BIHuzmGxqzt4duidgP2yEpSUcRu3rA";
-      leonsch = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
+      nori = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
     };
 
     users = {
       admin = {
         description = "Server Admin Account";
-        sshKeys = with ssh; [ leonsch ];
+        sshKeys = with ssh; [ nori ];
       };
 
       ercanar = {
         description = "Hannes Wendt";
-        sshKeys = with ssh; [ ercanar leonsch ];
+        sshKeys = with ssh; [ ercanar nori ];
         git = {
           email = "hanneswendt22@gmail.com";
           key = ssh.ercanar;
         };
       };
 
-      leonsch = {
+      nori = {
         description = "Eleonora";
-        sshKeys = with ssh; [ leonsch ];
+        sshKeys = with ssh; [ nori ];
         git = {
           email = "leonsch@protonmail.com";
-          key = ssh.leonsch;
+          key = ssh.nori;
         };
       };
     };

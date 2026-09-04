@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ../../profiles/leonsch ];
+  imports = [ ../../profiles/nori ];
 
   aquaris = {
     machine = {
