@@ -13,6 +13,16 @@
         pkg-resources-backport
       ];
 
+      # TODO https://github.com/ajeetdsouza/zoxide/pull/1288
+      zoxide.__output = {
+        patches.__append = [
+          (prev.fetchpatch {
+            url = "https://github.com/ajeetdsouza/zoxide/pull/1288.diff";
+            hash = "sha256-qDwCwjzTCblFavpYCaiGhlSq3deKIh086JUpHCPwwM8=";
+          })
+        ];
+      };
+
       ########## permanent overrides ##########
 
       fastfetch.__assign = obscura.my-fastfetch;
