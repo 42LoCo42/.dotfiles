@@ -1,19 +1,15 @@
 { lib, pkgs, ... }:
 let
-  inherit (lib) attrValues flip id mapAttrs' mapAttrsToList mkIf mkMerge pipe
-    remove singleton;
+  inherit (lib) attrValues flip mapAttrs' mapAttrsToList mkIf mkLuaInline
+    mkMerge singleton;
 in
 {
   home-manager.sharedModules = singleton ({ config, ... }:
     let cfg = config.aquaris.hyprland; in {
       aquaris.hyprland = mkMerge ([
         {
-          settings.monitor = pipe cfg.monitors [
-            (mapAttrsToList (_: id))
-            (remove null)
-          ];
-
           precfg = builtins.readFile ./lib.lua;
+          settings.monitor = [ cfg.monitors.primary ];
         }
 
         (
@@ -36,6 +32,13 @@ in
             '';
           in
           mkIf (snd != null) {
+            settings.monitor = [{
+              inherit (snd) output;
+              disabled = mkLuaInline ''
+                not state("secondary").get()
+              '';
+            }];
+
             binds = f: with f; {
               ssharp = function ''
                 if hl.get_workspace("name:secondary") ~= nil then
@@ -59,15 +62,6 @@ in
               C-ssharp = function ''
                 state("secondary").set(false)
                 hl.monitor({output = "${snd.output}", disabled = true})
-              '';
-            };
-
-            events = f: with f; {
-              "config.reloaded" = lua ''
-                hl.monitor({
-                  output = "${snd.output}",
-                  disabled = not state("secondary").get(),
-                })
               '';
             };
 
