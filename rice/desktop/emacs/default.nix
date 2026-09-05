@@ -621,6 +621,17 @@ in
             '';
           };
 
+          visual-regexp-steroids = {
+            custom = ''
+              (vr/engine 'python)
+            '';
+
+            bind' = ''
+              ("C-r C-r" . vr/query-replace)
+              ("C-M-."   . vr/mc-mark)
+            '';
+          };
+
           ##### Completion #####
 
           prescient = {
