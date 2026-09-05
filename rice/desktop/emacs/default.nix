@@ -410,6 +410,23 @@ in
             '';
           };
 
+          atomic-chrome = {
+            config = ''
+              (atomic-chrome-start-server)
+
+              ;; fix https://github.com/alpha22jp/atomic-chrome/issues/48
+              (advice-add #'atomic-chrome-show-edit-buffer :before
+                (lambda (&rest r) (setq window-system  'pgtk
+                                        x-display-name (getenv "WAYLAND_DISPLAY"))))
+            '';
+
+            custom = ''
+              (atomic-chrome-buffer-open-style 'frame)
+              (atomic-chrome-url-major-mode-alist
+                '(("github\\.com" . gfm-mode)))
+            '';
+          };
+
           direnv = {
             config = "(direnv-mode 1)";
             custom = "(direnv-always-show-summary nil)";
