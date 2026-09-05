@@ -24,8 +24,7 @@ let
     serverURL = "https://headscale.eleonora.gay";
     authKey = "file:${config.aquaris.secret "@machine/tailscale"}";
 
-    inherit (cfg) hostname locked;
-    acceptDNS = false;
+    inherit (cfg) acceptDNS hostname locked;
 
     advertiseRoutes = ifEnable cfg.isExit [
       "0.0.0.0/0"
@@ -51,6 +50,11 @@ in
     port = mkOption {
       type = port;
       default = 41641;
+    };
+
+    acceptDNS = mkOption {
+      type = bool;
+      default = false;
     };
 
     isExit = mkOption {

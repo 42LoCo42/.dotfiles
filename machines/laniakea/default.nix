@@ -19,6 +19,10 @@
     dnscrypt.rules.forwarding = {
       "dns.podman" = "10.88.0.1";
     };
+
+    users.admin.sshKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEn1gc8ofpzUaJnIQ2yB6ynmDOSUdvxBf95ThC7JTrfo bunny"
+    ];
   };
 
   services.dnscrypt-proxy.settings = {

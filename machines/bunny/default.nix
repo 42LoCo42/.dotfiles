@@ -51,6 +51,7 @@ in
 
       tailscale = {
         enable = true;
+        acceptDNS = true;
         isExit = true;
         hostname = "exit";
       };

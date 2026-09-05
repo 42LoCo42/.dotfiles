@@ -15,12 +15,6 @@
 	}
 }
 
-##### grimmory #####
-
-books.laniakea {
-	reverse_proxy grimmory:8080
-}
-
 ##### papra #####
 
 doc.laniakea {
