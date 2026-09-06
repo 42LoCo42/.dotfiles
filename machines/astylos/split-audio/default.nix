@@ -47,10 +47,15 @@
           0x1f 0x40000000
           EOF
 
-          echo 1 > "$dir/reconfig"
+          while true; do
+            if echo 1 > "$dir/reconfig"; then break; else sleep 0.25; fi
+          done
 
           id="$(grep -oP 'hwC\K\d' <<< "$dir")"
-          while ! amixer -c "$id" sset 'Independent HP' Enabled; do :; done
+          while true; do
+            if amixer -c "$id" sset 'Independent HP' Enabled; then
+              break; else sleep 0.25; fi
+          done
         '';
       });
     in
