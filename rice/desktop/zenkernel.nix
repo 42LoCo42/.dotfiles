@@ -30,6 +30,12 @@ in
     boot = {
       kernelPackages = cfg.pkgs.linuxPackages_zen;
 
+      kernelParams = [
+        # ¿fix? random freezing
+        "processor.max_cstate=5"
+        "intel_idle.max_cstate=0"
+      ];
+
       zfs = {
         package = cfg.pkgs.zfs;
         forceImportRoot = true;
