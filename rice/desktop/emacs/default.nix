@@ -461,6 +461,22 @@ in
                 '(jinx grid (vertico-grid-annotate . 20) (vertico-count . 4)))
 
               (vertico-multiform-mode)
+
+              (add-to-list 'jinx-exclude-faces '(typst-ts-mode
+                font-lock-comment-face font-lock-string-face font-lock-doc-face font-lock-doc-markup-face
+                font-lock-warning-face font-lock-function-name-face font-lock-function-call-face
+                font-lock-variable-name-face font-lock-variable-use-face font-lock-keyword-face
+                font-lock-comment-delimiter-face font-lock-type-face font-lock-constant-face
+                font-lock-builtin-face font-lock-preprocessor-face
+                font-lock-negation-char-face font-lock-escape-face font-lock-number-face
+                font-lock-operator-face font-lock-property-use-face font-lock-punctuation-face
+                font-lock-bracket-face font-lock-delimiter-face font-lock-misc-punctuation-face
+                typst-ts-markup-item-indicator-face typst-ts-markup-term-indicator-face
+                typst-ts-markup-rawspan-indicator-face typst-ts-markup-rawspan-blob-face
+                typst-ts-markup-rawblock-indicator-face typst-ts-markup-rawblock-lang-face
+                typst-ts-markup-rawblock-blob-face
+                typst-ts-error-face typst-ts-shorthand-face typst-ts-markup-linebreak-face
+                typst-ts-markup-quote-face typst-ts-markup-url-face typst-ts-math-indicator-face))
             '';
 
             custom = ''
@@ -988,8 +1004,6 @@ in
             '';
           };
 
-          # Typst
-
           typst-ts-mode = {
             # TODO https://codeberg.org/meow_king/typst-ts-mode/pulls/106
             # elpaBuild, with which typst-ts-mode is built by default,
@@ -1022,13 +1036,20 @@ in
             ];
 
             config = ''
-              (require 'lsp-mode)
-              (add-to-list 'lsp-language-id-configuration '(typst-ts-mode . "typst"))
-              (lsp-register-client
-               (make-lsp-client
+              (require 'lsp-typst)
+              (lsp-register-client (make-lsp-client
+                :server-id 'my/tinymist
                 :new-connection (lsp-stdio-connection "tinymist")
-                :major-modes '(typst-ts-mode)
-                :server-id 'tinymist))
+                :activation-fn (lsp-activate-on "typst")
+                :initialized-fn
+                  (lambda (workspace)
+                    (with-lsp-workspace workspace
+                      (lsp--set-configuration
+                       (lsp-configuration-section "tinymist")))
+                    (lsp-send-execute-command "tinymist.doStartBrowsingPreview"
+                      (vector (vector "--open" buffer-file-name))))
+                :synchronize-sections '("tinymist")
+                :notification-handlers (ht ("tinymist/documentOutline" #'ignore))))
 
               (require 'apheleia)
               (add-to-list 'apheleia-mode-alist '(typst-ts-mode . prettypst))
@@ -1038,21 +1059,6 @@ in
             custom = ''
               (typst-ts-indent-offset 2)
               (typst-ts-enable-raw-blocks-highlight t)
-            '';
-          };
-
-          typst-preview = {
-            hook = "typst-ts-mode";
-
-            custom = ''
-              (typst-preview-invert-colors "never")
-              (typst-preview-open-browser-automatically t)
-            '';
-
-            config = ''
-              ;; always set master file to current buffer; skip manual input
-              (advice-add 'typst-preview-start :before (lambda (&rest r)
-                (setq typst-preview--master-file (f-canonical buffer-file-name))))
             '';
           };
 
