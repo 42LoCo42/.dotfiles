@@ -50,6 +50,10 @@ in
     (mkIf cfg.use {
       programs.ssh = {
         extraConfig = ''
+          Host nixremote-deimos
+          HostName deimos.bunny.vpn
+          ${base}
+
           Host nixremote-satinor
           HostName satinor.bunny.vpn
           ${base}
@@ -61,6 +65,9 @@ in
         '';
 
         knownHosts = {
+          "deimos.bunny.vpn".publicKey =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKE9whkqMR1KrUa/A1/j9YIVhuHK1+RzLfkFburOk5RI";
+
           "satinor.bunny.vpn".publicKey =
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHeh7gzbN20eVPDPbOJh9KvY/NUvGM5JI9vlrrPsAFoD";
 
@@ -74,6 +81,22 @@ in
         settings.builders-use-substitutes = true;
 
         buildMachines = filter (x: x != { }) [
+          {
+            protocol = "ssh-ng";
+            hostName = "nixremote-deimos";
+
+            maxJobs = 12;
+            speedFactor = 12;
+
+            system = "x86_64-linux";
+            supportedFeatures = [
+              "benchmark"
+              "big-parallel"
+              "kvm"
+              "nixos-test"
+            ];
+          }
+
           (ifEnable (config.system.name != "satinor") {
             protocol = "ssh-ng";
             hostName = "nixremote-satinor";
