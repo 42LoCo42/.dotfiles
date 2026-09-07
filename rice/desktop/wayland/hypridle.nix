@@ -3,6 +3,10 @@ let
   inherit (lib) mkIf mkOption;
   inherit (lib.types) bool int;
   cfg = config.rice.desktop.wayland.hypridle;
+
+  dpms = state: ''
+    hyprctl dispatch 'hl.dsp.dpms({ action = "${state}" })'
+  '';
 in
 {
   options.rice.desktop.wayland.hypridle = {
@@ -36,7 +40,7 @@ in
         settings = {
           general = {
             before_sleep_cmd = "loginctl lock-session";
-            after_sleep_cmd = "hyprctl dispatch dpms on";
+            after_sleep_cmd = dpms "on";
           };
 
           listener = [
@@ -46,8 +50,8 @@ in
             }
             {
               timeout = cfg.timeouts.dpms;
-              on-timeout = "hyprctl dispatch dpms off";
-              on-resume = "hyprctl dispatch dpms on";
+              on-timeout = dpms "off";
+              on-resume = dpms "on";
             }
             {
               timeout = cfg.timeouts.suspend;
