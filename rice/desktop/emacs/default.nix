@@ -341,6 +341,7 @@ in
                  (nil    . (my/telephone-line-project-cached-segment
                             my/telephone-line-buffer-segment
                             my/telephone-line-crdt-segment
+                            my/telephone-line-typst-pin-segment
                             my/telephone-line-symbol-segment))))
             '';
           };
@@ -1040,6 +1041,11 @@ in
               typst
             ];
 
+            bind' = ''
+              :map typst-ts-mode-map
+              ("C-c C-p" . my/typst-pin)
+            '';
+
             config = ''
               (require 'lsp-typst)
               (lsp-register-client (make-lsp-client
@@ -1051,6 +1057,7 @@ in
                     (with-lsp-workspace workspace
                       (lsp--set-configuration
                        (lsp-configuration-section "tinymist")))
+
                     (lsp-send-execute-command "tinymist.doStartBrowsingPreview"
                       (vector (vector "--host=127.0.0.1:0"
                                       "--control-plane-host=127.0.0.1:0"
@@ -1058,6 +1065,9 @@ in
                                       "--open" buffer-file-name))))
                 :synchronize-sections '("tinymist")
                 :notification-handlers (ht ("tinymist/documentOutline" #'ignore))))
+
+              (add-hook 'lsp-my/tinymist-after-open-hook (lambda ()
+                (when my/typst-pin (my/typst-pin))))
 
               (require 'apheleia)
               (add-to-list 'apheleia-mode-alist '(typst-ts-mode . prettypst))

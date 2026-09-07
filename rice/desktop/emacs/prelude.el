@@ -119,6 +119,32 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defvar-local my/typst-pin nil "Should this file be pinned automatically?")
+(put 'my/typst-pin 'safe-local-variable #'booleanp)
+
+(defvar my/typst-pins (make-hash-table) "Mapping of LSP PID -> pinned file.")
+
+(defun my/lsp-pid ()
+  "Returns the PID of the LSP server attached to this buffer."
+  (if-let* ((_ (fboundp 'lsp-workspaces))
+            (ws (car (lsp-workspaces))))
+      (lsp-process-id (lsp--workspace-cmd-proc ws))))
+
+(defun my/typst-pin ()
+  "Pin or unpin the current Typst buffer."
+  (interactive)
+  (let* ((pid (my/lsp-pid))
+         (old (gethash pid my/typst-pins))
+         (cur buffer-file-name)
+         (new (if (equal old cur) nil cur)))
+    (puthash pid new my/typst-pins)
+    (lsp-send-execute-command "tinymist.pinMain" (vector new))
+    (if new
+      (message "Pinned Typst buffer %s!" new)
+      (message "Unpinned Typst buffer %s!" old))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (require 'telephone-line)
 (require 'project)
 
@@ -164,6 +190,11 @@
             (follow-id (crdt--session-follow-user-id session))
             (follow-name (crdt--contact-metadata-name (gethash follow-id contacts))))
       `("" ,(propertize (format "Following: %s" follow-name) 'face '(bold :foreground "red")))))
+
+(telephone-line-defsegment my/telephone-line-typst-pin-segment ()
+  (if-let* ((pin (gethash (my/lsp-pid) my/typst-pins)))
+      (when (equal buffer-file-name pin)
+        `("" ,(propertize "󰐃" 'face '(bold :foreground "light blue"))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
