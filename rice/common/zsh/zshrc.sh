@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+alias \$=''
+
 sudo() {
 	cmd="$1"
 	shift
