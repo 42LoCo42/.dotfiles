@@ -23,11 +23,18 @@ in
         home.shellAliases = {
           nl = "nix-locate";
           nlr = "nl --regex";
+          nlt = "nl --at-root"; # "top"
         };
 
         programs.zsh.initContent = ''
           nlb() {
-            nix-locate --regex "bin/$1$"
+            x="$1"; shift
+            nix-locate --at-root --whole-name "$@" "/bin/$x"
+          }
+
+          nlp() {
+            x="$1"; shift
+            nix-locate --regex "$@" '/[^/]*'"$x"'[^/]*\.pc$'
           }
         '';
       }];
