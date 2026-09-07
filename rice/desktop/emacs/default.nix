@@ -525,6 +525,11 @@ in
               (flash-rainbow       t)
               (flash-rainbow-shade 5)
             '';
+
+            config = ''
+              (advice-add #'flash--rainbow-face :filter-return (lambda (result)
+                (plist-put result :foreground "white")))
+            '';
           };
 
           helpful = {
@@ -1047,7 +1052,10 @@ in
                       (lsp--set-configuration
                        (lsp-configuration-section "tinymist")))
                     (lsp-send-execute-command "tinymist.doStartBrowsingPreview"
-                      (vector (vector "--open" buffer-file-name))))
+                      (vector (vector "--host=127.0.0.1:0"
+                                      "--control-plane-host=127.0.0.1:0"
+                                      "--data-plane-host=127.0.0.1:0"
+                                      "--open" buffer-file-name))))
                 :synchronize-sections '("tinymist")
                 :notification-handlers (ht ("tinymist/documentOutline" #'ignore))))
 
