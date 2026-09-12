@@ -966,7 +966,7 @@ in
             defer = true;
 
             extraPackages = with pkgs; [
-              typescript
+              typescript_5
               typescript-language-server
             ];
           };
