@@ -1,0 +1,13 @@
+diff --git a/web/src/ui/login/LoginScreen.tsx b/web/src/ui/login/LoginScreen.tsx
+index c37cceb63a..8a504f0cd1 100644
+--- a/web/src/ui/login/LoginScreen.tsx
++++ b/web/src/ui/login/LoginScreen.tsx
+@@ -163,7 +163,7 @@
+ 	}), [client])
+ 
+ 	const loginAnySSOAsync = () => {
+-		if (supportsCodeSSO) {
++		if (false && supportsCodeSSO) {
+ 			return loginSSOAsync()
+ 		} else if (supportsRedirectSSO) {
+ 			return loginSSORedirect()

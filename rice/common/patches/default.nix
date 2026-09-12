@@ -23,6 +23,12 @@
         ];
       };
 
+      gomuks-web.__output = {
+        patches.__append = [
+          ./gomuks-sso.patch
+        ];
+      };
+
       ########## permanent overrides ##########
 
       fastfetch.__assign = obscura.my-fastfetch;
