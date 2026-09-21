@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   inherit (lib) flip mapAttrs' mkIf mkOption;
-  inherit (lib.types) bool str;
+  inherit (lib.types) bool;
 
   cfg = config.rice.desktop.wego;
 in
@@ -11,31 +11,36 @@ in
       type = bool;
       default = false;
     };
-
-    location = mkOption {
-      type = str;
-      description = "Default location";
-      default = "Berlin";
-    };
   };
 
   config = mkIf cfg.enable {
     home-manager.sharedModules = [
       ({ lib, ... }: {
         home = {
-          packages = with pkgs; [ wego ];
+          packages = with pkgs; [
+            wego
+            (pkgs.writeShellApplication {
+              name = "w";
+              text = ''
+                set -euo pipefail
+
+                city="''${1-}"
+                if [ -z "$city" ]; then
+                  city="$(curl -fsSL https://ipinfo.io | jq -r .city)"
+                fi
+
+                exec wego "$city"
+              '';
+            })
+          ];
 
           sessionVariables.WEGORC = "$HOME/.config/wego.ini";
-          shellAliases.w = "wego";
 
           activation.configureWego = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             if KEY="$(< "/run/secrets/user/$USER/owm")"; then
-            	cat <<-EOF > "$HOME/.config/wego.ini"
-            		location=${cfg.location}
-            		owm-api-key=$KEY
-            	EOF
+              echo "owm-api-key=$KEY" > "$HOME/.config/wego.ini"
             else
-            	echo "No OWM API key set, aborting wego configuration!" >&2
+              echo "No OWM API key set, aborting wego configuration!" >&2
             fi
           '';
         };

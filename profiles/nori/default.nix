@@ -78,7 +78,6 @@ in
   rice = {
     desktop = {
       enable = true;
-      wego.location = "Stralsund";
 
       wayland = {
         waybar.syncstat = {
@@ -225,6 +224,7 @@ in
         catgirl
         chatterino7
         jameica
+        lice
         rsyncy
         steamguard-cli
         syncplay
