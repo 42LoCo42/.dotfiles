@@ -57,6 +57,7 @@
         avahi-proxy
         chronometer
         datetime
+        directorylister
         grimmory
         immich-folder-album-creator
         pinlist

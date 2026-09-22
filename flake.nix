@@ -43,6 +43,7 @@
   outputs = { aquaris, self, ... }: aquaris self rec {
     ssh = {
       ercanar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvIf8izKUWon2BIHuzmGxqzt4duidgP2yEpSUcRu3rA";
+      mel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILxPD8M1DV0k5QY283lo0QIpmUYCjUlYvHwKYkk8j9Gn";
       nori = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
     };
 
@@ -59,6 +60,11 @@
           email = "hanneswendt22@gmail.com";
           key = ssh.ercanar;
         };
+      };
+
+      mel = {
+        description = "Melinda";
+        sshKeys = with ssh; [ mel nori ];
       };
 
       nori = {
