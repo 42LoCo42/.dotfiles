@@ -4,8 +4,6 @@
     self.inputs.obscura.lib.infuse prev ({
       ########## temporary overrides ##########
 
-      ergochat  .__assign = obscura.my-ergochat; ## TODO https://pr-tracker.bunny/?pr=502133
-      gamja     .__assign = obscura.my-gamja; ##### TODO https://codeberg.org/emersion/gamja/pulls/210
       hydroxide .__assign = obscura.my-hydroxide; # TODO https://codeberg.org/emersion/hydroxide/pulls/138
       prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
 

@@ -221,7 +221,6 @@ in
         openvpn
 
         asn
-        catgirl
         chatterino7
         jameica
         lice
@@ -244,13 +243,6 @@ in
     };
 
     xdg.configFile = {
-      "catgirl/eleonora.gay".text = ''
-        host = irc.eleonora.gay
-        cert = ${config.aquaris.secret "user/nori/irc"}
-        sasl-external
-        debug
-      '';
-
       "jameica.properties".text = ''
         ask=false
         dir=/persist/home/nori/sync/jameica
