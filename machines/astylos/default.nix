@@ -7,8 +7,6 @@
       secureboot = false;
     };
 
-    secrets.pub = "w5w9Z_X1U0RU0Bru5sQeTADbWUR8Lfb5FCQ29xZwJSI";
-
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/wwn-0x5002538f415750ea".partitions = [
         fs.defaultBoot

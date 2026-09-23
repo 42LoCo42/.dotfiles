@@ -7,8 +7,6 @@
       secureboot = false;
     };
 
-    secrets.pub = "ow1SvzI5RFVro8k71KpKMtt-TCnQun4FMy6l0Bt-dSg";
-
     filesystems = { fs, ... }: {
       disks."/dev/disk/by-id/nvme-eui.6479a7a1800000c0".partitions = [
         fs.defaultBoot
