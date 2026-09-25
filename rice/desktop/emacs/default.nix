@@ -150,6 +150,12 @@ in
               ("C-x C-3"      . my/split-switch-right)
               ("C-x C-4"      . kill-buffer-and-window)
 
+              ("C-t C-i" . timeclock-in)
+              ("C-t C-o" . timeclock-out)
+              ("C-t C-p" . timeclock-change)
+              ("C-t C-t" . (lambda () (interactive)
+                (message (timeclock-status-string))))
+
               :map read--expression-map
               ("C-n" . next-line-or-history-element)
               ("C-p" . previous-line-or-history-element)
@@ -201,6 +207,9 @@ in
               ; show possible keybind continuations
               (which-key-mode 1)
               (which-key-setup-side-window-bottom)
+
+              (timeclock-mode-line-display 1)
+              (display-time-mode           1)
             '';
 
             custom = ''
