@@ -45,23 +45,12 @@ let
   };
 in
 {
-  imports = [ ../common ./qbit.nix ];
+  imports = [ ../common ./qbit.nix ./pic.nix ];
 
-  aquaris = {
-    users = mkMerge [
-      { inherit (aquaris.cfg.users) nori; }
-      { nori.admin = true; }
-    ];
-
-    # work stuff
-    dnscrypt.rules.cloaking = {
-      "filer1.planet-ic.local" = "172.16.96.167";
-      "subversion.planet-ic.de" = "172.16.96.79";
-      "lbswis.gbv.de" = "127.0.0.1";
-      "readers.lakd" = "127.0.0.1";
-      "odin.planet-ic.de" = "192.168.183.91";
-    };
-  };
+  aquaris.users = mkMerge [
+    { inherit (aquaris.cfg.users) nori; }
+    { nori.admin = true; }
+  ];
 
   programs.wireshark = {
     enable = true;
@@ -202,7 +191,6 @@ in
         "dev" = { };
         "doc" = { };
         "img" = { };
-        "work" = { };
       };
     };
 
@@ -212,10 +200,6 @@ in
 
     home = {
       packages = with pkgs; [
-        # work
-        cifs-utils
-        openvpn
-
         asn
         chatterino7
         jameica
@@ -272,14 +256,6 @@ in
           ShowMoreSettings = true;
         };
       };
-
-      # use my stupid baka deadname for work repos X_X
-      "jj/conf.d/work.toml".text = ''
-        --when.workspaces = ["/persist/home/nori/sync/work"]
-
-        [user]
-        name = "Leon Schumacher"
-      '';
     };
 
     programs = {
@@ -379,43 +355,6 @@ in
           HostName = "strontium.bunny.vpn";
           User = "root";
           ForwardAgent = false;
-        };
-
-        ##### work - PIC #####
-
-        lbmvweb = {
-          HostName = "www1.d11121.lbmv.de";
-          User = "www-data";
-        };
-
-        meeting2 = {
-          HostName = "meeting2.planet-ic.de";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
-        };
-
-        freepbx = {
-          HostName = "195.98.195.10";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
-
-          HostKeyAlgorithms = "+ssh-rsa";
-          PubkeyAcceptedKeyTypes = "+ssh-rsa";
-        };
-
-        greifswald = {
-          HostName = "web03270.pvm.imv.de";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
-        };
-
-        bonetty = {
-          HostName = "ares-bonetty.p4.net";
-          User = "root";
-          SetEnv.TERM = "xterm-256color";
-
-          HostKeyAlgorithms = "+ssh-rsa";
-          PubkeyAcceptedKeyTypes = "+ssh-rsa";
         };
       };
     };
