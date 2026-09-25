@@ -106,18 +106,14 @@ in
         sanitize = {
           enable = true;
           exceptions = [
-            "https://auride.xyz"
             "https://github.com"
             "https://iu.org"
-            "https://mynixos.com"
             "https://proton.me"
             "https://reddit.com"
             "https://youtube.com"
 
             # personal
-            "https://chat.eleonora.gay"
             "https://id.eleonora.gay"
-            "https://irc.eleonora.gay"
             "https://vw.eleonora.gay"
 
             # banking
