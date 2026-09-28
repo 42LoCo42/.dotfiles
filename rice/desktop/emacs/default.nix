@@ -1,6 +1,6 @@
 { aquaris, config, lib, pkgs, ... }:
 let
-  inherit (lib) getExe mkForce mkIf mkOption remove;
+  inherit (lib) getExe mkForce mkIf mkOption remove singleton;
   inherit (lib.types) bool str;
 
   cfg = config.rice.desktop.emacs;
@@ -32,7 +32,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home-manager.sharedModules = [{
+    home-manager.sharedModules = singleton (hm: {
       home.shellAliases."e" = "emacsclient -cn";
 
       programs.emacs.overrides = _: epkgs: {
@@ -156,6 +156,8 @@ in
               ("C-t C-t" . (lambda () (interactive)
                 (message (timeclock-status-string))))
 
+              ("M-m" . compose-mail)
+
               :map read--expression-map
               ("C-n" . next-line-or-history-element)
               ("C-p" . previous-line-or-history-element)
@@ -251,6 +253,14 @@ in
               (show-paren-context-when-offscreen  'overlay)
 
               (org-startup-indented t)
+
+              (auth-sources '("${config.aquaris.secret' "user/${hm.config.home.username}/mail"}"))
+
+              (send-mail-function    #'smtpmail-send-it)
+              (user-mail-address     "leonsch@protonmail.com")
+              (smtpmail-smtp-user    "leonsch")
+              (smtpmail-smtp-server  "laniakea.bunny.vpn")
+              (smtpmail-smtp-service 1025)
             '';
 
             extraPackages = with pkgs; [
@@ -726,8 +736,21 @@ in
             '';
           };
 
+          bbdb = {
+            defer = true;
+
+            init = ''
+              ; provides bbdb-search required by company-bbdb
+              (add-hook 'message-mode-hook (lambda () (require 'bbdb-com)))
+            '';
+
+            custom = ''
+              (bbdb-file "~/doc/bbdb")
+            '';
+          };
+
           company = {
-            hook = "prog-mode haskell-interactive-mode";
+            hook = "prog-mode haskell-interactive-mode message-mode";
 
             custom = ''
               (company-dabbrev-downcase nil)
@@ -1171,6 +1194,6 @@ in
           };
         };
       };
-    }];
+    });
   };
 }

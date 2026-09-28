@@ -207,6 +207,7 @@ in
         rsyncy
         steamguard-cli
         syncplay
+        tokei
         umu-launcher
 
         my-age
