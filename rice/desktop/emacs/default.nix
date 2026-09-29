@@ -179,6 +179,13 @@ in
 
               ; show matching parentheses
               (prog-mode . show-paren-mode)
+
+              (server-after-make-frame . (lambda ()
+               (custom-set-faces
+                '(region                 ((t (:background "#054568"))))
+                '(whitespace-indentation ((t (:background "red"    ))))
+                '(whitespace-trailing    ((t (:background "red"    ))))
+               )))
             '';
 
             config = ''
@@ -230,6 +237,7 @@ in
               (inhibit-startup-screen t)
               (initial-scratch-message ";;; -*- lexical-binding: t -*-\n")
               (native-comp-async-report-warnings-errors nil)
+              (org-startup-indented t)
               (recenter-positions '(middle top))
               (recentf-max-saved-items 100)
               (require-final-newline t)
@@ -252,8 +260,6 @@ in
               (show-paren-when-point-in-periphery t)
               (show-paren-context-when-offscreen  'overlay)
 
-              (org-startup-indented t)
-
               (auth-sources '("${config.aquaris.secret' "user/${hm.config.home.username}/mail"}"))
 
               (send-mail-function    #'smtpmail-send-it)
@@ -262,10 +268,6 @@ in
               (smtpmail-smtp-server  "laniakea.bunny.vpn")
               (smtpmail-smtp-service 1025)
             '';
-
-            extraPackages = with pkgs; [
-              ghostscript # PDF rendering support
-            ];
           };
 
           server = {
@@ -396,7 +398,7 @@ in
             config = "(global-whitespace-mode 1)";
 
             custom = ''
-              (whitespace-style '(face tab-mark trailing missing-newline-at-eof))
+              (whitespace-style '(face trailing indentation tab-mark missing-newline-at-eof))
             '';
           };
 
