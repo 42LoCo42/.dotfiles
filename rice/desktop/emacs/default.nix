@@ -180,6 +180,8 @@ in
               ; show matching parentheses
               (prog-mode . show-paren-mode)
 
+              (font-lock-mode . my/highlight-space-indents)
+
               (server-after-make-frame . (lambda ()
                (custom-set-faces
                 '(region                 ((t (:background "#054568"))))
@@ -203,12 +205,10 @@ in
               (defalias 'yes-or-no-p 'y-or-n-p)
 
               ; transparency
-              (push '(alpha-background .
-                ${cfg.alpha})
-                default-frame-alist)
+              (push '(alpha-background . ${cfg.alpha}) default-frame-alist)
 
               ; all frames use monospace font
-              (add-to-list 'default-frame-alist '(font . "monospace:size=14"))
+              (push '(font . "monospace:size=14") default-frame-alist)
 
               ; indent elisp "if" normally
               (put 'if 'lisp-indent-function 'defun)
