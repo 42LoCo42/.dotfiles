@@ -38,5 +38,9 @@
         experimental-features = [ "auto-allocate-uids" "cgroups" ];
       };
     };
+
+    environment.shellAliases = {
+      "nk" = "sudo nix-store --delete --ignore-liveness --store local";
+    };
   };
 }
