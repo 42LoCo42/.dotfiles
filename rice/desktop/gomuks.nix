@@ -18,8 +18,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    rice.insecureNames = [ "olm" ];
-
     aquaris.persist.dirs = {
       "/var/lib/private/gomuks-web" = { };
     };

@@ -1,19 +1,17 @@
 { aquaris, config, lib, pkgs, ... }: {
   imports = [ ../common ./options.nix ];
 
-  nixpkgs.overlays = [
-    (_: pkgs: {
-      tscaddy = (pkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/tailscale/caddy-tailscale@v0.0.0-20260106222316-bb080c4414ac"
-        ];
+  nixpkgs.overlays = lib.singleton (_: pkgs: {
+    tscaddy = (pkgs.caddy.withPlugins {
+      plugins = [
+        "github.com/tailscale/caddy-tailscale@v0.0.0-20260106222316-bb080c4414ac"
+      ];
 
-        hash = "sha256-o0oG/9hROjDl69AeuxUhhFVTsdluHJ8VyENVk1KHCOI=";
-      }).overrideAttrs {
-        doCheck = false;
-      };
-    })
-  ];
+      hash = "sha256-3Dzgarb1nhPEA8Bxfxk7L3cn4OsIIWshYUosWf3fhqM=";
+    }).overrideAttrs {
+      doCheck = false;
+    };
+  });
 
   aquaris = {
     users = pkgs.lib.mkMerge [

@@ -6,20 +6,11 @@
 
       hydroxide .__assign = obscura.my-hydroxide; # TODO https://codeberg.org/emersion/hydroxide/pulls/138
       prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
+      zoxide    .__assign = obscura.my-zoxide; #### TODO waiting for new release
 
       lice.__python.dependencies.__append = with prev.python3.pkgs; [
         pkg-resources-backport
       ];
-
-      # TODO https://github.com/ajeetdsouza/zoxide/pull/1288
-      zoxide.__output = {
-        patches.__append = [
-          (prev.fetchpatch {
-            url = "https://github.com/ajeetdsouza/zoxide/pull/1288.diff";
-            hash = "sha256-qDwCwjzTCblFavpYCaiGhlSq3deKIh086JUpHCPwwM8=";
-          })
-        ];
-      };
 
       ########## permanent overrides ##########
 
@@ -29,6 +20,26 @@
 
       hyprland.__assign = self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}.hyprland;
       hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
+
+      # fuck https://github.com/NixOS/nixpkgs/pull/562715 you >:(
+      # gomuks-terminal in gomuks-web is not up to feature parity
+      gomuks.__assign = prev.stdenv.mkDerivation (drv: {
+        pname = "gomuks";
+        version = "0.3.1";
+
+        src = prev.fetchurl {
+          url = "https://github.com/gomuks/gomuks/releases/download/v${drv.version}/gomuks-linux-amd64";
+          hash = "sha256-Bka6gmPIcq3LGmIp2TRdHbFVaqk55bXk0rxJtnx4MWc=";
+        };
+
+        dontUnpack = true;
+
+        installPhase = ''
+          install -Dm755 $src $out/bin/${drv.pname}
+        '';
+
+        meta.mainProgram = drv.pname;
+      });
 
       factorio-space-age.__input = {
         makeDesktopItem.__hijack = {

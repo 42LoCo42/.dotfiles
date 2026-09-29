@@ -1,4 +1,4 @@
-{ pkgs, ... }: (_: {}) {
+{ pkgs, ... }: (_: { }) {
   boot.kernelParams = [
     "intel_iommu=on"
     "iommu=pt"

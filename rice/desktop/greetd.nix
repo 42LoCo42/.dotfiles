@@ -34,7 +34,7 @@
               "--xkb-repeat-delay 300"
               "--xkb-repeat-rate 25"
               "--palette custom"
-              "--palette-background 40,40,40"    # 282828
+              "--palette-background 40,40,40" # 282828
               "--palette-foreground 235,219,178" # ebdbb2
               "--login"
               "--"
