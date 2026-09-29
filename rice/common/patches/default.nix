@@ -21,15 +21,11 @@
         ];
       };
 
-      gomuks-web.__output = {
-        patches.__append = [
-          ./gomuks-sso.patch
-        ];
-      };
-
       ########## permanent overrides ##########
 
-      fastfetch.__assign = obscura.my-fastfetch;
+      fastfetch  .__assign = obscura.my-fastfetch;
+      gomuks-web .__assign = obscura.my-gomuks-web;
+      tuigreet   .__assign = obscura.my-tuigreet;
 
       hyprland.__assign = self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}.hyprland;
       hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
