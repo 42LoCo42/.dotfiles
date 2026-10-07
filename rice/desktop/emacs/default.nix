@@ -35,7 +35,7 @@ in
     home-manager.sharedModules = singleton (hm: {
       home.shellAliases."e" = "emacsclient -cn";
 
-      programs.emacs.overrides = npkgs: epkgs: {
+      programs.emacs.overrides = _: epkgs: {
         lsp-mode = epkgs.lsp-mode.overrideAttrs (old: {
           buildPhase = ''
             export LSP_USE_PLISTS=true
@@ -54,28 +54,7 @@ in
             (provide 'reformatter)
           '';
         };
-      } //
-      # TODO elpa.gnu.org is down, so fetch from straight's mirror repos
-      ((mapAttrs (name: { hash, req ? [ ], rev }: epkgs.trivialBuild {
-        name = "emacs-${name}";
-
-        src = pkgs.fetchFromGitHub {
-          name = "${name}-source";
-          owner = "emacs-straight";
-          repo = name;
-          inherit hash rev;
-        };
-
-        packageRequires = map (x: npkgs.${x}) req;
-      })) {
-        compat /*********/ = { rev = "9f8a565ad8c9617a6f006115f50f4cf63286ec83"; hash = "sha256-i/93ElKMdbKhKVRuUg3aaCSZXztHlixc+iSHNqhf2iQ="; };
-        eldoc /**********/ = { rev = "cfd17854b6b9b6830111851ad21c2d560db07dfb"; hash = "sha256-Byy5pTKIG2out93Qal5JCN01mOgc24JVRbOqO8uvmjU="; };
-        flymake /********/ = { rev = "d990da52420300f4bbe7ae950d2f03b4a05e9331"; hash = "sha256-FjIWrzunlhlI6oe2L/GjKSWpW7t3sTBVjS0goMiO9Sw="; req = [ "eldoc" "project" ]; };
-        persist /********/ = { rev = "a4c6e759e340d7af9b3f2aad21d279f336cfde68"; hash = "sha256-zetHon3K2891ro2XdB9+9fno+d85sXfRmgMOIAoJQY8="; req = [ "compat" ]; };
-        project /********/ = { rev = "ffb38d7798d86c7fa6623db0f64b461abb6572c2"; hash = "sha256-KsGVaBjkD87Td0R1DRIjLWuvCZv/lDBA/g20ffN3rj4="; req = [ "xref" ]; };
-        rainbow-mode /***/ = { rev = "8af64da0a3d6d27ae7265e3d74b212a19763a406"; hash = "sha256-mEZVfmkCcMaz3jpN5rk3Sxe2wU8lBLSvKekdfTV0UpE="; };
-        track-changes /**/ = { rev = "6d8fb08f6ef72e0b9bd8bea61d91d47a8b00ec81"; hash = "sha256-OKEUTFkico7Hf+Mv8Q/BDVF1a+GoO75iACL6FUZ2GL0="; };
-      });
+      };
 
       services.emacs = {
         enable = true;
