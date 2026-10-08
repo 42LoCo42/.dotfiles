@@ -215,7 +215,7 @@ in
           name = "aged"; # age decrypt
 
           text = ''
-            exec age                                          \
+            exec age                                       \
               -i ${config.aquaris.secret "user/nori/age"}  \
               -d "$@"
           '';

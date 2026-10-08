@@ -1,6 +1,6 @@
 { aquaris, config, lib, pkgs, ... }:
 let
-  inherit (lib) getExe mapAttrs mkForce mkIf mkOption remove singleton;
+  inherit (lib) getExe mkForce mkIf mkOption remove singleton;
   inherit (lib.types) bool str;
 
   cfg = config.rice.desktop.emacs;
@@ -420,6 +420,17 @@ in
           };
 
           ##### Behaviour #####
+
+          age = {
+            custom = ''
+              (age-default-identity "${config.aquaris.secret "user/nori/age-nopin"}")
+              (age-default-recipient "age1m4k9ug03xn6fc83q9p7vcskexs6mzy8wfsvhflg4tm9ks9zl2dyqkm3hjm")
+            '';
+
+            hook = ''
+              (server-after-make-frame . age-file-enable)
+            '';
+          };
 
           ace-window = {
             bind' = ''
