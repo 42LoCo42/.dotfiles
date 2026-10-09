@@ -205,9 +205,9 @@
             XF86MonBrightnessUp = raw (exec "brightnessctl set 10%+");
 
             ##### fullscreen #####
-            f = fullscreen 1 0; # almost fullscreen, keep bar
-            C-f = fullscreen 2 2; # true fullscreen
-            A-f = fullscreen 0 2; # fake fullscreen
+            f = fullscreen { internal = 1; }; # almost fullscreen, keep bar
+            C-f = fullscreen { internal = 2; }; # true fullscreen
+            A-f = fullscreen { client = 2; }; # fake fullscreen
 
             ##### (un)hide windows #####
             h = move { workspace = "special:hidden"; follow = false; };
