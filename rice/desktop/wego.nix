@@ -25,11 +25,18 @@ in
                 set -euo pipefail
 
                 city="''${1-}"
-                if [ -z "$city" ]; then
-                  city="$(curl -fsSL https://ipinfo.io | jq -r .city)"
+                if [ -n "$city" ]; then
+                  loc="$(curl -fsSLG                             \
+                    'https://nominatim.openstreetmap.org/search' \
+                    -d format=jsonv2 -d "city=$city"             \
+                    | jq -r '.[0] | "\(.lat),\(.lon)"')"
+                else
+                  res="$(curl -fsSL https://ipinfo.io)"
+                  loc="$(jq -r .loc <<< "$res")"
+                  echo "Found you in $(jq -r .city <<< "$res")!"
                 fi
 
-                exec wego "$city"
+                exec wego --backend pirateweather.net "$loc"
               '';
             })
           ];
@@ -37,10 +44,10 @@ in
           sessionVariables.WEGORC = "$HOME/.config/wego.ini";
 
           activation.configureWego = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            if KEY="$(< "/run/secrets/user/$USER/owm")"; then
-              echo "owm-api-key=$KEY" > "$HOME/.config/wego.ini"
+            if KEY="$(< "/run/secrets/user/$USER/weather")"; then
+              echo "pirateweather-api-key=$KEY" > "$HOME/.config/wego.ini"
             else
-              echo "No OWM API key set, aborting wego configuration!" >&2
+              echo "No Pirate Weather API key set, aborting wego configuration!" >&2
             fi
           '';
         };

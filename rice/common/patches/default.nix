@@ -12,6 +12,24 @@
         pkg-resources-backport
       ];
 
+      # TODO waiting for new release
+      wego = {
+        __input = {
+          buildGoModule.__assign = prev.buildGo127Module;
+        };
+
+        __output = {
+          version.__assign = "2.4-unstable-2026-09-26";
+
+          src.__output = {
+            rev.__assign = "14b1e3643badf55963df2889aacd31094a13ac99";
+            hash.__assign = "sha256-quEeOOT8xLyFlpIJBHegJdb67NCg3a2DRBxt2Y/3UP4=";
+          };
+
+          vendorHash.__assign = "sha256-cUwXdC7t0V6sv8EZJyI5GXOU2gCNYsKln59DNv84LO8=";
+        };
+      };
+
       ########## permanent overrides ##########
 
       fastfetch  .__assign = obscura.my-fastfetch;
