@@ -808,6 +808,7 @@ in
               (zig-mode        . lsp-deferred)
 
               (lsp-managed-mode . (lambda ()
+                (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.cache")
                 (require 'lsp-headerline)
                 (add-hook 'eldoc-documentation-functions #'my/flycheck-eldoc 90 t)
                 (my/chain nix-mode deadnix)
@@ -1005,7 +1006,14 @@ in
             ];
           };
 
-          yaml-mode = { defer = true; };
+          yaml-mode = {
+            defer = true;
+
+            hook = ''
+              (yaml-mode . (lambda ()
+                (setq-local tab-width yaml-indent-offset)))
+            '';
+          };
 
           typescript-mode = {
             defer = true;
@@ -1079,6 +1087,11 @@ in
             };
 
             mode = ''"\\.typ\\'"'';
+
+            hook = ''
+              (typst-ts-mode . (lambda ()
+                (setq-local tab-width typst-ts-indent-offset)))
+            '';
 
             extraPackages = with pkgs; [
               prettypst # formatter
