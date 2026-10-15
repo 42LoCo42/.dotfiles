@@ -1,6 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
-  inherit (lib) filter ifEnable mkIf mkMerge mkOption;
+  inherit (lib) filter ifEnable mkIf mkMerge mkOption readFile;
   inherit (lib.types) bool;
 
   cfg = config.rice.nixremote;
@@ -22,6 +22,12 @@ in
 
     use = mkOption {
       description = "Use the Nix remote builders";
+      type = bool;
+      default = false;
+    };
+
+    gha = mkOption {
+      description = "Use GitHub actions for builders (needs tailscale)";
       type = bool;
       default = false;
     };
@@ -131,6 +137,33 @@ in
           })
         ];
       };
+    })
+
+    (mkIf cfg.gha {
+      environment.systemPackages = with pkgs; [
+        gh
+
+        (writeShellApplication {
+          name = "nix-gha";
+
+          runtimeInputs = [
+            nushell
+            nix-eval-jobs
+            nix-fast-build
+          ];
+
+          text = ''
+            exec nu ${./gha.nu} "$@"
+          '';
+        })
+      ];
+
+      home-manager.sharedModules = [{
+        aquaris.persist = {
+          ".config/gh" = { };
+          ".config/nix-remote" = { };
+        };
+      }];
     })
   ];
 }

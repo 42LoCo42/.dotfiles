@@ -83,10 +83,14 @@ in
 
     ca.enable = true;
     dns.enable = true;
-    nixremote.use = true;
     podman.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
+
+    nixremote = {
+      use = true;
+      gha = true;
+    };
   };
 
   home-manager.sharedModules = singleton (hm: {

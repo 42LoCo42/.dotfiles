@@ -1,10 +1,19 @@
 // -*- mode: jsonc; -*-
 {
-	"acls": [
+	"grants": [
+		{
+			"src": ["*"],
+			"dst": ["*"],
+			"ip": ["*"]
+		}
+	],
+
+	"ssh": [
 		{
 			"action": "accept",
-			"src": ["*"],
-			"dst": ["*:*"]
+			"src": ["autogroup:member"],
+			"dst": ["tag:nix-builder"],
+			"users": ["runner"]
 		}
 	],
 
@@ -13,7 +22,8 @@
 	},
 
 	"tagOwners": {
-		"tag:exit": ["group:admin"]
+		"tag:exit": ["group:admin"],
+		"tag:nix-builder": ["group:admin"]
 	},
 
 	"autoApprovers": {

@@ -43,10 +43,14 @@ in
     dns.enable = true;
 
     ca.enable = true;
-    nixremote.use = true;
     printer.enable = true;
     syncthing.enable = true;
     tailscale.enable = true;
+
+    nixremote = {
+      use = true;
+      gha = true;
+    };
 
     insecureNames = [
       "googleearth-pro"
