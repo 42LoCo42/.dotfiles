@@ -4,6 +4,9 @@
     self.inputs.obscura.lib.infuse prev ({
       ########## temporary overrides ##########
 
+      lix.__assign = prev.lixPackageSets.lix_2_96.lix;
+      lixPackageSets.latest.__assign = prev.lixPackageSets.lix_2_96;
+
       hydroxide .__assign = obscura.my-hydroxide; # TODO https://codeberg.org/emersion/hydroxide/pulls/138
       prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
       zoxide    .__assign = obscura.my-zoxide; #### TODO waiting for new release

@@ -3,7 +3,7 @@ let
   app = "${pkgs.directorylister}:${dir}:ro";
   dir = "/srv/directory-lister";
 in
-{
+(_: { }) {
   aquaris.users = lib.mkMerge [
     { inherit (aquaris.cfg.users) mel; }
     { mel.nopass = true; }
