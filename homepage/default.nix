@@ -24,13 +24,14 @@ let
     ];
 
     buildPhase = ''
-      substituteInPlace layout.pug \
+      substituteInPlace index.pug \
         --replace-fail @hash@ $out
 
       cp -r static $out
       for i in ${font}/*; do ln -s $i $out; done
       bash processStuff.sh
-      pug3 -o $out index.pug
+
+      for i in index notfound; do pug3 -o $out $i.pug; done
     '';
   };
 in

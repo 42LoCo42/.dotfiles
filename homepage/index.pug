@@ -1,4 +1,14 @@
 extends layout.pug
+block header
+  title Nori's Homepage
+
+  meta(property = "og:title"       content = "Nori's Homepage")
+  meta(property = "og:site_name"   content = "Nori's Homepage")
+  meta(property = "og:url"         content = "https://eleonora.gay")
+  meta(property = "og:description" content = "Welcome to the silly realm :3")
+  meta(property = "og:type"        content = "website")
+  meta(property = "og:image"       content = "https://eleonora.gay/profile.webp")
+
 block content
   div
     +prompt("~", "cd homepage")
@@ -94,3 +104,13 @@ block content
     +prompt("~/homepage", "tree stuff")
     include tree.html
     +prompt("~/homepage", "# TODO...")
+
+block footer
+  x-typw(hidec = "")
+  h6(style = "text-align: center; color: gray")
+    | This is @hash@
+    br
+    a(href = "https://nixwebr.ing/prev/nori") ←
+    a(href = "https://nixwebr.ing") nixwebr.ing
+    a(href = "https://nixwebr.ing/rand") (random)
+    a(href = "https://nixwebr.ing/next/nori") →

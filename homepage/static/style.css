@@ -1,6 +1,7 @@
 :root {
 	--white: #ebdbb2;
 	--black: #282828;
+	--red: #cc241d;
 	--green: #98971a;
 	--yellow: #d79921;
 	--blue: #458588;
@@ -23,8 +24,8 @@
 	font-stretch: normal;
 	src:
 		local("Iosevka Nerd Font"),
-		url("iosevka.woff2") format("woff2"),
-		url("iosevka.ttf") format("truetype");
+		url("https://eleonora.gay/iosevka.woff2") format("woff2"),
+		url("https://eleonora.gay/iosevka.ttf") format("truetype");
 }
 
 html {

@@ -3,17 +3,9 @@ html(lang = "en")
   head
     meta(charset = "utf-8")
     meta(name = "viewport", content = "width=device-width,initial-scale=1")
+    link(href = "https://eleonora.gay/style.css" rel = "stylesheet")
 
-    title Nori's Homepage
-
-    meta(property = "og:title"       content = "Nori's Homepage")
-    meta(property = "og:site_name"   content = "Nori's Homepage")
-    meta(property = "og:url"         content = "https://eleonora.gay")
-    meta(property = "og:description" content = "Welcome to the silly realm :3")
-    meta(property = "og:type"        content = "website")
-    meta(property = "og:image"       content = "https://eleonora.gay/profile.webp")
-
-    link(href = "/style.css" rel = "stylesheet")
+    block header
 
   body
     div(id = "terminal" style = "display: none")
@@ -43,16 +35,8 @@ html(lang = "en")
         block content
 
       div(id = "term-foot")
-        x-typw(hidec = "")
-        h6(style = "text-align: center; color: gray")
-          | This is @hash@
-          br
-          a(href = "https://nixwebr.ing/prev/nori") ←
-          a(href = "https://nixwebr.ing") nixwebr.ing
-          a(href = "https://nixwebr.ing/rand") (random)
-          a(href = "https://nixwebr.ing/next/nori") →
+        block footer
 
-
-    script(src = "/age.js")
-    script(src = "/oneko.js")
-    script(src = "/typewriter.js")
+    script(src = "https://eleonora.gay/age.js")
+    script(src = "https://eleonora.gay/oneko.js")
+    script(src = "https://eleonora.gay/typewriter.js")

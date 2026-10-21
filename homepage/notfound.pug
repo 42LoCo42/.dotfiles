@@ -1,0 +1,16 @@
+extends layout.pug
+block header
+  title You're lost!
+
+block content
+  div(style = "text-align: center;")
+    x-typw(delay = 50)
+    h3(style = "display: inline") You are in a maze of twisty little passages, all alike...
+    x-typw(pause = 750 delay = 5)
+    br
+    br
+    h4(style = "display: inline; color: var(--red)") Invalid subdomain!
+    br
+    br
+    a(href="https://eleonora.gay") Return to safety
+    x-typw(hidec = "")

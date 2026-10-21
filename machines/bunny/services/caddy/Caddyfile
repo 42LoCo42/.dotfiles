@@ -65,8 +65,10 @@
 	}
 }
 
+# fallback for invalid subdomains
 *.{$DOMAIN} {
-	respond "This is not what you seek!" 404
+	rewrite * /notfound.html
+	reverse_proxy https://{$DOMAIN}
 }
 
 16bytes.duckdns.org {
