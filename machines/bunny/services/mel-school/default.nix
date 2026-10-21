@@ -1,22 +1,9 @@
-{ aquaris, lib, pkgs, ... }:
+{ pkgs, ... }:
 let
   app = "${pkgs.directorylister}:${dir}:ro";
   dir = "/srv/directory-lister";
 in
 (_: { }) {
-  aquaris.users = lib.mkMerge [
-    { inherit (aquaris.cfg.users) mel; }
-    { mel.nopass = true; }
-  ];
-
-  home-manager.users.mel = {
-    aquaris.persist = {
-      "school" = { };
-    };
-  };
-
-  nix.settings.allowed-users = [ "mel" ];
-
   rice.caddy = {
     volumes = [ app ];
 

@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ aquaris, lib, pkgs, ... }:
 let
   inherit (lib) getExe mkOption;
   inherit (lib.types) package;
@@ -17,17 +17,21 @@ in
     system.extraDependencies = with pkgs; [ pug ];
 
     aquaris = {
-      users.admin.sshKeys = map
-        (x: ''command="${getExe pkgs.rrsync} ${x.dir}",restrict ${x.key}'') [
-        {
-          dir = "/persist/home/admin/firefox/";
-          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInpOfiVpjqdtV7KEZJ6PLBJ2a0Iu9tYdwufZpl/qOBD";
-        }
-        {
-          dir = "/persist/home/admin/hidden/pizza.d/";
-          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAATS/nPcQRUHbhvJG3TAqMFVxI1UW3LFxYaXkf3kxDE";
-        }
-      ];
+      users = {
+        admin.sshKeys = map
+          (x: ''command="${getExe pkgs.rrsync} ${x.dir}",restrict ${x.key}'') [
+          {
+            dir = "/persist/home/admin/firefox/";
+            key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInpOfiVpjqdtV7KEZJ6PLBJ2a0Iu9tYdwufZpl/qOBD";
+          }
+          {
+            dir = "/persist/home/admin/hidden/pizza.d/";
+            key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAATS/nPcQRUHbhvJG3TAqMFVxI1UW3LFxYaXkf3kxDE";
+          }
+        ];
+
+        mel = aquaris.cfg.users.mel // { nopass = true; };
+      };
 
       machine = {
         id = "488cb972c1ac70db8307933f65d5defc";
@@ -55,8 +59,12 @@ in
       };
     };
 
-    # disable pasta, it massively slows down & timeouts tscaddy's src fetch
-    nix.settings.pasta-path = "";
+    nix.settings = {
+      allowed-users = [ "mel" ];
+
+      # disable pasta, it massively slows down & timeouts tscaddy's src fetch
+      pasta-path = "";
+    };
 
     networking.networkmanager.enable = false;
 
@@ -91,11 +99,19 @@ in
       });
     };
 
-    home-manager.sharedModules = [{
-      aquaris.persist = {
-        "hidden" = { };
-        "img" = { };
+    home-manager.users = {
+      admin = {
+        aquaris.persist = {
+          "hidden" = { };
+          "img" = { };
+        };
       };
-    }];
+
+      mel = {
+        aquaris.persist = {
+          "school" = { };
+        };
+      };
+    };
   };
 }
