@@ -5,7 +5,7 @@
     }
 
     handle @jwt_service {
-      reverse_proxy lk-jwt-service:8080
+      reverse_proxy livekit:8080
     }
 
     reverse_proxy livekit:7880 {
@@ -23,40 +23,38 @@
     ];
   };
 
-  virtualisation.pnoc = {
-    livekit = {
-      path = with pkgs; [ envsubst livekit ];
+  virtualisation.pnoc.livekit = {
+    path = with pkgs; [
+      envsubst
+      livekit
+      lk-jwt-service
+    ];
 
-      script = ''
-        # shellcheck disable=SC2153
-        export LIVEKIT_KEYS="$LIVEKIT_KEY: $LIVEKIT_SECRET"
+    script = ''
+      lk-jwt-service &
 
-        envsubst < ${./config.yaml} > /tmp/config.yaml
-        exec livekit-server --config /tmp/config.yaml
-      '';
+      # shellcheck disable=SC2153
+      export LIVEKIT_KEYS="$LIVEKIT_KEY: $LIVEKIT_SECRET"
 
-      environment.DOMAIN = config.rice.domain;
-      environmentFiles = [ (config.aquaris.secret "@machine/livekit") ];
+      envsubst < ${./config.yaml} > /tmp/config.yaml
+      exec livekit-server --config /tmp/config.yaml
+    '';
 
-      ports = [
-        "7881:7881"
-        "3478:3478/udp"
-        "50100-50200:50100-50200/udp" # WebRTC
-        "50300-65535:50300-65535/udp" # TURN
-      ];
+    environment = {
+      DOMAIN = config.rice.domain;
+
+      LIVEKIT_JWT_BIND = ":8080";
+      LIVEKIT_URL = "wss://matrix-rtc.${config.rice.domain}";
+      LIVEKIT_FULL_ACCESS_HOMESERVERS = config.rice.domain;
     };
 
-    lk-jwt-service = {
-      path = with pkgs; [ lk-jwt-service ];
-      script = "exec lk-jwt-service";
+    environmentFiles = [ (config.aquaris.secret "@machine/livekit") ];
 
-      environment = {
-        LIVEKIT_JWT_BIND = ":8080";
-        LIVEKIT_URL = "wss://matrix-rtc.${config.rice.domain}";
-        LIVEKIT_FULL_ACCESS_HOMESERVERS = config.rice.domain;
-      };
-
-      environmentFiles = [ (config.aquaris.secret "@machine/livekit") ];
-    };
+    ports = [
+      "7881:7881"
+      "3478:3478/udp"
+      "50100-50200:50100-50200/udp" # WebRTC
+      "50300-65535:50300-65535/udp" # TURN
+    ];
   };
 }

@@ -1,13 +1,14 @@
 { aquaris, config, lib, pkgs, ... }: {
   imports = [ ../common ./options.nix ];
 
-  nixpkgs.overlays = lib.singleton (_: pkgs: {
-    tscaddy = (pkgs.caddy.withPlugins {
+  nixpkgs.overlays = lib.singleton (_: prev: {
+    caddy = (prev.caddy.withPlugins {
       plugins = [
-        "github.com/tailscale/caddy-tailscale@v0.0.0-20260106222316-bb080c4414ac"
+        "github.com/caddy-dns/porkbun@v0.3.1"
+        "github.com/tailscale/caddy-tailscale@v0.0.0-20260826180304-de41b249af4f"
       ];
 
-      hash = "sha256-uZzS2DTcWan8E1NxQbI0sARNT7afpOrReUQmXi3c6Co=";
+      hash = "sha256-Wc6bUWczDBmQ9a5QUuc2/we8lxSlBi0BD7onEPjTpbg=";
     }).overrideAttrs {
       doCheck = false;
     };

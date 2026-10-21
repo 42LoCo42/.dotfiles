@@ -10,7 +10,7 @@
       config.rice.invfork.outPath
 
       # parent process: caddy
-      (lib.getExe pkgs.tscaddy)
+      (lib.getExe pkgs.caddy)
       "run"
 
       "--" # child process: TCP proxy

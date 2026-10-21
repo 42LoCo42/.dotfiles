@@ -90,6 +90,8 @@ in
         XDG_DATA_HOME = "/data/data";
       };
 
+      environmentFiles = [ (config.aquaris.secret "@machine/caddy") ];
+
       ports = [
         "80:8080"
         "443:8443"

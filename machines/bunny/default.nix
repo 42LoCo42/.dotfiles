@@ -62,7 +62,7 @@ in
     nix.settings = {
       allowed-users = [ "mel" ];
 
-      # disable pasta, it massively slows down & timeouts tscaddy's src fetch
+      # disable pasta, it massively slows down & timeouts caddy's src fetch
       pasta-path = "";
     };
 

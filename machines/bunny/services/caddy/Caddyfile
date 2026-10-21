@@ -8,6 +8,15 @@
 		format console
 		level ERROR
 	}
+
+	acme_dns
+
+	dns porkbun {
+		api_key {$PORKBUN_API_KEY}
+		api_secret_key {$PORKBUN_API_SECRET_KEY}
+	}
+
+	ech ech.{$DOMAIN}
 }
 
 (default) {
@@ -54,6 +63,10 @@
 		format console
 		level ERROR
 	}
+}
+
+*.{$DOMAIN} {
+	respond "This is not what you seek!" 404
 }
 
 16bytes.duckdns.org {
