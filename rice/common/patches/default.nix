@@ -85,6 +85,7 @@
         datetime
         directorylister
         grimmory
+        headscale-sts
         immich-folder-album-creator
         pinlist
         pug

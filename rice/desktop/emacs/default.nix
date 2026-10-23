@@ -1207,7 +1207,9 @@ in
             defer = true;
 
             hook = ''
-              (markdown-mode . (lambda () (indent-tabs-mode 0)))
+              (markdown-mode . (lambda ()
+                (setq-local tab-width 2)
+                (indent-tabs-mode 0)))
             '';
           };
 

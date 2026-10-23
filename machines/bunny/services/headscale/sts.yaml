@@ -1,0 +1,14 @@
+listen: "0.0.0.0:8081"
+
+headscale:
+  url: "http://127.0.0.1:8080"
+  api_key: "$HEADSCALE_API_KEY"
+
+trusts:
+  - issuer: "https://token.actions.githubusercontent.com"
+    audience: "https://headscale.$DOMAIN/sts"
+    rules:
+      - match:
+          repository: "42LoCo42/obscura"
+        tags:
+          - "tag:nix-builder"
