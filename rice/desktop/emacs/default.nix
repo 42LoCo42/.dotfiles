@@ -798,6 +798,7 @@ in
               (js-mode         . lsp-deferred)
               (lua-mode        . lsp-deferred)
               (nix-mode        . lsp-deferred)
+              (nushell-mode    . lsp-deferred)
               (php-mode        . lsp-deferred)
               (rustic-mode     . lsp-deferred)
               (sh-mode         . lsp-deferred)
@@ -1219,6 +1220,22 @@ in
               lua-language-server
               stylua
             ];
+          };
+
+          nushell-mode = {
+            defer = true;
+
+            extraPackages = with pkgs; [
+              nufmt
+              nushell
+            ];
+
+            config = ''
+              (require 'apheleia)
+              (add-to-list 'apheleia-mode-alist '(nushell-mode . nufmt))
+              (add-to-list 'apheleia-formatters '(nufmt
+                "nufmt" "--config" "${./nufmt.nuon}" "--stdin"))
+            '';
           };
         };
       };
