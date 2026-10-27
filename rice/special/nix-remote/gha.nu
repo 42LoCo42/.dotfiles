@@ -312,9 +312,9 @@ def main [
 
     print "\nWaiting for builders to join Tailnet (Tailscale SSH)..."
     let start_time = (date now)
-    mut ready_hosts = []
+	mut ready_nodes = []
 
-    while ($ready_hosts | length) < ($nodes | length) {
+    while ($ready_nodes | length) < ($nodes | length) {
         let elapsed = ((date now) - $start_time) // 1sec
         if $timeout_startup > 0 and $elapsed >= $timeout_startup {
             print --stderr $"\nError: Timed out waiting for runners after ($timeout_startup)s."
@@ -337,11 +337,11 @@ def main [
         }
 
         let newly_ready = ($nodes
-      | where not ($it.host in $ready_hosts)
+      | where not ($it in $ready_nodes)
       | par-each {|node|
-          let probe = ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=2 -o BatchMode=yes $"runner@($node.host).bunny.vpn" "true" | complete
+          let probe = ssh -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=2 -o BatchMode=yes $"runner@($node.host).bunny.vpn" "base64 -w0 /etc/ssh/ssh_host_ed25519_key.pub" | complete
           if ($probe.exit_code == 0) {
-            $node
+            {...$node, key: $probe.stdout}
           } else {
             null
           }
@@ -350,19 +350,19 @@ def main [
     )
 
         for node in $newly_ready {
-            $ready_hosts ++= [$node.host]
+            $ready_nodes ++= [$node]
             print $"  Builder online: ($node.host) \(($node.system)\)"
         }
 
-        if ($ready_hosts | length) < ($nodes | length) {
+        if ($ready_nodes | length) < ($nodes | length) {
             sleep 5sec
         }
     }
 
-    print $"\nAll ($nodes | length) builders online."
+    print $"\nAll ($ready_nodes | length) builders online."
 
-    let builders_list = ($nodes | each {|node|
-    $"ssh-ng://runner@($node.host).bunny.vpn?remote-program=/nix/var/nix/profiles/default/bin/nix-daemon ($node.system) - ($node.cores) 1 kvm,benchmark,big-parallel - -"
+    let builders_list = ($ready_nodes | each {|node|
+    $"ssh-ng://runner@($node.host).bunny.vpn?remote-program=/nix/var/nix/profiles/default/bin/nix-daemon ($node.system) - ($node.cores) 1 kvm,benchmark,big-parallel - ($node.key)"
   })
     let builders_arg = $builders_list | str join ";"
 
@@ -404,7 +404,7 @@ def main [
         print $"\nRunning: nix ($nix_args | str join ' ')\n"
 
         try {
-            ^sudo nix ...$nix_args --builders $builders_arg --max-jobs $local_jobs
+            ^sudo nix -L ...$nix_args --builders $builders_arg --max-jobs $local_jobs
             do $do_cleanup $nodes $keep_alive
         } catch {|err|
             do $do_cleanup $nodes $keep_alive
