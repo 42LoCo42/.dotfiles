@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) filter ifEnable mkIf mkMerge mkOption readFile;
+  inherit (lib) filter ifEnable mkIf mkMerge mkOption;
   inherit (lib.types) bool;
 
   cfg = config.rice.nixremote;
@@ -161,8 +161,11 @@ in
       home-manager.sharedModules = [{
         aquaris.persist = {
           ".config/gh" = { };
-          ".config/nix-remote" = { };
         };
+
+        xdg.configFile."nix-remote/config.toml".text = ''
+          repo = "42LoCo42/obscura"
+        '';
       }];
     })
   ];

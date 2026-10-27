@@ -392,7 +392,12 @@ def main [
 		print $"\nRunning with nix-fast-build: flake target '($flake_target)'\n"
 
 		try {
-			sudo nix-fast-build --flake $flake_target --option builders $builders_arg --option max-jobs ($local_jobs | into string) --no-nom
+			(
+				sudo nix-fast-build
+				--flake $flake_target
+				--option builders $builders_arg
+				--option max-jobs $local_jobs
+			)
 			do $do_cleanup $nodes $keep_alive
 		} catch {|err|
 			do $do_cleanup $nodes $keep_alive
@@ -402,7 +407,14 @@ def main [
 		print $"\nRunning: nix ($nix_args | str join ' ')\n"
 
 		try {
-			^sudo nix -L ...$nix_args --builders $builders_arg --max-jobs $local_jobs
+			(
+				sudo nix
+				--log-format internal-json -v
+				...$nix_args
+				--builders $builders_arg
+				--max-jobs $local_jobs
+				o+e>| nom --json
+			)
 			do $do_cleanup $nodes $keep_alive
 		} catch {|err|
 			do $do_cleanup $nodes $keep_alive

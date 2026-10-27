@@ -11,10 +11,6 @@
       prettypst .__assign = obscura.my-prettypst; # TODO https://github.com/antonWetzel/prettypst/issues/11
       zoxide    .__assign = obscura.my-zoxide; #### TODO waiting for new release
 
-      lice.__python.dependencies.__append = with prev.python3.pkgs; [
-        pkg-resources-backport
-      ];
-
       # TODO waiting for new release
       wego = {
         __input = {
