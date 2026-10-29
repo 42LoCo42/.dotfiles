@@ -1,17 +1,7 @@
 { aquaris, config, lib, pkgs, ... }:
 let
-  inherit (lib)
-    flatten
-    getExe
-    getExe'
-    mkOption
-    ;
-  inherit (lib.types)
-    functionTo
-    listOf
-    package
-    str
-    ;
+  inherit (lib) flatten getExe getExe' mkOption;
+  inherit (lib.types) functionTo listOf package str;
 in
 {
   options.rice = {

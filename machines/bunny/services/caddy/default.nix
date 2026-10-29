@@ -68,16 +68,19 @@ in
       details.url.text = "https://${config.rice.domain}";
     };
 
-    rice.caddy = {
-      volumes = [
-        "caddy:/data"
-        "${cfg.caddyfile}:/Caddyfile:ro"
-      ];
-    };
+    rice = {
+      caddy = {
+        volumes = [
+          "caddy:/data"
+          "${cfg.caddyfile}:/Caddyfile:ro"
+        ];
+      };
 
-    networking.firewall = {
-      allowedTCPPorts = [ 80 443 ];
-      allowedUDPPorts = [ 443 ]; # QUIC
+      oci-firewall.rules = [
+        { desc = "Caddy HTTP"; type = "tcp"; port = 80; }
+        { desc = "Caddy HTTPS"; type = "tcp"; port = 443; }
+        { desc = "Caddy QUIC"; type = "udp"; port = 443; }
+      ];
     };
 
     virtualisation.pnoc.caddy = {

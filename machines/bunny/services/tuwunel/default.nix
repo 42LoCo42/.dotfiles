@@ -6,41 +6,45 @@
     details.url.text = "https://matrix.${config.rice.domain}";
   };
 
-  rice.caddy.cfg = {
-    "" = ''
-      reverse_proxy /.well-known/matrix/* tuwunel:8080
-    '';
+  rice = {
+    caddy.cfg = {
+      "" = ''
+        reverse_proxy /.well-known/matrix/* tuwunel:8080
+      '';
 
-    "matrix.{$DOMAIN}, matrix.{$DOMAIN}:8448" = ''
-      import default
+      "matrix.{$DOMAIN}, matrix.{$DOMAIN}:8448" = ''
+        import default
 
-      # workaround for gomuks-web querying //_matrix/... on SSO login
-      uri path_regexp /{2,} /
+        # workaround for gomuks-web querying //_matrix/... on SSO login
+        uri path_regexp /{2,} /
 
-      # https://github.com/matrix-construct/tuwunel/blob/v1.4.6/src/api/router.rs#L268
-      @legacy_media {
-        path /_matrix/media/v1/*
-        path /_matrix/media/v3/config
-        path /_matrix/media/v3/download/*
-        path /_matrix/media/v3/preview_url
-        path /_matrix/media/r0/config
-        path /_matrix/media/r0/download/*
-        path /_matrix/media/r0/preview_url
+        # https://github.com/matrix-construct/tuwunel/blob/v1.4.6/src/api/router.rs#L268
+        @legacy_media {
+          path /_matrix/media/v1/*
+          path /_matrix/media/v3/config
+          path /_matrix/media/v3/download/*
+          path /_matrix/media/v3/preview_url
+          path /_matrix/media/r0/config
+          path /_matrix/media/r0/download/*
+          path /_matrix/media/r0/preview_url
 
-        # allow thumbnail requests for matrix.to profile previews
-        # path /_matrix/media/v3/thumbnail/*
-        # path /_matrix/media/r0/thumbnail/*
-      }
+          # allow thumbnail requests for matrix.to profile previews
+          # path /_matrix/media/v3/thumbnail/*
+          # path /_matrix/media/r0/thumbnail/*
+        }
 
-      respond @legacy_media <<JSON
-      {"errcode":"M_FORBIDDEN","error":"M_FORBIDDEN: Unauthenticated media is disabled."}
-      JSON 403
+        respond @legacy_media <<JSON
+        {"errcode":"M_FORBIDDEN","error":"M_FORBIDDEN: Unauthenticated media is disabled."}
+        JSON 403
 
-      reverse_proxy tuwunel:8080
-    '';
+        reverse_proxy tuwunel:8080
+      '';
+    };
+
+    oci-firewall.rules = [
+      { desc = "Matrix Federation"; type = "tcp"; port = 8448; }
+    ];
   };
-
-  networking.firewall.allowedTCPPorts = [ 8448 ];
 
   virtualisation.pnoc = {
     caddy.ports = [ "8448:8448" ];

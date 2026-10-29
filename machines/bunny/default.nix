@@ -1,4 +1,4 @@
-{ aquaris, lib, pkgs, ... }:
+{ aquaris, config, lib, pkgs, ... }:
 let
   inherit (lib) getExe mkOption;
   inherit (lib.types) package;
@@ -56,6 +56,23 @@ in
         acceptDNS = true;
         isExit = true;
         hostname = "exit";
+      };
+
+      oci-firewall = {
+        enable = true;
+
+        auth = {
+          fingerprint = "d5:b3:a1:42:61:b5:c0:bf:22:3c:1a:42:19:58:75:98";
+          keyFile = config.aquaris.secret "@machine/oci";
+          list = "ocid1.securitylist.oc1.eu-frankfurt-1.aaaaaaaan4azexkwqeiiv6harwzrjzz2zabyb57pb7zvj2hjqs2ddlgat4ea";
+          region = "eu-frankfurt-1";
+          tenancy = "ocid1.tenancy.oc1..aaaaaaaasvxixm7wontje3bfxrec77clnukuepshcmkti27whgnw25tv75qa";
+          user = "ocid1.user.oc1..aaaaaaaabmroiepvsbo4swwysx3tmxrk42cai6tygpkun3n5uxpdjwmmyftq";
+        };
+
+        rules = [
+          { desc = "Miscellaneous"; type = "tcp"; port = 37812; }
+        ];
       };
     };
 

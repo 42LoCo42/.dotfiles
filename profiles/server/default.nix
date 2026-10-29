@@ -1,5 +1,5 @@
 { aquaris, config, lib, pkgs, ... }: {
-  imports = [ ../common ./options.nix ];
+  imports = [ ../common ./options.nix ./oci-firewall.nix ];
 
   nixpkgs.overlays = lib.singleton (_: prev: {
     caddy = (prev.caddy.withPlugins {

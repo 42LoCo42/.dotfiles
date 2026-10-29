@@ -6,10 +6,10 @@
     details.url.text = "https://sync.bunny";
   };
 
-  networking.firewall = {
-    allowedTCPPorts = [ 22000 ];
-    allowedUDPPorts = [ 22000 ];
-  };
+  rice.oci-firewall.rules = [
+    { desc = "Syncthing TCP"; type = "tcp"; port = 22000; }
+    { desc = "Syncthing UDP"; type = "udp"; port = 22000; }
+  ];
 
   virtualisation.pnoc.syncthing = {
     cmd = [ (lib.getExe pkgs.syncthing) "--home=/data" "--gui-address=http://0.0.0.0:8080" ];
