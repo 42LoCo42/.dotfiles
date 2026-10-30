@@ -34,11 +34,6 @@
     kernelPackages = pkgs.linuxPackages_6_12; # newer kernel versions cause boot failures
     kernelParams = [ "console=tty0" ]; # force graphical console
     initrd.kernelModules = [ "rockchipdrm" ]; # force early graphics
-
-    extraModulePackages = with config.boot.kernelPackages; [
-      # rtl8821au # currenctly broken
-      rtw88 # replacement?
-    ];
   };
 
   hardware.deviceTree.name = "rockchip/rk3568-odroid-m1.dtb";

@@ -1,4 +1,6 @@
 {
+  topology.self.services.syncthing.info = "Central file synchronization hub";
+
   rice.syncthing = {
     enable = true;
     url = "https://sync.laniakea";

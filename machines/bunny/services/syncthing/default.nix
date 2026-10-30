@@ -2,7 +2,7 @@
   topology.nodes.bunny-private.services.syncthing = {
     name = "Syncthing";
     icon = "services.syncthing";
-    info = "Central file synchronization hub";
+    info = "File synchronization";
     details.url.text = "https://sync.bunny";
   };
 
