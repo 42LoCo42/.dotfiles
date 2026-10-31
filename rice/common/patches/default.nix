@@ -83,6 +83,7 @@
         grimmory
         headscale-sts
         immich-folder-album-creator
+        molecule
         pinlist
         pug
         socket-activate

@@ -28,6 +28,7 @@
       mail.enable = true;
       minecraft.enable = true;
       misc.enable = true;
+      molecule.enable = true;
       mpd.enable = true;
       nix-locate.enable = true;
       nix-search-tv.enable = true;
