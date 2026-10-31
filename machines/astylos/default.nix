@@ -17,7 +17,11 @@
   };
 
   rice = {
-    unfreeNames = [ "factorio-space-age" ];
+    unfreeNames = [
+      "factorio-space-age"
+      "steam"
+      "steam-unwrapped"
+    ];
 
     desktop = {
       gpu = {
@@ -37,6 +41,8 @@
     mesa.opencl
   ];
 
+  programs.steam.enable = true;
+
   home-manager.sharedModules = [{
     aquaris = {
       persist = {
@@ -44,6 +50,7 @@
         ".config/JetBrains" = { };
         ".factorio" = { };
         ".local/share/JetBrains" = { };
+        ".local/share/Steam" = { };
       };
 
       hyprland = {

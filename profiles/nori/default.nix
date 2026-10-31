@@ -186,7 +186,6 @@ in
       persist = {
         ".config/steamguard-cli" = { };
 
-        ".local/share/Steam/compatibilitytools.d" = { };
         ".local/share/chatterino" = { };
         ".local/share/typst/packages/local" = { };
         ".local/share/umu" = { };
