@@ -1,9 +1,13 @@
 { lib, pkgs, ... }:
 let
-  inherit (lib) attrValues flip mapAttrs' mapAttrsToList mkIf mkLuaInline
+  inherit (lib) attrValues elem flip mapAttrs' mapAttrsToList mkIf mkLuaInline
     mkMerge singleton;
 in
 {
+  # avoid rebuilding hyprland by matching its UWSM configuration
+  programs.hyprland.withUWSM =
+    elem "hyprland-uwsm" pkgs.hyprland.providedSessions;
+
   home-manager.sharedModules = singleton ({ config, ... }:
     let cfg = config.aquaris.hyprland; in {
       aquaris.hyprland = mkMerge ([

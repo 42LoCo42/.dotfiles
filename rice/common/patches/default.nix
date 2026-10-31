@@ -35,7 +35,7 @@
       gomuks-web .__assign = obscura.my-gomuks-web;
       tuigreet   .__assign = obscura.my-tuigreet;
 
-      hyprland.__assign = self.inputs.obscura.inputs.nixpkgs.legacyPackages.${prev.stdenv.system}.hyprland;
+      hyprland.__assign = obscura.my-hypr-plugins.hyprland;
       hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
 
       # fuck https://github.com/NixOS/nixpkgs/pull/562715 you >:(

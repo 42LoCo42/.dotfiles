@@ -169,7 +169,7 @@
             Backspace = power "Shutdown" "systemctl poweroff";
             S-Backspace = power "Reboot" "systemctl reboot";
             C-Backspace = power "Suspend" "systemctl suspend";
-            Escape = power "Logout" "hyprctl dispatch hl.dsp.exit()";
+            Escape = power "Logout" "loginctl terminate-user ${config.home.username}";
 
             C-i = exec (pkgs.writeShellScript "idle-toggle" ''
               if systemctl --user is-active hypridle; then
