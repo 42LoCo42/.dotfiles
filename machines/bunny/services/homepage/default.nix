@@ -11,7 +11,7 @@
         (lib.mkBefore "import default")
         (lib.mkAfter ''
           ##### homepage #####
-          header Access-Control-Allow-Origin *
+          header ?Access-Control-Allow-Origin *
           root * /srv/homepage
           file_server
 
