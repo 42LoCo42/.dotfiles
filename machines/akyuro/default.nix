@@ -22,6 +22,7 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
 
     persist.dirs = {
       "/var/lib/bluetooth" = { m = "0700"; };
+      "/var/lib/iwd" = { m = "0700"; };
     };
   };
 
@@ -44,6 +45,30 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
     enable = true;
     settings.General.Experimental = true;
   };
+
+  networking = {
+    networkmanager.enable = lib.mkForce false;
+
+    wireless.iwd = {
+      enable = true;
+
+      settings = {
+        General = {
+          EnableNetworkConfiguration = true;
+        };
+
+        Network = {
+          EnableIPv6 = true;
+        };
+
+        DriverQuirks = {
+          PowerSaveDisable = "*";
+        };
+      };
+    };
+  };
+
+  systemd.network.links."80-iwd".enable = false;
 
   rice.desktop = {
     gpu.amd.enable = true;
