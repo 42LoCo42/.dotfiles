@@ -30,6 +30,7 @@
               "--no-mouse"
               "--no-switchvt"
               "--no-reset-env"
+              "--font-size 18"
               "--xkb-layout de"
               "--xkb-repeat-delay 300"
               "--xkb-repeat-rate 25"
