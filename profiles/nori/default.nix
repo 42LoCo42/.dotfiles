@@ -180,9 +180,6 @@ in
         };
       };
 
-      # default key is fido, but we don't want it for git signing
-      git.sshKeyFile = _: config.aquaris.secret "user/nori/ssh/main";
-
       persist = {
         ".config/steamguard-cli" = { };
 

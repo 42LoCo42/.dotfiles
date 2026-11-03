@@ -26,7 +26,7 @@
           "allow_other"
           "default_permissions"
           "follow_symlinks"
-          "identityfile=${config.aquaris.secret "user/nori/ssh/fido"}"
+          "identityfile=${config.aquaris.secret "user/nori/ssh/ed25519_sk"}"
         ];
       }];
 

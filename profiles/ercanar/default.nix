@@ -111,8 +111,6 @@ in
         };
       };
 
-      git.sshKeyFile = _: config.aquaris.secret "user/ercanar/ssh/main";
-
       persist = {
         "dev" = { };
         "doc" = { };

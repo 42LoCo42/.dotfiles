@@ -32,4 +32,5 @@ let inherit (lib) mkMerge pipe; in
     mkMerge
   ];
 
+  networking.nftables.enable = true;
 }

@@ -44,18 +44,21 @@
     ssh = {
       ercanar = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvIf8izKUWon2BIHuzmGxqzt4duidgP2yEpSUcRu3rA";
       mel = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILxPD8M1DV0k5QY283lo0QIpmUYCjUlYvHwKYkk8j9Gn";
-      nori = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
+      nori = {
+        fido = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBH2eZZkiQ53veJRiLi/JbVU/CD2oKC/TN7Ope3LiCChAAAABHNzaDo=";
+        main = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdkJo7RMoxUkuQ55YT1q5KANHrR+OJZzeYejpJW4rty";
+      };
     };
 
     users = {
       admin = {
         description = "Server Admin Account";
-        sshKeys = with ssh; [ nori ];
+        sshKeys = with ssh; [ nori.fido ];
       };
 
       ercanar = {
         description = "Hannes Wendt";
-        sshKeys = with ssh; [ ercanar nori ];
+        sshKeys = with ssh; [ ercanar nori.fido ];
         git = {
           email = "hanneswendt22@gmail.com";
           key = ssh.ercanar;
@@ -64,15 +67,15 @@
 
       mel = {
         description = "Melinda";
-        sshKeys = with ssh; [ mel nori ];
+        sshKeys = with ssh; [ mel nori.fido ];
       };
 
       nori = {
         description = "Eleonora";
-        sshKeys = with ssh; [ nori ];
+        sshKeys = with ssh; [ nori.fido ];
         git = {
           email = "leonsch@protonmail.com";
-          key = ssh.nori;
+          key = ssh.nori.main;
         };
       };
     };
