@@ -267,6 +267,8 @@ in
               (smtpmail-smtp-user    "leonsch")
               (smtpmail-smtp-server  "laniakea.bunny.vpn")
               (smtpmail-smtp-service 1025)
+
+              (warning-suppress-types '((lsp-mode)))
             '';
           };
 
@@ -806,6 +808,7 @@ in
               (typescript-mode . lsp-deferred)
               (typst-ts-mode   . lsp-deferred)
               (web-mode        . lsp-deferred)
+              (wgsl-mode       . lsp-deferred)
               (zig-mode        . lsp-deferred)
 
               (lsp-managed-mode . (lambda ()
@@ -962,6 +965,14 @@ in
             '';
 
             extraPackages = with pkgs; [ basedpyright ];
+          };
+
+          lsp-wgsl = {
+            defer = true;
+
+            custom = ''
+              (lsp-wgsl-server-command "wgslender-lsp")
+            '';
           };
 
           nftables-mode = { defer = true; };
@@ -1235,6 +1246,22 @@ in
               (add-to-list 'apheleia-mode-alist '(nushell-mode . nufmt))
               (add-to-list 'apheleia-formatters '(nufmt
                 "nufmt" "--config" "${./nufmt.nuon}" "--stdin"))
+            '';
+          };
+
+          wgsl-mode = {
+            defer = true;
+
+            extraPackages = with pkgs; [
+              wgsl-analyzer
+              wgslender
+            ];
+
+            config = ''
+              (require 'apheleia)
+              (add-to-list 'apheleia-mode-alist '(wgsl-mode . wgslfmt))
+              (add-to-list 'apheleia-formatters '(wgslfmt
+                "wgslfmt" "--tabs" "-"))
             '';
           };
         };

@@ -89,6 +89,7 @@
         socket-activate
         vencloud
         waybar-weather
+        wgslender
         zfullfs
         ;
     })
