@@ -1,6 +1,6 @@
 { aquaris, config, lib, pkgs, utils, ... }:
 let
-  inherit (lib) join pipe zipAttrs;
+  inherit (lib) concatMapAttrsStringSep join pipe zipAttrs;
 
   workDir = "/persist/home/nori/sync/work/PIC";
 
@@ -46,6 +46,12 @@ let
     (map mkMount)
     zipAttrs
   ];
+
+  vpn-ssh-mark = "0x50494321"; # "PIC!" in hex
+
+  vpn-ssh-ips = {
+    meeting2 = "194.59.16.142";
+  };
 in
 {
   aquaris.dnscrypt.rules.cloaking = {
@@ -63,27 +69,80 @@ in
   ];
 
   systemd = {
-    services.pic-vpn = {
-      serviceConfig.Type = "notify";
+    services = {
+      pic-vpn = {
+        serviceConfig.Type = "notify";
 
-      path = with pkgs; [ openvpn ];
-      script = ''
-        SOCK="$NOTIFY_SOCKET"
-        unset NOTIFY_SOCKET
+        path = with pkgs; [ openvpn ];
+        script = ''
+          SOCK="$NOTIFY_SOCKET"
+          unset NOTIFY_SOCKET
 
-        args=()
-        if [ "${aquaris.name}" = "akyuro" ]; then
-          args+=(--mssfix 1300)
-        fi
+          args=()
+          if [ "${aquaris.name}" = "akyuro" ]; then
+            args+=(--mssfix 1300)
+          fi
 
-        exec openvpn                          \
-          "''${args[@]}"                      \
-          --config "${workDir}/planetic.ovpn" \
-          --script-security 2                 \
-          --route-up "/usr/bin/env NOTIFY_SOCKET=$SOCK systemd-notify --ready"
-      '';
+          exec openvpn                          \
+            "''${args[@]}"                      \
+            --config "${workDir}/planetic.ovpn" \
+            --script-security 2                 \
+            --route-up "/usr/bin/env NOTIFY_SOCKET=$SOCK systemd-notify --ready"
+        '';
+      };
+
+      pic-ssh-route = {
+        after = [ "pic-vpn.service" ];
+        partOf = [ "pic-vpn.service" ];
+        wantedBy = [ "pic-vpn.service" ];
+
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+
+        path = with pkgs; [ iproute2 ];
+        script = ''
+          # grab marked connections and route them via SSH table
+          rule="fwmark ${vpn-ssh-mark} table pic-ssh priority 1000"
+          if [ -z "$(ip rule show $rule)" ]; then ip rule add $rule; fi
+
+          # route all to tun0
+          ip route replace default dev tun0 table pic-ssh
+        '';
+      };
     };
   } // mounts;
+
+  networking = {
+    nftables.ruleset = ''
+      # mark all vpn-ssh-ips
+      table inet vpn-ssh-mark {
+        chain output {
+          type route hook output priority mangle; policy accept;
+          ${concatMapAttrsStringSep "\n"
+            (_: x: "ip daddr ${x} tcp dport 22 meta mark set ${vpn-ssh-mark}")
+            vpn-ssh-ips}
+        }
+      }
+
+      # use SNAT for marked packets
+      table inet vpn-ssh-snat {
+        chain postrouting {
+          type nat hook postrouting priority srcnat; policy accept;
+          oifname "tun0" meta mark ${vpn-ssh-mark} masquerade
+        }
+      }
+    '';
+
+    # define pic-ssh table
+    iproute2 = {
+      enable = true;
+      rttablesExtraConfig = ''
+        100 pic-ssh
+      '';
+    };
+  };
 
   home-manager.sharedModules = [{
     aquaris.persist = {
@@ -105,7 +164,7 @@ in
       };
 
       meeting2 = {
-        HostName = "meeting2.planet-ic.de";
+        HostName = vpn-ssh-ips.meeting2;
         User = "root";
         SetEnv.TERM = "xterm-256color";
       };
@@ -119,17 +178,12 @@ in
         PubkeyAcceptedKeyTypes = "+ssh-rsa";
       };
 
-      greifswald = {
-        HostName = "web03270.pvm.imv.de";
-        User = "root";
-        SetEnv.TERM = "xterm-256color";
-      };
-
       bonetty = {
         HostName = "ares-bonetty.p4.net";
         User = "root";
         SetEnv.TERM = "xterm-256color";
 
+        IdentityFile = config.aquaris.secret "user/nori/ssh/old/rsa";
         HostKeyAlgorithms = "+ssh-rsa";
         PubkeyAcceptedKeyTypes = "+ssh-rsa";
       };
