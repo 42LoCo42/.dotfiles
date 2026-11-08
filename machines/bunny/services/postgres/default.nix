@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
   postgres = pkgs.postgresql_17.withPackages (p: with p; [
     pgvector # required by vectorchord
@@ -12,20 +12,27 @@ in
     info = "Central database for other services";
   };
 
+  rice.metrics."postgres" = "postgres:9090";
+
   virtualisation.pnoc.postgres = {
     path = with pkgs; [
       coreutils
       less
       postgres
+      prometheus-postgres-exporter
     ];
 
     script = ''
+      postgres_exporter --web.listen-address :9090 &
+
       if [ ! -e /data/PG_VERSION ]; then initdb -E UTF8 /data; fi
       cp -v /pg_hba.conf /postgresql.conf /data
       exec postgres -D /data
     '';
 
     extraOptions = [ "--tmpfs=/run/postgresql" ];
+
+    environmentFiles = [ (config.aquaris.secret "@machine/postgres") ];
 
     volumes = [
       "postgres:/data"

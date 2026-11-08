@@ -1,7 +1,10 @@
 server_url: https://headscale.@domain@
 
 listen_addr: 0.0.0.0:8080
-metrics_listen_addr: 127.0.0.1:9090
+
+grpc_listen_addr: 127.0.0.1:50443
+grpc_allow_insecure: true
+
 unix_socket: "/data/headscale.sock"
 
 trusted_proxies:

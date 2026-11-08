@@ -85,6 +85,7 @@
         immich-folder-album-creator
         molecule
         pinlist
+        prometheus-podman-exporter
         pug
         socket-activate
         vencloud

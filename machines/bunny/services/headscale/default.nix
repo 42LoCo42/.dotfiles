@@ -6,11 +6,15 @@
     details.url.text = "https://headscale.${config.rice.domain}";
   };
 
-  rice.caddy.cfg.headscale = ''
-    import default
-    reverse_proxy /sts/* headscale:8081
-    reverse_proxy headscale:8080
-  '';
+  rice = {
+    caddy.cfg.headscale = ''
+      import default
+      reverse_proxy /sts/* headscale:8081
+      reverse_proxy headscale:8080
+    '';
+
+    metrics."headscale" = "headscale:9090";
+  };
 
   virtualisation.pnoc.headscale = {
     path = with pkgs; [
@@ -21,6 +25,7 @@
 
       headscale
       headscale-sts
+      prometheus-tailscale-exporter
     ];
 
     script = ''
@@ -48,6 +53,11 @@
 
       envsubst < ${./sts.yaml} > /tmp/sts.yaml
       headscale-sts --config /tmp/sts.yaml &
+
+      tailscale-exporter                    \
+        --listen-address :9090              \
+        --headscale-address localhost:50443 \
+        --headscale-insecure               &
 
       exec headscale serve
     '';
