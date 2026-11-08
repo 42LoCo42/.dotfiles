@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if pid="$(pgrep -f '^lsyncd.*@config@')"; then
+if pid="$(pgrep lsyncd)"; then
 	notify-send "sync-manager" "Stopped!"
 	kill "$pid"
 else

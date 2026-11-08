@@ -19,6 +19,23 @@ let
     ];
   };
 
+  rsync-post = pkgs.writeShellApplication {
+    name = "rsync-post";
+    runtimeInputs = with pkgs; [ rsync libnotify ];
+    text = ''
+      rsync "$@"
+      status="$?"
+
+      if ((status == 0)); then
+        notify-send -u low -t 1000 "rsync" "complete!"
+      else
+        notify-send -u critical -t 5000 "rsync" "failed!"
+      fi
+
+      exit "$status"
+    '';
+  };
+
   sync-manager = pkgs.writeShellApplication {
     name = "sync-manager";
 
@@ -31,6 +48,7 @@ let
           delay = 0.25,
           exclude = "keys",
           rsync = {
+            binary = "${getExe rsync-post}",
             archive = true,
             compress = true,
             verbose = true,
