@@ -1,5 +1,7 @@
-{
-  topology.self.services.syncthing.info = "Central file synchronization hub";
+{ lib, ... }: {
+  topology.self.services.syncthing = {
+    info = lib.mkForce "Central file synchronization hub";
+  };
 
   rice.syncthing = {
     enable = true;

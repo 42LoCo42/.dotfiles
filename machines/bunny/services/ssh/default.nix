@@ -1,9 +1,13 @@
 { lib, pkgs, ... }:
 let endless = 22; real = 18213; in {
-  rice.oci-firewall.rules = [
-    { desc = "Endlessh"; type = "tcp"; port = endless; }
-    { desc = "OpenSSH"; type = "tcp"; port = real; }
-  ];
+  rice = {
+    metrics."endlessh" = "endlessh:9090";
+
+    oci-firewall.rules = [
+      { desc = "Endlessh"; type = "tcp"; port = endless; }
+      { desc = "OpenSSH"; type = "tcp"; port = real; }
+    ];
+  };
 
   services.openssh.ports = lib.mkForce [ real ];
 

@@ -8,6 +8,13 @@
 
 	default_bind tailscale/bunny
 
+	oidc pocketid {
+		issuer {$POCKETID}
+		client_id 971cec40-bef6-4b9b-8723-37272faa7a0e
+		client_secret {$OIDC_CLIENT_SECRET}
+		scope openid email profile
+	}
+
 	pki {
 		ca local {
 			root {
@@ -27,7 +34,7 @@
 	}
 }
 
-##### grimmory #####
+#################################################################################
 
 books.bunny {
 	reverse_proxy grimmory:8080
@@ -57,6 +64,12 @@ git.bunny {
 
 ################################################################################
 
+grafana.bunny {
+	reverse_proxy grafana:8080
+}
+
+################################################################################
+
 img.bunny {
 	reverse_proxy immich:8080
 }
@@ -71,6 +84,18 @@ pin.bunny {
 
 pr-tracker.bunny {
 	reverse_proxy pr-tracker:8081
+}
+
+################################################################################
+
+prometheus.bunny {
+	oidc pocketid {
+		allow {
+			user *
+		}
+	}
+
+	reverse_proxy prometheus:9090
 }
 
 ################################################################################

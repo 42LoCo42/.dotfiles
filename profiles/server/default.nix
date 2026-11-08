@@ -5,10 +5,11 @@
     caddy = (prev.caddy.withPlugins {
       plugins = [
         "github.com/caddy-dns/porkbun@v0.3.1"
+        "github.com/relvacode/caddy-oidc@v0.4.3"
         "github.com/tailscale/caddy-tailscale@v0.0.0-20260826180304-de41b249af4f"
       ];
 
-      hash = "sha256-k58H4rHZ3CPF1NuhHIDf5yW1WeEls8FYH1rrsrTDuho=";
+      hash = "sha256-bL8F2sn691uhR0yNrEEAACkjgVvJF5DMzj9IhtxVbZ8=";
     }).overrideAttrs {
       doCheck = false;
     };
