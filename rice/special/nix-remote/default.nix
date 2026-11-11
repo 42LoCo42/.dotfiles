@@ -146,7 +146,7 @@ in
         (writeShellApplication {
           name = "nix-gha";
 
-          runtimeInputs = [
+          runtimeInputs = with lixPackageSets.latest; [
             nushell
             nix-eval-jobs
             nix-fast-build

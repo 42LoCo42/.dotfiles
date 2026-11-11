@@ -1,43 +1,27 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, self, ... }:
 let
   inherit (lib) mkIf mkOption;
-  inherit (lib.types) bool raw;
+  inherit (lib.types) bool;
 
-  cfg = config.rice.desktop.zenkernel;
+  mvs = import self.inputs.obscura.inputs.multiverse {
+    inherit (pkgs) config;
+    inherit (pkgs.stdenv) system;
+  };
+
+  pkgs' = mvs.at (mvs.revOf "linux_zen" "7.2.15");
 in
 {
-  options.rice.desktop.zenkernel = {
-    enable = mkOption {
-      type = bool;
-      default = false;
-    };
-
-    pkgs = mkOption {
-      type = raw;
-      default = pkgs;
-
-      # default = (import (fetchTarball {
-      #   url = "https://github.com/nixos/nixpkgs/tarball/";
-      #   sha256 = "sha256-Ewa/O6OlwvmoR9x53Emb3rAWlhM7MLZuw1jCYhaX6sU=";
-      # })) {
-      #   inherit (pkgs) config;
-      #   inherit (pkgs.stdenv) system;
-      # };
-    };
+  options.rice.desktop.zenkernel.enable = mkOption {
+    type = bool;
+    default = false;
   };
 
   config = mkIf config.rice.desktop.zenkernel.enable {
     boot = {
-      kernelPackages = cfg.pkgs.linuxPackages_zen;
-
-      kernelParams = [
-        # ¿fix? random freezing
-        "processor.max_cstate=5"
-        "intel_idle.max_cstate=0"
-      ];
+      kernelPackages = pkgs'.linuxPackages_zen;
 
       zfs = {
-        package = cfg.pkgs.zfs;
+        package = pkgs'.zfs;
         forceImportRoot = true;
       };
     };

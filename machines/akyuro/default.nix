@@ -75,6 +75,7 @@ let disk = "nvme-eui.8ce38e0400d8442a"; in {
 
     wayland = {
       fuzzel.fontSize = 14;
+      waybar.laptop = true;
     };
   };
 

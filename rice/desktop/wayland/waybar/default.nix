@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  inherit (lib) getExe getExe' mkIf mkOption;
+  inherit (lib) flatten getExe getExe' ifEnable mkIf mkOption;
   inherit (lib.types) bool int nullOr str;
 
   cfg = config.rice.desktop.wayland.waybar;
@@ -8,6 +8,11 @@ in
 {
   options.rice.desktop.wayland.waybar = {
     enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    laptop = mkOption {
       type = bool;
       default = false;
     };
@@ -61,7 +66,7 @@ in
             "hyprland/window"
           ];
 
-          modules-right = [
+          modules-right = flatten [
             "custom/weather"
             "mpd"
             "pulseaudio"
@@ -70,8 +75,10 @@ in
             "memory"
             "disk"
             "temperature"
-            "backlight"
-            "battery"
+            (ifEnable cfg.laptop [
+              "backlight"
+              "battery"
+            ])
             "clock"
             "idle_inhibitor"
             "tray"

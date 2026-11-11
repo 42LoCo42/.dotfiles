@@ -10,10 +10,9 @@
     };
 
     services = {
-      scx = {
+      scx-loader = {
         enable = true;
-        package = pkgs.scx.rustscheds;
-        scheduler = "scx_pandemonium";
+        config.default_sched = "scx_pandemonium";
       };
 
       ananicy = {
