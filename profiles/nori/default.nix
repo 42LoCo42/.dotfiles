@@ -70,9 +70,13 @@ in
     { nori.admin = true; }
   ];
 
-  programs.wireshark = {
-    enable = true;
-    package = pkgs.wireshark;
+  programs = {
+    renderdoc.enable = true;
+
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark;
+    };
   };
 
   users.users.nori.extraGroups = [ "wireshark" ];
