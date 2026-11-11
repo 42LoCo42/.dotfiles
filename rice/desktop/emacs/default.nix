@@ -654,7 +654,7 @@ in
           org-typst-preview = {
             defer = true;
 
-            package = ep: ep.trivialBuild (drv: {
+            package = ep: ep.melpaBuild (drv: {
               pname = "org-typst-preview";
               version = "0.3.1-unstable-2026-10-29";
 
@@ -665,11 +665,6 @@ in
                 hash = "sha256-IlSO+2/5fI4m7AQWEtf0i5J4m4kpG1mGv+e68gKSP+U=";
               };
             });
-
-            commands = ''
-              org-typst-preview-auto-mode
-              org-typst-preview
-            '';
 
             hook = ''
               (org-mode . (lambda ()
@@ -1131,29 +1126,15 @@ in
           };
 
           typst-ts-mode = {
-            # TODO https://codeberg.org/meow_king/typst-ts-mode/pulls/106
-            # elpaBuild, with which typst-ts-mode is built by default,
-            # (afaik) does not support adding patches,
-            # because it fetches & compiles the source in installPhase
-            # fix: declare the entire package as trivialBuild
-            package = ep: ep.trivialBuild {
+            package = ep: ep.melpaBuild (drv: {
               pname = "typst-ts-mode";
-              version = "0.12.2";
+              version = "0.12.3";
 
               src = pkgs.fetchurl {
-                url = "https://elpa.nongnu.org/nongnu/typst-ts-mode-0.12.2.tar";
-                sha256 = "170q09ma08cksyg9bapfhid28f0xi46ssdv7bzdyiy3gc4x61i4b";
+                url = "https://elpa.nongnu.org/nongnu/${drv.pname}-${drv.version}.tar";
+                hash = "sha256-g4W2PfdymKQfgd2tf9Vqghlpoi9P/1Y3OU1iAunjnbI=";
               };
-
-              patches = [
-                (pkgs.fetchpatch {
-                  url = "https://codeberg.org/meow_king/typst-ts-mode/pulls/106.diff";
-                  hash = "sha256-fKEN4+ZT9IMicd4ZSjSUhzHMwi1RM/IFglaVbkNB5/A=";
-                })
-              ];
-            };
-
-            mode = ''"\\.typ\\'"'';
+            });
 
             hook = ''
               (typst-ts-mode . (lambda ()
