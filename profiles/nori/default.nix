@@ -155,16 +155,20 @@ in
           };
 
           "2" = {
-            icon = "";
-            rules = [{ class = "equibop"; }];
+            icon = "󱗼";
           };
+
 
           "3" = {
             icon = "";
           };
 
-          "4" = {
-            icon = "󱗼";
+          "8" = {
+            icon = "";
+            rules = [
+              { class = "concord"; }
+              { class = "equibop"; }
+            ];
           };
 
           "9" = {

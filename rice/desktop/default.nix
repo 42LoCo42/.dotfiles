@@ -15,8 +15,8 @@
   config = lib.mkIf config.rice.desktop.enable {
     rice.desktop = {
       alarm.enable = true;
+      discord.enable = true;
       emacs.enable = true;
-      equibop.enable = true;
       firefox.enable = true;
       fonts.enable = true;
       gomuks.enable = true;
