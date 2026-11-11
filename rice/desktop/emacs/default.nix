@@ -952,7 +952,7 @@ in
               (setq lsp-glsl-executable '("glsl_analyzer"))
 
               (require 'apheleia)
-              (add-to-list 'apheleia-mode-alist '(glsl-mode . clang-format))
+              (add-to-list 'apheleia-mode-alist '(glsl-mode . my/clang-format))
             '';
 
             extraPackages = with pkgs; [ glsl_analyzer ];
