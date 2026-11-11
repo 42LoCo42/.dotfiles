@@ -342,3 +342,37 @@
              (line-number-at-pos (window-start)))
           (/ (window-body-height) 2))
      'bottom 'top)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/org-typst-edit (&rest _)
+  (interactive)
+  (when-let* ((frag (org-typst-preview--fragment-at-point)))
+    (let* ((value  (plist-get frag :value))
+           (block  (plist-get frag :block))
+           (ro-len (if block 2 1))
+           (len    (length value)))
+      (add-text-properties 0 ro-len
+                           (list 'read-only "Cannot edit Typst delimiter"
+                                 'front-sticky t
+                                 'rear-nonsticky t)
+                           value)
+      (add-text-properties (- len ro-len) len
+                           (list 'read-only "Cannot edit Typst delimiter"
+                                 'front-sticky nil
+                                 'rear-nonsticky nil)
+                           value)
+      (org-src--edit-element
+       (org-element-create
+        'latex-fragment
+        (list :begin (plist-get frag :begin)
+              :end   (plist-get frag :end)))
+       (org-src--construct-edit-buffer-name (buffer-name) "Typst formula")
+       'typst-ts-mode
+       (lambda ()
+         (delete-char ro-len)
+         (insert (if block "#[" "#("))
+         (goto-char (point-max))
+         (delete-char (- ro-len))
+         (insert (if block "#]" "#)")))
+       value t))))

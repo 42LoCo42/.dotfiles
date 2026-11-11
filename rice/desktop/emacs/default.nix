@@ -35,15 +35,15 @@ in
     home-manager.sharedModules = singleton (hm: {
       home.shellAliases."e" = "emacsclient -cn";
 
-      programs.emacs.overrides = _: epkgs: {
-        lsp-mode = epkgs.lsp-mode.overrideAttrs (old: {
+      programs.emacs.overrides = _: ep: {
+        lsp-mode = ep.lsp-mode.overrideAttrs (old: {
           buildPhase = ''
             export LSP_USE_PLISTS=true
           '' + (old.buildPhase or "");
         });
 
         # stub out reformatter (zig-mode wants it, but we use apheleia)
-        reformatter = epkgs.trivialBuild {
+        reformatter = ep.trivialBuild {
           pname = "reformatter";
           version = "0";
 
@@ -88,7 +88,7 @@ in
         enable = true;
         package = pkgs.emacs31-pgtk;
 
-        extraPackages = epkgs: with epkgs; [
+        extraPackages = ep: with ep; [
           treesit-grammars.with-all-grammars
         ];
 
@@ -113,6 +113,7 @@ in
           emacs = {
             bind = ''
               ("C-a" . my/smart-home)
+              ("C-s" . save-buffer)
               ("M-=" . count-words)
 
               ;; delete a Nix sha256 hash
@@ -121,7 +122,6 @@ in
 
             bind' = ''
               ("C-M-<backspace>" . my/join-line)
-              ("C-s"             . save-buffer)
 
               ("C-x C-f" . find-file)
               ("C-x C-l" . scratch-buffer) ; L for Lisp
@@ -627,13 +627,59 @@ in
             '';
           };
 
+          org = {
+            defer = true;
+
+            package = null;
+
+            bind = ''
+              :map org-mode-map
+              ("C-c C-#" . org-edit-special)
+
+              :map org-src-mode-map
+              ("C-c C-#" . org-edit-src-exit)
+              ("C-s"     . org-edit-src-save)
+            '';
+          };
+
           org-drill = {
-            package = epkgs: epkgs.org-drill.overrideAttrs (old: {
+            package = ep: ep.org-drill.overrideAttrs (old: {
               # org is part of emacs
-              packageRequires = remove epkgs.org old.packageRequires;
+              packageRequires = remove ep.org old.packageRequires;
             });
 
             commands = "org-drill-strip-all-data";
+          };
+
+          org-typst-preview = {
+            defer = true;
+
+            package = ep: ep.trivialBuild (drv: {
+              pname = "org-typst-preview";
+              version = "0.3.1-unstable-2026-10-29";
+
+              src = pkgs.fetchFromGitHub {
+                owner = "roife";
+                repo = drv.pname;
+                rev = "46f22fc9a2f2259ead4a4253c511c935f3488195";
+                hash = "sha256-IlSO+2/5fI4m7AQWEtf0i5J4m4kpG1mGv+e68gKSP+U=";
+              };
+            });
+
+            commands = ''
+              org-typst-preview-auto-mode
+              org-typst-preview
+            '';
+
+            hook = ''
+              (org-mode . (lambda ()
+                (org-typst-preview-auto-mode)
+                (org-typst-preview)))
+            '';
+
+            config = ''
+              (advice-add 'org-edit-special :before-until 'my/org-typst-edit)
+            '';
           };
 
           smartparens = {
@@ -781,6 +827,8 @@ in
           };
 
           lsp-mode = {
+            defer = true;
+
             bind' = ''
               ("C-c C-a"     . lsp-execute-code-action)
               ("C-c C-d"     . lsp-ui-doc-focus-frame)
@@ -862,6 +910,8 @@ in
           };
 
           lsp-ui = {
+            defer = true;
+
             hook = ''
               (lsp-mode . (lambda ()
                 (lsp-ui-mode)
