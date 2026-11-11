@@ -6,7 +6,10 @@
 
   config = lib.mkIf config.rice.desktop.mpd.enable {
     home-manager.sharedModules = lib.singleton (hm: {
-      aquaris.persist = { "music" = { }; };
+      aquaris.persist = {
+        ".local/share/mpd" = { };
+        "music" = { };
+      };
 
       home.packages = with pkgs; [
         ffmpeg # conversions, ffprobe, ...
