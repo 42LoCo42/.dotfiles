@@ -158,9 +158,14 @@ in
     '';
 
     programs.ssh.settings = {
-      lbmvweb = {
-        HostName = "www1.d11121.lbmv.de";
+      # ns1
+      "213.254.36.134" = {
+        IdentityFile = config.aquaris.secret "user/nori/ssh/old/ed25519";
+      };
+
+      "nutzer.lbmv.de" = {
         User = "www-data";
+        IdentityFile = config.aquaris.secret "user/nori/ssh/old/rsa";
       };
 
       meeting2 = {
