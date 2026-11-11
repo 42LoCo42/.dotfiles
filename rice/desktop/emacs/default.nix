@@ -862,7 +862,11 @@ in
           };
 
           lsp-ui = {
-            hook = "lsp-mode";
+            hook = ''
+              (lsp-mode . (lambda ()
+                (lsp-ui-mode)
+                (add-hook 'post-command-hook 'my/lsp-ui-doc-position-by-window-half)))
+            '';
 
             custom = ''
               (lsp-ui-sideline-show-code-actions t)
@@ -871,6 +875,7 @@ in
               (lsp-ui-sideline-delay 0)
               (lsp-ui-doc-delay 0)
               (lsp-ui-doc-show-with-cursor t)
+              (lsp-ui-doc-show-with-mouse nil)
             '';
 
             config = ''

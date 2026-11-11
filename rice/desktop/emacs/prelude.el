@@ -331,3 +331,14 @@
 (defmacro my/chain (mode &rest checkers)
   `(when (derived-mode-p ',mode)
      (setq my/flycheck-local-cache '((lsp . ((next-checkers . ,checkers)))))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/lsp-ui-doc-position-by-window-half ()
+  (setq-local
+   lsp-ui-doc-position
+   (if (< (- (line-number-at-pos)
+             (line-number-at-pos (window-start)))
+          (/ (window-body-height) 2))
+     'bottom 'top)))
