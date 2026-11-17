@@ -162,7 +162,6 @@ in
             icon = "󱗼";
           };
 
-
           "3" = {
             icon = "";
           };
@@ -202,6 +201,18 @@ in
               time = 2000,
               icon = "info",
             })
+          '';
+        };
+
+        events = f: with f; {
+          "window.title w" = lua ''
+            if string.find(w.title, "gomuks web — LibreWolf") then
+              hl.dispatch(hl.dsp.window.move({
+                window = w,
+                workspace = 3,
+                follow = false,
+              }))
+            end
           '';
         };
       };
