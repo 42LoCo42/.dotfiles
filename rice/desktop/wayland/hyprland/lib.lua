@@ -37,26 +37,31 @@ end
 
 function dropdown(cmd)
 	return function()
-		ws = hl.get_active_workspace()
 		class = fmt("dropdown_%s", string.match(cmd, "%S+"))
 		window = hl.get_windows({ class = class })[1]
 
 		if window == nil then
 			hl.dispatch(hl.dsp.exec_cmd(
 				fmt("foot -a %s %s", class, cmd), --
-				{ float = true, dim_around = true }
+				{ float = true, pin = true, dim_around = true }
 			))
-		elseif window.workspace == ws then
-			hl.dispatch(hl.dsp.window.move({
-				window = window,
-				workspace = "special:dropdown",
-				follow = false,
-			}))
 		else
-			hl.dispatch(hl.dsp.window.move({
+			hl.dispatch(hl.dsp.window.pin({
 				window = window,
-				workspace = ws,
+				action = "toggle",
 			}))
+
+			if window.pinned then
+				hl.dispatch(hl.dsp.focus({
+					window = window,
+				}))
+			else
+				hl.dispatch(hl.dsp.window.move({
+					window = window,
+					workspace = "special:dropdown",
+					follow = false,
+				}))
+			end
 		end
 	end
 end
