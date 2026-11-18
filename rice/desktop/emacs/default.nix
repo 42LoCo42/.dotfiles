@@ -424,13 +424,17 @@ in
           ##### Behaviour #####
 
           age = {
+            defer = true;
+
+            hook = ''
+              (server-after-make-frame . (lambda ()
+                (add-to-list 'auto-mode-alist         '("\\.age\\'" nil age-file))
+                (add-to-list 'file-name-handler-alist '("\\.age\\'" . age-file-handler))))
+            '';
+
             custom = ''
               (age-default-identity "${config.aquaris.secret "user/nori/age-nopin"}")
               (age-default-recipient "age1m4k9ug03xn6fc83q9p7vcskexs6mzy8wfsvhflg4tm9ks9zl2dyqkm3hjm")
-            '';
-
-            hook = ''
-              (server-after-make-frame . age-file-enable)
             '';
           };
 
@@ -443,23 +447,6 @@ in
               (aw-keys '(?a ?s ?d ?f   ?h ?j ?k ?l
                          ?q ?w ?e ?r   ?u ?i ?o ?p))
               (aw-scope 'frame)
-            '';
-          };
-
-          atomic-chrome = {
-            config = ''
-              (atomic-chrome-start-server)
-
-              ;; fix https://github.com/alpha22jp/atomic-chrome/issues/48
-              (advice-add #'atomic-chrome-show-edit-buffer :before
-                (lambda (&rest r) (setq window-system  'pgtk
-                                        x-display-name (getenv "WAYLAND_DISPLAY"))))
-            '';
-
-            custom = ''
-              (atomic-chrome-buffer-open-style 'frame)
-              (atomic-chrome-url-major-mode-alist
-                '(("github\\.com" . gfm-mode)))
             '';
           };
 
