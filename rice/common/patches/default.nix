@@ -38,6 +38,12 @@
       hyprland.__assign = obscura.my-hypr-plugins.hyprland;
       hyprlandPlugins.__assign = obscura.my-hypr-plugins.entries;
 
+      lice.__output = {
+        prePatch.__append = ''
+          cp ${./unlicense.txt} lice/template-unlicense.txt
+        '';
+      };
+
       # fuck https://github.com/NixOS/nixpkgs/pull/562715 you >:(
       # gomuks-terminal in gomuks-web is not up to feature parity
       gomuks.__assign = prev.stdenv.mkDerivation (drv: {
