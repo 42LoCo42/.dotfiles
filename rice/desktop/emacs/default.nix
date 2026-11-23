@@ -5,6 +5,26 @@ let
 
   cfg = config.rice.desktop.emacs;
 
+  clangd = pkgs.writeShellApplication {
+    name = "clangd-setdef";
+    runtimeInputs = with pkgs; [ jq ];
+    text = ''
+      flags() {
+        printf \
+          '{"CompileFlags":{"Add":["-DEF_LSP", "-%s__clang__"]}}' \
+          "$1" > .clangd
+      }
+
+      file="build/compile_commands.json"
+      if [ -f "$file" ]; then
+        cc="$(jq -r '.[0].command | split(" ")[0]' "$file")"
+        if [ "$cc" = "clang" ]; then flags D; else flags U; fi
+      fi
+
+      exec clangd "$@"
+    '';
+  };
+
   meson-fmt = pkgs.writeShellApplication {
     name = "meson-fmt";
     runtimeInputs = with pkgs; [ meson ];
@@ -813,7 +833,6 @@ in
 
             bind' = ''
               ("C-c C-a"     . lsp-execute-code-action)
-              ("C-c C-d"     . lsp-ui-doc-focus-frame)
               ("C-c C-f C-d" . xref-find-definitions)
               ("C-c C-f C-i" . lsp-find-implementation)
               ("C-c C-f C-r" . xref-find-references)
@@ -862,7 +881,8 @@ in
               (read-process-output-max (* 1024 1024))
 
               ; custom client settings
-              (lsp-clients-clangd-args '("--header-insertion=never"))
+              (lsp-clients-clangd-executable "${getExe clangd}")
+              (lsp-clients-clangd-args '("--clang-tidy" "--header-insertion=never"))
               (lsp-clients-lua-language-server-command "lua-language-server")
 
               (lsp-disabled-clients '(php-ls))
@@ -893,6 +913,10 @@ in
 
           lsp-ui = {
             defer = true;
+
+            bind' = ''
+              ("C-c C-d" . lsp-ui-doc-focus-frame)
+            '';
 
             hook = ''
               (lsp-mode . (lambda ()
