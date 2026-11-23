@@ -20,6 +20,11 @@
           "services.sync.scheduler.idleInterval" = 10;
           "services.sync.scheduler.idleTime" = 10;
           "services.sync.scheduler.immediateInterval" = 10;
+
+          # custom TLDs
+          "browser.fixup.domainsuffixwhitelist.vpn" = true;
+          "browser.fixup.domainsuffixwhitelist.bunny" = true;
+          "browser.fixup.domainsuffixwhitelist.laniakea" = true;
         };
 
         policies = {
