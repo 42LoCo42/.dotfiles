@@ -206,7 +206,8 @@ in
 
         events = f: with f; {
           "window.title w" = lua ''
-            if string.find(w.title, "gomuks web — LibreWolf") then
+            if string.find(w.title, "gomuks web — LibreWolf") and
+               w.workspace.name ~= "secondary" then
               hl.dispatch(hl.dsp.window.move({
                 window = w,
                 workspace = 3,
