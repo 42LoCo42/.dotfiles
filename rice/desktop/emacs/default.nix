@@ -618,7 +618,14 @@ in
           };
 
           yasnippet = {
-            hook = "(lsp-mode . yas-minor-mode)";
+            hook = ''
+              (prog-mode . yas-minor-mode)
+              (text-mode . yas-minor-mode)
+            '';
+
+            config = ''
+              (mapc 'yas-load-directory yas-snippet-dirs)
+            '';
           };
 
           undo-tree = {

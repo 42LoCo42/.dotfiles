@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t -*-
+;; -*- mode: lisp-interaction; lexical-binding: t -*-
 
 (defvar my/home-dir (expand-file-name "~/"))
 (defvar my/temp-dir (concat user-emacs-directory "temp/"))
@@ -376,3 +376,11 @@
          (delete-char (- ro-len))
          (insert (if block "#]" "#)")))
        value t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/picproto ()
+  (interactive)
+  (find-file (format "~/work/PIC/protokoll/%s.md" (format-time-string "%F")))
+  (jinx-mode -1)
+  (yas-expand-snippet (yas-lookup-snippet "picproto" 'markdown-mode)))
